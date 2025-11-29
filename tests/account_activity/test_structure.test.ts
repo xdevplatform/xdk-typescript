@@ -30,51 +30,6 @@ describe('AccountActivityClient Structure', () => {
 
   
   
-  it('should have createReplayJob method with correct signature', () => {
-    // Check method exists
-    expect(AccountActivityClient.prototype).toHaveProperty('createReplayJob');
-    
-    // Check method is callable
-    const method = accountActivityClient.createReplayJob;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'webhookId',
-      
-      'fromDate',
-      
-      'toDate',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have createReplayJob method with return type annotation', () => {
-    const method = accountActivityClient.createReplayJob;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
   it('should have validateSubscription method with correct signature', () => {
     // Check method exists
     expect(AccountActivityClient.prototype).toHaveProperty('validateSubscription');
@@ -157,12 +112,12 @@ describe('AccountActivityClient Structure', () => {
   
 
   
-  it('should have getSubscriptions method with correct signature', () => {
+  it('should have deleteSubscription method with correct signature', () => {
     // Check method exists
-    expect(AccountActivityClient.prototype).toHaveProperty('getSubscriptions');
+    expect(AccountActivityClient.prototype).toHaveProperty('deleteSubscription');
     
     // Check method is callable
-    const method = accountActivityClient.getSubscriptions;
+    const method = accountActivityClient.deleteSubscription;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -174,6 +129,8 @@ describe('AccountActivityClient Structure', () => {
     const requiredParams = [
       
       'webhookId',
+      
+      'userId',
       
     ];
     
@@ -188,8 +145,53 @@ describe('AccountActivityClient Structure', () => {
     }
   });
 
-  it('should have getSubscriptions method with return type annotation', () => {
-    const method = accountActivityClient.getSubscriptions;
+  it('should have deleteSubscription method with return type annotation', () => {
+    const method = accountActivityClient.deleteSubscription;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have createReplayJob method with correct signature', () => {
+    // Check method exists
+    expect(AccountActivityClient.prototype).toHaveProperty('createReplayJob');
+    
+    // Check method is callable
+    const method = accountActivityClient.createReplayJob;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'webhookId',
+      
+      'fromDate',
+      
+      'toDate',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have createReplayJob method with return type annotation', () => {
+    const method = accountActivityClient.createReplayJob;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -237,12 +239,12 @@ describe('AccountActivityClient Structure', () => {
   
 
   
-  it('should have deleteSubscription method with correct signature', () => {
+  it('should have getSubscriptions method with correct signature', () => {
     // Check method exists
-    expect(AccountActivityClient.prototype).toHaveProperty('deleteSubscription');
+    expect(AccountActivityClient.prototype).toHaveProperty('getSubscriptions');
     
     // Check method is callable
-    const method = accountActivityClient.deleteSubscription;
+    const method = accountActivityClient.getSubscriptions;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -254,8 +256,6 @@ describe('AccountActivityClient Structure', () => {
     const requiredParams = [
       
       'webhookId',
-      
-      'userId',
       
     ];
     
@@ -270,8 +270,8 @@ describe('AccountActivityClient Structure', () => {
     }
   });
 
-  it('should have deleteSubscription method with return type annotation', () => {
-    const method = accountActivityClient.deleteSubscription;
+  it('should have getSubscriptions method with return type annotation', () => {
+    const method = accountActivityClient.getSubscriptions;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -284,17 +284,17 @@ describe('AccountActivityClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'createReplayJob',
-      
       'validateSubscription',
       
       'createSubscription',
       
-      'getSubscriptions',
+      'deleteSubscription',
+      
+      'createReplayJob',
       
       'getSubscriptionCount',
       
-      'deleteSubscription',
+      'getSubscriptions',
       
     ];
 

@@ -3,7 +3,7 @@
 // Any manual changes will be overwritten on the next generation.
 /**
  * Event-driven streaming utilities for the X API.
- *
+ * 
  * This module provides event-driven streaming interfaces that are more user-friendly
  * than manual ReadableStream management.
  */
@@ -11,10 +11,10 @@
 // Event types for the stream (using string literals for simplicity)
 // Based on actual Twitter API behavior from documentation
 export const StreamEvent = {
-  Data: 'data', // When JSON data arrives
+  Data: 'data',        // When JSON data arrives
   KeepAlive: 'keepAlive', // 20-second heartbeat (newline character)
-  Error: 'error', // HTTP errors, ConnectionException, operational-disconnect
-  Close: 'close', // When stream ends
+  Error: 'error',      // HTTP errors, ConnectionException, operational-disconnect
+  Close: 'close'       // When stream ends
 };
 
 // Event data types
@@ -33,10 +33,10 @@ export interface StreamErrorEvent {
 
 /**
  * Event-driven stream class for handling streaming data from the X API.
- *
+ * 
  * This class provides an event-driven interface for working with streaming endpoints,
  * allowing you to listen to 'data', 'keepAlive', 'error', and 'close' events.
- *
+ * 
  * @public
  */
 export class EventDrivenStream {
@@ -87,7 +87,7 @@ export class EventDrivenStream {
     try {
       while (this.isConnected && !this.isClosed) {
         const { done, value } = await this.reader.read();
-
+        
         if (done) {
           this.handleConnectionClosed();
           break;
@@ -110,17 +110,17 @@ export class EventDrivenStream {
   private async processChunk(value: Uint8Array): Promise<void> {
     const chunk = this.decoder.decode(value, { stream: true });
     this.buffer += chunk;
-
+    
     // Process complete lines (ending with newline)
     let boundary;
     while ((boundary = this.buffer.indexOf('\n')) !== -1) {
       const line = this.buffer.substring(0, boundary);
       this.buffer = this.buffer.substring(boundary + 1);
-
+      
       if (line.trim()) {
         try {
           const data = JSON.parse(line);
-
+          
           // Check if it's a keep-alive signal (20-second heartbeat)
           if (this.isKeepAlive(data)) {
             this.emit(StreamEvent.KeepAlive, { data });
@@ -151,14 +151,11 @@ export class EventDrivenStream {
    */
   private handleConnectionError(error: Error): void {
     this.isConnected = false;
-
+    
     // Emit the error as-is (API returns the actual error details)
     this.emit(StreamEvent.Error, { error });
 
-    if (
-      this.autoReconnect &&
-      this.reconnectAttempts < this.maxReconnectAttempts
-    ) {
+    if (this.autoReconnect && this.reconnectAttempts < this.maxReconnectAttempts) {
       this.attemptReconnect();
     }
   }
@@ -176,20 +173,18 @@ export class EventDrivenStream {
    */
   private async attemptReconnect(): Promise<void> {
     this.reconnectAttempts++;
-    this.emit(StreamEvent.Data, {
-      message: `Reconnect attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}`,
+    this.emit(StreamEvent.Data, { 
+      message: `Reconnect attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}` 
     });
 
     // Wait before reconnecting
-    await new Promise((resolve) =>
-      setTimeout(resolve, this.reconnectDelay * this.reconnectAttempts)
-    );
+    await new Promise(resolve => setTimeout(resolve, this.reconnectDelay * this.reconnectAttempts));
 
     try {
       // This would need to be implemented based on how you get a new stream
       // For now, we'll just emit the events
-      this.emit(StreamEvent.Error, {
-        error: new Error('Reconnect not implemented in this example'),
+      this.emit(StreamEvent.Error, { 
+        error: new Error('Reconnect not implemented in this example') 
       });
     } catch (error) {
       this.emit(StreamEvent.Error, { error: error as Error });
@@ -254,7 +249,7 @@ export class EventDrivenStream {
   private emit(event: string, data: any): void {
     const listeners = this.eventListeners.get(event);
     if (listeners) {
-      listeners.forEach((listener) => {
+      listeners.forEach(listener => {
         try {
           listener(data);
         } catch (error) {
@@ -299,11 +294,7 @@ export class EventDrivenStream {
   /**
    * Async iterator for tweets
    */
-  async *[Symbol.asyncIterator](): AsyncGenerator<
-    StreamDataEvent,
-    void,
-    unknown
-  > {
+  async* [Symbol.asyncIterator](): AsyncGenerator<StreamDataEvent, void, unknown> {
     const dataQueue: StreamDataEvent[] = [];
     let isComplete = false;
     let hasError = false;
@@ -333,7 +324,7 @@ export class EventDrivenStream {
           yield dataQueue.shift()!;
         } else {
           // Wait a bit for more data
-          await new Promise((resolve) => setTimeout(resolve, 10));
+          await new Promise(resolve => setTimeout(resolve, 10));
         }
       }
 

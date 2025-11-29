@@ -9,63 +9,67 @@
  */
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
-import {
-  Paginator,
-  PostPaginator,
-  UserPaginator,
-  EventPaginator,
+import { 
+    Paginator, 
+    PostPaginator, 
+    UserPaginator, 
+    EventPaginator
 } from '../paginator.js';
-import { GetOpenApiSpecResponse } from './models.js';
+import {
+GetOpenApiSpecResponse,
+} from './models.js';
+
+
+
 
 /**
  * Client for general operations
- *
+ * 
  * This client provides methods for interacting with the general endpoints
  * of the X API. It handles authentication, request formatting, and response
  * parsing for all general related operations.
- *
+ * 
  * @category general
  */
 export class GeneralClient {
-  private client: Client;
+    private client: Client;
 
-  /**
-   * Creates a new general client instance
-   *
-   * @param client - The main X API client instance
-   */
-  constructor(client: Client) {
-    this.client = client;
-  }
-
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  private _normalizeOptions<T extends Record<string, any>>(
-    options: T,
-    paramMappings: Record<string, string>
-  ): T {
-    if (!options || typeof options !== 'object') {
-      return options;
+    /**
+     * Creates a new general client instance
+     * 
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client) {
+        this.client = client;
     }
 
-    const normalized: any = { ...options };
-
-    // For each parameter mapping (original -> proper camelCase)
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-      // Also check for proper camelCase (e.g., 'tweetFields')
-      // If it's already in proper camelCase, keep it (no conversion needed)
-      // The camelName is already the proper camelCase format
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions<T extends Record<string, any>>(options: T, paramMappings: Record<string, string>): T {
+        if (!options || typeof options !== 'object') {
+            return options;
+        }
+        
+        const normalized: any = { ...options };
+        
+        // For each parameter mapping (original -> proper camelCase)
+        for (const [originalName, camelName] of Object.entries(paramMappings)) {
+            // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
+            if (originalName in normalized && !(camelName in normalized)) {
+                normalized[camelName] = normalized[originalName];
+                delete normalized[originalName];
+            }
+            // Also check for proper camelCase (e.g., 'tweetFields')
+            // If it's already in proper camelCase, keep it (no conversion needed)
+            // The camelName is already the proper camelCase format
+        }
+        
+        return normalized as T;
     }
 
-    return normalized as T;
-  }
+
 
   /**
    * Get OpenAPI Spec.
@@ -75,27 +79,50 @@ export class GeneralClient {
 
    * @returns {Promise<GetOpenApiSpecResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async getOpenApiSpec(): Promise<GetOpenApiSpecResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+    // Overload 1: Default behavior (unwrapped response)
+    async getOpenApiSpec(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetOpenApiSpecResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
 
-    const requestOptions = {};
+        // Build the path with path parameters
+        let path = '/2/openapi.json';
+        
 
-    // Build the path with path parameters
-    let path = '/2/openapi.json';
+        // Build query parameters
+        const params = new URLSearchParams();
+        
 
-    // Build query parameters
-    const params = new URLSearchParams();
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // No optional parameters, using empty request options
-    };
+        return this.client.request<GetOpenApiSpecResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
-    return this.client.request<GetOpenApiSpecResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
+
+
+
+
+
+
 }

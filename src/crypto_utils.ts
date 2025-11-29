@@ -18,11 +18,7 @@ export class CryptoUtils {
    */
   static async hmacSha1(key: string, message: string): Promise<string> {
     // Try to use native Node.js crypto first
-    if (
-      typeof process !== 'undefined' &&
-      process.versions &&
-      process.versions.node
-    ) {
+    if (typeof process !== 'undefined' && process.versions && process.versions.node) {
       try {
         return await this._nodeHmacSha1(key, message);
       } catch (error) {
@@ -48,10 +44,7 @@ export class CryptoUtils {
   /**
    * Node.js native HMAC-SHA1 implementation
    */
-  private static async _nodeHmacSha1(
-    key: string,
-    message: string
-  ): Promise<string> {
+  private static async _nodeHmacSha1(key: string, message: string): Promise<string> {
     // Dynamic import for Node.js crypto module (ES module compatible)
     const crypto = await import('crypto');
     const hmac = crypto.createHmac('sha1', key);
@@ -62,10 +55,7 @@ export class CryptoUtils {
   /**
    * Web Crypto API HMAC-SHA1 implementation
    */
-  private static async _webCryptoHmacSha1(
-    key: string,
-    message: string
-  ): Promise<string> {
+  private static async _webCryptoHmacSha1(key: string, message: string): Promise<string> {
     // Convert string key to ArrayBuffer
     const keyBuffer = this._stringToArrayBuffer(key);
     const messageBuffer = this._stringToArrayBuffer(message);
@@ -80,11 +70,7 @@ export class CryptoUtils {
     );
 
     // Sign the message
-    const signature = await crypto.subtle.sign(
-      'HMAC',
-      cryptoKey,
-      messageBuffer
-    );
+    const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageBuffer);
 
     // Convert to base64
     return this._arrayBufferToBase64(signature);
@@ -97,10 +83,8 @@ export class CryptoUtils {
   private static _polyfillHmacSha1(key: string, message: string): string {
     // For now, throw an error to indicate that proper crypto is needed
     // This will help identify when the fallback is being used
-    throw new Error(
-      'HMAC-SHA1 polyfill not implemented. Please ensure Node.js crypto or Web Crypto API is available.'
-    );
-
+    throw new Error('HMAC-SHA1 polyfill not implemented. Please ensure Node.js crypto or Web Crypto API is available.');
+    
     // In a real implementation, you would use a library like crypto-js:
     // import CryptoJS from 'crypto-js';
     // return CryptoJS.HmacSHA1(message, key).toString(CryptoJS.enc.Base64);
@@ -140,18 +124,13 @@ export class CryptoUtils {
       // Use crypto.getRandomValues if available
       const array = new Uint8Array(length);
       crypto.getRandomValues(array);
-      return Array.from(array, (byte) =>
-        byte.toString(16).padStart(2, '0')
-      ).join('');
+      return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
     } else {
       // Fallback to Math.random (less secure but functional)
       let result = '';
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
       for (let i = 0; i < length; i++) {
-        result += characters.charAt(
-          Math.floor(Math.random() * characters.length)
-        );
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
       }
       return result;
     }
@@ -179,13 +158,10 @@ export class CryptoUtils {
       return this._base64UrlEncode(array);
     } else {
       // Fallback to Math.random (less secure but functional)
-      const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
       let result = '';
       for (let i = 0; i < length; i++) {
-        result += characters.charAt(
-          Math.floor(Math.random() * characters.length)
-        );
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
       }
       return result;
     }
@@ -198,11 +174,7 @@ export class CryptoUtils {
    */
   static async generateCodeChallenge(codeVerifier: string): Promise<string> {
     // Try to use native Node.js crypto first
-    if (
-      typeof process !== 'undefined' &&
-      process.versions &&
-      process.versions.node
-    ) {
+    if (typeof process !== 'undefined' && process.versions && process.versions.node) {
       try {
         return await this._nodeSha256(codeVerifier);
       } catch (error) {
@@ -249,10 +221,8 @@ export class CryptoUtils {
    */
   private static _polyfillSha256(message: string): string {
     // For now, throw an error to indicate that proper crypto is needed
-    throw new Error(
-      'SHA256 polyfill not implemented. Please ensure Node.js crypto or Web Crypto API is available.'
-    );
-
+    throw new Error('SHA256 polyfill not implemented. Please ensure Node.js crypto or Web Crypto API is available.');
+    
     // In a real implementation, you would use a library like crypto-js:
     // import CryptoJS from 'crypto-js';
     // return CryptoJS.SHA256(message).toString(CryptoJS.enc.Base64url);
@@ -262,8 +232,7 @@ export class CryptoUtils {
    * Convert ArrayBuffer or Uint8Array to base64url encoding (RFC 7636)
    */
   private static _base64UrlEncode(buffer: ArrayBuffer | Uint8Array): string {
-    const bytes =
-      buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+    const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
     let binary = '';
     for (let i = 0; i < bytes.byteLength; i++) {
       binary += String.fromCharCode(bytes[i]);
@@ -317,8 +286,6 @@ export function generateCodeVerifier(length: number = 128): string {
  * @param codeVerifier The code verifier string
  * @returns Promise that resolves to base64url encoded SHA256 hash
  */
-export async function generateCodeChallenge(
-  codeVerifier: string
-): Promise<string> {
+export async function generateCodeChallenge(codeVerifier: string): Promise<string> {
   return CryptoUtils.generateCodeChallenge(codeVerifier);
-}
+} 

@@ -9,119 +9,137 @@
  */
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
-import {
-  Paginator,
-  PostPaginator,
-  UserPaginator,
-  EventPaginator,
+import { 
+    Paginator, 
+    PostPaginator, 
+    UserPaginator, 
+    EventPaginator
 } from '../paginator.js';
 import {
-  GetByWoeidResponse,
-  GetPersonalizedResponse,
-  GetAiResponse,
+GetByWoeidResponse,
+GetPersonalizedResponse,
+GetAiResponse,
 } from './models.js';
+
 
 /**
  * Options for getByWoeid method
- *
+ * 
  * @public
  */
 export interface GetByWoeidOptions {
-  /** The maximum number of results.
-   * Also accepts: max_trends or proper camelCase (e.g., maxTrends) */
-  maxTrends?: number;
-
-  /** A comma separated list of Trend fields to display.
-   * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
-  trendFields?: Array<any>;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** The maximum number of results. 
+     * Also accepts: max_trends or proper camelCase (e.g., maxTrends) */
+    maxTrends?: number;
+    
+    
+    
+    /** A comma separated list of Trend fields to display. 
+     * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
+    trendFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
+
 
 /**
  * Options for getPersonalized method
- *
+ * 
  * @public
  */
 export interface GetPersonalizedOptions {
-  /** A comma separated list of PersonalizedTrend fields to display.
-   * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
-  personalizedTrendFields?: Array<any>;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** A comma separated list of PersonalizedTrend fields to display. 
+     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
+    personalizedTrendFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
+
 
 /**
  * Options for getAi method
- *
+ * 
  * @public
  */
 export interface GetAiOptions {
-  /** A comma separated list of News fields to display.
-   * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-  newsFields?: Array<any>;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** A comma separated list of News fields to display. 
+     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
+    newsFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
+
+
 
 /**
  * Client for trends operations
- *
+ * 
  * This client provides methods for interacting with the trends endpoints
  * of the X API. It handles authentication, request formatting, and response
  * parsing for all trends related operations.
- *
+ * 
  * @category trends
  */
 export class TrendsClient {
-  private client: Client;
+    private client: Client;
 
-  /**
-   * Creates a new trends client instance
-   *
-   * @param client - The main X API client instance
-   */
-  constructor(client: Client) {
-    this.client = client;
-  }
-
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  private _normalizeOptions<T extends Record<string, any>>(
-    options: T,
-    paramMappings: Record<string, string>
-  ): T {
-    if (!options || typeof options !== 'object') {
-      return options;
+    /**
+     * Creates a new trends client instance
+     * 
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client) {
+        this.client = client;
     }
 
-    const normalized: any = { ...options };
-
-    // For each parameter mapping (original -> proper camelCase)
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-      // Also check for proper camelCase (e.g., 'tweetFields')
-      // If it's already in proper camelCase, keep it (no conversion needed)
-      // The camelName is already the proper camelCase format
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions<T extends Record<string, any>>(options: T, paramMappings: Record<string, string>): T {
+        if (!options || typeof options !== 'object') {
+            return options;
+        }
+        
+        const normalized: any = { ...options };
+        
+        // For each parameter mapping (original -> proper camelCase)
+        for (const [originalName, camelName] of Object.entries(paramMappings)) {
+            // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
+            if (originalName in normalized && !(camelName in normalized)) {
+                normalized[camelName] = normalized[originalName];
+                delete normalized[originalName];
+            }
+            // Also check for proper camelCase (e.g., 'tweetFields')
+            // If it's already in proper camelCase, keep it (no conversion needed)
+            // The camelName is already the proper camelCase format
+        }
+        
+        return normalized as T;
     }
 
-    return normalized as T;
-  }
+
 
   /**
    * Get Trends by WOEID
@@ -135,67 +153,119 @@ export class TrendsClient {
 
    * @returns {Promise<GetByWoeidResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByWoeid(
-    woeid: number,
+    // Overload 1: Default behavior (unwrapped response)
+    async getByWoeid(
+        
+        
+        
+        woeid: number,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetByWoeidOptions = {}
+        
+    ): Promise<GetByWoeidResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_trends': 'maxTrends',
+            
+            
+            
+            'trend.fields': 'trendFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxTrends = undefined,
+            
+            
+            
+            trendFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
-    options: GetByWoeidOptions = {}
-  ): Promise<GetByWoeidResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+        // Build the path with path parameters
+        let path = '/2/trends/by/woeid/{woeid}';
+        
+        
+        path = path.replace('{woeid}', encodeURIComponent(String(woeid)));
+        
+        
 
-    const paramMappings: Record<string, string> = {
-      max_trends: 'maxTrends',
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxTrends !== undefined) {
+            
+            params.append('max_trends', String(maxTrends));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (trendFields !== undefined && trendFields.length > 0) {
+            
+            params.append('trend.fields', trendFields.join(','));
+            
+        }
+        
+        
+        
 
-      'trend.fields': 'trendFields',
-    };
-    const normalizedOptions = this._normalizeOptions(
-      options || {},
-      paramMappings
-    );
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
 
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      maxTrends = undefined,
-
-      trendFields = [],
-
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
-
-    // Build the path with path parameters
-    let path = '/2/trends/by/woeid/{woeid}';
-
-    path = path.replace('{woeid}', encodeURIComponent(String(woeid)));
-
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    if (maxTrends !== undefined) {
-      params.append('max_trends', String(maxTrends));
+        return this.client.request<GetByWoeidResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
     }
 
-    if (trendFields !== undefined && trendFields.length > 0) {
-      params.append('trend.fields', trendFields.join(','));
-    }
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
 
-      ...requestOptions,
-    };
-
-    return this.client.request<GetByWoeidResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
 
   /**
    * Get personalized Trends
@@ -205,65 +275,98 @@ export class TrendsClient {
 
    * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async getPersonalized(
-    options: GetPersonalizedOptions = {}
-  ): Promise<GetPersonalizedResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+    // Overload 1: Default behavior (unwrapped response)
+    async getPersonalized(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetPersonalizedOptions = {}
+        
+    ): Promise<GetPersonalizedResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'personalized_trend.fields': 'personalizedTrendFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            personalizedTrendFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
-    const paramMappings: Record<string, string> = {
-      'personalized_trend.fields': 'personalizedTrendFields',
-    };
-    const normalizedOptions = this._normalizeOptions(
-      options || {},
-      paramMappings
-    );
+        // Build the path with path parameters
+        let path = '/2/users/personalized_trends';
+        
 
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      personalizedTrendFields = [],
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
+            
+            params.append('personalized_trend.fields', personalizedTrendFields.join(','));
+            
+        }
+        
+        
+        
 
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
 
-    // Build the path with path parameters
-    let path = '/2/users/personalized_trends';
-
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    if (
-      personalizedTrendFields !== undefined &&
-      personalizedTrendFields.length > 0
-    ) {
-      params.append(
-        'personalized_trend.fields',
-        personalizedTrendFields.join(',')
-      );
+        return this.client.request<GetPersonalizedResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
     }
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          OAuth2UserToken: ['tweet.read', 'users.read'],
-        },
 
-        {
-          UserToken: [],
-        },
-      ],
 
-      ...requestOptions,
-    };
-
-    return this.client.request<GetPersonalizedResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
 
   /**
    * Get AI Trends by ID
@@ -277,57 +380,106 @@ export class TrendsClient {
 
    * @returns {Promise<GetAiResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async getAi(
-    id: string,
+    // Overload 1: Default behavior (unwrapped response)
+    async getAi(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetAiOptions = {}
+        
+    ): Promise<GetAiResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'news.fields': 'newsFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            newsFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
-    options: GetAiOptions = {}
-  ): Promise<GetAiResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+        // Build the path with path parameters
+        let path = '/2/ai_trends/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
 
-    const paramMappings: Record<string, string> = {
-      'news.fields': 'newsFields',
-    };
-    const normalizedOptions = this._normalizeOptions(
-      options || {},
-      paramMappings
-    );
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (newsFields !== undefined && newsFields.length > 0) {
+            
+            params.append('news.fields', newsFields.join(','));
+            
+        }
+        
+        
+        
 
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      newsFields = [],
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
 
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
-
-    // Build the path with path parameters
-    let path = '/2/ai_trends/{id}';
-
-    path = path.replace('{id}', encodeURIComponent(String(id)));
-
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    if (newsFields !== undefined && newsFields.length > 0) {
-      params.append('news.fields', newsFields.join(','));
+        return this.client.request<GetAiResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
     }
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
 
-      ...requestOptions,
-    };
 
-    return this.client.request<GetAiResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
+
+
+
+
+
+
+
+
 }

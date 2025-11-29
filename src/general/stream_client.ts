@@ -9,101 +9,126 @@
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
-import { GetOpenApiSpecResponse } from './models.js';
+import {
+
+  GetOpenApiSpecResponse,
+
+} from './models.js';
 
 /**
  * Options for getOpenApiSpec method
- *
+ * 
  * @public
  */
 export interface GetOpenApiSpecStreamingOptions {
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Additional headers */
-  headers?: Record<string, string>;
-  /** AbortSignal for cancelling the request */
-  signal?: AbortSignal;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
 
+
 export class GeneralClient {
-  private client: Client;
+    private client: Client;
 
-  constructor(client: Client) {
-    this.client = client;
-  }
-
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  private _normalizeOptions<T extends Record<string, any>>(
-    options: T,
-    paramMappings: Record<string, string>
-  ): T {
-    if (!options || typeof options !== 'object') {
-      return options;
+    constructor(client: Client) {
+        this.client = client;
     }
 
-    const normalized: any = { ...options };
-
-    // For each parameter mapping (original -> proper camelCase)
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-      // Also check for proper camelCase (e.g., 'tweetFields')
-      // If it's already in proper camelCase, keep it (no conversion needed)
-      // The camelName is already the proper camelCase format
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions<T extends Record<string, any>>(options: T, paramMappings: Record<string, string>): T {
+        if (!options || typeof options !== 'object') {
+            return options;
+        }
+        
+        const normalized: any = { ...options };
+        
+        // For each parameter mapping (original -> proper camelCase)
+        for (const [originalName, camelName] of Object.entries(paramMappings)) {
+            // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
+            if (originalName in normalized && !(camelName in normalized)) {
+                normalized[camelName] = normalized[originalName];
+                delete normalized[originalName];
+            }
+            // Also check for proper camelCase (e.g., 'tweetFields')
+            // If it's already in proper camelCase, keep it (no conversion needed)
+            // The camelName is already the proper camelCase format
+        }
+        
+        return normalized as T;
     }
 
-    return normalized as T;
-  }
 
-  /**
-   * Get OpenAPI Spec.
-   * Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
-   *
-   * @returns Promise with the API response
-   */
-  async getOpenApiSpec(
-    options: GetOpenApiSpecStreamingOptions = {}
-  ): Promise<GetOpenApiSpecResponse> {
-    // Validate authentication requirements
 
-    // Normalize options to handle both camelCase and original API parameter names
 
-    const normalizedOptions = options || {};
 
-    // Destructure options (exclude path parameters, they're already function params)
 
-    const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
 
-    // Build the path with path parameters
-    let path = '/2/openapi.json';
 
-    // Build query parameters
-    const params = new URLSearchParams();
+    /**
+     * Get OpenAPI Spec.
+     * Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
+     * 
+     * @returns Promise with the API response
+     */
+    async getOpenApiSpec(
+        
+        
+        
+        
+        
+        
+        
+        options: GetOpenApiSpecStreamingOptions = {}
+    ): Promise<GetOpenApiSpecResponse> {
+        // Validate authentication requirements
+        
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-      },
-      signal: signal,
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
 
-      ...requestOptions,
-    };
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
 
-    // Make the request
-    return this.client.request<GetOpenApiSpecResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
+        // Build the path with path parameters
+        let path = '/2/openapi.json';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetOpenApiSpecResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
 }

@@ -6,22 +6,25 @@
  */
 import type * as Schemas from '../schemas.js';
 
+
+
+
+
 /**
  * Response for getByWoeid
- *
+ * 
  * @public
  */
 export type GetByWoeidResponse = Schemas.Get2TrendsByWoeidWoeidResponse;
 /**
  * Response for getPersonalized
- *
+ * 
  * @public
  */
-export type GetPersonalizedResponse =
-  Schemas.Get2UsersPersonalizedTrendsResponse;
+export type GetPersonalizedResponse = Schemas.Get2UsersPersonalizedTrendsResponse;
 /**
  * Response for getAi
- *
+ * 
  * @public
  */
 export type GetAiResponse = Schemas.Get2AiTrendsIdResponse;

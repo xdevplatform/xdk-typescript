@@ -7,49 +7,87 @@
  * This module provides the main client class for interacting with the X API.
  */
 
-import { httpClient } from './http-client.js';
-import {
-  Paginator,
-  PostPaginator,
-  UserPaginator,
-  EventPaginator,
-} from './paginator.js';
+import { httpClient } from "./http-client.js";
+import { 
+  Paginator, 
+  PostPaginator, 
+  UserPaginator, 
+  EventPaginator
+} from "./paginator.js";
 
-import { AccountActivityClient } from './account_activity/index.js';
 
-import { ActivityClient } from './activity/index.js';
 
-import { DirectMessagesClient } from './direct_messages/index.js';
+import { WebhooksClient } from "./webhooks/index.js";
 
-import { ComplianceClient } from './compliance/index.js';
 
-import { WebhooksClient } from './webhooks/index.js';
 
-import { TrendsClient } from './trends/index.js';
+import { PostsClient } from "./posts/index.js";
 
-import { GeneralClient } from './general/index.js';
 
-import { StreamClient } from './stream/client.js';
 
-import { PostsClient } from './posts/index.js';
+import { StreamClient } from "./stream/client.js";
 
-import { CommunityNotesClient } from './community_notes/index.js';
 
-import { UsersClient } from './users/index.js';
 
-import { UsageClient } from './usage/index.js';
+import { SpacesClient } from "./spaces/index.js";
 
-import { CommunitiesClient } from './communities/index.js';
 
-import { ConnectionsClient } from './connections/index.js';
 
-import { ListsClient } from './lists/index.js';
+import { ConnectionsClient } from "./connections/index.js";
 
-import { MediaClient } from './media/index.js';
 
-import { SpacesClient } from './spaces/index.js';
 
-import { NewsClient } from './news/index.js';
+import { MediaClient } from "./media/index.js";
+
+
+
+import { TrendsClient } from "./trends/index.js";
+
+
+
+import { ListsClient } from "./lists/index.js";
+
+
+
+import { CommunitiesClient } from "./communities/index.js";
+
+
+
+import { ActivityClient } from "./activity/index.js";
+
+
+
+import { CommunityNotesClient } from "./community_notes/index.js";
+
+
+
+import { UsersClient } from "./users/index.js";
+
+
+
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { UsageClient } from "./usage/index.js";
+
+
+
+import { ComplianceClient } from "./compliance/index.js";
+
+
+
+import { AccountActivityClient } from "./account_activity/index.js";
+
+
+
+import { NewsClient } from "./news/index.js";
+
+
+
+import { GeneralClient } from "./general/index.js";
+
+
 
 /**
  * Configuration options for the X API client
@@ -82,13 +120,7 @@ export class ApiError extends Error {
   public readonly headers: Headers;
   public readonly data?: any;
 
-  constructor(
-    message: string,
-    status: number,
-    statusText: string,
-    headers: Headers,
-    data?: any
-  ) {
+  constructor(message: string, status: number, statusText: string, headers: Headers, data?: any) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -146,36 +178,37 @@ export interface PaginationMeta {
   result_count?: number;
 }
 
+
 /**
  * Main client class for the X API
- *
+ * 
  * This is the primary entry point for interacting with the X API. It provides
  * access to all API endpoints through specialized client modules and handles
  * authentication, request configuration, and error handling.
- *
+ * 
  * @example
  * ```typescript
  * import { Client } from 'x-api-sdk';
- *
+ * 
  * const client = new Client({
  *   bearerToken: 'your-bearer-token'
  * });
- *
+ * 
  * // Get user information
  * const user = await client.users.getUser('783214');
- *
+ * 
  * // Get followers with pagination
  * const followers = await client.users.getFollowers('783214', {
  *   maxResults: 10,
  *   userFields: ['id', 'name', 'username']
  * });
- *
+ * 
  * // Iterate through followers
  * for await (const follower of followers) {
  *   console.log(follower.username);
  * }
  * ```
- *
+ * 
  * @category Client
  */
 export class Client {
@@ -199,32 +232,36 @@ export class Client {
   /** HTTP client for making requests */
   readonly httpClient = httpClient;
 
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
-
-  /** activity client */
-  readonly activity: ActivityClient;
-
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
-
-  /** compliance client */
-  readonly compliance: ComplianceClient;
 
   /** webhooks client */
   readonly webhooks: WebhooksClient;
 
-  /** trends client */
-  readonly trends: TrendsClient;
-
-  /** general client */
-  readonly general: GeneralClient;
+  /** posts client */
+  readonly posts: PostsClient;
 
   /** stream client */
   readonly stream: StreamClient;
 
-  /** posts client */
-  readonly posts: PostsClient;
+  /** spaces client */
+  readonly spaces: SpacesClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
+
+  /** media client */
+  readonly media: MediaClient;
+
+  /** trends client */
+  readonly trends: TrendsClient;
+
+  /** lists client */
+  readonly lists: ListsClient;
+
+  /** communities client */
+  readonly communities: CommunitiesClient;
+
+  /** activity client */
+  readonly activity: ActivityClient;
 
   /** community notes client */
   readonly communityNotes: CommunityNotesClient;
@@ -232,44 +269,42 @@ export class Client {
   /** users client */
   readonly users: UsersClient;
 
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
   /** usage client */
   readonly usage: UsageClient;
 
-  /** communities client */
-  readonly communities: CommunitiesClient;
+  /** compliance client */
+  readonly compliance: ComplianceClient;
 
-  /** connections client */
-  readonly connections: ConnectionsClient;
-
-  /** lists client */
-  readonly lists: ListsClient;
-
-  /** media client */
-  readonly media: MediaClient;
-
-  /** spaces client */
-  readonly spaces: SpacesClient;
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
 
   /** news client */
   readonly news: NewsClient;
 
+  /** general client */
+  readonly general: GeneralClient;
+
+
   /**
    * Creates a new X API client instance
-   *
+   * 
    * @param config - Configuration options for the client
-   *
+   * 
    * @example
    * ```typescript
    * // Bearer token authentication
    * const client = new Client({
    *   bearerToken: 'your-bearer-token'
    * });
-   *
+   * 
    * // OAuth2 authentication
    * const client = new Client({
    *   accessToken: 'your-access-token'
    * });
-   *
+   * 
    * // OAuth1 authentication
    * const client = new Client({
    *   oauth1: oauth1Instance
@@ -278,101 +313,97 @@ export class Client {
    */
   constructor(config: ClientConfig | any) {
     // Handle OAuth1 instance passed directly
-    if (
-      config &&
-      typeof config === 'object' &&
-      config.accessToken &&
-      config.accessToken.accessToken &&
-      config.accessToken.accessTokenSecret
-    ) {
+    if (config && typeof config === 'object' && config.accessToken && config.accessToken.accessToken && config.accessToken.accessTokenSecret) {
       // This is an OAuth1 instance
       this.oauth1 = config;
-      this.baseUrl = 'https://api.x.com';
+      this.baseUrl = "https://api.x.com";
     } else {
       // This is a regular config object
       const clientConfig = config as ClientConfig;
-      this.baseUrl = clientConfig.baseUrl || 'https://api.x.com';
+      this.baseUrl = clientConfig.baseUrl || "https://api.x.com";
       this.bearerToken = clientConfig.bearerToken;
       this.accessToken = clientConfig.accessToken;
       this.oauth1 = clientConfig.oauth1;
     }
-
+    
     this.timeout = (config as ClientConfig).timeout || 30000;
     this.retry = (config as ClientConfig).retry ?? true;
     this.maxRetries = (config as ClientConfig).maxRetries || 3;
-
+    
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.2.1-beta',
+      'User-Agent': 'xdk-typescript/0.2.2-beta',
       'Content-Type': 'application/json',
-      Accept: 'application/json',
+      'Accept': 'application/json',
       ...((config as ClientConfig).headers || {}),
     };
-
+    
     this.headers = httpClient.createHeaders(defaultHeaders);
 
-    this.accountActivity = new AccountActivityClient(this);
-
-    this.activity = new ActivityClient(this);
-
-    this.directMessages = new DirectMessagesClient(this);
-
-    this.compliance = new ComplianceClient(this);
 
     this.webhooks = new WebhooksClient(this);
 
-    this.trends = new TrendsClient(this);
-
-    this.general = new GeneralClient(this);
+    this.posts = new PostsClient(this);
 
     this.stream = new StreamClient(this);
 
-    this.posts = new PostsClient(this);
+    this.spaces = new SpacesClient(this);
+
+    this.connections = new ConnectionsClient(this);
+
+    this.media = new MediaClient(this);
+
+    this.trends = new TrendsClient(this);
+
+    this.lists = new ListsClient(this);
+
+    this.communities = new CommunitiesClient(this);
+
+    this.activity = new ActivityClient(this);
 
     this.communityNotes = new CommunityNotesClient(this);
 
     this.users = new UsersClient(this);
 
+    this.directMessages = new DirectMessagesClient(this);
+
     this.usage = new UsageClient(this);
 
-    this.communities = new CommunitiesClient(this);
+    this.compliance = new ComplianceClient(this);
 
-    this.connections = new ConnectionsClient(this);
-
-    this.lists = new ListsClient(this);
-
-    this.media = new MediaClient(this);
-
-    this.spaces = new SpacesClient(this);
+    this.accountActivity = new AccountActivityClient(this);
 
     this.news = new NewsClient(this);
+
+    this.general = new GeneralClient(this);
+
   }
 
   /**
    * Make an authenticated request to the X API
-   *
+   * 
    * This method handles authentication, request formatting, and error handling
    * for all API requests. It automatically adds the appropriate authentication
    * headers based on the client configuration.
-   *
+   * 
    * @param method - HTTP method (GET, POST, PUT, DELETE, etc.)
    * @param path - API endpoint path (e.g., '/2/users/by/username/username')
    * @param options - Request options including timeout, headers, and body
    * @returns Promise that resolves to the parsed response data
-   *
+   * 
    * @example
    * ```typescript
    * // GET request
    * const user = await client.request('GET', '/2/users/by/username/username', {
    *   timeout: 5000
    * });
-   *
+   * 
    * // POST request with body
    * const result = await client.request('POST', '/2/tweets', {
    *   body: JSON.stringify({ text: 'Hello World!' })
    * });
    * ```
-   *
+   * 
    * @throws {ApiError} When the API returns an error response
    */
   async request<T = any>(
@@ -382,47 +413,37 @@ export class Client {
   ): Promise<T> {
     const url = `${this.baseUrl}${path}`;
     const headers = new Headers(this.headers);
-
+    
     // Select the best authentication method based on endpoint requirements
     const selectedAuth = this.selectAuthMethod(method, options.security);
-
+    
     // Add authentication headers based on selected method
     if (selectedAuth === 'bearer_token' && this.bearerToken) {
       headers.set('Authorization', `Bearer ${this.bearerToken}`);
     } else if (selectedAuth === 'oauth2_user_context' && this.accessToken) {
       headers.set('Authorization', `Bearer ${this.accessToken}`);
-    } else if (
-      selectedAuth === 'oauth1' &&
-      this.oauth1 &&
-      this.oauth1.accessToken
-    ) {
+    } else if (selectedAuth === 'oauth1' && this.oauth1 && this.oauth1.accessToken) {
       // OAuth1 authentication - build proper OAuth1 header
       try {
-        const oauthHeader = await this.oauth1.buildRequestHeader(
-          method,
-          url,
-          options.body || ''
-        );
+        const oauthHeader = await this.oauth1.buildRequestHeader(method, url, options.body || '');
         headers.set('Authorization', oauthHeader);
-
+        
         // Keep Content-Type header for JSON requests - X API requires it
         // Only remove Content-Type for form-encoded OAuth1 requests
         // JSON bodies are not included in OAuth1 signature (per OAuth1 spec)
       } catch (error) {
-        throw new Error(
-          `Failed to build OAuth1 header: ${error instanceof Error ? error.message : 'Unknown error'}`
-        );
+        throw new Error(`Failed to build OAuth1 header: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else if (!selectedAuth) {
       // No suitable auth method found - validate authentication
-      const requiredSchemes = options.security
-        ? options.security.flatMap((req) => Object.keys(req))
+      const requiredSchemes = options.security 
+        ? options.security.flatMap(req => Object.keys(req))
         : [];
       if (requiredSchemes.length > 0) {
         this.validateAuthentication(requiredSchemes, path);
       }
     }
-
+    
     // Add custom headers
     if (options.headers) {
       Object.entries(options.headers).forEach(([key, value]) => {
@@ -446,11 +467,9 @@ export class Client {
         } catch {
           errorData = await response.text();
         }
-
+        
         throw new ApiError(
-          errorData && errorData.message
-            ? errorData.message
-            : `HTTP ${response.status}: ${response.statusText}`,
+          errorData && errorData.message ? errorData.message : `HTTP ${response.status}: ${response.statusText}`,
           response.status,
           response.statusText,
           response.headers,
@@ -468,7 +487,7 @@ export class Client {
       if (contentType && contentType.includes('application/json')) {
         data = await response.json();
       } else {
-        data = (await response.text()) as T;
+        data = await response.text() as T;
       }
 
       // Return parsed body for non-streaming requests
@@ -506,11 +525,7 @@ export class Client {
    * Get the current authentication status
    */
   isAuthenticated(): boolean {
-    return !!(
-      this.bearerToken ||
-      this.accessToken ||
-      (this.oauth1 && this.oauth1.accessToken)
-    );
+    return !!(this.bearerToken || this.accessToken || (this.oauth1 && this.oauth1.accessToken));
   }
 
   /**
@@ -521,40 +536,35 @@ export class Client {
   public mapSecuritySchemeToAuthTypes(securitySchemeName: string): string[] {
     // Mappings for X/Twitter API security schemes
     const schemeMapping: Record<string, string[]> = {
-      BearerToken: ['bearer_token'], // App-only OAuth2.0
-      OAuth2UserToken: ['oauth2_user_context'], // OAuth2.0 User Context
-      UserToken: ['oauth1'], // OAuth1.0a User Context
+      'BearerToken': ['bearer_token'],           // App-only OAuth2.0
+      'OAuth2UserToken': ['oauth2_user_context'], // OAuth2.0 User Context
+      'UserToken': ['oauth1'],                   // OAuth1.0a User Context
       // Fallback mappings for common variations
-      OAuth2: ['bearer_token', 'oauth2_user_context'],
-      OAuth1: ['oauth1'],
-      Bearer: ['bearer_token'],
-      OAuth2User: ['oauth2_user_context'],
-      OAuth1User: ['oauth1'],
+      'OAuth2': ['bearer_token', 'oauth2_user_context'],
+      'OAuth1': ['oauth1'],
+      'Bearer': ['bearer_token'],
+      'OAuth2User': ['oauth2_user_context'],
+      'OAuth1User': ['oauth1'],
     };
 
-    return (
-      schemeMapping[securitySchemeName] || [securitySchemeName.toLowerCase()]
-    );
+    return schemeMapping[securitySchemeName] || [securitySchemeName.toLowerCase()];
   }
 
   /**
    * Select the best authentication method based on endpoint requirements and available credentials
-   *
+   * 
    * Priority strategy:
    * 1. If endpoint only accepts one method, use that (if available)
    * 2. If endpoint accepts multiple methods:
    *    - For write operations (POST/PUT/DELETE): Prefer OAuth1 > OAuth2 User Token > Bearer Token
    *    - For read operations (GET): Prefer Bearer Token > OAuth2 User Token > OAuth1
    *    - This allows Bearer Token for read-only operations while using user context for writes
-   *
+   * 
    * @param method HTTP method (GET, POST, etc.)
    * @param securityRequirements Security requirements from OpenAPI spec (array of security requirement objects)
    * @returns Selected auth method: 'bearer_token', 'oauth2_user_context', 'oauth1', or null if none available
    */
-  private selectAuthMethod(
-    method: string,
-    securityRequirements?: Array<Record<string, string[]>>
-  ): 'bearer_token' | 'oauth2_user_context' | 'oauth1' | null {
+  private selectAuthMethod(method: string, securityRequirements?: Array<Record<string, string[]>>): 'bearer_token' | 'oauth2_user_context' | 'oauth1' | null {
     // If no security requirements, use default priority
     if (!securityRequirements || securityRequirements.length === 0) {
       if (this.bearerToken) return 'bearer_token';
@@ -574,59 +584,42 @@ export class Client {
 
     // Check what auth methods we have available
     const availableAuth: Record<string, boolean> = {
-      BearerToken: !!this.bearerToken,
-      OAuth2UserToken: !!this.accessToken,
-      UserToken: !!(this.oauth1 && this.oauth1.accessToken),
+      'BearerToken': !!this.bearerToken,
+      'OAuth2UserToken': !!this.accessToken,
+      'UserToken': !!(this.oauth1 && this.oauth1.accessToken),
     };
 
     // If only one scheme is acceptable, use it if available
     if (acceptableSchemes.size === 1) {
       const scheme = Array.from(acceptableSchemes)[0];
       if (availableAuth[scheme]) {
-        return this.mapSecuritySchemeToAuthTypes(scheme)[0] as
-          | 'bearer_token'
-          | 'oauth2_user_context'
-          | 'oauth1';
+        return this.mapSecuritySchemeToAuthTypes(scheme)[0] as 'bearer_token' | 'oauth2_user_context' | 'oauth1';
       }
       return null;
     }
 
     // Multiple schemes acceptable - use priority based on operation type
-    const isWriteOperation = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(
-      method.toUpperCase()
-    );
-
+    const isWriteOperation = ['POST', 'PUT', 'DELETE', 'PATCH'].includes(method.toUpperCase());
+    
     // Priority order for write operations: OAuth1 > OAuth2 User Token > Bearer Token
     // (User context is required for most write operations)
     if (isWriteOperation) {
       if (acceptableSchemes.has('UserToken') && availableAuth['UserToken']) {
         return 'oauth1';
       }
-      if (
-        acceptableSchemes.has('OAuth2UserToken') &&
-        availableAuth['OAuth2UserToken']
-      ) {
+      if (acceptableSchemes.has('OAuth2UserToken') && availableAuth['OAuth2UserToken']) {
         return 'oauth2_user_context';
       }
-      if (
-        acceptableSchemes.has('BearerToken') &&
-        availableAuth['BearerToken']
-      ) {
+      if (acceptableSchemes.has('BearerToken') && availableAuth['BearerToken']) {
         return 'bearer_token';
       }
     } else {
       // Priority order for read operations: Bearer Token > OAuth2 User Token > OAuth1
       // (Bearer Token is simpler for read-only operations)
-      if (
-        acceptableSchemes.has('BearerToken') &&
-        availableAuth['BearerToken']
-      ) {
+      if (acceptableSchemes.has('BearerToken') && availableAuth['BearerToken']) {
         return 'bearer_token';
       }
-      if (
-        acceptableSchemes.has('OAuth2UserToken') &&
-        availableAuth['OAuth2UserToken']
-      ) {
+      if (acceptableSchemes.has('OAuth2UserToken') && availableAuth['OAuth2UserToken']) {
         return 'oauth2_user_context';
       }
       if (acceptableSchemes.has('UserToken') && availableAuth['UserToken']) {
@@ -642,16 +635,13 @@ export class Client {
    * @param requiredAuthTypes Array of required authentication types (OpenAPI security scheme names)
    * @param operationName Name of the operation for error messages
    */
-  public validateAuthentication(
-    requiredAuthTypes: string[],
-    operationName: string
-  ): void {
+  public validateAuthentication(requiredAuthTypes: string[], operationName: string): void {
     if (requiredAuthTypes.length === 0) {
       return; // No authentication required
     }
 
     const availableAuthTypes: string[] = [];
-
+    
     if (this.bearerToken) {
       availableAuthTypes.push('bearer_token');
     }
@@ -663,24 +653,23 @@ export class Client {
     }
 
     // Map OpenAPI security schemes to internal auth types
-    const mappedRequiredTypes = requiredAuthTypes.flatMap((scheme) =>
+    const mappedRequiredTypes = requiredAuthTypes.flatMap(scheme => 
       this.mapSecuritySchemeToAuthTypes(scheme)
     );
 
     // Check if any of the required auth types are available
-    const hasRequiredAuth = mappedRequiredTypes.some((required) =>
+    const hasRequiredAuth = mappedRequiredTypes.some(required => 
       availableAuthTypes.includes(required)
     );
 
     if (!hasRequiredAuth) {
-      const availableStr =
-        availableAuthTypes.length > 0 ? availableAuthTypes.join(', ') : 'none';
+      const availableStr = availableAuthTypes.length > 0 ? availableAuthTypes.join(', ') : 'none';
       const requiredStr = requiredAuthTypes.join(', ');
       throw new Error(
         `Authentication required for ${operationName}. ` +
-          `Required: ${requiredStr}. ` +
-          `Available: ${availableStr}. ` +
-          `Please configure the appropriate authentication method.`
+        `Required: ${requiredStr}. ` +
+        `Available: ${availableStr}. ` +
+        `Please configure the appropriate authentication method.`
       );
     }
   }
@@ -695,4 +684,4 @@ export class Client {
     if (this.oauth1 && this.oauth1.accessToken) authTypes.push('oauth1');
     return authTypes;
   }
-}
+} 

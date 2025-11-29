@@ -9,83 +9,93 @@
  */
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
-import {
-  Paginator,
-  PostPaginator,
-  UserPaginator,
-  EventPaginator,
+import { 
+    Paginator, 
+    PostPaginator, 
+    UserPaginator, 
+    EventPaginator
 } from '../paginator.js';
-import { GetResponse } from './models.js';
+import {
+GetResponse,
+} from './models.js';
+
 
 /**
  * Options for get method
- *
+ * 
  * @public
  */
 export interface GetOptions {
-  /** The number of days for which you need usage for.
-   * Also accepts: days or proper camelCase (e.g., days) */
-  days?: number;
-
-  /** A comma separated list of Usage fields to display.
-   * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
-  usageFields?: Array<any>;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** The number of days for which you need usage for. 
+     * Also accepts: days or proper camelCase (e.g., days) */
+    days?: number;
+    
+    
+    
+    /** A comma separated list of Usage fields to display. 
+     * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
+    usageFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
+
+
 
 /**
  * Client for usage operations
- *
+ * 
  * This client provides methods for interacting with the usage endpoints
  * of the X API. It handles authentication, request formatting, and response
  * parsing for all usage related operations.
- *
+ * 
  * @category usage
  */
 export class UsageClient {
-  private client: Client;
+    private client: Client;
 
-  /**
-   * Creates a new usage client instance
-   *
-   * @param client - The main X API client instance
-   */
-  constructor(client: Client) {
-    this.client = client;
-  }
-
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  private _normalizeOptions<T extends Record<string, any>>(
-    options: T,
-    paramMappings: Record<string, string>
-  ): T {
-    if (!options || typeof options !== 'object') {
-      return options;
+    /**
+     * Creates a new usage client instance
+     * 
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client) {
+        this.client = client;
     }
 
-    const normalized: any = { ...options };
-
-    // For each parameter mapping (original -> proper camelCase)
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-      // Also check for proper camelCase (e.g., 'tweetFields')
-      // If it's already in proper camelCase, keep it (no conversion needed)
-      // The camelName is already the proper camelCase format
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions<T extends Record<string, any>>(options: T, paramMappings: Record<string, string>): T {
+        if (!options || typeof options !== 'object') {
+            return options;
+        }
+        
+        const normalized: any = { ...options };
+        
+        // For each parameter mapping (original -> proper camelCase)
+        for (const [originalName, camelName] of Object.entries(paramMappings)) {
+            // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
+            if (originalName in normalized && !(camelName in normalized)) {
+                normalized[camelName] = normalized[originalName];
+                delete normalized[originalName];
+            }
+            // Also check for proper camelCase (e.g., 'tweetFields')
+            // If it's already in proper camelCase, keep it (no conversion needed)
+            // The camelName is already the proper camelCase format
+        }
+        
+        return normalized as T;
     }
 
-    return normalized as T;
-  }
+
 
   /**
    * Get usage
@@ -95,57 +105,111 @@ export class UsageClient {
 
    * @returns {Promise<GetResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async get(options: GetOptions = {}): Promise<GetResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+    // Overload 1: Default behavior (unwrapped response)
+    async get(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetOptions = {}
+        
+    ): Promise<GetResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+            
+            'usage.fields': 'usageFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            days = undefined,
+            
+            
+            
+            usageFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
-    const paramMappings: Record<string, string> = {
-      'usage.fields': 'usageFields',
-    };
-    const normalizedOptions = this._normalizeOptions(
-      options || {},
-      paramMappings
-    );
+        // Build the path with path parameters
+        let path = '/2/usage/tweets';
+        
 
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      days = undefined,
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (days !== undefined) {
+            
+            params.append('days', String(days));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (usageFields !== undefined && usageFields.length > 0) {
+            
+            params.append('usage.fields', usageFields.join(','));
+            
+        }
+        
+        
+        
 
-      usageFields = [],
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
 
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
-
-    // Build the path with path parameters
-    let path = '/2/usage/tweets';
-
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    if (days !== undefined) {
-      params.append('days', String(days));
+        return this.client.request<GetResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
     }
 
-    if (usageFields !== undefined && usageFields.length > 0) {
-      params.append('usage.fields', usageFields.join(','));
-    }
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
 
-      ...requestOptions,
-    };
 
-    return this.client.request<GetResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
+
+
+
 }

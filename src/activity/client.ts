@@ -9,197 +9,143 @@
  */
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
-import {
-  Paginator,
-  PostPaginator,
-  UserPaginator,
-  EventPaginator,
+import { 
+    Paginator, 
+    PostPaginator, 
+    UserPaginator, 
+    EventPaginator
 } from '../paginator.js';
 import {
-  StreamResponse,
-  GetSubscriptionsResponse,
-  CreateSubscriptionRequest,
-  CreateSubscriptionResponse,
-  UpdateSubscriptionRequest,
-  UpdateSubscriptionResponse,
-  DeleteSubscriptionResponse,
+GetSubscriptionsResponse,
+CreateSubscriptionRequest,
+CreateSubscriptionResponse,
+UpdateSubscriptionRequest,
+UpdateSubscriptionResponse,
+DeleteSubscriptionResponse,
+StreamResponse,
 } from './models.js';
 
-/**
- * Options for stream method
- *
- * @public
- */
-export interface StreamOptions {
-  /** The number of minutes of backfill requested.
-   * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-  backfillMinutes?: number;
 
-  /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
-   * Also accepts: start_time or proper camelCase (e.g., startTime) */
-  startTime?: string;
-
-  /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
-   * Also accepts: end_time or proper camelCase (e.g., endTime) */
-  endTime?: string;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
-}
 
 /**
  * Options for createSubscription method
- *
+ * 
  * @public
  */
 export interface CreateSubscriptionOptions {
-  /** Request body */
-  body?: CreateSubscriptionRequest;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** Request body */
+    body?: CreateSubscriptionRequest;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
+
 
 /**
  * Options for updateSubscription method
- *
+ * 
  * @public
  */
 export interface UpdateSubscriptionOptions {
-  /** Request body */
-  body?: UpdateSubscriptionRequest;
-
-  /** Additional request options */
-  requestOptions?: RequestOptions;
-  /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-  [key: string]: any;
+    
+    
+    /** Request body */
+    body?: UpdateSubscriptionRequest;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
 }
+
+
+
+/**
+ * Options for stream method
+ * 
+ * @public
+ */
+export interface StreamOptions {
+    
+    
+    /** The number of minutes of backfill requested. 
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
 
 /**
  * Client for activity operations
- *
+ * 
  * This client provides methods for interacting with the activity endpoints
  * of the X API. It handles authentication, request formatting, and response
  * parsing for all activity related operations.
- *
+ * 
  * @category activity
  */
 export class ActivityClient {
-  private client: Client;
+    private client: Client;
 
-  /**
-   * Creates a new activity client instance
-   *
-   * @param client - The main X API client instance
-   */
-  constructor(client: Client) {
-    this.client = client;
-  }
-
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  private _normalizeOptions<T extends Record<string, any>>(
-    options: T,
-    paramMappings: Record<string, string>
-  ): T {
-    if (!options || typeof options !== 'object') {
-      return options;
+    /**
+     * Creates a new activity client instance
+     * 
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client) {
+        this.client = client;
     }
 
-    const normalized: any = { ...options };
-
-    // For each parameter mapping (original -> proper camelCase)
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-      // Also check for proper camelCase (e.g., 'tweetFields')
-      // If it's already in proper camelCase, keep it (no conversion needed)
-      // The camelName is already the proper camelCase format
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions<T extends Record<string, any>>(options: T, paramMappings: Record<string, string>): T {
+        if (!options || typeof options !== 'object') {
+            return options;
+        }
+        
+        const normalized: any = { ...options };
+        
+        // For each parameter mapping (original -> proper camelCase)
+        for (const [originalName, camelName] of Object.entries(paramMappings)) {
+            // Check if original format is used (e.g., 'tweet.fields', 'tweet_fields')
+            if (originalName in normalized && !(camelName in normalized)) {
+                normalized[camelName] = normalized[originalName];
+                delete normalized[originalName];
+            }
+            // Also check for proper camelCase (e.g., 'tweetFields')
+            // If it's already in proper camelCase, keep it (no conversion needed)
+            // The camelName is already the proper camelCase format
+        }
+        
+        return normalized as T;
     }
 
-    return normalized as T;
-  }
 
-  /**
-   * Activity Stream
-   * Stream of X Activities
-
-
-
-   * @returns {Promise<StreamResponse>} Promise resolving to the API response
-   */
-  // Overload 1: Default behavior (unwrapped response)
-  async stream(options: StreamOptions = {}): Promise<StreamResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
-
-    const paramMappings: Record<string, string> = {
-      backfill_minutes: 'backfillMinutes',
-
-      start_time: 'startTime',
-
-      end_time: 'endTime',
-    };
-    const normalizedOptions = this._normalizeOptions(
-      options || {},
-      paramMappings
-    );
-
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      backfillMinutes = undefined,
-
-      startTime = undefined,
-
-      endTime = undefined,
-
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
-
-    // Build the path with path parameters
-    let path = '/2/activity/stream';
-
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    if (backfillMinutes !== undefined) {
-      params.append('backfill_minutes', String(backfillMinutes));
-    }
-
-    if (startTime !== undefined) {
-      params.append('start_time', String(startTime));
-    }
-
-    if (endTime !== undefined) {
-      params.append('end_time', String(endTime));
-    }
-
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
-
-      ...requestOptions,
-    };
-
-    return this.client.request<StreamResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
 
   /**
    * Get X activity subscriptions
@@ -209,36 +155,59 @@ export class ActivityClient {
 
    * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async getSubscriptions(): Promise<GetSubscriptionsResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+    // Overload 1: Default behavior (unwrapped response)
+    async getSubscriptions(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionsResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
 
-    const requestOptions = {};
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions';
+        
 
-    // Build the path with path parameters
-    let path = '/2/activity/subscriptions';
+        // Build query parameters
+        const params = new URLSearchParams();
+        
 
-    // Build query parameters
-    const params = new URLSearchParams();
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
+        return this.client.request<GetSubscriptionsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
-      // No optional parameters, using empty request options
-    };
 
-    return this.client.request<GetSubscriptionsResponse>(
-      'GET',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
+
 
   /**
    * Create X activity subscription
@@ -248,47 +217,74 @@ export class ActivityClient {
 
    * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async createSubscription(
-    options: CreateSubscriptionOptions = {}
-  ): Promise<CreateSubscriptionResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+    // Overload 1: Default behavior (unwrapped response)
+    async createSubscription(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: CreateSubscriptionOptions = {}
+        
+    ): Promise<CreateSubscriptionResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const normalizedOptions = options || {};
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            body,
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
-    const normalizedOptions = options || {};
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions';
+        
 
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      body,
+        // Build query parameters
+        const params = new URLSearchParams();
+        
 
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: body ? JSON.stringify(body) : undefined,
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
 
-    // Build the path with path parameters
-    let path = '/2/activity/subscriptions';
+        return this.client.request<CreateSubscriptionResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
-    // Build query parameters
-    const params = new URLSearchParams();
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      body: body ? JSON.stringify(body) : undefined,
 
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
-
-      ...requestOptions,
-    };
-
-    return this.client.request<CreateSubscriptionResponse>(
-      'POST',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
 
   /**
    * Update X activity subscription
@@ -302,54 +298,82 @@ export class ActivityClient {
 
    * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async updateSubscription(
-    subscriptionId: string,
+    // Overload 1: Default behavior (unwrapped response)
+    async updateSubscription(
+        
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: UpdateSubscriptionOptions = {}
+        
+    ): Promise<UpdateSubscriptionResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const normalizedOptions = options || {};
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            body,
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
-    options: UpdateSubscriptionOptions = {}
-  ): Promise<UpdateSubscriptionResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions/{subscription_id}';
+        
+        
+        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
+        
+        
 
-    const normalizedOptions = options || {};
+        // Build query parameters
+        const params = new URLSearchParams();
+        
 
-    // Destructure options (exclude path parameters, they're already function params)
-    const {
-      body,
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: body ? JSON.stringify(body) : undefined,
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
 
-      requestOptions: requestOptions = {},
-    } = normalizedOptions;
+        return this.client.request<UpdateSubscriptionResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
-    // Build the path with path parameters
-    let path = '/2/activity/subscriptions/{subscription_id}';
 
-    path = path.replace(
-      '{subscription_id}',
-      encodeURIComponent(String(subscriptionId))
-    );
 
-    // Build query parameters
-    const params = new URLSearchParams();
-
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      body: body ? JSON.stringify(body) : undefined,
-
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
-
-      ...requestOptions,
-    };
-
-    return this.client.request<UpdateSubscriptionResponse>(
-      'PUT',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
 
   /**
    * Deletes X activity subscription
@@ -363,41 +387,210 @@ export class ActivityClient {
 
    * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
    */
-  // Overload 1: Default behavior (unwrapped response)
-  async deleteSubscription(
-    subscriptionId: string
-  ): Promise<DeleteSubscriptionResponse> {
-    // Normalize options to handle both camelCase and original API parameter names
+    // Overload 1: Default behavior (unwrapped response)
+    async deleteSubscription(
+        
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
 
-    const requestOptions = {};
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions/{subscription_id}';
+        
+        
+        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
+        
+        
 
-    // Build the path with path parameters
-    let path = '/2/activity/subscriptions/{subscription_id}';
+        // Build query parameters
+        const params = new URLSearchParams();
+        
 
-    path = path.replace(
-      '{subscription_id}',
-      encodeURIComponent(String(subscriptionId))
-    );
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
 
-    // Build query parameters
-    const params = new URLSearchParams();
+        return this.client.request<DeleteSubscriptionResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
-    // Prepare request options
-    const finalRequestOptions: RequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          BearerToken: [],
-        },
-      ],
 
-      // No optional parameters, using empty request options
-    };
 
-    return this.client.request<DeleteSubscriptionResponse>(
-      'DELETE',
-      path + (params.toString() ? `?${params.toString()}` : ''),
-      finalRequestOptions
-    );
-  }
+
+  /**
+   * Activity Stream
+   * Stream of X Activities
+
+
+
+   * @returns {Promise<StreamResponse>} Promise resolving to the API response
+   */
+    // Overload 1: Default behavior (unwrapped response)
+    async stream(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: StreamOptions = {}
+        
+    ): Promise<StreamResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'backfill_minutes': 'backfillMinutes',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            backfillMinutes = undefined,
+            
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/activity/stream';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (backfillMinutes !== undefined) {
+            
+            params.append('backfill_minutes', String(backfillMinutes));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<StreamResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

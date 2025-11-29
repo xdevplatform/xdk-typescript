@@ -14,13 +14,13 @@
 export interface StreamListener<T = any> {
   /** Called when new data is received from the stream */
   onData?(data: T): void;
-
+  
   /** Called when an error occurs in the stream */
   onError?(error: Error): void;
-
+  
   /** Called when the stream connects successfully */
   onConnect?(): void;
-
+  
   /** Called when the stream disconnects */
   onDisconnect?(): void;
 }

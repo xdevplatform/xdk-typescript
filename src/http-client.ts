@@ -3,16 +3,14 @@
 // Any manual changes will be overwritten on the next generation.
 /**
  * Environment-aware HTTP client for the X API SDK.
- *
+ * 
  * This module provides a universal HTTP client that works in both Node.js and browser environments
  * without requiring manual polyfills.
  */
 
 // Environment detection
-const isNode =
-  typeof process !== 'undefined' && process.versions && process.versions.node;
-const isBrowser =
-  typeof window !== 'undefined' && typeof window.fetch === 'function';
+const isNode = typeof process !== 'undefined' && process.versions && process.versions.node;
+const isBrowser = typeof window !== 'undefined' && typeof window.fetch === 'function';
 
 // Type definitions
 export interface RequestOptions {
@@ -62,10 +60,7 @@ export class HttpClient {
 
   private initializeNodeEnvironment(): void {
     // Check if native fetch is available (Node.js 18+)
-    if (
-      typeof globalThis.fetch === 'function' &&
-      typeof globalThis.Headers === 'function'
-    ) {
+    if (typeof globalThis.fetch === 'function' && typeof globalThis.Headers === 'function') {
       this.fetch = globalThis.fetch;
       this.HeadersClass = globalThis.Headers;
       return;
@@ -75,15 +70,15 @@ export class HttpClient {
     try {
       const nodeFetch = require('node-fetch');
       const { Headers: NodeHeaders } = nodeFetch;
-
+      
       this.fetch = nodeFetch.default || nodeFetch;
       this.HeadersClass = NodeHeaders;
     } catch (error) {
       // If node-fetch is not available, provide a helpful error
       throw new Error(
         'X API SDK: node-fetch not found. For Node.js environments, please install node-fetch:\n' +
-          'npm install node-fetch\n' +
-          'Or upgrade to Node.js 18+ for native fetch support.'
+        'npm install node-fetch\n' +
+        'Or upgrade to Node.js 18+ for native fetch support.'
       );
     }
   }
@@ -98,10 +93,7 @@ export class HttpClient {
   /**
    * Make an HTTP request
    */
-  async request(
-    url: string,
-    options: RequestOptions = {}
-  ): Promise<HttpResponse> {
+  async request(url: string, options: RequestOptions = {}): Promise<HttpResponse> {
     // Convert body to string if it's a Buffer or ArrayBuffer
     let body = options.body;
     if (body && typeof body !== 'string') {
@@ -135,10 +127,7 @@ export class HttpClient {
   /**
    * Make a GET request
    */
-  async get(
-    url: string,
-    headers?: Record<string, string>
-  ): Promise<HttpResponse> {
+  async get(url: string, headers?: Record<string, string>): Promise<HttpResponse> {
     return this.request(url, {
       method: 'GET',
       headers,
@@ -148,11 +137,7 @@ export class HttpClient {
   /**
    * Make a POST request
    */
-  async post(
-    url: string,
-    body?: string,
-    headers?: Record<string, string>
-  ): Promise<HttpResponse> {
+  async post(url: string, body?: string, headers?: Record<string, string>): Promise<HttpResponse> {
     return this.request(url, {
       method: 'POST',
       headers,
@@ -163,11 +148,7 @@ export class HttpClient {
   /**
    * Make a PUT request
    */
-  async put(
-    url: string,
-    body?: string,
-    headers?: Record<string, string>
-  ): Promise<HttpResponse> {
+  async put(url: string, body?: string, headers?: Record<string, string>): Promise<HttpResponse> {
     return this.request(url, {
       method: 'PUT',
       headers,
@@ -178,10 +159,7 @@ export class HttpClient {
   /**
    * Make a DELETE request
    */
-  async delete(
-    url: string,
-    headers?: Record<string, string>
-  ): Promise<HttpResponse> {
+  async delete(url: string, headers?: Record<string, string>): Promise<HttpResponse> {
     return this.request(url, {
       method: 'DELETE',
       headers,
@@ -191,11 +169,7 @@ export class HttpClient {
   /**
    * Make a PATCH request
    */
-  async patch(
-    url: string,
-    body?: string,
-    headers?: Record<string, string>
-  ): Promise<HttpResponse> {
+  async patch(url: string, body?: string, headers?: Record<string, string>): Promise<HttpResponse> {
     return this.request(url, {
       method: 'PATCH',
       headers,
@@ -205,4 +179,4 @@ export class HttpClient {
 }
 
 // Export a singleton instance
-export const httpClient = new HttpClient();
+export const httpClient = new HttpClient(); 
