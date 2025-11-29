@@ -17,16 +17,16 @@ import {
   CreateSubscriptionResponse,
 
 
+  GetSubscriptionsResponse,
+
+
   DeleteSubscriptionResponse,
-
-
-  CreateReplayJobResponse,
 
 
   GetSubscriptionCountResponse,
 
 
-  GetSubscriptionsResponse,
+  CreateReplayJobResponse,
 
 } from './models.js';
 
@@ -68,11 +68,11 @@ export interface CreateSubscriptionStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteSubscription method
+ * Options for getSubscriptions method
  * 
  * @public
  */
-export interface DeleteSubscriptionStreamingOptions {
+export interface GetSubscriptionsStreamingOptions {
     
     
     /** Additional request options */
@@ -85,11 +85,11 @@ export interface DeleteSubscriptionStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for createReplayJob method
+ * Options for deleteSubscription method
  * 
  * @public
  */
-export interface CreateReplayJobStreamingOptions {
+export interface DeleteSubscriptionStreamingOptions {
     
     
     /** Additional request options */
@@ -119,11 +119,11 @@ export interface GetSubscriptionCountStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getSubscriptions method
+ * Options for createReplayJob method
  * 
  * @public
  */
-export interface GetSubscriptionsStreamingOptions {
+export interface CreateReplayJobStreamingOptions {
     
     
     /** Additional request options */
@@ -359,6 +359,80 @@ export class AccountActivityClient {
 
 
     /**
+     * Get subscriptions
+     * Retrieves a list of all active subscriptions for a given webhook.
+     * 
+     * @returns Promise with the API response
+     */
+    async getSubscriptions(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetSubscriptionsStreamingOptions = {}
+    ): Promise<GetSubscriptionsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptions');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetSubscriptionsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Delete subscription
      * Deletes an Account Activity subscription for the given webhook and user ID.
      * 
@@ -433,6 +507,72 @@ export class AccountActivityClient {
         // Make the request
         return this.client.request<DeleteSubscriptionResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get subscription count
+     * Retrieves a count of currently active Account Activity subscriptions.
+     * 
+     * @returns Promise with the API response
+     */
+    async getSubscriptionCount(
+        
+        
+        
+        
+        
+        
+        
+        options: GetSubscriptionCountStreamingOptions = {}
+    ): Promise<GetSubscriptionCountResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptionCount');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/subscriptions/count';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetSubscriptionCountResponse>(
+            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -539,146 +679,6 @@ export class AccountActivityClient {
         // Make the request
         return this.client.request<CreateReplayJobResponse>(
             'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get subscription count
-     * Retrieves a count of currently active Account Activity subscriptions.
-     * 
-     * @returns Promise with the API response
-     */
-    async getSubscriptionCount(
-        
-        
-        
-        
-        
-        
-        
-        options: GetSubscriptionCountStreamingOptions = {}
-    ): Promise<GetSubscriptionCountResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptionCount');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/subscriptions/count';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetSubscriptionCountResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get subscriptions
-     * Retrieves a list of all active subscriptions for a given webhook.
-     * 
-     * @returns Promise with the API response
-     */
-    async getSubscriptions(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetSubscriptionsStreamingOptions = {}
-    ): Promise<GetSubscriptionsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptions');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetSubscriptionsResponse>(
-            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

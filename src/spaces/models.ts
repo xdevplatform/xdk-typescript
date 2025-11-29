@@ -11,23 +11,11 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getBuyers
+ * Response for search
  * 
  * @public
  */
-export type GetBuyersResponse = Schemas.Get2SpacesIdBuyersResponse;
-/**
- * Response for getById
- * 
- * @public
- */
-export type GetByIdResponse = Schemas.Get2SpacesIdResponse;
-/**
- * Response for getByIds
- * 
- * @public
- */
-export type GetByIdsResponse = Schemas.Get2SpacesResponse;
+export type SearchResponse = Schemas.Get2SpacesSearchResponse;
 /**
  * Response for getPosts
  * 
@@ -41,8 +29,20 @@ export type GetPostsResponse = Schemas.Get2SpacesIdTweetsResponse;
  */
 export type GetByCreatorIdsResponse = Schemas.Get2SpacesByCreatorIdsResponse;
 /**
- * Response for search
+ * Response for getBuyers
  * 
  * @public
  */
-export type SearchResponse = Schemas.Get2SpacesSearchResponse;
+export type GetBuyersResponse = Schemas.Get2SpacesIdBuyersResponse;
+/**
+ * Response for getByIds
+ * 
+ * @public
+ */
+export type GetByIdsResponse = Schemas.Get2SpacesResponse;
+/**
+ * Response for getById
+ * 
+ * @public
+ */
+export type GetByIdResponse = Schemas.Get2SpacesIdResponse;

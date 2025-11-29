@@ -29,17 +29,17 @@ export type CreateSubscriptionRequest = Schemas.SubscriptionsCreateRequest;
  */
 export type CreateSubscriptionResponse = Schemas.SubscriptionsCreateResponse;
 /**
+ * Response for getSubscriptions
+ * 
+ * @public
+ */
+export type GetSubscriptionsResponse = Schemas.SubscriptionsListGetResponse;
+/**
  * Response for deleteSubscription
  * 
  * @public
  */
 export type DeleteSubscriptionResponse = Schemas.SubscriptionsDeleteResponse;
-/**
- * Response for createReplayJob
- * 
- * @public
- */
-export type CreateReplayJobResponse = Schemas.ReplayJobCreateResponse;
 /**
  * Response for getSubscriptionCount
  * 
@@ -47,8 +47,8 @@ export type CreateReplayJobResponse = Schemas.ReplayJobCreateResponse;
  */
 export type GetSubscriptionCountResponse = Schemas.SubscriptionsCountGetResponse;
 /**
- * Response for getSubscriptions
+ * Response for createReplayJob
  * 
  * @public
  */
-export type GetSubscriptionsResponse = Schemas.SubscriptionsListGetResponse;
+export type CreateReplayJobResponse = Schemas.ReplayJobCreateResponse;

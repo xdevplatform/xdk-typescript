@@ -11,13 +11,40 @@ import { Client, ApiResponse, RequestOptions } from '../client.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
-  PostsFirehoseKoResponse,
+  PostsFirehoseResponse,
+
+
+  LikesComplianceResponse,
+
+
+  PostsFirehoseJaResponse,
 
 
   PostsSample10Response,
 
 
+  UsersComplianceResponse,
+
+
+  LikesFirehoseResponse,
+
+
   PostsResponse,
+
+
+  PostsFirehoseEnResponse,
+
+
+  PostsComplianceResponse,
+
+
+  PostsSampleResponse,
+
+
+  LikesSample10Response,
+
+
+  LabelsComplianceResponse,
 
 
   GetRulesResponse,
@@ -26,49 +53,128 @@ import {
   UpdateRulesResponse,
 
 
-  LikesFirehoseResponse,
-
-
-  PostsComplianceResponse,
-
-
-  PostsFirehoseJaResponse,
-
-
-  LikesComplianceResponse,
-
-
-  LabelsComplianceResponse,
-
-
-  PostsFirehoseEnResponse,
-
-
-  PostsFirehoseResponse,
-
-
-  PostsSampleResponse,
-
-
   GetRuleCountsResponse,
-
-
-  UsersComplianceResponse,
-
-
-  LikesSample10Response,
 
 
   PostsFirehosePtResponse,
 
+
+  PostsFirehoseKoResponse,
+
 } from './models.js';
 
 /**
- * Options for postsFirehoseKo method
+ * Options for postsFirehose method
  * 
  * @public
  */
-export interface PostsFirehoseKoStreamingOptions {
+export interface PostsFirehoseStreamingOptions {
+    
+    
+    /** The number of minutes of backfill requested. 
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** A comma separated list of Tweet fields to display. 
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for likesCompliance method
+ * 
+ * @public
+ */
+export interface LikesComplianceStreamingOptions {
+    
+    
+    /** The number of minutes of backfill requested. 
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Likes Compliance events will be provided. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Likes Compliance events will be provided. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsFirehoseJa method
+ * 
+ * @public
+ */
+export interface PostsFirehoseJaStreamingOptions {
     
     
     /** The number of minutes of backfill requested. 
@@ -206,11 +312,11 @@ export interface PostsSample10StreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for posts method
+ * Options for usersCompliance method
  * 
  * @public
  */
-export interface PostsStreamingOptions {
+export interface UsersComplianceStreamingOptions {
     
     
     /** The number of minutes of backfill requested. 
@@ -219,115 +325,15 @@ export interface PostsStreamingOptions {
     
     
     
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. 
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided. 
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     
     
     
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. 
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided. 
      * Also accepts: end_time or proper camelCase (e.g., endTime) */
     endTime?: string;
-    
-    
-    
-    /** A comma separated list of Tweet fields to display. 
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getRules method
- * 
- * @public
- */
-export interface GetRulesStreamingOptions {
-    
-    
-    /** A comma-separated list of Rule IDs. 
-     * Also accepts: ids or proper camelCase (e.g., ids) */
-    ids?: Array<any>;
-    
-    
-    
-    /** The maximum number of results. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** This value is populated by passing the 'next_token' returned in a request to paginate through results. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for updateRules method
- * 
- * @public
- */
-export interface UpdateRulesStreamingOptions {
-    
-    
-    /** Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes. 
-     * Also accepts: dry_run or proper camelCase (e.g., dryRun) */
-    dryRun?: boolean;
-    
-    
-    
-    /** Delete All can be used to delete all of the rules associated this client app, it should be specified with no other parameters. Once deleted, rules cannot be recovered. 
-     * Also accepts: delete_all or proper camelCase (e.g., deleteAll) */
-    deleteAll?: boolean;
     
     
     
@@ -400,11 +406,11 @@ export interface LikesFirehoseStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for postsCompliance method
+ * Options for posts method
  * 
  * @public
  */
-export interface PostsComplianceStreamingOptions {
+export interface PostsStreamingOptions {
     
     
     /** The number of minutes of backfill requested. 
@@ -413,42 +419,7 @@ export interface PostsComplianceStreamingOptions {
     
     
     
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for postsFirehoseJa method
- * 
- * @public
- */
-export interface PostsFirehoseJaStreamingOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided. 
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. 
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     
@@ -493,76 +464,6 @@ export interface PostsFirehoseJaStreamingOptions {
     /** A comma separated list of Place fields to display. 
      * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
     placeFields?: Array<any>;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for likesCompliance method
- * 
- * @public
- */
-export interface LikesComplianceStreamingOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Likes Compliance events will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Likes Compliance events will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for labelsCompliance method
- * 
- * @public
- */
-export interface LabelsComplianceStreamingOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
     
     
     
@@ -647,11 +548,11 @@ export interface PostsFirehoseEnStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for postsFirehose method
+ * Options for postsCompliance method
  * 
  * @public
  */
-export interface PostsFirehoseStreamingOptions {
+export interface PostsComplianceStreamingOptions {
     
     
     /** The number of minutes of backfill requested. 
@@ -660,51 +561,15 @@ export interface PostsFirehoseStreamingOptions {
     
     
     
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided. 
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided. 
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     
     
     
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. 
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided. 
      * Also accepts: end_time or proper camelCase (e.g., endTime) */
     endTime?: string;
-    
-    
-    
-    /** A comma separated list of Tweet fields to display. 
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
     
     
     
@@ -777,64 +642,6 @@ export interface PostsSampleStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getRuleCounts method
- * 
- * @public
- */
-export interface GetRuleCountsStreamingOptions {
-    
-    
-    /** A comma separated list of RulesCount fields to display. 
-     * Also accepts: rules_count.fields or proper camelCase (e.g., rulesCountFields) */
-    rulesCountFields?: Array<any>;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for usersCompliance method
- * 
- * @public
- */
-export interface UsersComplianceStreamingOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
  * Options for likesSample10 method
  * 
  * @public
@@ -894,11 +701,204 @@ export interface LikesSample10StreamingOptions {
     [key: string]: any;
 }
 /**
+ * Options for labelsCompliance method
+ * 
+ * @public
+ */
+export interface LabelsComplianceStreamingOptions {
+    
+    
+    /** The number of minutes of backfill requested. 
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getRules method
+ * 
+ * @public
+ */
+export interface GetRulesStreamingOptions {
+    
+    
+    /** A comma-separated list of Rule IDs. 
+     * Also accepts: ids or proper camelCase (e.g., ids) */
+    ids?: Array<any>;
+    
+    
+    
+    /** The maximum number of results. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** This value is populated by passing the 'next_token' returned in a request to paginate through results. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateRules method
+ * 
+ * @public
+ */
+export interface UpdateRulesStreamingOptions {
+    
+    
+    /** Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes. 
+     * Also accepts: dry_run or proper camelCase (e.g., dryRun) */
+    dryRun?: boolean;
+    
+    
+    
+    /** Delete All can be used to delete all of the rules associated this client app, it should be specified with no other parameters. Once deleted, rules cannot be recovered. 
+     * Also accepts: delete_all or proper camelCase (e.g., deleteAll) */
+    deleteAll?: boolean;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getRuleCounts method
+ * 
+ * @public
+ */
+export interface GetRuleCountsStreamingOptions {
+    
+    
+    /** A comma separated list of RulesCount fields to display. 
+     * Also accepts: rules_count.fields or proper camelCase (e.g., rulesCountFields) */
+    rulesCountFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
  * Options for postsFirehosePt method
  * 
  * @public
  */
 export interface PostsFirehosePtStreamingOptions {
+    
+    
+    /** The number of minutes of backfill requested. 
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** A comma separated list of Tweet fields to display. 
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsFirehoseKo method
+ * 
+ * @public
+ */
+export interface PostsFirehoseKoStreamingOptions {
     
     
     /** The number of minutes of backfill requested. 
@@ -1002,8 +1002,8 @@ export class StreamClient {
 
 
     /**
-     * Stream Korean Posts
-     * Streams all public Korean-language Posts in real-time.
+     * Stream all Posts
+     * Streams all public Posts in real-time.
      * 
      * Returns an event-driven stream that's easy to use.
      * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -1017,7 +1017,7 @@ export class StreamClient {
 
      * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    async postsFirehoseKo(
+    async postsFirehose(
         
         
         
@@ -1029,7 +1029,7 @@ export class StreamClient {
         
         
         
-        options: PostsFirehoseKoStreamingOptions = {}
+        options: PostsFirehoseStreamingOptions = {}
     ): Promise<EventDrivenStream> {
         // Validate authentication requirements
         
@@ -1039,7 +1039,7 @@ export class StreamClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'postsFirehoseKo');
+        this.client.validateAuthentication(requiredAuthTypes, 'postsFirehose');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1132,7 +1132,497 @@ export class StreamClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/firehose/stream/lang/ko';
+        let path = '/2/tweets/firehose/stream';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (backfillMinutes !== undefined) {
+            
+            params.append('backfill_minutes', String(backfillMinutes));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (partition !== undefined) {
+            params.append('partition', String(partition));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (tweetFields !== undefined && tweetFields.length > 0) {
+            
+            params.append('tweet.fields', tweetFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (pollFields !== undefined && pollFields.length > 0) {
+            
+            params.append('poll.fields', pollFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (placeFields !== undefined && placeFields.length > 0) {
+            
+            params.append('place.fields', placeFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Make the authenticated request using the main client's request method
+        // We need raw: true to get the raw Response object for streaming
+        const url = path + (params.toString() ? `?${params.toString()}` : '');
+        
+        // For streaming requests, we don't want to timeout the initial connection
+        // Instead, we'll handle timeouts at the stream level
+        const response = await this.client.request(
+            'GET',
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                
+                
+                // Pass security requirements for smart auth selection
+                security: [
+                    
+                    {
+                        
+                        'BearerToken': [],
+                        
+                    }
+                    
+                ],
+                
+                signal: signal,
+                raw: true, // Get raw Response object for streaming
+                timeout: 0, // Disable timeout for streaming requests
+                ...requestOptions,
+            }
+        ) as Response;
+
+        // Handle errors
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+            );
+        }
+
+        // Return the readable stream
+        // The response.body is the actual ReadableStream for streaming
+        if (!response.body) {
+            throw new Error('Response body is not available for streaming');
+        }
+
+        // Wrap the ReadableStream in an event-driven interface
+        const eventStream = new EventDrivenStream();
+        await eventStream.connect(response.body);
+        return eventStream;
+    }
+
+
+
+
+    /**
+     * Stream Likes compliance data
+     * Streams all compliance data related to Likes for Users.
+     * 
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    async likesCompliance(
+        
+        
+        
+        
+        
+        
+        
+        options: LikesComplianceStreamingOptions = {}
+    ): Promise<EventDrivenStream> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'likesCompliance');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'backfill_minutes': 'backfillMinutes',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            backfillMinutes = undefined,
+            
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/likes/compliance/stream';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (backfillMinutes !== undefined) {
+            
+            params.append('backfill_minutes', String(backfillMinutes));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+
+        // Make the authenticated request using the main client's request method
+        // We need raw: true to get the raw Response object for streaming
+        const url = path + (params.toString() ? `?${params.toString()}` : '');
+        
+        // For streaming requests, we don't want to timeout the initial connection
+        // Instead, we'll handle timeouts at the stream level
+        const response = await this.client.request(
+            'GET',
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                
+                
+                // Pass security requirements for smart auth selection
+                security: [
+                    
+                    {
+                        
+                        'BearerToken': [],
+                        
+                    }
+                    
+                ],
+                
+                signal: signal,
+                raw: true, // Get raw Response object for streaming
+                timeout: 0, // Disable timeout for streaming requests
+                ...requestOptions,
+            }
+        ) as Response;
+
+        // Handle errors
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+            );
+        }
+
+        // Return the readable stream
+        // The response.body is the actual ReadableStream for streaming
+        if (!response.body) {
+            throw new Error('Response body is not available for streaming');
+        }
+
+        // Wrap the ReadableStream in an event-driven interface
+        const eventStream = new EventDrivenStream();
+        await eventStream.connect(response.body);
+        return eventStream;
+    }
+
+
+
+
+    /**
+     * Stream Japanese Posts
+     * Streams all public Japanese-language Posts in real-time.
+     * 
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @param partition The partition number.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    async postsFirehoseJa(
+        
+        
+        
+        
+        
+        partition: number,
+        
+        
+        
+        
+        
+        options: PostsFirehoseJaStreamingOptions = {}
+    ): Promise<EventDrivenStream> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'postsFirehoseJa');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'backfill_minutes': 'backfillMinutes',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+            
+            'tweet.fields': 'tweetFields',
+            
+            
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+            
+            'poll.fields': 'pollFields',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'place.fields': 'placeFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            backfillMinutes = undefined,
+            
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            tweetFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            pollFields = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            placeFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/firehose/stream/lang/ja';
         
 
         // Build query parameters
@@ -1630,8 +2120,8 @@ export class StreamClient {
 
 
     /**
-     * Stream filtered Posts
-     * Streams Posts in real-time matching the active rule set.
+     * Stream Users compliance data
+     * Streams all compliance data related to Users.
      * 
      * Returns an event-driven stream that's easy to use.
      * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -1639,17 +2129,25 @@ export class StreamClient {
 
 
 
+     * @param partition The partition number.
+
+
+
      * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    async posts(
+    async usersCompliance(
         
         
         
         
         
+        partition: number,
         
         
-        options: PostsStreamingOptions = {}
+        
+        
+        
+        options: UsersComplianceStreamingOptions = {}
     ): Promise<EventDrivenStream> {
         // Validate authentication requirements
         
@@ -1659,7 +2157,7 @@ export class StreamClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'posts');
+        this.client.validateAuthentication(requiredAuthTypes, 'usersCompliance');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1676,28 +2174,6 @@ export class StreamClient {
             
             
             'end_time': 'endTime',
-            
-            
-            
-            'tweet.fields': 'tweetFields',
-            
-            
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-            
-            'poll.fields': 'pollFields',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'place.fields': 'placeFields',
             
             
         };
@@ -1721,30 +2197,6 @@ export class StreamClient {
             
             
             
-            tweetFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            pollFields = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            placeFields = [],
-            
-            
-            
             headers = {},
             signal,
             requestOptions: requestOptions = {}
@@ -1752,7 +2204,7 @@ export class StreamClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/search/stream';
+        let path = '/2/users/compliance/stream';
         
 
         // Build query parameters
@@ -1767,6 +2219,18 @@ export class StreamClient {
             params.append('backfill_minutes', String(backfillMinutes));
             
         }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (partition !== undefined) {
+            params.append('partition', String(partition));
+        }
+        
         
         
         
@@ -1789,78 +2253,6 @@ export class StreamClient {
         if (endTime !== undefined) {
             
             params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (tweetFields !== undefined && tweetFields.length > 0) {
-            
-            params.append('tweet.fields', tweetFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (pollFields !== undefined && pollFields.length > 0) {
-            
-            params.append('poll.fields', pollFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (placeFields !== undefined && placeFields.length > 0) {
-            
-            params.append('place.fields', placeFields.join(','));
             
         }
         
@@ -1919,12 +2311,6 @@ export class StreamClient {
         await eventStream.connect(response.body);
         return eventStream;
     }
-
-
-
-
-
-
 
 
 
@@ -2204,8 +2590,8 @@ export class StreamClient {
 
 
     /**
-     * Stream Posts compliance data
-     * Streams all compliance data related to Posts.
+     * Stream filtered Posts
+     * Streams Posts in real-time matching the active rule set.
      * 
      * Returns an event-driven stream that's easy to use.
      * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -2213,25 +2599,17 @@ export class StreamClient {
 
 
 
-     * @param partition The partition number.
-
-
-
      * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    async postsCompliance(
+    async posts(
         
         
         
         
         
-        partition: number,
         
         
-        
-        
-        
-        options: PostsComplianceStreamingOptions = {}
+        options: PostsStreamingOptions = {}
     ): Promise<EventDrivenStream> {
         // Validate authentication requirements
         
@@ -2241,203 +2619,7 @@ export class StreamClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'postsCompliance');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'backfill_minutes': 'backfillMinutes',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            backfillMinutes = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/compliance/stream';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (backfillMinutes !== undefined) {
-            
-            params.append('backfill_minutes', String(backfillMinutes));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (partition !== undefined) {
-            params.append('partition', String(partition));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-
-        // Make the authenticated request using the main client's request method
-        // We need raw: true to get the raw Response object for streaming
-        const url = path + (params.toString() ? `?${params.toString()}` : '');
-        
-        // For streaming requests, we don't want to timeout the initial connection
-        // Instead, we'll handle timeouts at the stream level
-        const response = await this.client.request(
-            'GET',
-            url,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...headers,
-                },
-                
-                
-                // Pass security requirements for smart auth selection
-                security: [
-                    
-                    {
-                        
-                        'BearerToken': [],
-                        
-                    }
-                    
-                ],
-                
-                signal: signal,
-                raw: true, // Get raw Response object for streaming
-                timeout: 0, // Disable timeout for streaming requests
-                ...requestOptions,
-            }
-        ) as Response;
-
-        // Handle errors
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status}: ${response.statusText}`
-            );
-        }
-
-        // Return the readable stream
-        // The response.body is the actual ReadableStream for streaming
-        if (!response.body) {
-            throw new Error('Response body is not available for streaming');
-        }
-
-        // Wrap the ReadableStream in an event-driven interface
-        const eventStream = new EventDrivenStream();
-        await eventStream.connect(response.body);
-        return eventStream;
-    }
-
-
-
-
-    /**
-     * Stream Japanese Posts
-     * Streams all public Japanese-language Posts in real-time.
-     * 
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @param partition The partition number.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    async postsFirehoseJa(
-        
-        
-        
-        
-        
-        partition: number,
-        
-        
-        
-        
-        
-        options: PostsFirehoseJaStreamingOptions = {}
-    ): Promise<EventDrivenStream> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'postsFirehoseJa');
+        this.client.validateAuthentication(requiredAuthTypes, 'posts');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -2530,7 +2712,7 @@ export class StreamClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/firehose/stream/lang/ja';
+        let path = '/2/tweets/search/stream';
         
 
         // Build query parameters
@@ -2545,18 +2727,6 @@ export class StreamClient {
             params.append('backfill_minutes', String(backfillMinutes));
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (partition !== undefined) {
-            params.append('partition', String(partition));
-        }
-        
         
         
         
@@ -2651,358 +2821,6 @@ export class StreamClient {
         if (placeFields !== undefined && placeFields.length > 0) {
             
             params.append('place.fields', placeFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Make the authenticated request using the main client's request method
-        // We need raw: true to get the raw Response object for streaming
-        const url = path + (params.toString() ? `?${params.toString()}` : '');
-        
-        // For streaming requests, we don't want to timeout the initial connection
-        // Instead, we'll handle timeouts at the stream level
-        const response = await this.client.request(
-            'GET',
-            url,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...headers,
-                },
-                
-                
-                // Pass security requirements for smart auth selection
-                security: [
-                    
-                    {
-                        
-                        'BearerToken': [],
-                        
-                    }
-                    
-                ],
-                
-                signal: signal,
-                raw: true, // Get raw Response object for streaming
-                timeout: 0, // Disable timeout for streaming requests
-                ...requestOptions,
-            }
-        ) as Response;
-
-        // Handle errors
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status}: ${response.statusText}`
-            );
-        }
-
-        // Return the readable stream
-        // The response.body is the actual ReadableStream for streaming
-        if (!response.body) {
-            throw new Error('Response body is not available for streaming');
-        }
-
-        // Wrap the ReadableStream in an event-driven interface
-        const eventStream = new EventDrivenStream();
-        await eventStream.connect(response.body);
-        return eventStream;
-    }
-
-
-
-
-    /**
-     * Stream Likes compliance data
-     * Streams all compliance data related to Likes for Users.
-     * 
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    async likesCompliance(
-        
-        
-        
-        
-        
-        
-        
-        options: LikesComplianceStreamingOptions = {}
-    ): Promise<EventDrivenStream> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'likesCompliance');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'backfill_minutes': 'backfillMinutes',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            backfillMinutes = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/likes/compliance/stream';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (backfillMinutes !== undefined) {
-            
-            params.append('backfill_minutes', String(backfillMinutes));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-
-        // Make the authenticated request using the main client's request method
-        // We need raw: true to get the raw Response object for streaming
-        const url = path + (params.toString() ? `?${params.toString()}` : '');
-        
-        // For streaming requests, we don't want to timeout the initial connection
-        // Instead, we'll handle timeouts at the stream level
-        const response = await this.client.request(
-            'GET',
-            url,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...headers,
-                },
-                
-                
-                // Pass security requirements for smart auth selection
-                security: [
-                    
-                    {
-                        
-                        'BearerToken': [],
-                        
-                    }
-                    
-                ],
-                
-                signal: signal,
-                raw: true, // Get raw Response object for streaming
-                timeout: 0, // Disable timeout for streaming requests
-                ...requestOptions,
-            }
-        ) as Response;
-
-        // Handle errors
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status}: ${response.statusText}`
-            );
-        }
-
-        // Return the readable stream
-        // The response.body is the actual ReadableStream for streaming
-        if (!response.body) {
-            throw new Error('Response body is not available for streaming');
-        }
-
-        // Wrap the ReadableStream in an event-driven interface
-        const eventStream = new EventDrivenStream();
-        await eventStream.connect(response.body);
-        return eventStream;
-    }
-
-
-
-
-    /**
-     * Stream Post labels
-     * Streams all labeling events applied to Posts.
-     * 
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    async labelsCompliance(
-        
-        
-        
-        
-        
-        
-        
-        options: LabelsComplianceStreamingOptions = {}
-    ): Promise<EventDrivenStream> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'labelsCompliance');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'backfill_minutes': 'backfillMinutes',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            backfillMinutes = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/label/stream';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (backfillMinutes !== undefined) {
-            
-            params.append('backfill_minutes', String(backfillMinutes));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
             
         }
         
@@ -3380,8 +3198,8 @@ export class StreamClient {
 
 
     /**
-     * Stream all Posts
-     * Streams all public Posts in real-time.
+     * Stream Posts compliance data
+     * Streams all compliance data related to Posts.
      * 
      * Returns an event-driven stream that's easy to use.
      * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -3395,7 +3213,7 @@ export class StreamClient {
 
      * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    async postsFirehose(
+    async postsCompliance(
         
         
         
@@ -3407,7 +3225,7 @@ export class StreamClient {
         
         
         
-        options: PostsFirehoseStreamingOptions = {}
+        options: PostsComplianceStreamingOptions = {}
     ): Promise<EventDrivenStream> {
         // Validate authentication requirements
         
@@ -3417,7 +3235,7 @@ export class StreamClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'postsFirehose');
+        this.client.validateAuthentication(requiredAuthTypes, 'postsCompliance');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -3434,28 +3252,6 @@ export class StreamClient {
             
             
             'end_time': 'endTime',
-            
-            
-            
-            'tweet.fields': 'tweetFields',
-            
-            
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-            
-            'poll.fields': 'pollFields',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'place.fields': 'placeFields',
             
             
         };
@@ -3479,30 +3275,6 @@ export class StreamClient {
             
             
             
-            tweetFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            pollFields = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            placeFields = [],
-            
-            
-            
             headers = {},
             signal,
             requestOptions: requestOptions = {}
@@ -3510,7 +3282,7 @@ export class StreamClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/firehose/stream';
+        let path = '/2/tweets/compliance/stream';
         
 
         // Build query parameters
@@ -3559,78 +3331,6 @@ export class StreamClient {
         if (endTime !== undefined) {
             
             params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (tweetFields !== undefined && tweetFields.length > 0) {
-            
-            params.append('tweet.fields', tweetFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (pollFields !== undefined && pollFields.length > 0) {
-            
-            params.append('poll.fields', pollFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (placeFields !== undefined && placeFields.length > 0) {
-            
-            params.append('place.fields', placeFields.join(','));
             
         }
         
@@ -3885,205 +3585,6 @@ export class StreamClient {
         if (placeFields !== undefined && placeFields.length > 0) {
             
             params.append('place.fields', placeFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Make the authenticated request using the main client's request method
-        // We need raw: true to get the raw Response object for streaming
-        const url = path + (params.toString() ? `?${params.toString()}` : '');
-        
-        // For streaming requests, we don't want to timeout the initial connection
-        // Instead, we'll handle timeouts at the stream level
-        const response = await this.client.request(
-            'GET',
-            url,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...headers,
-                },
-                
-                
-                // Pass security requirements for smart auth selection
-                security: [
-                    
-                    {
-                        
-                        'BearerToken': [],
-                        
-                    }
-                    
-                ],
-                
-                signal: signal,
-                raw: true, // Get raw Response object for streaming
-                timeout: 0, // Disable timeout for streaming requests
-                ...requestOptions,
-            }
-        ) as Response;
-
-        // Handle errors
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status}: ${response.statusText}`
-            );
-        }
-
-        // Return the readable stream
-        // The response.body is the actual ReadableStream for streaming
-        if (!response.body) {
-            throw new Error('Response body is not available for streaming');
-        }
-
-        // Wrap the ReadableStream in an event-driven interface
-        const eventStream = new EventDrivenStream();
-        await eventStream.connect(response.body);
-        return eventStream;
-    }
-
-
-
-
-
-
-
-    /**
-     * Stream Users compliance data
-     * Streams all compliance data related to Users.
-     * 
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @param partition The partition number.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    async usersCompliance(
-        
-        
-        
-        
-        
-        partition: number,
-        
-        
-        
-        
-        
-        options: UsersComplianceStreamingOptions = {}
-    ): Promise<EventDrivenStream> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'usersCompliance');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'backfill_minutes': 'backfillMinutes',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            backfillMinutes = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/compliance/stream';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (backfillMinutes !== undefined) {
-            
-            params.append('backfill_minutes', String(backfillMinutes));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (partition !== undefined) {
-            params.append('partition', String(partition));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
             
         }
         
@@ -4421,6 +3922,191 @@ export class StreamClient {
 
 
     /**
+     * Stream Post labels
+     * Streams all labeling events applied to Posts.
+     * 
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    async labelsCompliance(
+        
+        
+        
+        
+        
+        
+        
+        options: LabelsComplianceStreamingOptions = {}
+    ): Promise<EventDrivenStream> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'labelsCompliance');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'backfill_minutes': 'backfillMinutes',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            backfillMinutes = undefined,
+            
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/label/stream';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (backfillMinutes !== undefined) {
+            
+            params.append('backfill_minutes', String(backfillMinutes));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+
+        // Make the authenticated request using the main client's request method
+        // We need raw: true to get the raw Response object for streaming
+        const url = path + (params.toString() ? `?${params.toString()}` : '');
+        
+        // For streaming requests, we don't want to timeout the initial connection
+        // Instead, we'll handle timeouts at the stream level
+        const response = await this.client.request(
+            'GET',
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                
+                
+                // Pass security requirements for smart auth selection
+                security: [
+                    
+                    {
+                        
+                        'BearerToken': [],
+                        
+                    }
+                    
+                ],
+                
+                signal: signal,
+                raw: true, // Get raw Response object for streaming
+                timeout: 0, // Disable timeout for streaming requests
+                ...requestOptions,
+            }
+        ) as Response;
+
+        // Handle errors
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+            );
+        }
+
+        // Return the readable stream
+        // The response.body is the actual ReadableStream for streaming
+        if (!response.body) {
+            throw new Error('Response body is not available for streaming');
+        }
+
+        // Wrap the ReadableStream in an event-driven interface
+        const eventStream = new EventDrivenStream();
+        await eventStream.connect(response.body);
+        return eventStream;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
      * Stream Portuguese Posts
      * Streams all public Portuguese-language Posts in real-time.
      * 
@@ -4734,6 +4420,338 @@ export class StreamClient {
 
 
 
+    /**
+     * Stream Korean Posts
+     * Streams all public Korean-language Posts in real-time.
+     * 
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @param partition The partition number.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    async postsFirehoseKo(
+        
+        
+        
+        
+        
+        partition: number,
+        
+        
+        
+        
+        
+        options: PostsFirehoseKoStreamingOptions = {}
+    ): Promise<EventDrivenStream> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'postsFirehoseKo');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'backfill_minutes': 'backfillMinutes',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+            
+            'tweet.fields': 'tweetFields',
+            
+            
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+            
+            'poll.fields': 'pollFields',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'place.fields': 'placeFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            backfillMinutes = undefined,
+            
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            tweetFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            pollFields = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            placeFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/firehose/stream/lang/ko';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (backfillMinutes !== undefined) {
+            
+            params.append('backfill_minutes', String(backfillMinutes));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (partition !== undefined) {
+            params.append('partition', String(partition));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (tweetFields !== undefined && tweetFields.length > 0) {
+            
+            params.append('tweet.fields', tweetFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (pollFields !== undefined && pollFields.length > 0) {
+            
+            params.append('poll.fields', pollFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (placeFields !== undefined && placeFields.length > 0) {
+            
+            params.append('place.fields', placeFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Make the authenticated request using the main client's request method
+        // We need raw: true to get the raw Response object for streaming
+        const url = path + (params.toString() ? `?${params.toString()}` : '');
+        
+        // For streaming requests, we don't want to timeout the initial connection
+        // Instead, we'll handle timeouts at the stream level
+        const response = await this.client.request(
+            'GET',
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                
+                
+                // Pass security requirements for smart auth selection
+                security: [
+                    
+                    {
+                        
+                        'BearerToken': [],
+                        
+                    }
+                    
+                ],
+                
+                signal: signal,
+                raw: true, // Get raw Response object for streaming
+                timeout: 0, // Disable timeout for streaming requests
+                ...requestOptions,
+            }
+        ) as Response;
+
+        // Handle errors
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+            );
+        }
+
+        // Return the readable stream
+        // The response.body is the actual ReadableStream for streaming
+        if (!response.body) {
+            throw new Error('Response body is not available for streaming');
+        }
+
+        // Wrap the ReadableStream in an event-driven interface
+        const eventStream = new EventDrivenStream();
+        await eventStream.connect(response.body);
+        return eventStream;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4994,22 +5012,6 @@ export class StreamClient {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Get stream rule counts
      * Retrieves the count of rules in the active rule set for the filtered stream.
@@ -5102,8 +5104,6 @@ export class StreamClient {
             finalRequestOptions
         );
     }
-
-
 
 
 

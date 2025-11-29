@@ -29,18 +29,6 @@ export type AddMemberRequest = Schemas.ListAddUserRequest;
  */
 export type AddMemberResponse = Schemas.ListMutateResponse;
 /**
- * Response for removeMemberByUserId
- * 
- * @public
- */
-export type RemoveMemberByUserIdResponse = Schemas.ListMutateResponse;
-/**
- * Response for getFollowers
- * 
- * @public
- */
-export type GetFollowersResponse = Schemas.Get2ListsIdFollowersResponse;
-/**
  * Request for create
  * 
  * @public
@@ -53,11 +41,17 @@ export type CreateRequest = Schemas.ListCreateRequest;
  */
 export type CreateResponse = Schemas.ListCreateResponse;
 /**
- * Response for getPosts
+ * Response for getFollowers
  * 
  * @public
  */
-export type GetPostsResponse = Schemas.Get2ListsIdTweetsResponse;
+export type GetFollowersResponse = Schemas.Get2ListsIdFollowersResponse;
+/**
+ * Response for removeMemberByUserId
+ * 
+ * @public
+ */
+export type RemoveMemberByUserIdResponse = Schemas.ListMutateResponse;
 /**
  * Response for getById
  * 
@@ -82,3 +76,9 @@ export type UpdateResponse = Schemas.ListUpdateResponse;
  * @public
  */
 export type DeleteResponse = Schemas.ListDeleteResponse;
+/**
+ * Response for getPosts
+ * 
+ * @public
+ */
+export type GetPostsResponse = Schemas.Get2ListsIdTweetsResponse;
