@@ -11,17 +11,41 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Request for create
+ * Response for getFollowers
  * 
  * @public
  */
-export type CreateRequest = Schemas.ListCreateRequest;
+export type GetFollowersResponse = Schemas.Get2ListsIdFollowersResponse;
 /**
- * Response for create
+ * Response for removeMemberByUserId
  * 
  * @public
  */
-export type CreateResponse = Schemas.ListCreateResponse;
+export type RemoveMemberByUserIdResponse = Schemas.ListMutateResponse;
+/**
+ * Response for getById
+ * 
+ * @public
+ */
+export type GetByIdResponse = Schemas.Get2ListsIdResponse;
+/**
+ * Request for update
+ * 
+ * @public
+ */
+export type UpdateRequest = Schemas.ListUpdateRequest;
+/**
+ * Response for update
+ * 
+ * @public
+ */
+export type UpdateResponse = Schemas.ListUpdateResponse;
+/**
+ * Response for delete
+ * 
+ * @public
+ */
+export type DeleteResponse = Schemas.ListDeleteResponse;
 /**
  * Response for getPosts
  * 
@@ -47,38 +71,14 @@ export type AddMemberRequest = Schemas.ListAddUserRequest;
  */
 export type AddMemberResponse = Schemas.ListMutateResponse;
 /**
- * Response for removeMemberByUserId
+ * Request for create
  * 
  * @public
  */
-export type RemoveMemberByUserIdResponse = Schemas.ListMutateResponse;
+export type CreateRequest = Schemas.ListCreateRequest;
 /**
- * Response for getFollowers
+ * Response for create
  * 
  * @public
  */
-export type GetFollowersResponse = Schemas.Get2ListsIdFollowersResponse;
-/**
- * Response for getById
- * 
- * @public
- */
-export type GetByIdResponse = Schemas.Get2ListsIdResponse;
-/**
- * Request for update
- * 
- * @public
- */
-export type UpdateRequest = Schemas.ListUpdateRequest;
-/**
- * Response for update
- * 
- * @public
- */
-export type UpdateResponse = Schemas.ListUpdateResponse;
-/**
- * Response for delete
- * 
- * @public
- */
-export type DeleteResponse = Schemas.ListDeleteResponse;
+export type CreateResponse = Schemas.ListCreateResponse;

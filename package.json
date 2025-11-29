@@ -1,6 +1,6 @@
 {
   "name": "@xdevplatform/xdk",
-  "version": "0.2.4-beta",
+  "version": "0.2.5-beta",
   "description": "A modern TypeScript/JavaScript SDK for the X API",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -59,12 +59,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xdevplatform/xdk"
+    "url": "https://github.com/xdevplatform/xdk-typescript"
   },
   "bugs": {
-    "url": "https://github.com/xdevplatform/xdk/issues"
+    "url": "https://github.com/xdevplatform/xdk-typescript/issues"
   },
-  "homepage": "https://github.com/xdevplatform/xdk",
+  "homepage": "https://github.com/xdevplatform/xdk-typescript",
   "publishConfig": {
     "access": "public"
   },

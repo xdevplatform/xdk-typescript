@@ -6643,6 +6643,332 @@ var HttpClient = class {
 };
 var httpClient = new HttpClient();
 
+// src/account_activity/client.ts
+var AccountActivityClient = class {
+  client;
+  /**
+   * Creates a new account activity client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Validate subscription
+     * Checks a user’s Account Activity subscription for a given webhook.
+  
+  
+     * @param webhookId The webhook ID to check subscription against.
+  
+  
+  
+  
+     * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async validateSubscription(webhookId) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create subscription
+     * Creates an Account Activity subscription for the user and the given webhook.
+  
+  
+     * @param webhookId The webhook ID to check subscription against.
+  
+  
+  
+  
+     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createSubscription(webhookId, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get subscription count
+     * Retrieves a count of currently active Account Activity subscriptions.
+  
+  
+  
+     * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getSubscriptionCount() {
+    let path = "/2/account_activity/subscriptions/count";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get subscriptions
+     * Retrieves a list of all active subscriptions for a given webhook.
+  
+  
+     * @param webhookId The webhook ID to pull subscriptions for.
+  
+  
+  
+  
+     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getSubscriptions(webhookId) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Delete subscription
+     * Deletes an Account Activity subscription for the given webhook and user ID.
+  
+  
+     * @param webhookId The webhook ID to check subscription against.
+  
+  
+  
+     * @param userId User ID to unsubscribe from.
+  
+  
+  
+  
+     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async deleteSubscription(webhookId, userId) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create replay job
+     * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
+  
+  
+     * @param webhookId The unique identifier for the webhook configuration.
+  
+  
+  
+  
+     * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
+  
+  
+  
+     * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
+  
+  
+  
+     * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createReplayJob(webhookId, fromDate, toDate) {
+    let path = "/2/account_activity/replay/webhooks/{webhook_id}/subscriptions/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    if (fromDate !== void 0) {
+      params.append("from_date", String(fromDate));
+    }
+    if (toDate !== void 0) {
+      params.append("to_date", String(toDate));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/account_activity/models.ts
+var models_exports = {};
+
+// src/usage/client.ts
+var UsageClient = class {
+  client;
+  /**
+   * Creates a new usage client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Get usage
+     * Retrieves usage statistics for Posts over a specified number of days.
+  
+  
+  
+     * @returns {Promise<GetResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async get(options = {}) {
+    const paramMappings = {
+      "usage.fields": "usageFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      days = void 0,
+      usageFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/usage/tweets";
+    const params = new URLSearchParams();
+    if (days !== void 0) {
+      params.append("days", String(days));
+    }
+    if (usageFields !== void 0 && usageFields.length > 0) {
+      params.append("usage.fields", usageFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/usage/models.ts
+var models_exports2 = {};
+
 // src/webhooks/client.ts
 var WebhooksClient = class {
   client;
@@ -6670,105 +6996,6 @@ var WebhooksClient = class {
       }
     }
     return normalized;
-  }
-  /**
-     * Create stream link
-     * Creates a link to deliver FilteredStream events to the given webhook.
-  
-  
-     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
-  
-  
-  
-  
-     * @returns {Promise<CreateStreamLinkResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createStreamLink(webhookId, options = {}) {
-    const paramMappings = {
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      tweetFields = void 0,
-      expansions = void 0,
-      mediaFields = void 0,
-      pollFields = void 0,
-      userFields = void 0,
-      placeFields = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/search/webhooks/{webhook_id}";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    if (tweetFields !== void 0) {
-      params.append("tweet.fields", String(tweetFields));
-    }
-    if (expansions !== void 0) {
-      params.append("expansions", String(expansions));
-    }
-    if (mediaFields !== void 0) {
-      params.append("media.fields", String(mediaFields));
-    }
-    if (pollFields !== void 0) {
-      params.append("poll.fields", String(pollFields));
-    }
-    if (userFields !== void 0) {
-      params.append("user.fields", String(userFields));
-    }
-    if (placeFields !== void 0) {
-      params.append("place.fields", String(placeFields));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Delete stream link
-     * Deletes a link from FilteredStream events to the given webhook.
-  
-  
-     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
-  
-  
-  
-  
-     * @returns {Promise<DeleteStreamLinkResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async deleteStreamLink(webhookId) {
-    let path = "/2/tweets/search/webhooks/{webhook_id}";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
   }
   /**
      * Validate webhook
@@ -6836,33 +7063,6 @@ var WebhooksClient = class {
     };
     return this.client.request(
       "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get stream links
-     * Get a list of webhook links associated with a filtered stream ruleset.
-  
-  
-  
-     * @returns {Promise<GetStreamLinksResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getStreamLinks() {
-    let path = "/2/tweets/search/webhooks";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
@@ -6974,578 +7174,48 @@ var WebhooksClient = class {
       finalRequestOptions
     );
   }
-};
-
-// src/webhooks/models.ts
-var models_exports = {};
-
-// src/direct_messages/client.ts
-var DirectMessagesClient = class {
-  client;
   /**
-   * Creates a new direct messages client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Create DM message by conversation ID
-     * Sends a new direct message to a specific conversation by its ID.
-  
-  
-     * @param dmConversationId The DM Conversation ID.
+     * Get stream links
+     * Get a list of webhook links associated with a filtered stream ruleset.
   
   
   
-  
-     * @returns {Promise<CreateByConversationIdResponse>} Promise resolving to the API response
+     * @returns {Promise<GetStreamLinksResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async createByConversationId(dmConversationId, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_conversations/{dm_conversation_id}/messages";
-    path = path.replace("{dm_conversation_id}", encodeURIComponent(String(dmConversationId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create DM message by participant ID
-     * Sends a new direct message to a specific participant by their ID.
-  
-  
-     * @param participantId The ID of the recipient user that will receive the DM.
-  
-  
-  
-  
-     * @returns {Promise<CreateByParticipantIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createByParticipantId(participantId, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_conversations/with/{participant_id}/messages";
-    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get DM event by ID
-     * Retrieves details of a specific direct message event by its ID.
-  
-  
-     * @param eventId dm event id.
-  
-  
-  
-  
-     * @returns {Promise<GetEventsByIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getEventsById(eventId, options = {}) {
-    const paramMappings = {
-      "dm_event.fields": "dmEventFields",
-      "media.fields": "mediaFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      dmEventFields = [],
-      expansions = [],
-      mediaFields = [],
-      userFields = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_events/{event_id}";
-    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
-    const params = new URLSearchParams();
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", dmEventFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Delete DM event
-     * Deletes a specific direct message event by its ID, if owned by the authenticated user.
-  
-  
-     * @param eventId The ID of the direct-message event to delete.
-  
-  
-  
-  
-     * @returns {Promise<DeleteEventsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async deleteEvents(eventId) {
-    let path = "/2/dm_events/{event_id}";
-    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
+  async getStreamLinks() {
+    let path = "/2/tweets/search/webhooks";
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["dm.read", "dm.write"]
-        },
-        {
-          "UserToken": []
+          "BearerToken": []
         }
       ]
       // No optional parameters, using empty request options
     };
     return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create DM conversation
-     * Initiates a new direct message conversation with specified participants.
-  
-  
-  
-     * @returns {Promise<CreateConversationResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createConversation(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_conversations";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get DM events for a DM conversation
-     * Retrieves direct message events for a specific conversation.
-  
-  
-     * @param id The DM conversation ID.
-  
-  
-  
-  
-     * @returns {Promise<GetEventsByConversationIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getEventsByConversationId(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "event_types": "eventTypes",
-      "dm_event.fields": "dmEventFields",
-      "media.fields": "mediaFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      eventTypes = [],
-      dmEventFields = [],
-      expansions = [],
-      mediaFields = [],
-      userFields = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_conversations/{id}/dm_events";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (eventTypes !== void 0 && eventTypes.length > 0) {
-      params.append("event_types", eventTypes.join(","));
-    }
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", dmEventFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
       "GET",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
   }
   /**
-     * Get DM events for a DM conversation
-     * Retrieves direct message events for a specific conversation.
+     * Create stream link
+     * Creates a link to deliver FilteredStream events to the given webhook.
   
   
-     * @param participantId The ID of the participant user for the One to One DM conversation.
+     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
   
   
   
   
-     * @returns {Promise<GetEventsByParticipantIdResponse>} Promise resolving to the API response
+     * @returns {Promise<CreateStreamLinkResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async getEventsByParticipantId(participantId, options = {}) {
+  async createStreamLink(webhookId, options = {}) {
     const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "event_types": "eventTypes",
-      "dm_event.fields": "dmEventFields",
-      "media.fields": "mediaFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      eventTypes = [],
-      dmEventFields = [],
-      expansions = [],
-      mediaFields = [],
-      userFields = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_conversations/with/{participant_id}/dm_events";
-    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (eventTypes !== void 0 && eventTypes.length > 0) {
-      params.append("event_types", eventTypes.join(","));
-    }
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", dmEventFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get DM events
-     * Retrieves a list of recent direct message events across all conversations.
-  
-  
-  
-     * @returns {Promise<GetEventsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getEvents(options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "event_types": "eventTypes",
-      "dm_event.fields": "dmEventFields",
-      "media.fields": "mediaFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      eventTypes = [],
-      dmEventFields = [],
-      expansions = [],
-      mediaFields = [],
-      userFields = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_events";
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (eventTypes !== void 0 && eventTypes.length > 0) {
-      params.append("event_types", eventTypes.join(","));
-    }
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", dmEventFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/direct_messages/models.ts
-var models_exports2 = {};
-
-// src/lists/client.ts
-var ListsClient = class {
-  client;
-  /**
-   * Creates a new lists client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Create List
-     * Creates a new List for the authenticated user.
-  
-  
-  
-     * @returns {Promise<CreateResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async create(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.read", "list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get List Posts
-     * Retrieves a list of Posts associated with a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getPosts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
       "tweet.fields": "tweetFields",
       "media.fields": "mediaFields",
       "poll.fields": "pollFields",
@@ -7554,163 +7224,40 @@ var ListsClient = class {
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
+      tweetFields = void 0,
+      expansions = void 0,
+      mediaFields = void 0,
+      pollFields = void 0,
+      userFields = void 0,
+      placeFields = void 0,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/lists/{id}/tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+    let path = "/2/tweets/search/webhooks/{webhook_id}";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
     const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
+    if (tweetFields !== void 0) {
+      params.append("tweet.fields", String(tweetFields));
     }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
+    if (expansions !== void 0) {
+      params.append("expansions", String(expansions));
     }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
+    if (mediaFields !== void 0) {
+      params.append("media.fields", String(mediaFields));
     }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
+    if (pollFields !== void 0) {
+      params.append("poll.fields", String(pollFields));
     }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
+    if (userFields !== void 0) {
+      params.append("user.fields", String(userFields));
     }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
+    if (placeFields !== void 0) {
+      params.append("place.fields", String(placeFields));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
           "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get List members
-     * Retrieves a list of Users who are members of a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetMembersResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getMembers(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}/members";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Add List member
-     * Adds a User to a specific List by its ID.
-  
-  
-     * @param id The ID of the List for which to add a member.
-  
-  
-  
-  
-     * @returns {Promise<AddMemberResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async addMember(id, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}/members";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
         }
       ],
       ...requestOptions
@@ -7722,237 +7269,27 @@ var ListsClient = class {
     );
   }
   /**
-     * Remove List member
-     * Removes a User from a specific List by its ID and the User’s ID.
+     * Delete stream link
+     * Deletes a link from FilteredStream events to the given webhook.
   
   
-     * @param id The ID of the List to remove a member.
-  
-  
-  
-     * @param userId The ID of User that will be removed from the List.
+     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
   
   
   
   
-     * @returns {Promise<RemoveMemberByUserIdResponse>} Promise resolving to the API response
+     * @returns {Promise<DeleteStreamLinkResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async removeMemberByUserId(id, userId) {
-    let path = "/2/lists/{id}/members/{user_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
+  async deleteStreamLink(webhookId) {
+    let path = "/2/tweets/search/webhooks/{webhook_id}";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
     const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get List followers
-     * Retrieves a list of Users who follow a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetFollowersResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getFollowers(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}/followers";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
           "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get List by ID
-     * Retrieves details of a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getById(id, options = {}) {
-    const paramMappings = {
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", listFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Update List
-     * Updates the details of a specific List owned by the authenticated user by its ID.
-  
-  
-     * @param id The ID of the List to modify.
-  
-  
-  
-  
-     * @returns {Promise<UpdateResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async update(id, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "PUT",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Delete List
-     * Deletes a specific List owned by the authenticated user by its ID.
-  
-  
-     * @param id The ID of the List to delete.
-  
-  
-  
-  
-     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async delete(id) {
-    let path = "/2/lists/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
         }
       ]
       // No optional parameters, using empty request options
@@ -7965,1303 +7302,8 @@ var ListsClient = class {
   }
 };
 
-// src/lists/models.ts
+// src/webhooks/models.ts
 var models_exports3 = {};
-
-// src/account_activity/client.ts
-var AccountActivityClient = class {
-  client;
-  /**
-   * Creates a new account activity client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Get subscriptions
-     * Retrieves a list of all active subscriptions for a given webhook.
-  
-  
-     * @param webhookId The webhook ID to pull subscriptions for.
-  
-  
-  
-  
-     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getSubscriptions(webhookId) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Validate subscription
-     * Checks a user’s Account Activity subscription for a given webhook.
-  
-  
-     * @param webhookId The webhook ID to check subscription against.
-  
-  
-  
-  
-     * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async validateSubscription(webhookId) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create subscription
-     * Creates an Account Activity subscription for the user and the given webhook.
-  
-  
-     * @param webhookId The webhook ID to check subscription against.
-  
-  
-  
-  
-     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createSubscription(webhookId, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create replay job
-     * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
-  
-  
-     * @param webhookId The unique identifier for the webhook configuration.
-  
-  
-  
-  
-     * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
-  
-  
-  
-     * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
-  
-  
-  
-     * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createReplayJob(webhookId, fromDate, toDate) {
-    let path = "/2/account_activity/replay/webhooks/{webhook_id}/subscriptions/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    if (fromDate !== void 0) {
-      params.append("from_date", String(fromDate));
-    }
-    if (toDate !== void 0) {
-      params.append("to_date", String(toDate));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Delete subscription
-     * Deletes an Account Activity subscription for the given webhook and user ID.
-  
-  
-     * @param webhookId The webhook ID to check subscription against.
-  
-  
-  
-     * @param userId User ID to unsubscribe from.
-  
-  
-  
-  
-     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async deleteSubscription(webhookId, userId) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get subscription count
-     * Retrieves a count of currently active Account Activity subscriptions.
-  
-  
-  
-     * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getSubscriptionCount() {
-    let path = "/2/account_activity/subscriptions/count";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/account_activity/models.ts
-var models_exports4 = {};
-
-// src/media/client.ts
-var MediaClient = class {
-  client;
-  /**
-   * Creates a new media client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Get Media by media key
-     * Retrieves details of a specific Media file by its media key.
-  
-  
-     * @param mediaKey A single Media Key.
-  
-  
-  
-  
-     * @returns {Promise<GetByKeyResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByKey(mediaKey, options = {}) {
-    const paramMappings = {
-      "media.fields": "mediaFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      mediaFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/{media_key}";
-    path = path.replace("{media_key}", encodeURIComponent(String(mediaKey)));
-    const params = new URLSearchParams();
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Append Media upload
-     * Appends data to a Media upload request.
-  
-  
-     * @param id The media identifier for the media to perform the append operation.
-  
-  
-  
-  
-     * @returns {Promise<AppendUploadResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async appendUpload(id, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/upload/{id}/append";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Media upload status
-     * Retrieves the status of a Media upload by its ID.
-  
-  
-  
-     * @param mediaId Media id for the requested media upload status.
-  
-  
-  
-     * @returns {Promise<GetUploadStatusResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getUploadStatus(mediaId, options = {}) {
-    const paramMappings = {};
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      command = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/upload";
-    const params = new URLSearchParams();
-    if (mediaId !== void 0) {
-      params.append("media_id", String(mediaId));
-    }
-    if (command !== void 0) {
-      params.append("command", String(command));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Upload media
-     * Uploads a media file for use in posts or other content.
-  
-  
-  
-     * @returns {Promise<UploadResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async upload(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/upload";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Media by media keys
-     * Retrieves details of Media files by their media keys.
-  
-  
-  
-     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @returns {Promise<GetByKeysResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByKeys(mediaKeys, options = {}) {
-    const paramMappings = {
-      "media.fields": "mediaFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      mediaFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media";
-    const params = new URLSearchParams();
-    if (mediaKeys !== void 0 && mediaKeys.length > 0) {
-      params.append("media_keys", mediaKeys.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Initialize media upload
-     * Initializes a media upload.
-  
-  
-  
-     * @returns {Promise<InitializeUploadResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async initializeUpload(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/upload/initialize";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create Media subtitles
-     * Creates subtitles for a specific Media file.
-  
-  
-  
-     * @returns {Promise<CreateSubtitlesResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createSubtitles(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/subtitles";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Delete Media subtitles
-     * Deletes subtitles for a specific Media file.
-  
-  
-  
-     * @returns {Promise<DeleteSubtitlesResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async deleteSubtitles(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/subtitles";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Media analytics
-     * Retrieves analytics data for media.
-  
-  
-  
-     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
-  
-  
-  
-     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
-  
-  
-  
-     * @param granularity The granularity for the search counts results.
-  
-  
-  
-     * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getAnalytics(mediaKeys, endTime, startTime, granularity, options = {}) {
-    const paramMappings = {
-      "media_analytics.fields": "mediaAnalyticsFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      mediaAnalyticsFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/analytics";
-    const params = new URLSearchParams();
-    if (mediaKeys !== void 0 && mediaKeys.length > 0) {
-      params.append("media_keys", mediaKeys.join(","));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (mediaAnalyticsFields !== void 0 && mediaAnalyticsFields.length > 0) {
-      params.append("media_analytics.fields", mediaAnalyticsFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Finalize Media upload
-     * Finalizes a Media upload request.
-  
-  
-     * @param id The media id of the targeted media to finalize.
-  
-  
-  
-  
-     * @returns {Promise<FinalizeUploadResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async finalizeUpload(id) {
-    let path = "/2/media/upload/{id}/finalize";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create Media metadata
-     * Creates metadata for a Media file.
-  
-  
-  
-     * @returns {Promise<CreateMetadataResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createMetadata(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/metadata";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/media/models.ts
-var models_exports5 = {};
-
-// src/communities/client.ts
-var CommunitiesClient = class {
-  client;
-  /**
-   * Creates a new communities client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Search Communities
-     * Retrieves a list of Communities matching the specified search query.
-  
-  
-  
-     * @param query Query to search communities.
-  
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async search(query, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "community.fields": "communityFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      communityFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/communities/search";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (communityFields !== void 0 && communityFields.length > 0) {
-      params.append("community.fields", communityFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Community by ID
-     * Retrieves details of a specific Community by its ID.
-  
-  
-     * @param id The ID of the Community.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getById(id, options = {}) {
-    const paramMappings = {
-      "community.fields": "communityFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      communityFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/communities/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (communityFields !== void 0 && communityFields.length > 0) {
-      params.append("community.fields", communityFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/communities/models.ts
-var models_exports6 = {};
-
-// src/usage/client.ts
-var UsageClient = class {
-  client;
-  /**
-   * Creates a new usage client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Get usage
-     * Retrieves usage statistics for Posts over a specified number of days.
-  
-  
-  
-     * @returns {Promise<GetResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async get(options = {}) {
-    const paramMappings = {
-      "usage.fields": "usageFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      days = void 0,
-      usageFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/usage/tweets";
-    const params = new URLSearchParams();
-    if (days !== void 0) {
-      params.append("days", String(days));
-    }
-    if (usageFields !== void 0 && usageFields.length > 0) {
-      params.append("usage.fields", usageFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/usage/models.ts
-var models_exports7 = {};
-
-// src/compliance/client.ts
-var ComplianceClient = class {
-  client;
-  /**
-   * Creates a new compliance client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Get Compliance Job by ID
-     * Retrieves details of a specific Compliance Job by its ID.
-  
-  
-     * @param id The ID of the Compliance Job to retrieve.
-  
-  
-  
-  
-     * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getJobsById(id, options = {}) {
-    const paramMappings = {
-      "compliance_job.fields": "complianceJobFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      complianceJobFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/compliance/jobs/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
-      params.append("compliance_job.fields", complianceJobFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Compliance Jobs
-     * Retrieves a list of Compliance Jobs filtered by job type and optional status.
-  
-  
-  
-     * @param type Type of Compliance Job to list.
-  
-  
-  
-     * @returns {Promise<GetJobsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getJobs(type, options = {}) {
-    const paramMappings = {
-      "compliance_job.fields": "complianceJobFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      status = void 0,
-      complianceJobFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/compliance/jobs";
-    const params = new URLSearchParams();
-    if (type !== void 0) {
-      params.append("type", String(type));
-    }
-    if (status !== void 0) {
-      params.append("status", String(status));
-    }
-    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
-      params.append("compliance_job.fields", complianceJobFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create Compliance Job
-     * Creates a new Compliance Job for the specified job type.
-  
-  
-  
-     * @param body Request body
-  
-     * @returns {Promise<CreateJobsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async createJobs(body) {
-    let path = "/2/compliance/jobs";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(body || {}),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/compliance/models.ts
-var models_exports8 = {};
-
-// src/trends/client.ts
-var TrendsClient = class {
-  client;
-  /**
-   * Creates a new trends client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Get AI Trends by ID
-     * Retrieves an AI trend by its ID.
-  
-  
-     * @param id The ID of the ai trend.
-  
-  
-  
-  
-     * @returns {Promise<GetAiResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getAi(id, options = {}) {
-    const paramMappings = {
-      "news.fields": "newsFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      newsFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/ai_trends/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (newsFields !== void 0 && newsFields.length > 0) {
-      params.append("news.fields", newsFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Trends by WOEID
-     * Retrieves trending topics for a specific location identified by its WOEID.
-  
-  
-     * @param woeid The WOEID of the place to lookup a trend for.
-  
-  
-  
-  
-     * @returns {Promise<GetByWoeidResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByWoeid(woeid, options = {}) {
-    const paramMappings = {
-      "max_trends": "maxTrends",
-      "trend.fields": "trendFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxTrends = void 0,
-      trendFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/trends/by/woeid/{woeid}";
-    path = path.replace("{woeid}", encodeURIComponent(String(woeid)));
-    const params = new URLSearchParams();
-    if (maxTrends !== void 0) {
-      params.append("max_trends", String(maxTrends));
-    }
-    if (trendFields !== void 0 && trendFields.length > 0) {
-      params.append("trend.fields", trendFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get personalized Trends
-     * Retrieves personalized trending topics for the authenticated user.
-  
-  
-  
-     * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getPersonalized(options = {}) {
-    const paramMappings = {
-      "personalized_trend.fields": "personalizedTrendFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      personalizedTrendFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/personalized_trends";
-    const params = new URLSearchParams();
-    if (personalizedTrendFields !== void 0 && personalizedTrendFields.length > 0) {
-      params.append("personalized_trend.fields", personalizedTrendFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/trends/models.ts
-var models_exports9 = {};
 
 // src/community_notes/client.ts
 var CommunityNotesClient = class {
@@ -9546,7 +7588,887 @@ var CommunityNotesClient = class {
 };
 
 // src/community_notes/models.ts
-var models_exports10 = {};
+var models_exports4 = {};
+
+// src/activity/client.ts
+var ActivityClient = class {
+  client;
+  /**
+   * Creates a new activity client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Get X activity subscriptions
+     * Get a list of active subscriptions for XAA
+  
+  
+  
+     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getSubscriptions() {
+    let path = "/2/activity/subscriptions";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create X activity subscription
+     * Creates a subscription for an X activity event
+  
+  
+  
+     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createSubscription(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/activity/subscriptions";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Update X activity subscription
+     * Updates a subscription for an X activity event
+  
+  
+     * @param subscriptionId The ID of the subscription to update.
+  
+  
+  
+  
+     * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async updateSubscription(subscriptionId, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/activity/subscriptions/{subscription_id}";
+    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "PUT",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Deletes X activity subscription
+     * Deletes a subscription for an X activity event
+  
+  
+     * @param subscriptionId The ID of the subscription to delete.
+  
+  
+  
+  
+     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async deleteSubscription(subscriptionId) {
+    let path = "/2/activity/subscriptions/{subscription_id}";
+    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Activity Stream
+     * Stream of X Activities
+  
+  
+  
+     * @returns {Promise<StreamResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async stream(options = {}) {
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/activity/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/activity/models.ts
+var models_exports5 = {};
+
+// src/trends/client.ts
+var TrendsClient = class {
+  client;
+  /**
+   * Creates a new trends client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Get AI Trends by ID
+     * Retrieves an AI trend by its ID.
+  
+  
+     * @param id The ID of the ai trend.
+  
+  
+  
+  
+     * @returns {Promise<GetAiResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getAi(id, options = {}) {
+    const paramMappings = {
+      "news.fields": "newsFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      newsFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/ai_trends/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (newsFields !== void 0 && newsFields.length > 0) {
+      params.append("news.fields", newsFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Trends by WOEID
+     * Retrieves trending topics for a specific location identified by its WOEID.
+  
+  
+     * @param woeid The WOEID of the place to lookup a trend for.
+  
+  
+  
+  
+     * @returns {Promise<GetByWoeidResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByWoeid(woeid, options = {}) {
+    const paramMappings = {
+      "max_trends": "maxTrends",
+      "trend.fields": "trendFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxTrends = void 0,
+      trendFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/trends/by/woeid/{woeid}";
+    path = path.replace("{woeid}", encodeURIComponent(String(woeid)));
+    const params = new URLSearchParams();
+    if (maxTrends !== void 0) {
+      params.append("max_trends", String(maxTrends));
+    }
+    if (trendFields !== void 0 && trendFields.length > 0) {
+      params.append("trend.fields", trendFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get personalized Trends
+     * Retrieves personalized trending topics for the authenticated user.
+  
+  
+  
+     * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getPersonalized(options = {}) {
+    const paramMappings = {
+      "personalized_trend.fields": "personalizedTrendFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      personalizedTrendFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/personalized_trends";
+    const params = new URLSearchParams();
+    if (personalizedTrendFields !== void 0 && personalizedTrendFields.length > 0) {
+      params.append("personalized_trend.fields", personalizedTrendFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/trends/models.ts
+var models_exports6 = {};
+
+// src/media/client.ts
+var MediaClient = class {
+  client;
+  /**
+   * Creates a new media client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Create Media subtitles
+     * Creates subtitles for a specific Media file.
+  
+  
+  
+     * @returns {Promise<CreateSubtitlesResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createSubtitles(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/subtitles";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Delete Media subtitles
+     * Deletes subtitles for a specific Media file.
+  
+  
+  
+     * @returns {Promise<DeleteSubtitlesResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async deleteSubtitles(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/subtitles";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Media by media key
+     * Retrieves details of a specific Media file by its media key.
+  
+  
+     * @param mediaKey A single Media Key.
+  
+  
+  
+  
+     * @returns {Promise<GetByKeyResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByKey(mediaKey, options = {}) {
+    const paramMappings = {
+      "media.fields": "mediaFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      mediaFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/{media_key}";
+    path = path.replace("{media_key}", encodeURIComponent(String(mediaKey)));
+    const params = new URLSearchParams();
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Media upload status
+     * Retrieves the status of a Media upload by its ID.
+  
+  
+  
+     * @param mediaId Media id for the requested media upload status.
+  
+  
+  
+     * @returns {Promise<GetUploadStatusResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getUploadStatus(mediaId, options = {}) {
+    const paramMappings = {};
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      command = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/upload";
+    const params = new URLSearchParams();
+    if (mediaId !== void 0) {
+      params.append("media_id", String(mediaId));
+    }
+    if (command !== void 0) {
+      params.append("command", String(command));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Upload media
+     * Uploads a media file for use in posts or other content.
+  
+  
+  
+     * @returns {Promise<UploadResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async upload(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/upload";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Finalize Media upload
+     * Finalizes a Media upload request.
+  
+  
+     * @param id The media id of the targeted media to finalize.
+  
+  
+  
+  
+     * @returns {Promise<FinalizeUploadResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async finalizeUpload(id) {
+    let path = "/2/media/upload/{id}/finalize";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create Media metadata
+     * Creates metadata for a Media file.
+  
+  
+  
+     * @returns {Promise<CreateMetadataResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createMetadata(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/metadata";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Append Media upload
+     * Appends data to a Media upload request.
+  
+  
+     * @param id The media identifier for the media to perform the append operation.
+  
+  
+  
+  
+     * @returns {Promise<AppendUploadResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async appendUpload(id, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/upload/{id}/append";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Media by media keys
+     * Retrieves details of Media files by their media keys.
+  
+  
+  
+     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @returns {Promise<GetByKeysResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByKeys(mediaKeys, options = {}) {
+    const paramMappings = {
+      "media.fields": "mediaFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      mediaFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media";
+    const params = new URLSearchParams();
+    if (mediaKeys !== void 0 && mediaKeys.length > 0) {
+      params.append("media_keys", mediaKeys.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Initialize media upload
+     * Initializes a media upload.
+  
+  
+  
+     * @returns {Promise<InitializeUploadResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async initializeUpload(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/upload/initialize";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Media analytics
+     * Retrieves analytics data for media.
+  
+  
+  
+     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
+  
+  
+  
+     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
+  
+  
+  
+     * @param granularity The granularity for the search counts results.
+  
+  
+  
+     * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getAnalytics(mediaKeys, endTime, startTime, granularity, options = {}) {
+    const paramMappings = {
+      "media_analytics.fields": "mediaAnalyticsFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      mediaAnalyticsFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/analytics";
+    const params = new URLSearchParams();
+    if (mediaKeys !== void 0 && mediaKeys.length > 0) {
+      params.append("media_keys", mediaKeys.join(","));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (mediaAnalyticsFields !== void 0 && mediaAnalyticsFields.length > 0) {
+      params.append("media_analytics.fields", mediaAnalyticsFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/media/models.ts
+var models_exports7 = {};
 
 // src/stream/event_driven_stream.ts
 var StreamEvent = {
@@ -9830,201 +8752,6 @@ var StreamClient = class {
     return normalized;
   }
   /**
-       * Stream 10% sampled Posts
-       * Streams a 10% sample of public Posts in real-time.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @param partition The partition number.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async postsSample10(partition, options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsSample10");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/sample10/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream Posts compliance data
-       * Streams all compliance data related to Posts.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @param partition The partition number.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async postsCompliance(partition, options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsCompliance");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/compliance/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
        * Stream Portuguese Posts
        * Streams all public Portuguese-language Posts in real-time.
        * 
@@ -10239,8 +8966,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream sampled Posts
-       * Streams a 1% sample of public Posts in real-time.
+       * Stream Post labels
+       * Streams all labeling events applied to Posts.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -10250,53 +8977,136 @@ var StreamClient = class {
   
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async postsSample(options = {}) {
+  async labelsCompliance(options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsSample");
+    this.client.validateAuthentication(requiredAuthTypes, "labelsCompliance");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
+      "start_time": "startTime",
+      "end_time": "endTime"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       backfillMinutes = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
+      startTime = void 0,
+      endTime = void 0,
       headers = {},
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/sample/stream";
+    let path = "/2/tweets/label/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
     }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream sampled Likes
+       * Streams a 10% sample of public Likes in real-time.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async likesSample10(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "likesSample10");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "like_with_tweet_author.fields": "likeWithTweetAuthorFields",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      likeWithTweetAuthorFields = [],
+      expansions = [],
+      userFields = [],
+      tweetFields = [],
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/likes/sample10/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (likeWithTweetAuthorFields !== void 0 && likeWithTweetAuthorFields.length > 0) {
+      params.append("like_with_tweet_author.fields", likeWithTweetAuthorFields.join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
     }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", userFields.join(","));
     }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
     }
     const url = path + (params.toString() ? `?${params.toString()}` : "");
     const response = await this.client.request(
@@ -10446,289 +9256,6 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream sampled Likes
-       * Streams a 10% sample of public Likes in real-time.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @param partition The partition number.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async likesSample10(partition, options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "likesSample10");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "like_with_tweet_author.fields": "likeWithTweetAuthorFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      likeWithTweetAuthorFields = [],
-      expansions = [],
-      userFields = [],
-      tweetFields = [],
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/likes/sample10/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (likeWithTweetAuthorFields !== void 0 && likeWithTweetAuthorFields.length > 0) {
-      params.append("like_with_tweet_author.fields", likeWithTweetAuthorFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream filtered Posts
-       * Streams Posts in real-time matching the active rule set.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async posts(options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "posts");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/search/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream Likes compliance data
-       * Streams all compliance data related to Likes for Users.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async likesCompliance(options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "likesCompliance");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/likes/compliance/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
        * Stream Users compliance data
        * Streams all compliance data related to Users.
        * 
@@ -10812,8 +9339,120 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream Post labels
-       * Streams all labeling events applied to Posts.
+       * Stream all Posts
+       * Streams all public Posts in real-time.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async postsFirehose(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "postsFirehose");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/firehose/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream sampled Posts
+       * Streams a 1% sample of public Posts in real-time.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -10823,10 +9462,109 @@ var StreamClient = class {
   
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async labelsCompliance(options = {}) {
+  async postsSample(options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "labelsCompliance");
+    this.client.validateAuthentication(requiredAuthTypes, "postsSample");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/sample/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream Posts compliance data
+       * Streams all compliance data related to Posts.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async postsCompliance(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "postsCompliance");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
       "start_time": "startTime",
@@ -10841,10 +9579,13 @@ var StreamClient = class {
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/label/stream";
+    let path = "/2/tweets/compliance/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
     }
     if (startTime !== void 0) {
       params.append("start_time", String(startTime));
@@ -10888,8 +9629,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream Japanese Posts
-       * Streams all public Japanese-language Posts in real-time.
+       * Stream Likes compliance data
+       * Streams all compliance data related to Likes for Users.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -10897,72 +9638,36 @@ var StreamClient = class {
   
   
   
-       * @param partition The partition number.
-  
-  
-  
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async postsFirehoseJa(partition, options = {}) {
+  async likesCompliance(options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsFirehoseJa");
+    this.client.validateAuthentication(requiredAuthTypes, "likesCompliance");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
       "start_time": "startTime",
-      "end_time": "endTime",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
+      "end_time": "endTime"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       backfillMinutes = void 0,
       startTime = void 0,
       endTime = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
       headers = {},
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/firehose/stream/lang/ja";
+    let path = "/2/likes/compliance/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
     }
     if (startTime !== void 0) {
       params.append("start_time", String(startTime));
     }
     if (endTime !== void 0) {
       params.append("end_time", String(endTime));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
     }
     const url = path + (params.toString() ? `?${params.toString()}` : "");
     const response = await this.client.request(
@@ -11112,8 +9817,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream all Posts
-       * Streams all public Posts in real-time.
+       * Stream Japanese Posts
+       * Streams all public Japanese-language Posts in real-time.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -11127,10 +9832,10 @@ var StreamClient = class {
   
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async postsFirehose(partition, options = {}) {
+  async postsFirehoseJa(partition, options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsFirehose");
+    this.client.validateAuthentication(requiredAuthTypes, "postsFirehoseJa");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
       "start_time": "startTime",
@@ -11156,13 +9861,230 @@ var StreamClient = class {
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/firehose/stream";
+    let path = "/2/tweets/firehose/stream/lang/ja";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
     }
     if (partition !== void 0) {
       params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream 10% sampled Posts
+       * Streams a 10% sample of public Posts in real-time.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async postsSample10(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "postsSample10");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/sample10/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream filtered Posts
+       * Streams Posts in real-time matching the active rule set.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async posts(options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "posts");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/search/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
     }
     if (startTime !== void 0) {
       params.append("start_time", String(startTime));
@@ -11357,431 +10279,6 @@ var StreamClient = class {
   }
 };
 
-// src/spaces/client.ts
-var SpacesClient = class {
-  client;
-  /**
-   * Creates a new spaces client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  /**
-     * Get space by ID
-     * Retrieves details of a specific space by its ID.
-  
-  
-     * @param id The ID of the Space to be retrieved.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getById(id, options = {}) {
-    const paramMappings = {
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", spaceFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", topicFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Spaces by creator IDs
-     * Retrieves details of Spaces created by specified User IDs.
-  
-  
-  
-     * @param userIds The IDs of Users to search through.
-  
-  
-  
-     * @returns {Promise<GetByCreatorIdsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByCreatorIds(userIds, options = {}) {
-    const paramMappings = {
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/by/creator_ids";
-    const params = new URLSearchParams();
-    if (userIds !== void 0 && userIds.length > 0) {
-      params.append("user_ids", userIds.join(","));
-    }
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", spaceFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", topicFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Spaces by IDs
-     * Retrieves details of multiple Spaces by their IDs.
-  
-  
-  
-     * @param ids The list of Space IDs to return.
-  
-  
-  
-     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByIds(ids, options = {}) {
-    const paramMappings = {
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", spaceFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", topicFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Search Spaces
-     * Retrieves a list of Spaces matching the specified search query.
-  
-  
-  
-     * @param query The search query.
-  
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async search(query, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      state = void 0,
-      maxResults = void 0,
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/search";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (state !== void 0) {
-      params.append("state", String(state));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", spaceFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", topicFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Space Posts
-     * Retrieves a list of Posts shared in a specific Space by its ID.
-  
-  
-     * @param id The ID of the Space to be retrieved.
-  
-  
-  
-  
-     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getPosts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/{id}/tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Space ticket buyers
-     * Retrieves a list of Users who purchased tickets to a specific Space by its ID.
-  
-  
-     * @param id The ID of the Space to be retrieved.
-  
-  
-  
-  
-     * @returns {Promise<GetBuyersResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getBuyers(id, options = {}) {
-    const paramMappings = {
-      "pagination_token": "paginationToken",
-      "max_results": "maxResults",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      paginationToken = void 0,
-      maxResults = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/{id}/buyers";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/spaces/models.ts
-var models_exports11 = {};
-
 // src/users/client.ts
 var UsersClient = class {
   client;
@@ -11809,6 +10306,427 @@ var UsersClient = class {
       }
     }
     return normalized;
+  }
+  /**
+     * Get blocking
+     * Retrieves a list of Users blocked by the specified User ID.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+  
+     * @returns {Promise<GetBlockingResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getBlocking(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/blocking";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["block.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Bookmark folders
+     * Retrieves a list of Bookmark folders created by the authenticated user.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+  
+     * @returns {Promise<GetBookmarkFoldersResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getBookmarkFolders(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/bookmarks/folders";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["bookmark.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Reposts of me
+     * Retrieves a list of Posts that repost content from the authenticated user.
+  
+  
+  
+     * @returns {Promise<GetRepostsOfMeResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getRepostsOfMe(options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/reposts_of_me";
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["timeline.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get owned Lists
+     * Retrieves a list of Lists owned by a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetOwnedListsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getOwnedLists(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/owned_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", listFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Unfollow List
+     * Causes the authenticated user to unfollow a specific List by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that will unfollow the List.
+  
+  
+  
+     * @param listId The ID of the List to unfollow.
+  
+  
+  
+  
+     * @returns {Promise<UnfollowListResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async unfollowList(id, listId) {
+    let path = "/2/users/{id}/followed_lists/{list_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Search Users
+     * Retrieves a list of Users matching a search query.
+  
+  
+  
+     * @param query TThe the query string by which to query for users.
+  
+  
+  
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async search(query, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "next_token": "nextToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      nextToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/search";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get User by username
+     * Retrieves details of a specific User by their username.
+  
+  
+     * @param username A username.
+  
+  
+  
+  
+     * @returns {Promise<GetByUsernameResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByUsername(username, options = {}) {
+    const paramMappings = {
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/by/username/{username}";
+    path = path.replace("{username}", encodeURIComponent(String(username)));
+    const params = new URLSearchParams();
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
   }
   /**
      * Get followed Lists
@@ -11920,149 +10838,38 @@ var UsersClient = class {
     );
   }
   /**
-     * Get Users by IDs
-     * Retrieves details of multiple Users by their IDs.
-  
-  
-  
-     * @param ids A list of User IDs, comma-separated. You can specify up to 100 IDs.
-  
-  
-  
-     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByIds(ids, options = {}) {
-    const paramMappings = {
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Bookmark folders
-     * Retrieves a list of Bookmark folders created by the authenticated user.
+     * Get Bookmarks by folder ID
+     * Retrieves Posts in a specific Bookmark folder by its ID for the authenticated user.
   
   
      * @param id The ID of the authenticated source User for whom to return results.
   
   
   
+     * @param folderId The ID of the Bookmark Folder that the authenticated User is trying to fetch Posts for.
   
-     * @returns {Promise<GetBookmarkFoldersResponse>} Promise resolving to the API response
+  
+  
+  
+     * @returns {Promise<GetBookmarksByFolderIdResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async getBookmarkFolders(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/bookmarks/folders";
+  async getBookmarksByFolderId(id, folderId) {
+    let path = "/2/users/{id}/bookmarks/folders/{folder_id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["bookmark.read", "users.read"]
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Unlike Post
-     * Causes the authenticated user to Unlike a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to unlike the Post.
-  
-  
-  
-     * @param tweetId The ID of the Post that the User is requesting to unlike.
-  
-  
-  
-  
-     * @returns {Promise<UnlikePostResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async unlikePost(id, tweetId) {
-    let path = "/2/users/{id}/likes/{tweet_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+    path = path.replace("{folder_id}", encodeURIComponent(String(folderId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["like.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
+          "OAuth2UserToken": ["bookmark.read", "tweet.read", "users.read"]
         }
       ]
       // No optional parameters, using empty request options
     };
     return this.client.request(
-      "DELETE",
+      "GET",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
@@ -12172,95 +10979,47 @@ var UsersClient = class {
     );
   }
   /**
-     * Get mentions
-     * Retrieves a list of Posts that mention a specific User by their ID.
+     * Get pinned Lists
+     * Retrieves a list of Lists pinned by the authenticated user.
   
   
-     * @param id The ID of the User to lookup.
+     * @param id The ID of the authenticated source User for whom to return results.
   
   
   
   
-     * @returns {Promise<GetMentionsResponse>} Promise resolving to the API response
+     * @returns {Promise<GetPinnedListsResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async getMentions(id, options = {}) {
+  async getPinnedLists(id, options = {}) {
     const paramMappings = {
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
+      "list.fields": "listFields",
+      "user.fields": "userFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      sinceId = void 0,
-      untilId = void 0,
-      maxResults = void 0,
-      paginationToken = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      tweetFields = [],
+      listFields = [],
       expansions = [],
-      mediaFields = [],
-      pollFields = [],
       userFields = [],
-      placeFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/users/{id}/mentions";
+    let path = "/2/users/{id}/pinned_lists";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", listFields.join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
     }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
         },
         {
           "UserToken": []
@@ -12270,6 +11029,44 @@ var UsersClient = class {
     };
     return this.client.request(
       "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Pin List
+     * Causes the authenticated user to pin a specific List by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that will pin the List.
+  
+  
+  
+  
+     * @param body Request body
+  
+     * @returns {Promise<PinListResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async pinList(id, body) {
+    let path = "/2/users/{id}/pinned_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(body || {}),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
@@ -12309,568 +11106,6 @@ var UsersClient = class {
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Unfollow List
-     * Causes the authenticated user to unfollow a specific List by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that will unfollow the List.
-  
-  
-  
-     * @param listId The ID of the List to unfollow.
-  
-  
-  
-  
-     * @returns {Promise<UnfollowListResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async unfollowList(id, listId) {
-    let path = "/2/users/{id}/followed_lists/{list_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Bookmarks by folder ID
-     * Retrieves Posts in a specific Bookmark folder by its ID for the authenticated user.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-     * @param folderId The ID of the Bookmark Folder that the authenticated User is trying to fetch Posts for.
-  
-  
-  
-  
-     * @returns {Promise<GetBookmarksByFolderIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getBookmarksByFolderId(id, folderId) {
-    let path = "/2/users/{id}/bookmarks/folders/{folder_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{folder_id}", encodeURIComponent(String(folderId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["bookmark.read", "tweet.read", "users.read"]
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Unmute User
-     * Causes the authenticated user to unmute a specific user by their ID.
-  
-  
-     * @param sourceUserId The ID of the authenticated source User that is requesting to unmute the target User.
-  
-  
-  
-     * @param targetUserId The ID of the User that the source User is requesting to unmute.
-  
-  
-  
-  
-     * @returns {Promise<UnmuteUserResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async unmuteUser(sourceUserId, targetUserId) {
-    let path = "/2/users/{source_user_id}/muting/{target_user_id}";
-    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
-    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["mute.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get owned Lists
-     * Retrieves a list of Lists owned by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetOwnedListsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getOwnedLists(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/owned_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", listFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get List memberships
-     * Retrieves a list of Lists that a specific User is a member of by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetListMembershipsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getListMemberships(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/list_memberships";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", listFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Like Post
-     * Causes the authenticated user to Like a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to like the Post.
-  
-  
-  
-  
-     * @returns {Promise<LikePostResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async likePost(id, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/likes";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["like.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Repost Post
-     * Causes the authenticated user to repost a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to repost the Post.
-  
-  
-  
-  
-     * @returns {Promise<RepostPostResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async repostPost(id, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/retweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get liked Posts
-     * Retrieves a list of Posts liked by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetLikedPostsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getLikedPosts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/liked_tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["like.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Unfollow User
-     * Causes the authenticated user to unfollow a specific user by their ID.
-  
-  
-     * @param sourceUserId The ID of the authenticated source User that is requesting to unfollow the target User.
-  
-  
-  
-     * @param targetUserId The ID of the User that the source User is requesting to unfollow.
-  
-  
-  
-  
-     * @returns {Promise<UnfollowUserResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async unfollowUser(sourceUserId, targetUserId) {
-    let path = "/2/users/{source_user_id}/following/{target_user_id}";
-    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
-    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["follows.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Posts
-     * Retrieves a list of posts authored by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getPosts(id, options = {}) {
-    const paramMappings = {
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      sinceId = void 0,
-      untilId = void 0,
-      maxResults = void 0,
-      paginationToken = void 0,
-      exclude = [],
-      startTime = void 0,
-      endTime = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (exclude !== void 0 && exclude.length > 0) {
-      params.append("exclude", exclude.join(","));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
         {
           "OAuth2UserToken": ["tweet.read", "users.read"]
         },
@@ -12999,19 +11234,687 @@ var UsersClient = class {
     );
   }
   /**
-     * Get User by username
-     * Retrieves details of a specific User by their username.
+     * Get List memberships
+     * Retrieves a list of Lists that a specific User is a member of by their ID.
   
   
-     * @param username A username.
+     * @param id The ID of the User to lookup.
   
   
   
   
-     * @returns {Promise<GetByUsernameResponse>} Promise resolving to the API response
+     * @returns {Promise<GetListMembershipsResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async getByUsername(username, options = {}) {
+  async getListMemberships(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/list_memberships";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", listFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get following
+     * Retrieves a list of Users followed by a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetFollowingResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getFollowing(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/following";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["follows.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Follow User
+     * Causes the authenticated user to follow a specific user by their ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to follow the target User.
+  
+  
+  
+  
+     * @returns {Promise<FollowUserResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async followUser(id, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/following";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["follows.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Like Post
+     * Causes the authenticated user to Like a specific Post by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to like the Post.
+  
+  
+  
+  
+     * @returns {Promise<LikePostResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async likePost(id, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/likes";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["like.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Posts
+     * Retrieves a list of posts authored by a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getPosts(id, options = {}) {
+    const paramMappings = {
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      sinceId = void 0,
+      untilId = void 0,
+      maxResults = void 0,
+      paginationToken = void 0,
+      exclude = [],
+      startTime = void 0,
+      endTime = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (exclude !== void 0 && exclude.length > 0) {
+      params.append("exclude", exclude.join(","));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Unmute User
+     * Causes the authenticated user to unmute a specific user by their ID.
+  
+  
+     * @param sourceUserId The ID of the authenticated source User that is requesting to unmute the target User.
+  
+  
+  
+     * @param targetUserId The ID of the User that the source User is requesting to unmute.
+  
+  
+  
+  
+     * @returns {Promise<UnmuteUserResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async unmuteUser(sourceUserId, targetUserId) {
+    let path = "/2/users/{source_user_id}/muting/{target_user_id}";
+    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
+    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["mute.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get mentions
+     * Retrieves a list of Posts that mention a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetMentionsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getMentions(id, options = {}) {
+    const paramMappings = {
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      sinceId = void 0,
+      untilId = void 0,
+      maxResults = void 0,
+      paginationToken = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/mentions";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get liked Posts
+     * Retrieves a list of Posts liked by a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetLikedPostsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getLikedPosts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/liked_tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["like.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Unrepost Post
+     * Causes the authenticated user to unrepost a specific Post by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to repost the Post.
+  
+  
+  
+     * @param sourceTweetId The ID of the Post that the User is requesting to unretweet.
+  
+  
+  
+  
+     * @returns {Promise<UnrepostPostResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async unrepostPost(id, sourceTweetId) {
+    let path = "/2/users/{id}/retweets/{source_tweet_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{source_tweet_id}", encodeURIComponent(String(sourceTweetId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Unfollow User
+     * Causes the authenticated user to unfollow a specific user by their ID.
+  
+  
+     * @param sourceUserId The ID of the authenticated source User that is requesting to unfollow the target User.
+  
+  
+  
+     * @param targetUserId The ID of the User that the source User is requesting to unfollow.
+  
+  
+  
+  
+     * @returns {Promise<UnfollowUserResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async unfollowUser(sourceUserId, targetUserId) {
+    let path = "/2/users/{source_user_id}/following/{target_user_id}";
+    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
+    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["follows.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Unpin List
+     * Causes the authenticated user to unpin a specific List by its ID.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+     * @param listId The ID of the List to unpin.
+  
+  
+  
+  
+     * @returns {Promise<UnpinListResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async unpinList(id, listId) {
+    let path = "/2/users/{id}/pinned_lists/{list_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Users by IDs
+     * Retrieves details of multiple Users by their IDs.
+  
+  
+  
+     * @param ids A list of User IDs, comma-separated. You can specify up to 100 IDs.
+  
+  
+  
+     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByIds(ids, options = {}) {
     const paramMappings = {
       "user.fields": "userFields",
       "tweet.fields": "tweetFields"
@@ -13023,9 +11926,11 @@ var UsersClient = class {
       tweetFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/users/by/username/{username}";
-    path = path.replace("{username}", encodeURIComponent(String(username)));
+    let path = "/2/users";
     const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", userFields.join(","));
     }
@@ -13185,6 +12090,47 @@ var UsersClient = class {
     );
   }
   /**
+     * Repost Post
+     * Causes the authenticated user to repost a specific Post by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to repost the Post.
+  
+  
+  
+  
+     * @returns {Promise<RepostPostResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async repostPost(id, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/retweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
      * Unblock DMs
      * Unblocks direct messages to or from a specific User by their ID for the authenticated user.
   
@@ -13220,76 +12166,38 @@ var UsersClient = class {
     );
   }
   /**
-     * Get Reposts of me
-     * Retrieves a list of Posts that repost content from the authenticated user.
+     * Delete Bookmark
+     * Removes a Post from the authenticated user’s Bookmarks by its ID.
+  
+  
+     * @param id The ID of the authenticated source User whose bookmark is to be removed.
   
   
   
-     * @returns {Promise<GetRepostsOfMeResponse>} Promise resolving to the API response
+     * @param tweetId The ID of the Post that the source User is removing from bookmarks.
+  
+  
+  
+  
+     * @returns {Promise<DeleteBookmarkResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async getRepostsOfMe(options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/reposts_of_me";
+  async deleteBookmark(id, tweetId) {
+    let path = "/2/users/{id}/bookmarks/{tweet_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
     const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["timeline.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
+          "OAuth2UserToken": ["bookmark.write", "tweet.read", "users.read"]
         }
-      ],
-      ...requestOptions
+      ]
+      // No optional parameters, using empty request options
     };
     return this.client.request(
-      "GET",
+      "DELETE",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
@@ -13330,32 +12238,32 @@ var UsersClient = class {
     );
   }
   /**
-     * Unpin List
-     * Causes the authenticated user to unpin a specific List by its ID.
+     * Unlike Post
+     * Causes the authenticated user to Unlike a specific Post by its ID.
   
   
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-     * @param listId The ID of the List to unpin.
+     * @param id The ID of the authenticated source User that is requesting to unlike the Post.
   
   
   
+     * @param tweetId The ID of the Post that the User is requesting to unlike.
   
-     * @returns {Promise<UnpinListResponse>} Promise resolving to the API response
+  
+  
+  
+     * @returns {Promise<UnlikePostResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async unpinList(id, listId) {
-    let path = "/2/users/{id}/pinned_lists/{list_id}";
+  async unlikePost(id, tweetId) {
+    let path = "/2/users/{id}/likes/{tweet_id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
+    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+          "OAuth2UserToken": ["like.write", "tweet.read", "users.read"]
         },
         {
           "UserToken": []
@@ -13365,380 +12273,6 @@ var UsersClient = class {
     };
     return this.client.request(
       "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get following
-     * Retrieves a list of Users followed by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetFollowingResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getFollowing(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/following";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["follows.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Follow User
-     * Causes the authenticated user to follow a specific user by their ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to follow the target User.
-  
-  
-  
-  
-     * @returns {Promise<FollowUserResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async followUser(id, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/following";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["follows.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Unrepost Post
-     * Causes the authenticated user to unrepost a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to repost the Post.
-  
-  
-  
-     * @param sourceTweetId The ID of the Post that the User is requesting to unretweet.
-  
-  
-  
-  
-     * @returns {Promise<UnrepostPostResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async unrepostPost(id, sourceTweetId) {
-    let path = "/2/users/{id}/retweets/{source_tweet_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{source_tweet_id}", encodeURIComponent(String(sourceTweetId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get blocking
-     * Retrieves a list of Users blocked by the specified User ID.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-  
-     * @returns {Promise<GetBlockingResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getBlocking(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/blocking";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["block.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get pinned Lists
-     * Retrieves a list of Lists pinned by the authenticated user.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-  
-     * @returns {Promise<GetPinnedListsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getPinnedLists(id, options = {}) {
-    const paramMappings = {
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/pinned_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", listFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Pin List
-     * Causes the authenticated user to pin a specific List by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that will pin the List.
-  
-  
-  
-  
-     * @param body Request body
-  
-     * @returns {Promise<PinListResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async pinList(id, body) {
-    let path = "/2/users/{id}/pinned_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(body || {}),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Search Users
-     * Retrieves a list of Users matching a search query.
-  
-  
-  
-     * @param query TThe the query string by which to query for users.
-  
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async search(query, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "next_token": "nextToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      nextToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/search";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
@@ -13907,47 +12441,155 @@ var UsersClient = class {
       finalRequestOptions
     );
   }
+};
+
+// src/users/models.ts
+var models_exports8 = {};
+
+// src/communities/client.ts
+var CommunitiesClient = class {
+  client;
   /**
-     * Delete Bookmark
-     * Removes a Post from the authenticated user’s Bookmarks by its ID.
+   * Creates a new communities client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Search Communities
+     * Retrieves a list of Communities matching the specified search query.
   
   
-     * @param id The ID of the authenticated source User whose bookmark is to be removed.
+  
+     * @param query Query to search communities.
   
   
   
-     * @param tweetId The ID of the Post that the source User is removing from bookmarks.
-  
-  
-  
-  
-     * @returns {Promise<DeleteBookmarkResponse>} Promise resolving to the API response
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async deleteBookmark(id, tweetId) {
-    let path = "/2/users/{id}/bookmarks/{tweet_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+  async search(query, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "community.fields": "communityFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      communityFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/communities/search";
     const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (communityFields !== void 0 && communityFields.length > 0) {
+      params.append("community.fields", communityFields.join(","));
+    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["bookmark.write", "tweet.read", "users.read"]
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
         }
-      ]
-      // No optional parameters, using empty request options
+      ],
+      ...requestOptions
     };
     return this.client.request(
-      "DELETE",
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Community by ID
+     * Retrieves details of a specific Community by its ID.
+  
+  
+     * @param id The ID of the Community.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getById(id, options = {}) {
+    const paramMappings = {
+      "community.fields": "communityFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      communityFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/communities/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (communityFields !== void 0 && communityFields.length > 0) {
+      params.append("community.fields", communityFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
   }
 };
 
-// src/users/models.ts
-var models_exports12 = {};
+// src/communities/models.ts
+var models_exports9 = {};
 
 // src/posts/client.ts
 var PostsClient = class {
@@ -13976,6 +12618,808 @@ var PostsClient = class {
       }
     }
     return normalized;
+  }
+  /**
+     * Get Liking Users
+     * Retrieves a list of Users who liked a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetLikingUsersResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getLikingUsers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}/liking_users";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["like.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Reposts
+     * Retrieves a list of Posts that repost a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetRepostsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getReposts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}/retweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get count of recent Posts
+     * Retrieves the count of Posts from the last 7 days matching a search query.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<GetCountsRecentResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getCountsRecent(query, options = {}) {
+    const paramMappings = {
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "search_count.fields": "searchCountFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      granularity = void 0,
+      searchCountFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/counts/recent";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (searchCountFields !== void 0 && searchCountFields.length > 0) {
+      params.append("search_count.fields", searchCountFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Hide reply
+     * Hides or unhides a reply to a conversation owned by the authenticated user.
+  
+  
+     * @param tweetId The ID of the reply that you want to hide or unhide.
+  
+  
+  
+  
+     * @returns {Promise<HideReplyResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async hideReply(tweetId, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{tweet_id}/hidden";
+    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.moderate.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "PUT",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Search all Posts
+     * Retrieves Posts from the full archive matching a search query.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<SearchAllResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async searchAll(query, options = {}) {
+    const paramMappings = {
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "max_results": "maxResults",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "sort_order": "sortOrder",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      maxResults = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      sortOrder = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/search/all";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (sortOrder !== void 0) {
+      params.append("sort_order", String(sortOrder));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Posts by IDs
+     * Retrieves details of multiple Posts by their IDs.
+  
+  
+  
+     * @param ids A comma separated list of Post IDs. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByIds(ids, options = {}) {
+    const paramMappings = {
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create or Edit Post
+     * Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided.
+  
+  
+  
+     * @param body Request body
+  
+     * @returns {Promise<CreateResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async create(body) {
+    let path = "/2/tweets";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(body || {}),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get count of all Posts
+     * Retrieves the count of Posts matching a search query from the full archive.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<GetCountsAllResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getCountsAll(query, options = {}) {
+    const paramMappings = {
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "search_count.fields": "searchCountFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      granularity = void 0,
+      searchCountFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/counts/all";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (searchCountFields !== void 0 && searchCountFields.length > 0) {
+      params.append("search_count.fields", searchCountFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Post by ID
+     * Retrieves details of a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getById(id, options = {}) {
+    const paramMappings = {
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Delete Post
+     * Deletes a specific Post by its ID, if owned by the authenticated user.
+  
+  
+     * @param id The ID of the Post to be deleted.
+  
+  
+  
+  
+     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async delete(id) {
+    let path = "/2/tweets/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Reposted by
+     * Retrieves a list of Users who reposted a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetRepostedByResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getRepostedBy(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}/retweeted_by";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get 28-hour Post insights
+     * Retrieves engagement metrics for specified Posts over the last 28 hours.
+  
+  
+  
+     * @param tweetIds List of PostIds for 28hr metrics.
+  
+  
+  
+     * @param granularity granularity of metrics response.
+  
+  
+  
+     * @param requestedMetrics request metrics for historical request.
+  
+  
+  
+     * @returns {Promise<GetInsights28hrResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getInsights28hr(tweetIds, granularity, requestedMetrics, options = {}) {
+    const paramMappings = {
+      "engagement.fields": "engagementFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      engagementFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/insights/28hr";
+    const params = new URLSearchParams();
+    if (tweetIds !== void 0 && tweetIds.length > 0) {
+      params.append("tweet_ids", tweetIds.join(","));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (requestedMetrics !== void 0 && requestedMetrics.length > 0) {
+      params.append("requested_metrics", requestedMetrics.join(","));
+    }
+    if (engagementFields !== void 0 && engagementFields.length > 0) {
+      params.append("engagement.fields", engagementFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
   }
   /**
      * Get historical Post insights
@@ -14256,556 +13700,6 @@ var PostsClient = class {
     );
   }
   /**
-     * Search all Posts
-     * Retrieves Posts from the full archive matching a search query.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<SearchAllResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async searchAll(query, options = {}) {
-    const paramMappings = {
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "max_results": "maxResults",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "sort_order": "sortOrder",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      maxResults = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      sortOrder = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/search/all";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (sortOrder !== void 0) {
-      params.append("sort_order", String(sortOrder));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Reposted by
-     * Retrieves a list of Users who reposted a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetRepostedByResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getRepostedBy(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/{id}/retweeted_by";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get 28-hour Post insights
-     * Retrieves engagement metrics for specified Posts over the last 28 hours.
-  
-  
-  
-     * @param tweetIds List of PostIds for 28hr metrics.
-  
-  
-  
-     * @param granularity granularity of metrics response.
-  
-  
-  
-     * @param requestedMetrics request metrics for historical request.
-  
-  
-  
-     * @returns {Promise<GetInsights28hrResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getInsights28hr(tweetIds, granularity, requestedMetrics, options = {}) {
-    const paramMappings = {
-      "engagement.fields": "engagementFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      engagementFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/insights/28hr";
-    const params = new URLSearchParams();
-    if (tweetIds !== void 0 && tweetIds.length > 0) {
-      params.append("tweet_ids", tweetIds.join(","));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (requestedMetrics !== void 0 && requestedMetrics.length > 0) {
-      params.append("requested_metrics", requestedMetrics.join(","));
-    }
-    if (engagementFields !== void 0 && engagementFields.length > 0) {
-      params.append("engagement.fields", engagementFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get count of recent Posts
-     * Retrieves the count of Posts from the last 7 days matching a search query.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<GetCountsRecentResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getCountsRecent(query, options = {}) {
-    const paramMappings = {
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "search_count.fields": "searchCountFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      granularity = void 0,
-      searchCountFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/counts/recent";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (searchCountFields !== void 0 && searchCountFields.length > 0) {
-      params.append("search_count.fields", searchCountFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Hide reply
-     * Hides or unhides a reply to a conversation owned by the authenticated user.
-  
-  
-     * @param tweetId The ID of the reply that you want to hide or unhide.
-  
-  
-  
-  
-     * @returns {Promise<HideReplyResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async hideReply(tweetId, options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/{tweet_id}/hidden";
-    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.moderate.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "PUT",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Reposts
-     * Retrieves a list of Posts that repost a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetRepostsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getReposts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/{id}/retweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Posts by IDs
-     * Retrieves details of multiple Posts by their IDs.
-  
-  
-  
-     * @param ids A comma separated list of Post IDs. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getByIds(ids, options = {}) {
-    const paramMappings = {
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Create or Edit Post
-     * Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided.
-  
-  
-  
-     * @param body Request body
-  
-     * @returns {Promise<CreateResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async create(body) {
-    let path = "/2/tweets";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(body || {}),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
      * Get Post analytics
      * Retrieves analytics data for specified Posts within a defined time range.
   
@@ -14874,268 +13768,16 @@ var PostsClient = class {
       finalRequestOptions
     );
   }
-  /**
-     * Get Post by ID
-     * Retrieves details of a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getById(id, options = {}) {
-    const paramMappings = {
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Delete Post
-     * Deletes a specific Post by its ID, if owned by the authenticated user.
-  
-  
-     * @param id The ID of the Post to be deleted.
-  
-  
-  
-  
-     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async delete(id) {
-    let path = "/2/tweets/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get Liking Users
-     * Retrieves a list of Users who liked a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetLikingUsersResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getLikingUsers(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      tweetFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/{id}/liking_users";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["like.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  /**
-     * Get count of all Posts
-     * Retrieves the count of Posts matching a search query from the full archive.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<GetCountsAllResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async getCountsAll(query, options = {}) {
-    const paramMappings = {
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "search_count.fields": "searchCountFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      granularity = void 0,
-      searchCountFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/counts/all";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (searchCountFields !== void 0 && searchCountFields.length > 0) {
-      params.append("search_count.fields", searchCountFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
 };
 
 // src/posts/models.ts
-var models_exports13 = {};
+var models_exports10 = {};
 
-// src/connections/client.ts
-var ConnectionsClient = class {
+// src/direct_messages/client.ts
+var DirectMessagesClient = class {
   client;
   /**
-   * Creates a new connections client instance
+   * Creates a new direct messages client instance
    * 
    * @param client - The main X API client instance
    */
@@ -15160,22 +13802,131 @@ var ConnectionsClient = class {
     return normalized;
   }
   /**
-     * Terminate all connections
-     * Terminates all active streaming connections for the authenticated application.
+     * Create DM conversation
+     * Initiates a new direct message conversation with specified participants.
   
   
   
-     * @returns {Promise<DeleteAllResponse>} Promise resolving to the API response
+     * @returns {Promise<CreateConversationResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async deleteAll() {
-    let path = "/2/connections/all";
+  async createConversation(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get DM event by ID
+     * Retrieves details of a specific direct message event by its ID.
+  
+  
+     * @param eventId dm event id.
+  
+  
+  
+  
+     * @returns {Promise<GetEventsByIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getEventsById(eventId, options = {}) {
+    const paramMappings = {
+      "dm_event.fields": "dmEventFields",
+      "media.fields": "mediaFields",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      dmEventFields = [],
+      expansions = [],
+      mediaFields = [],
+      userFields = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_events/{event_id}";
+    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
+    const params = new URLSearchParams();
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", dmEventFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Delete DM event
+     * Deletes a specific direct message event by its ID, if owned by the authenticated user.
+  
+  
+     * @param eventId The ID of the direct-message event to delete.
+  
+  
+  
+  
+     * @returns {Promise<DeleteEventsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async deleteEvents(eventId) {
+    let path = "/2/dm_events/{event_id}";
+    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "BearerToken": []
+          "OAuth2UserToken": ["dm.read", "dm.write"]
+        },
+        {
+          "UserToken": []
         }
       ]
       // No optional parameters, using empty request options
@@ -15186,10 +13937,327 @@ var ConnectionsClient = class {
       finalRequestOptions
     );
   }
+  /**
+     * Get DM events for a DM conversation
+     * Retrieves direct message events for a specific conversation.
+  
+  
+     * @param participantId The ID of the participant user for the One to One DM conversation.
+  
+  
+  
+  
+     * @returns {Promise<GetEventsByParticipantIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getEventsByParticipantId(participantId, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "event_types": "eventTypes",
+      "dm_event.fields": "dmEventFields",
+      "media.fields": "mediaFields",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      eventTypes = [],
+      dmEventFields = [],
+      expansions = [],
+      mediaFields = [],
+      userFields = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations/with/{participant_id}/dm_events";
+    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (eventTypes !== void 0 && eventTypes.length > 0) {
+      params.append("event_types", eventTypes.join(","));
+    }
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", dmEventFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get DM events
+     * Retrieves a list of recent direct message events across all conversations.
+  
+  
+  
+     * @returns {Promise<GetEventsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getEvents(options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "event_types": "eventTypes",
+      "dm_event.fields": "dmEventFields",
+      "media.fields": "mediaFields",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      eventTypes = [],
+      dmEventFields = [],
+      expansions = [],
+      mediaFields = [],
+      userFields = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_events";
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (eventTypes !== void 0 && eventTypes.length > 0) {
+      params.append("event_types", eventTypes.join(","));
+    }
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", dmEventFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get DM events for a DM conversation
+     * Retrieves direct message events for a specific conversation.
+  
+  
+     * @param id The DM conversation ID.
+  
+  
+  
+  
+     * @returns {Promise<GetEventsByConversationIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getEventsByConversationId(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "event_types": "eventTypes",
+      "dm_event.fields": "dmEventFields",
+      "media.fields": "mediaFields",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      eventTypes = [],
+      dmEventFields = [],
+      expansions = [],
+      mediaFields = [],
+      userFields = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations/{id}/dm_events";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (eventTypes !== void 0 && eventTypes.length > 0) {
+      params.append("event_types", eventTypes.join(","));
+    }
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", dmEventFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create DM message by conversation ID
+     * Sends a new direct message to a specific conversation by its ID.
+  
+  
+     * @param dmConversationId The DM Conversation ID.
+  
+  
+  
+  
+     * @returns {Promise<CreateByConversationIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createByConversationId(dmConversationId, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations/{dm_conversation_id}/messages";
+    path = path.replace("{dm_conversation_id}", encodeURIComponent(String(dmConversationId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create DM message by participant ID
+     * Sends a new direct message to a specific participant by their ID.
+  
+  
+     * @param participantId The ID of the recipient user that will receive the DM.
+  
+  
+  
+  
+     * @returns {Promise<CreateByParticipantIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createByParticipantId(participantId, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations/with/{participant_id}/messages";
+    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
 };
 
-// src/connections/models.ts
-var models_exports14 = {};
+// src/direct_messages/models.ts
+var models_exports11 = {};
 
 // src/news/client.ts
 var NewsClient = class {
@@ -15218,55 +14286,6 @@ var NewsClient = class {
       }
     }
     return normalized;
-  }
-  /**
-     * Get news stories by ID
-     * Retrieves news story by its ID.
-  
-  
-     * @param id The ID of the news story.
-  
-  
-  
-  
-     * @returns {Promise<GetResponse>} Promise resolving to the API response
-     */
-  // Overload 1: Default behavior (unwrapped response)
-  async get(id, options = {}) {
-    const paramMappings = {
-      "news.fields": "newsFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      newsFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/news/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (newsFields !== void 0 && newsFields.length > 0) {
-      params.append("news.fields", newsFields.join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        },
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
   }
   /**
      * Search News
@@ -15326,10 +14345,484 @@ var NewsClient = class {
       finalRequestOptions
     );
   }
+  /**
+     * Get news stories by ID
+     * Retrieves news story by its ID.
+  
+  
+     * @param id The ID of the news story.
+  
+  
+  
+  
+     * @returns {Promise<GetResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async get(id, options = {}) {
+    const paramMappings = {
+      "news.fields": "newsFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      newsFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/news/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (newsFields !== void 0 && newsFields.length > 0) {
+      params.append("news.fields", newsFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
 };
 
 // src/news/models.ts
-var models_exports15 = {};
+var models_exports12 = {};
+
+// src/spaces/client.ts
+var SpacesClient = class {
+  client;
+  /**
+   * Creates a new spaces client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Get Space ticket buyers
+     * Retrieves a list of Users who purchased tickets to a specific Space by its ID.
+  
+  
+     * @param id The ID of the Space to be retrieved.
+  
+  
+  
+  
+     * @returns {Promise<GetBuyersResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getBuyers(id, options = {}) {
+    const paramMappings = {
+      "pagination_token": "paginationToken",
+      "max_results": "maxResults",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      paginationToken = void 0,
+      maxResults = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/{id}/buyers";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Space Posts
+     * Retrieves a list of Posts shared in a specific Space by its ID.
+  
+  
+     * @param id The ID of the Space to be retrieved.
+  
+  
+  
+  
+     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getPosts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/{id}/tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Search Spaces
+     * Retrieves a list of Spaces matching the specified search query.
+  
+  
+  
+     * @param query The search query.
+  
+  
+  
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async search(query, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      state = void 0,
+      maxResults = void 0,
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/search";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (state !== void 0) {
+      params.append("state", String(state));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", spaceFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", topicFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get space by ID
+     * Retrieves details of a specific space by its ID.
+  
+  
+     * @param id The ID of the Space to be retrieved.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getById(id, options = {}) {
+    const paramMappings = {
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", spaceFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", topicFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Spaces by creator IDs
+     * Retrieves details of Spaces created by specified User IDs.
+  
+  
+  
+     * @param userIds The IDs of Users to search through.
+  
+  
+  
+     * @returns {Promise<GetByCreatorIdsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByCreatorIds(userIds, options = {}) {
+    const paramMappings = {
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/by/creator_ids";
+    const params = new URLSearchParams();
+    if (userIds !== void 0 && userIds.length > 0) {
+      params.append("user_ids", userIds.join(","));
+    }
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", spaceFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", topicFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Spaces by IDs
+     * Retrieves details of multiple Spaces by their IDs.
+  
+  
+  
+     * @param ids The list of Space IDs to return.
+  
+  
+  
+     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getByIds(ids, options = {}) {
+    const paramMappings = {
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", spaceFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", topicFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/spaces/models.ts
+var models_exports13 = {};
 
 // src/general/client.ts
 var GeneralClient = class {
@@ -15383,13 +14876,13 @@ var GeneralClient = class {
 };
 
 // src/general/models.ts
-var models_exports16 = {};
+var models_exports14 = {};
 
-// src/activity/client.ts
-var ActivityClient = class {
+// src/lists/client.ts
+var ListsClient = class {
   client;
   /**
-   * Creates a new activity client instance
+   * Creates a new lists client instance
    * 
    * @param client - The main X API client instance
    */
@@ -15414,25 +14907,66 @@ var ActivityClient = class {
     return normalized;
   }
   /**
-     * Get X activity subscriptions
-     * Get a list of active subscriptions for XAA
+     * Get List followers
+     * Retrieves a list of Users who follow a specific List by its ID.
+  
+  
+     * @param id The ID of the List.
   
   
   
-     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
+  
+     * @returns {Promise<GetFollowersResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async getSubscriptions() {
-    let path = "/2/activity/subscriptions";
+  async getFollowers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/followers";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
           "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
         }
-      ]
-      // No optional parameters, using empty request options
+      ],
+      ...requestOptions
     };
     return this.client.request(
       "GET",
@@ -15441,66 +14975,134 @@ var ActivityClient = class {
     );
   }
   /**
-     * Create X activity subscription
-     * Creates a subscription for an X activity event
+     * Remove List member
+     * Removes a User from a specific List by its ID and the User’s ID.
+  
+  
+     * @param id The ID of the List to remove a member.
   
   
   
-     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
+     * @param userId The ID of User that will be removed from the List.
+  
+  
+  
+  
+     * @returns {Promise<RemoveMemberByUserIdResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async createSubscription(options = {}) {
-    const normalizedOptions = options || {};
-    const {
-      body,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/activity/subscriptions";
+  async removeMemberByUserId(id, userId) {
+    let path = "/2/lists/{id}/members/{user_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: body ? JSON.stringify(body) : void 0,
       // Pass security requirements for smart auth selection
       security: [
         {
-          "BearerToken": []
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
         }
-      ],
-      ...requestOptions
+      ]
+      // No optional parameters, using empty request options
     };
     return this.client.request(
-      "POST",
+      "DELETE",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
   }
   /**
-     * Update X activity subscription
-     * Updates a subscription for an X activity event
+     * Get List by ID
+     * Retrieves details of a specific List by its ID.
   
   
-     * @param subscriptionId The ID of the subscription to update.
+     * @param id The ID of the List.
   
   
   
   
-     * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async updateSubscription(subscriptionId, options = {}) {
+  async getById(id, options = {}) {
+    const paramMappings = {
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", listFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Update List
+     * Updates the details of a specific List owned by the authenticated user by its ID.
+  
+  
+     * @param id The ID of the List to modify.
+  
+  
+  
+  
+     * @returns {Promise<UpdateResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async update(id, options = {}) {
     const normalizedOptions = options || {};
     const {
       body,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/activity/subscriptions/{subscription_id}";
-    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+    let path = "/2/lists/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       body: body ? JSON.stringify(body) : void 0,
       // Pass security requirements for smart auth selection
       security: [
         {
-          "BearerToken": []
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
         }
       ],
       ...requestOptions
@@ -15512,21 +15114,312 @@ var ActivityClient = class {
     );
   }
   /**
-     * Deletes X activity subscription
-     * Deletes a subscription for an X activity event
+     * Delete List
+     * Deletes a specific List owned by the authenticated user by its ID.
   
   
-     * @param subscriptionId The ID of the subscription to delete.
+     * @param id The ID of the List to delete.
   
   
   
   
-     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
+     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async deleteSubscription(subscriptionId) {
-    let path = "/2/activity/subscriptions/{subscription_id}";
-    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+  async delete(id) {
+    let path = "/2/lists/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get List Posts
+     * Retrieves a list of Posts associated with a specific List by its ID.
+  
+  
+     * @param id The ID of the List.
+  
+  
+  
+  
+     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getPosts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get List members
+     * Retrieves a list of Users who are members of a specific List by its ID.
+  
+  
+     * @param id The ID of the List.
+  
+  
+  
+  
+     * @returns {Promise<GetMembersResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getMembers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      tweetFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/members";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        },
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Add List member
+     * Adds a User to a specific List by its ID.
+  
+  
+     * @param id The ID of the List for which to add a member.
+  
+  
+  
+  
+     * @returns {Promise<AddMemberResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async addMember(id, options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/members";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create List
+     * Creates a new List for the authenticated user.
+  
+  
+  
+     * @returns {Promise<CreateResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async create(options = {}) {
+    const normalizedOptions = options || {};
+    const {
+      body,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: body ? JSON.stringify(body) : void 0,
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.read", "list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/lists/models.ts
+var models_exports15 = {};
+
+// src/connections/client.ts
+var ConnectionsClient = class {
+  client;
+  /**
+   * Creates a new connections client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Terminate all connections
+     * Terminates all active streaming connections for the authenticated application.
+  
+  
+  
+     * @returns {Promise<DeleteAllResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async deleteAll() {
+    let path = "/2/connections/all";
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
@@ -15543,38 +15436,145 @@ var ActivityClient = class {
       finalRequestOptions
     );
   }
+};
+
+// src/connections/models.ts
+var models_exports16 = {};
+
+// src/compliance/client.ts
+var ComplianceClient = class {
+  client;
   /**
-     * Activity Stream
-     * Stream of X Activities
+   * Creates a new compliance client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  /**
+     * Get Compliance Jobs
+     * Retrieves a list of Compliance Jobs filtered by job type and optional status.
   
   
   
-     * @returns {Promise<StreamResponse>} Promise resolving to the API response
+     * @param type Type of Compliance Job to list.
+  
+  
+  
+     * @returns {Promise<GetJobsResponse>} Promise resolving to the API response
      */
   // Overload 1: Default behavior (unwrapped response)
-  async stream(options = {}) {
+  async getJobs(type, options = {}) {
     const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
+      "compliance_job.fields": "complianceJobFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
+      status = void 0,
+      complianceJobFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/activity/stream";
+    let path = "/2/compliance/jobs";
     const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
+    if (type !== void 0) {
+      params.append("type", String(type));
     }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
+    if (status !== void 0) {
+      params.append("status", String(status));
     }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
+    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
+      params.append("compliance_job.fields", complianceJobFields.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Create Compliance Job
+     * Creates a new Compliance Job for the specified job type.
+  
+  
+  
+     * @param body Request body
+  
+     * @returns {Promise<CreateJobsResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async createJobs(body) {
+    let path = "/2/compliance/jobs";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(body || {}),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+     * Get Compliance Job by ID
+     * Retrieves details of a specific Compliance Job by its ID.
+  
+  
+     * @param id The ID of the Compliance Job to retrieve.
+  
+  
+  
+  
+     * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response
+     */
+  // Overload 1: Default behavior (unwrapped response)
+  async getJobsById(id, options = {}) {
+    const paramMappings = {
+      "compliance_job.fields": "complianceJobFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      complianceJobFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/compliance/jobs/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
+      params.append("compliance_job.fields", complianceJobFields.join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
@@ -15593,7 +15593,7 @@ var ActivityClient = class {
   }
 };
 
-// src/activity/models.ts
+// src/compliance/models.ts
 var models_exports17 = {};
 
 // src/client.ts
@@ -15630,42 +15630,42 @@ var Client = class {
   maxRetries;
   /** HTTP client for making requests */
   httpClient = httpClient;
-  /** webhooks client */
-  webhooks;
-  /** direct messages client */
-  directMessages;
-  /** lists client */
-  lists;
   /** account activity client */
   accountActivity;
-  /** media client */
-  media;
-  /** communities client */
-  communities;
   /** usage client */
   usage;
-  /** compliance client */
-  compliance;
-  /** trends client */
-  trends;
+  /** webhooks client */
+  webhooks;
   /** community notes client */
   communityNotes;
-  /** stream client */
-  stream;
-  /** spaces client */
-  spaces;
-  /** users client */
-  users;
-  /** posts client */
-  posts;
-  /** connections client */
-  connections;
-  /** news client */
-  news;
-  /** general client */
-  general;
   /** activity client */
   activity;
+  /** trends client */
+  trends;
+  /** media client */
+  media;
+  /** stream client */
+  stream;
+  /** users client */
+  users;
+  /** communities client */
+  communities;
+  /** posts client */
+  posts;
+  /** direct messages client */
+  directMessages;
+  /** news client */
+  news;
+  /** spaces client */
+  spaces;
+  /** general client */
+  general;
+  /** lists client */
+  lists;
+  /** connections client */
+  connections;
+  /** compliance client */
+  compliance;
   /**
    * Creates a new X API client instance
    * 
@@ -15704,30 +15704,30 @@ var Client = class {
     this.retry = config.retry ?? true;
     this.maxRetries = config.maxRetries || 3;
     const defaultHeaders = {
-      "User-Agent": "xdk-typescript/0.2.4-beta",
+      "User-Agent": "xdk-typescript/0.2.5-beta",
       "Content-Type": "application/json",
       "Accept": "application/json",
       ...config.headers || {}
     };
     this.headers = httpClient.createHeaders(defaultHeaders);
-    this.webhooks = new WebhooksClient(this);
-    this.directMessages = new DirectMessagesClient(this);
-    this.lists = new ListsClient(this);
     this.accountActivity = new AccountActivityClient(this);
-    this.media = new MediaClient(this);
-    this.communities = new CommunitiesClient(this);
     this.usage = new UsageClient(this);
-    this.compliance = new ComplianceClient(this);
-    this.trends = new TrendsClient(this);
+    this.webhooks = new WebhooksClient(this);
     this.communityNotes = new CommunityNotesClient(this);
-    this.stream = new StreamClient(this);
-    this.spaces = new SpacesClient(this);
-    this.users = new UsersClient(this);
-    this.posts = new PostsClient(this);
-    this.connections = new ConnectionsClient(this);
-    this.news = new NewsClient(this);
-    this.general = new GeneralClient(this);
     this.activity = new ActivityClient(this);
+    this.trends = new TrendsClient(this);
+    this.media = new MediaClient(this);
+    this.stream = new StreamClient(this);
+    this.users = new UsersClient(this);
+    this.communities = new CommunitiesClient(this);
+    this.posts = new PostsClient(this);
+    this.directMessages = new DirectMessagesClient(this);
+    this.news = new NewsClient(this);
+    this.spaces = new SpacesClient(this);
+    this.general = new GeneralClient(this);
+    this.lists = new ListsClient(this);
+    this.connections = new ConnectionsClient(this);
+    this.compliance = new ComplianceClient(this);
   }
   /**
    * Make an authenticated request to the X API
@@ -16795,52 +16795,52 @@ node-domexception/index.js:
   (*! node-domexception. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> *)
 */
 
-exports.AccountActivity = models_exports4;
+exports.AccountActivity = models_exports;
 exports.AccountActivityClient = AccountActivityClient;
-exports.Activity = models_exports17;
+exports.Activity = models_exports5;
 exports.ActivityClient = ActivityClient;
 exports.ApiError = ApiError;
 exports.Client = Client;
-exports.Communities = models_exports6;
+exports.Communities = models_exports9;
 exports.CommunitiesClient = CommunitiesClient;
-exports.CommunityNotes = models_exports10;
+exports.CommunityNotes = models_exports4;
 exports.CommunityNotesClient = CommunityNotesClient;
-exports.Compliance = models_exports8;
+exports.Compliance = models_exports17;
 exports.ComplianceClient = ComplianceClient;
-exports.Connections = models_exports14;
+exports.Connections = models_exports16;
 exports.ConnectionsClient = ConnectionsClient;
 exports.CryptoUtils = CryptoUtils;
-exports.DirectMessages = models_exports2;
+exports.DirectMessages = models_exports11;
 exports.DirectMessagesClient = DirectMessagesClient;
 exports.EventPaginator = EventPaginator;
-exports.General = models_exports16;
+exports.General = models_exports14;
 exports.GeneralClient = GeneralClient;
 exports.HttpClient = HttpClient;
-exports.Lists = models_exports3;
+exports.Lists = models_exports15;
 exports.ListsClient = ListsClient;
-exports.Media = models_exports5;
+exports.Media = models_exports7;
 exports.MediaClient = MediaClient;
-exports.News = models_exports15;
+exports.News = models_exports12;
 exports.NewsClient = NewsClient;
 exports.OAuth1 = OAuth1;
 exports.OAuth2 = OAuth2;
 exports.Paginator = Paginator;
 exports.PostPaginator = PostPaginator;
-exports.Posts = models_exports13;
+exports.Posts = models_exports10;
 exports.PostsClient = PostsClient;
 exports.Schemas = schemas_exports;
-exports.Spaces = models_exports11;
+exports.Spaces = models_exports13;
 exports.SpacesClient = SpacesClient;
 exports.Stream = models_exports18;
 exports.StreamClient = StreamClient;
-exports.Trends = models_exports9;
+exports.Trends = models_exports6;
 exports.TrendsClient = TrendsClient;
-exports.Usage = models_exports7;
+exports.Usage = models_exports2;
 exports.UsageClient = UsageClient;
 exports.UserPaginator = UserPaginator;
-exports.Users = models_exports12;
+exports.Users = models_exports8;
 exports.UsersClient = UsersClient;
-exports.Webhooks = models_exports;
+exports.Webhooks = models_exports3;
 exports.WebhooksClient = WebhooksClient;
 exports.generateCodeChallenge = generateCodeChallenge;
 exports.generateCodeVerifier = generateCodeVerifier;

@@ -11,7 +11,19 @@ import { Client, ApiResponse, RequestOptions } from '../client.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
-  CreateResponse,
+  GetFollowersResponse,
+
+
+  RemoveMemberByUserIdResponse,
+
+
+  GetByIdResponse,
+
+
+  UpdateResponse,
+
+
+  DeleteResponse,
 
 
   GetPostsResponse,
@@ -23,32 +35,136 @@ import {
   AddMemberResponse,
 
 
-  RemoveMemberByUserIdResponse,
-
-
-  GetFollowersResponse,
-
-
-  GetByIdResponse,
-
-
-  UpdateResponse,
-
-
-  DeleteResponse,
+  CreateResponse,
 
 } from './models.js';
 
 /**
- * Options for create method
+ * Options for getFollowers method
  * 
  * @public
  */
-export interface CreateStreamingOptions {
+export interface GetFollowersStreamingOptions {
+    
+    
+    /** The maximum number of results. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** This parameter is used to get a specified 'page' of results. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: any;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    
+    
+    
+    /** A comma separated list of Tweet fields to display. 
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for removeMemberByUserId method
+ * 
+ * @public
+ */
+export interface RemoveMemberByUserIdStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getById method
+ * 
+ * @public
+ */
+export interface GetByIdStreamingOptions {
+    
+    
+    /** A comma separated list of List fields to display. 
+     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
+    listFields?: Array<any>;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for update method
+ * 
+ * @public
+ */
+export interface UpdateStreamingOptions {
     
     
     /** Request body */
     body?: any;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for delete method
+ * 
+ * @public
+ */
+export interface DeleteStreamingOptions {
+    
     
     /** Additional request options */
     requestOptions?: RequestOptions;
@@ -192,131 +308,15 @@ export interface AddMemberStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for removeMemberByUserId method
+ * Options for create method
  * 
  * @public
  */
-export interface RemoveMemberByUserIdStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getFollowers method
- * 
- * @public
- */
-export interface GetFollowersStreamingOptions {
-    
-    
-    /** The maximum number of results. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** This parameter is used to get a specified 'page' of results. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    
-    
-    
-    /** A comma separated list of Tweet fields to display. 
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getById method
- * 
- * @public
- */
-export interface GetByIdStreamingOptions {
-    
-    
-    /** A comma separated list of List fields to display. 
-     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
-    listFields?: Array<any>;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for update method
- * 
- * @public
- */
-export interface UpdateStreamingOptions {
+export interface CreateStreamingOptions {
     
     
     /** Request body */
     body?: any;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for delete method
- * 
- * @public
- */
-export interface DeleteStreamingOptions {
-    
     
     /** Additional request options */
     requestOptions?: RequestOptions;
@@ -394,12 +394,16 @@ export class ListsClient {
 
 
     /**
-     * Create List
-     * Creates a new List for the authenticated user.
+     * Get List followers
+     * Retrieves a list of Users who follow a specific List by its ID.
      * 
      * @returns Promise with the API response
      */
-    async create(
+    async getFollowers(
+        
+        
+        
+        id: string,
         
         
         
@@ -407,8 +411,201 @@ export class ListsClient {
         
         
         
-        options: CreateStreamingOptions = {}
-    ): Promise<CreateResponse> {
+        options: GetFollowersStreamingOptions = {}
+    ): Promise<GetFollowersResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getFollowers');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'tweet.fields': 'tweetFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            tweetFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}/followers';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (tweetFields !== undefined && tweetFields.length > 0) {
+            
+            params.append('tweet.fields', tweetFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetFollowersResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Remove List member
+     * Removes a User from a specific List by its ID and the User’s ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async removeMemberByUserId(
+        
+        
+        
+        id: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: RemoveMemberByUserIdStreamingOptions = {}
+    ): Promise<RemoveMemberByUserIdResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -421,7 +618,238 @@ export class ListsClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'create');
+        this.client.validateAuthentication(requiredAuthTypes, 'removeMemberByUserId');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}/members/{user_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<RemoveMemberByUserIdResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get List by ID
+     * Retrieves details of a specific List by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetByIdStreamingOptions = {}
+    ): Promise<GetByIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getById');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'list.fields': 'listFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            listFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (listFields !== undefined && listFields.length > 0) {
+            
+            params.append('list.fields', listFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Update List
+     * Updates the details of a specific List owned by the authenticated user by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async update(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: UpdateStreamingOptions = {}
+    ): Promise<UpdateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'update');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -443,7 +871,11 @@ export class ListsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/lists';
+        let path = '/2/lists/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
@@ -464,8 +896,86 @@ export class ListsClient {
         };
 
         // Make the request
-        return this.client.request<CreateResponse>(
-            'POST',
+        return this.client.request<UpdateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete List
+     * Deletes a specific List owned by the authenticated user by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async delete(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteStreamingOptions = {}
+    ): Promise<DeleteResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'delete');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -1000,20 +1510,12 @@ export class ListsClient {
 
 
     /**
-     * Remove List member
-     * Removes a User from a specific List by its ID and the User’s ID.
+     * Create List
+     * Creates a new List for the authenticated user.
      * 
      * @returns Promise with the API response
      */
-    async removeMemberByUserId(
-        
-        
-        
-        id: string,
-        
-        
-        
-        userId: string,
+    async create(
         
         
         
@@ -1021,8 +1523,8 @@ export class ListsClient {
         
         
         
-        options: RemoveMemberByUserIdStreamingOptions = {}
-    ): Promise<RemoveMemberByUserIdResponse> {
+        options: CreateStreamingOptions = {}
+    ): Promise<CreateResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -1035,427 +1537,7 @@ export class ListsClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'removeMemberByUserId');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}/members/{user_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<RemoveMemberByUserIdResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get List followers
-     * Retrieves a list of Users who follow a specific List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getFollowers(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetFollowersStreamingOptions = {}
-    ): Promise<GetFollowersResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getFollowers');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'tweet.fields': 'tweetFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            tweetFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}/followers';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (tweetFields !== undefined && tweetFields.length > 0) {
-            
-            params.append('tweet.fields', tweetFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetFollowersResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get List by ID
-     * Retrieves details of a specific List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getById(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetByIdStreamingOptions = {}
-    ): Promise<GetByIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getById');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'list.fields': 'listFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            listFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (listFields !== undefined && listFields.length > 0) {
-            
-            params.append('list.fields', listFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Update List
-     * Updates the details of a specific List owned by the authenticated user by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async update(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: UpdateStreamingOptions = {}
-    ): Promise<UpdateResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'update');
+        this.client.validateAuthentication(requiredAuthTypes, 'create');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1477,11 +1559,7 @@ export class ListsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/lists/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
+        let path = '/2/lists';
         
 
         // Build query parameters
@@ -1502,86 +1580,8 @@ export class ListsClient {
         };
 
         // Make the request
-        return this.client.request<UpdateResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete List
-     * Deletes a specific List owned by the authenticated user by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async delete(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteStreamingOptions = {}
-    ): Promise<DeleteResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'delete');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteResponse>(
-            'DELETE',
+        return this.client.request<CreateResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
