@@ -45,7 +45,7 @@ fs.writeFileSync('tsconfig.docs.json', JSON.stringify(tsconfig, null, 2));
 
 try {
   // Generate documentation using the temporary tsconfig
-  execSync('npx typedoc --tsconfig tsconfig.docs.json --out docs --name "X API SDK v0.2.3-beta" --readme README.md --theme default --includeVersion true --excludePrivate true --excludeProtected true --excludeExternals true --excludeInternal true --searchInComments true --cleanOutputDir true', { stdio: 'inherit' });
+  execSync('npx typedoc --tsconfig tsconfig.docs.json --out docs --name "X API SDK v0.2.4-beta" --readme README.md --theme default --includeVersion true --excludePrivate true --excludeProtected true --excludeExternals true --excludeInternal true --searchInComments true --cleanOutputDir true', { stdio: 'inherit' });
   
   console.log('✅ Documentation generated successfully in docs/');
   

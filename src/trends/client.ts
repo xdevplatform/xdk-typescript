@@ -16,23 +16,23 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-GetPersonalizedResponse,
-GetByWoeidResponse,
 GetAiResponse,
+GetByWoeidResponse,
+GetPersonalizedResponse,
 } from './models.js';
 
 
 /**
- * Options for getPersonalized method
+ * Options for getAi method
  * 
  * @public
  */
-export interface GetPersonalizedOptions {
+export interface GetAiOptions {
     
     
-    /** A comma separated list of PersonalizedTrend fields to display. 
-     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
-    personalizedTrendFields?: Array<any>;
+    /** A comma separated list of News fields to display. 
+     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
+    newsFields?: Array<any>;
     
     
     
@@ -71,16 +71,16 @@ export interface GetByWoeidOptions {
 
 
 /**
- * Options for getAi method
+ * Options for getPersonalized method
  * 
  * @public
  */
-export interface GetAiOptions {
+export interface GetPersonalizedOptions {
     
     
-    /** A comma separated list of News fields to display. 
-     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<any>;
+    /** A comma separated list of PersonalizedTrend fields to display. 
+     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
+    personalizedTrendFields?: Array<any>;
     
     
     
@@ -142,15 +142,23 @@ export class TrendsClient {
 
 
   /**
-   * Get personalized Trends
-   * Retrieves personalized trending topics for the authenticated user.
+   * Get AI Trends by ID
+   * Retrieves an AI trend by its ID.
+
+
+   * @param id The ID of the ai trend.
 
 
 
-   * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response
+
+   * @returns {Promise<GetAiResponse>} Promise resolving to the API response
    */
     // Overload 1: Default behavior (unwrapped response)
-    async getPersonalized(
+    async getAi(
+        
+        
+        
+        id: string,
         
         
         
@@ -159,16 +167,16 @@ export class TrendsClient {
         
         
         
-        options: GetPersonalizedOptions = {}
+        options: GetAiOptions = {}
         
-    ): Promise<GetPersonalizedResponse> {
+    ): Promise<GetAiResponse> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
         const paramMappings: Record<string, string> = {
             
             
-            'personalized_trend.fields': 'personalizedTrendFields',
+            'news.fields': 'newsFields',
             
             
         };
@@ -179,7 +187,7 @@ export class TrendsClient {
         const {
             
             
-            personalizedTrendFields = [],
+            newsFields = [],
             
             
             
@@ -188,7 +196,11 @@ export class TrendsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/users/personalized_trends';
+        let path = '/2/ai_trends/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
@@ -197,9 +209,9 @@ export class TrendsClient {
         
         
         
-        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
+        if (newsFields !== undefined && newsFields.length > 0) {
             
-            params.append('personalized_trend.fields', personalizedTrendFields.join(','));
+            params.append('news.fields', newsFields.join(','));
             
         }
         
@@ -215,13 +227,7 @@ export class TrendsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
+                    'BearerToken': [],
                     
                 }
                 
@@ -232,7 +238,7 @@ export class TrendsClient {
             
         };
 
-        return this.client.request<GetPersonalizedResponse>(
+        return this.client.request<GetAiResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -369,23 +375,15 @@ export class TrendsClient {
 
 
   /**
-   * Get AI Trends by ID
-   * Retrieves an AI trend by its ID.
-
-
-   * @param id The ID of the ai trend.
+   * Get personalized Trends
+   * Retrieves personalized trending topics for the authenticated user.
 
 
 
-
-   * @returns {Promise<GetAiResponse>} Promise resolving to the API response
+   * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response
    */
     // Overload 1: Default behavior (unwrapped response)
-    async getAi(
-        
-        
-        
-        id: string,
+    async getPersonalized(
         
         
         
@@ -394,16 +392,16 @@ export class TrendsClient {
         
         
         
-        options: GetAiOptions = {}
+        options: GetPersonalizedOptions = {}
         
-    ): Promise<GetAiResponse> {
+    ): Promise<GetPersonalizedResponse> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
         const paramMappings: Record<string, string> = {
             
             
-            'news.fields': 'newsFields',
+            'personalized_trend.fields': 'personalizedTrendFields',
             
             
         };
@@ -414,7 +412,7 @@ export class TrendsClient {
         const {
             
             
-            newsFields = [],
+            personalizedTrendFields = [],
             
             
             
@@ -423,11 +421,7 @@ export class TrendsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/ai_trends/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
+        let path = '/2/users/personalized_trends';
         
 
         // Build query parameters
@@ -436,9 +430,9 @@ export class TrendsClient {
         
         
         
-        if (newsFields !== undefined && newsFields.length > 0) {
+        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
             
-            params.append('news.fields', newsFields.join(','));
+            params.append('personalized_trend.fields', personalizedTrendFields.join(','));
             
         }
         
@@ -454,7 +448,13 @@ export class TrendsClient {
                 
                 {
                     
-                    'BearerToken': [],
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
                     
                 }
                 
@@ -465,7 +465,7 @@ export class TrendsClient {
             
         };
 
-        return this.client.request<GetAiResponse>(
+        return this.client.request<GetPersonalizedResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

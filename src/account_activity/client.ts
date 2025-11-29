@@ -16,14 +16,15 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
+GetSubscriptionsResponse,
 ValidateSubscriptionResponse,
 CreateSubscriptionRequest,
 CreateSubscriptionResponse,
-GetSubscriptionsResponse,
+CreateReplayJobResponse,
 DeleteSubscriptionResponse,
 GetSubscriptionCountResponse,
-CreateReplayJobResponse,
 } from './models.js';
+
 
 
 
@@ -43,7 +44,6 @@ export interface CreateSubscriptionOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-
 
 
 
@@ -96,6 +96,80 @@ export class AccountActivityClient {
         
         return normalized as T;
     }
+
+
+
+  /**
+   * Get subscriptions
+   * Retrieves a list of all active subscriptions for a given webhook.
+
+
+   * @param webhookId The webhook ID to pull subscriptions for.
+
+
+
+
+   * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
+   */
+    // Overload 1: Default behavior (unwrapped response)
+    async getSubscriptions(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionsResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetSubscriptionsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
 
 
@@ -275,19 +349,27 @@ export class AccountActivityClient {
 
 
   /**
-   * Get subscriptions
-   * Retrieves a list of all active subscriptions for a given webhook.
+   * Create replay job
+   * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
 
 
-   * @param webhookId The webhook ID to pull subscriptions for.
+   * @param webhookId The unique identifier for the webhook configuration.
 
 
 
 
-   * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
+   * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
+
+
+
+   * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
+
+
+
+   * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response
    */
     // Overload 1: Default behavior (unwrapped response)
-    async getSubscriptions(
+    async createReplayJob(
         
         
         
@@ -297,17 +379,25 @@ export class AccountActivityClient {
         
         
         
+        fromDate: string,
         
         
         
-    ): Promise<GetSubscriptionsResponse> {
+        toDate: string,
+        
+        
+        
+        
+        
+        
+    ): Promise<CreateReplayJobResponse> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
+        let path = '/2/account_activity/replay/webhooks/{webhook_id}/subscriptions/all';
         
         
         path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
@@ -316,6 +406,28 @@ export class AccountActivityClient {
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        if (fromDate !== undefined) {
+            
+            params.append('from_date', String(fromDate));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (toDate !== undefined) {
+            
+            params.append('to_date', String(toDate));
+            
+        }
+        
+        
         
 
         // Prepare request options
@@ -338,8 +450,8 @@ export class AccountActivityClient {
             
         };
 
-        return this.client.request<GetSubscriptionsResponse>(
-            'GET',
+        return this.client.request<CreateReplayJobResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -488,118 +600,6 @@ export class AccountActivityClient {
 
         return this.client.request<GetSubscriptionCountResponse>(
             'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Create replay job
-   * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
-
-
-   * @param webhookId The unique identifier for the webhook configuration.
-
-
-
-
-   * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
-
-
-
-   * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
-
-
-
-   * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response
-   */
-    // Overload 1: Default behavior (unwrapped response)
-    async createReplayJob(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        fromDate: string,
-        
-        
-        
-        toDate: string,
-        
-        
-        
-        
-        
-        
-    ): Promise<CreateReplayJobResponse> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/replay/webhooks/{webhook_id}/subscriptions/all';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (fromDate !== undefined) {
-            
-            params.append('from_date', String(fromDate));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (toDate !== undefined) {
-            
-            params.append('to_date', String(toDate));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateReplayJobResponse>(
-            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
