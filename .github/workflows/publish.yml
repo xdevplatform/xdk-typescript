@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  id-token: write   # Required for OIDC trusted publishing
+  id-token: write
   contents: write
 
 jobs:
@@ -65,8 +65,14 @@ jobs:
       - run: npm run build
       - run: npm test
       
-      - name: Publish (trusted publishing via OIDC)
-        run: npm publish
+      - name: Publish
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *"-"* ]]; then
+            npm publish --tag next
+          else
+            npm publish
+          fi
       
       - name: Create tag
         run: |
