@@ -7,6 +7,10 @@ on:
       - 'package.json'
   workflow_dispatch:
 
+permissions:
+  id-token: write   # Required for OIDC trusted publishing
+  contents: write
+
 jobs:
   check-version:
     runs-on: ubuntu-latest
@@ -46,11 +50,6 @@ jobs:
     needs: check-version
     if: needs.check-version.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    environment:
-      name: npm
-      url: https://www.npmjs.com/package/@xdevplatform/xdk
     steps:
       - uses: actions/checkout@v4
       
@@ -59,14 +58,15 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
       
+      - name: Update npm for trusted publishing
+        run: npm install -g npm@latest
+      
       - run: npm ci
       - run: npm run build
       - run: npm test
       
-      - name: Publish
+      - name: Publish (trusted publishing via OIDC)
         run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Create tag
         run: |
