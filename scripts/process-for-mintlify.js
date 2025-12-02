@@ -11,9 +11,9 @@ console.log('🚀 Processing X API SDK Documentation for Mintlify...');
 const MINTLIFY_CONFIG = {
   outputDir: 'mintlify-docs',
   baseUrl: 'https://docs.x.com',
-  title: 'X API SDK v0.2.5-beta',
+  title: 'X API SDK v0.3.0',
   description: 'TypeScript SDK for the X API with comprehensive pagination, authentication, and streaming support.',
-  version: '0.2.5-beta',
+  version: '0.3.0',
   githubUrl: 'https://github.com/xdevplatform/xsdk',
   logo: {
     light: '/logo-light.svg',

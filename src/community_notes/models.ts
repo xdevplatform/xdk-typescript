@@ -23,6 +23,18 @@ export type DeleteResponse = Schemas.DeleteNoteResponse;
  */
 export type SearchWrittenResponse = Schemas.Get2NotesSearchNotesWrittenResponse;
 /**
+ * Request for create
+ * 
+ * @public
+ */
+export type CreateRequest = Schemas.CreateNoteRequest;
+/**
+ * Response for create
+ * 
+ * @public
+ */
+export type CreateResponse = Schemas.CreateNoteResponse;
+/**
  * Response for searchEligiblePosts
  * 
  * @public
@@ -40,15 +52,3 @@ export type EvaluateRequest = Schemas.EvaluateNoteRequest;
  * @public
  */
 export type EvaluateResponse = Schemas.EvaluateNoteResponse;
-/**
- * Request for create
- * 
- * @public
- */
-export type CreateRequest = Schemas.CreateNoteRequest;
-/**
- * Response for create
- * 
- * @public
- */
-export type CreateResponse = Schemas.CreateNoteResponse;

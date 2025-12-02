@@ -16,19 +16,17 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-ValidateResponse,
-DeleteResponse,
 GetResponse,
 CreateRequest,
 CreateResponse,
-CreateWebhookReplayJobRequest,
-CreateWebhookReplayJobResponse,
 GetStreamLinksResponse,
+ValidateResponse,
+DeleteResponse,
 CreateStreamLinkResponse,
 DeleteStreamLinkResponse,
+CreateWebhookReplayJobRequest,
+CreateWebhookReplayJobResponse,
 } from './models.js';
-
-
 
 
 /**
@@ -70,22 +68,6 @@ export interface CreateOptions {
 }
 
 
-/**
- * Options for createWebhookReplayJob method
- * 
- * @public
- */
-export interface CreateWebhookReplayJobOptions {
-    
-    
-    /** Request body */
-    body?: CreateWebhookReplayJobRequest;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 
@@ -141,6 +123,24 @@ export interface CreateStreamLinkOptions {
 
 
 
+/**
+ * Options for createWebhookReplayJob method
+ * 
+ * @public
+ */
+export interface CreateWebhookReplayJobOptions {
+    
+    
+    /** Request body */
+    body?: CreateWebhookReplayJobRequest;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
 
 /**
  * Client for webhooks operations
@@ -188,166 +188,6 @@ export class WebhooksClient {
         
         return normalized as T;
     }
-
-
-
-  /**
-   * Validate webhook
-   * Triggers a CRC check for a given webhook.
-
-
-   * @param webhookId The ID of the webhook to check.
-
-
-
-
-   * @returns {Promise<ValidateResponse>} Promise resolving to the API response
-   */
-    // Overload 1: Default behavior (unwrapped response)
-    async validate(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<ValidateResponse> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ValidateResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Delete webhook
-   * Deletes an existing webhook configuration.
-
-
-   * @param webhookId The ID of the webhook to delete.
-
-
-
-
-   * @returns {Promise<DeleteResponse>} Promise resolving to the API response
-   */
-    // Overload 1: Default behavior (unwrapped response)
-    async delete(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteResponse> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
 
 
 
@@ -530,83 +370,6 @@ export class WebhooksClient {
 
 
   /**
-   * Create replay job for webhook
-   * Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.
-
-
-
-   * @returns {Promise<CreateWebhookReplayJobResponse>} Promise resolving to the API response
-   */
-    // Overload 1: Default behavior (unwrapped response)
-    async createWebhookReplayJob(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: CreateWebhookReplayJobOptions = {}
-        
-    ): Promise<CreateWebhookReplayJobResponse> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const normalizedOptions = options || {};
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            body,
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/webhooks/replay';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: body ? JSON.stringify(body) : undefined,
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<CreateWebhookReplayJobResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
    * Get stream links
    * Get a list of webhook links associated with a filtered stream ruleset.
 
@@ -660,6 +423,166 @@ export class WebhooksClient {
 
         return this.client.request<GetStreamLinksResponse>(
             'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Validate webhook
+   * Triggers a CRC check for a given webhook.
+
+
+   * @param webhookId The ID of the webhook to check.
+
+
+
+
+   * @returns {Promise<ValidateResponse>} Promise resolving to the API response
+   */
+    // Overload 1: Default behavior (unwrapped response)
+    async validate(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<ValidateResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ValidateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Delete webhook
+   * Deletes an existing webhook configuration.
+
+
+   * @param webhookId The ID of the webhook to delete.
+
+
+
+
+   * @returns {Promise<DeleteResponse>} Promise resolving to the API response
+   */
+    // Overload 1: Default behavior (unwrapped response)
+    async delete(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -934,6 +857,83 @@ export class WebhooksClient {
 
         return this.client.request<DeleteStreamLinkResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Create replay job for webhook
+   * Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.
+
+
+
+   * @returns {Promise<CreateWebhookReplayJobResponse>} Promise resolving to the API response
+   */
+    // Overload 1: Default behavior (unwrapped response)
+    async createWebhookReplayJob(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: CreateWebhookReplayJobOptions = {}
+        
+    ): Promise<CreateWebhookReplayJobResponse> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const normalizedOptions = options || {};
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            body,
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/webhooks/replay';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: body ? JSON.stringify(body) : undefined,
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<CreateWebhookReplayJobResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
