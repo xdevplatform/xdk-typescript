@@ -8,7 +8,7 @@
  * This module provides a client for interacting with the communities endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -37,13 +37,13 @@ export interface SearchOptions {
     
     /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified. 
      * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
+    nextToken?: string;
     
     
     
     /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     
     
     
@@ -141,9 +141,35 @@ export class CommunitiesClient {
 
 
 
-   * @returns {Promise<SearchResponse>} Promise resolving to the API response
+   * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    search(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options: SearchOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    search(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options?: SearchOptions
+        
+    ): Promise<SearchResponse>;
+    // Implementation
     async search(
         
         
@@ -159,7 +185,7 @@ export class CommunitiesClient {
         
         options: SearchOptions = {}
         
-    ): Promise<SearchResponse> {
+    ): Promise<SearchResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -265,7 +291,9 @@ export class CommunitiesClient {
         
         if (communityFields !== undefined && communityFields.length > 0) {
             
-            params.append('community.fields', communityFields.join(','));
+            
+            params.append('community.fields', normalizeFields(communityFields).join(','));
+            
             
         }
         
@@ -318,9 +346,35 @@ export class CommunitiesClient {
 
 
 
-   * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
+   * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    getById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetByIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetByIdOptions
+        
+    ): Promise<GetByIdResponse>;
+    // Implementation
     async getById(
         
         
@@ -336,7 +390,7 @@ export class CommunitiesClient {
         
         options: GetByIdOptions = {}
         
-    ): Promise<GetByIdResponse> {
+    ): Promise<GetByIdResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -378,7 +432,9 @@ export class CommunitiesClient {
         
         if (communityFields !== undefined && communityFields.length > 0) {
             
-            params.append('community.fields', communityFields.join(','));
+            
+            params.append('community.fields', normalizeFields(communityFields).join(','));
+            
             
         }
         

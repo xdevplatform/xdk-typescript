@@ -23,11 +23,11 @@ export interface PaginatedResponse<T> {
     /** Pagination metadata */
     meta?: {
         /** Number of results in the current page */
-        result_count?: number;
+        resultCount?: number;
         /** Token for fetching the next page */
-        next_token?: string;
+        nextToken?: string;
         /** Token for fetching the previous page */
-        previous_token?: string;
+        previousToken?: string;
     };
     /** Additional included objects (users, tweets, etc.) */
     includes?: Record<string, any>;
@@ -60,7 +60,7 @@ export interface PaginatedResponse<T> {
  * const followers = await client.users.getFollowers('783214');
  * await followers.fetchNext();
  * console.log(followers.items.length); // Number of followers
- * console.log(followers.meta.next_token); // Next page token
+ * console.log(followers.meta.nextToken); // Next page token
  * 
  * // Check status
  * if (!followers.done) {
@@ -163,7 +163,7 @@ export class Paginator<T> implements AsyncIterable<T> {
             
             // Update tokens
             this.previousToken = this.currentToken;
-            this.currentToken = response.meta?.next_token;
+            this.currentToken = response.meta?.nextToken;
             
             // Update state
             this.hasMore = !!this.currentToken;
@@ -232,7 +232,7 @@ export class Paginator<T> implements AsyncIterable<T> {
             
             // Update tokens
             this.currentToken = this.previousToken;
-            this.previousToken = response.meta?.previous_token;
+            this.previousToken = response.meta?.previousToken;
             
             // Update state
             this.hasMore = !!this.currentToken;

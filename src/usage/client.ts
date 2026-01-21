@@ -8,7 +8,7 @@
  * This module provides a client for interacting with the usage endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -103,9 +103,27 @@ export class UsageClient {
 
 
 
-   * @returns {Promise<GetResponse>} Promise resolving to the API response
+   * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    get(
+        
+        
+        
+        
+        options: GetOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    get(
+        
+        
+        
+        
+        options?: GetOptions
+        
+    ): Promise<GetResponse>;
+    // Implementation
     async get(
         
         
@@ -117,7 +135,7 @@ export class UsageClient {
         
         options: GetOptions = {}
         
-    ): Promise<GetResponse> {
+    ): Promise<GetResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -172,7 +190,9 @@ export class UsageClient {
         
         if (usageFields !== undefined && usageFields.length > 0) {
             
-            params.append('usage.fields', usageFields.join(','));
+            
+            params.append('usage.fields', normalizeFields(usageFields).join(','));
+            
             
         }
         

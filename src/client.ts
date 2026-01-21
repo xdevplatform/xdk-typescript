@@ -17,19 +17,11 @@ import {
 
 
 
-import { UsersClient } from "./users/index.js";
+import { GeneralClient } from "./general/index.js";
 
 
 
-import { StreamClient } from "./stream/client.js";
-
-
-
-import { ConnectionsClient } from "./connections/index.js";
-
-
-
-import { CommunitiesClient } from "./communities/index.js";
+import { AccountActivityClient } from "./account_activity/index.js";
 
 
 
@@ -37,35 +29,15 @@ import { CommunityNotesClient } from "./community_notes/index.js";
 
 
 
-import { TrendsClient } from "./trends/index.js";
+import { ComplianceClient } from "./compliance/index.js";
 
 
 
-import { ListsClient } from "./lists/index.js";
+import { ConnectionsClient } from "./connections/index.js";
 
 
 
-import { GeneralClient } from "./general/index.js";
-
-
-
-import { DirectMessagesClient } from "./direct_messages/index.js";
-
-
-
-import { ActivityClient } from "./activity/index.js";
-
-
-
-import { UsageClient } from "./usage/index.js";
-
-
-
-import { WebhooksClient } from "./webhooks/index.js";
-
-
-
-import { AccountActivityClient } from "./account_activity/index.js";
+import { UsersClient } from "./users/index.js";
 
 
 
@@ -77,7 +49,27 @@ import { SpacesClient } from "./spaces/index.js";
 
 
 
+import { ActivityClient } from "./activity/index.js";
+
+
+
+import { UsageClient } from "./usage/index.js";
+
+
+
+import { TrendsClient } from "./trends/index.js";
+
+
+
 import { PostsClient } from "./posts/index.js";
+
+
+
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { CommunitiesClient } from "./communities/index.js";
 
 
 
@@ -85,7 +77,15 @@ import { MediaClient } from "./media/index.js";
 
 
 
-import { ComplianceClient } from "./compliance/index.js";
+import { WebhooksClient } from "./webhooks/index.js";
+
+
+
+import { StreamClient } from "./stream/client.js";
+
+
+
+import { ListsClient } from "./lists/index.js";
 
 
 
@@ -169,15 +169,102 @@ export interface ApiResponse<T = any> {
  */
 export interface PaginationMeta {
   /** Next page token */
-  next_token?: string;
+  nextToken?: string;
   /** Previous page token */
-  previous_token?: string;
+  previousToken?: string;
   /** Total count */
-  total_count?: number;
+  totalCount?: number;
   /** Result count */
-  result_count?: number;
+  resultCount?: number;
 }
 
+/**
+ * Convert a snake_case string to camelCase
+ * @param str The snake_case string to convert
+ * @returns The camelCase string
+ */
+function snakeToCamel(str: string): string {
+  return str.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+/**
+ * Convert a camelCase string to snake_case
+ * @param str The camelCase string to convert
+ * @returns The snake_case string
+ */
+export function camelToSnake(str: string): string {
+  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+}
+
+/**
+ * Convert an array of field names from camelCase to snake_case
+ * Handles both camelCase and already snake_case values
+ * @param fields Array of field names
+ * @returns Array with snake_case field names
+ */
+export function normalizeFields(fields: string[]): string[] {
+  return fields.map(field => {
+    // If already snake_case (contains underscore), keep as-is
+    if (field.includes('_')) {
+      return field;
+    }
+    // Convert camelCase to snake_case
+    return camelToSnake(field);
+  });
+}
+
+/**
+ * Recursively transform all keys in an object from snake_case to camelCase
+ * @param obj The object to transform
+ * @returns A new object with camelCase keys
+ */
+function transformKeys<T>(obj: unknown): T {
+  if (obj === null || obj === undefined) {
+    return obj as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => transformKeys(item)) as T;
+  }
+
+  if (typeof obj === 'object') {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+      const camelKey = snakeToCamel(key);
+      result[camelKey] = transformKeys(value);
+    }
+    return result as T;
+  }
+
+  return obj as T;
+}
+
+/**
+ * Recursively transform all keys in an object from camelCase to snake_case
+ * Used for request bodies to convert TypeScript conventions to API format
+ * @param obj The object to transform
+ * @returns A new object with snake_case keys
+ */
+export function transformKeysToSnake<T>(obj: unknown): T {
+  if (obj === null || obj === undefined) {
+    return obj as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => transformKeysToSnake(item)) as T;
+  }
+
+  if (typeof obj === 'object') {
+    const result: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+      const snakeKey = camelToSnake(key);
+      result[snakeKey] = transformKeysToSnake(value);
+    }
+    return result as T;
+  }
+
+  return obj as T;
+}
 
 /**
  * Main client class for the X API
@@ -233,44 +320,23 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** users client */
-  readonly users: UsersClient;
+  /** general client */
+  readonly general: GeneralClient;
 
-  /** stream client */
-  readonly stream: StreamClient;
-
-  /** connections client */
-  readonly connections: ConnectionsClient;
-
-  /** communities client */
-  readonly communities: CommunitiesClient;
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
 
   /** community notes client */
   readonly communityNotes: CommunityNotesClient;
 
-  /** trends client */
-  readonly trends: TrendsClient;
+  /** compliance client */
+  readonly compliance: ComplianceClient;
 
-  /** lists client */
-  readonly lists: ListsClient;
+  /** connections client */
+  readonly connections: ConnectionsClient;
 
-  /** general client */
-  readonly general: GeneralClient;
-
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
-
-  /** activity client */
-  readonly activity: ActivityClient;
-
-  /** usage client */
-  readonly usage: UsageClient;
-
-  /** webhooks client */
-  readonly webhooks: WebhooksClient;
-
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
+  /** users client */
+  readonly users: UsersClient;
 
   /** news client */
   readonly news: NewsClient;
@@ -278,14 +344,35 @@ export class Client {
   /** spaces client */
   readonly spaces: SpacesClient;
 
+  /** activity client */
+  readonly activity: ActivityClient;
+
+  /** usage client */
+  readonly usage: UsageClient;
+
+  /** trends client */
+  readonly trends: TrendsClient;
+
   /** posts client */
   readonly posts: PostsClient;
+
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
+  /** communities client */
+  readonly communities: CommunitiesClient;
 
   /** media client */
   readonly media: MediaClient;
 
-  /** compliance client */
-  readonly compliance: ComplianceClient;
+  /** webhooks client */
+  readonly webhooks: WebhooksClient;
+
+  /** stream client */
+  readonly stream: StreamClient;
+
+  /** lists client */
+  readonly lists: ListsClient;
 
 
   /**
@@ -332,7 +419,7 @@ export class Client {
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.3.0',
+      'User-Agent': 'xdk-typescript/0.4.0',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((config as ClientConfig).headers || {}),
@@ -341,41 +428,41 @@ export class Client {
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.users = new UsersClient(this);
+    this.general = new GeneralClient(this);
 
-    this.stream = new StreamClient(this);
-
-    this.connections = new ConnectionsClient(this);
-
-    this.communities = new CommunitiesClient(this);
+    this.accountActivity = new AccountActivityClient(this);
 
     this.communityNotes = new CommunityNotesClient(this);
 
-    this.trends = new TrendsClient(this);
+    this.compliance = new ComplianceClient(this);
 
-    this.lists = new ListsClient(this);
+    this.connections = new ConnectionsClient(this);
 
-    this.general = new GeneralClient(this);
-
-    this.directMessages = new DirectMessagesClient(this);
-
-    this.activity = new ActivityClient(this);
-
-    this.usage = new UsageClient(this);
-
-    this.webhooks = new WebhooksClient(this);
-
-    this.accountActivity = new AccountActivityClient(this);
+    this.users = new UsersClient(this);
 
     this.news = new NewsClient(this);
 
     this.spaces = new SpacesClient(this);
 
+    this.activity = new ActivityClient(this);
+
+    this.usage = new UsageClient(this);
+
+    this.trends = new TrendsClient(this);
+
     this.posts = new PostsClient(this);
+
+    this.directMessages = new DirectMessagesClient(this);
+
+    this.communities = new CommunitiesClient(this);
 
     this.media = new MediaClient(this);
 
-    this.compliance = new ComplianceClient(this);
+    this.webhooks = new WebhooksClient(this);
+
+    this.stream = new StreamClient(this);
+
+    this.lists = new ListsClient(this);
 
   }
 
@@ -485,7 +572,9 @@ export class Client {
       let data: T;
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
-        data = await response.json();
+        const rawData = await response.json();
+        // Transform snake_case keys to camelCase to match TypeScript conventions
+        data = transformKeys<T>(rawData);
       } else {
         data = await response.text() as T;
       }

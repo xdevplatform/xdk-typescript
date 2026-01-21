@@ -11,6 +11,12 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
+ * Response for getConnectionHistory
+ * 
+ * @public
+ */
+export type GetConnectionHistoryResponse = Schemas.Get2ConnectionsResponse;
+/**
  * Response for deleteAll
  * 
  * @public

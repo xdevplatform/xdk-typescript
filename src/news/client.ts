@@ -8,7 +8,7 @@
  * This module provides a client for interacting with the news endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -135,9 +135,35 @@ export class NewsClient {
 
 
 
-   * @returns {Promise<GetResponse>} Promise resolving to the API response
+   * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    get(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    get(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetOptions
+        
+    ): Promise<GetResponse>;
+    // Implementation
     async get(
         
         
@@ -153,7 +179,7 @@ export class NewsClient {
         
         options: GetOptions = {}
         
-    ): Promise<GetResponse> {
+    ): Promise<GetResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -195,7 +221,9 @@ export class NewsClient {
         
         if (newsFields !== undefined && newsFields.length > 0) {
             
-            params.append('news.fields', newsFields.join(','));
+            
+            params.append('news.fields', normalizeFields(newsFields).join(','));
+            
             
         }
         
@@ -254,9 +282,35 @@ export class NewsClient {
 
 
 
-   * @returns {Promise<SearchResponse>} Promise resolving to the API response
+   * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    search(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options: SearchOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    search(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options?: SearchOptions
+        
+    ): Promise<SearchResponse>;
+    // Implementation
     async search(
         
         
@@ -272,7 +326,7 @@ export class NewsClient {
         
         options: SearchOptions = {}
         
-    ): Promise<SearchResponse> {
+    ): Promise<SearchResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -359,7 +413,9 @@ export class NewsClient {
         
         if (newsFields !== undefined && newsFields.length > 0) {
             
-            params.append('news.fields', newsFields.join(','));
+            
+            params.append('news.fields', normalizeFields(newsFields).join(','));
+            
             
         }
         

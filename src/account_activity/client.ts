@@ -8,7 +8,7 @@
  * This module provides a client for interacting with the account activity endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -17,13 +17,14 @@ import {
 } from '../paginator.js';
 import {
 GetSubscriptionsResponse,
+DeleteSubscriptionResponse,
 ValidateSubscriptionResponse,
 CreateSubscriptionRequest,
 CreateSubscriptionResponse,
 CreateReplayJobResponse,
-DeleteSubscriptionResponse,
 GetSubscriptionCountResponse,
 } from './models.js';
+
 
 
 
@@ -44,7 +45,6 @@ export interface CreateSubscriptionOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-
 
 
 
@@ -109,9 +109,33 @@ export class AccountActivityClient {
 
 
 
-   * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
+   * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    getSubscriptions(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSubscriptions(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionsResponse>;
+    // Implementation
     async getSubscriptions(
         
         
@@ -125,7 +149,7 @@ export class AccountActivityClient {
         
         
         
-    ): Promise<GetSubscriptionsResponse> {
+    ): Promise<GetSubscriptionsResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
@@ -174,6 +198,124 @@ export class AccountActivityClient {
 
 
   /**
+   * Delete subscription
+   * Deletes an Account Activity subscription for the given webhook and user ID.
+
+
+   * @param webhookId The webhook ID to check subscription against.
+
+
+
+   * @param userId User ID to unsubscribe from.
+
+
+
+
+   * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteSubscription(
+        
+        
+        webhookId: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteSubscription(
+        
+        
+        webhookId: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse>;
+    // Implementation
+    async deleteSubscription(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteSubscriptionResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
    * Validate subscription
    * Checks a user’s Account Activity subscription for a given webhook.
 
@@ -183,9 +325,33 @@ export class AccountActivityClient {
 
 
 
-   * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response
+   * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    validateSubscription(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    validateSubscription(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+    ): Promise<ValidateSubscriptionResponse>;
+    // Implementation
     async validateSubscription(
         
         
@@ -199,7 +365,7 @@ export class AccountActivityClient {
         
         
         
-    ): Promise<ValidateSubscriptionResponse> {
+    ): Promise<ValidateSubscriptionResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
@@ -263,9 +429,35 @@ export class AccountActivityClient {
 
 
 
-   * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
+   * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    createSubscription(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: CreateSubscriptionOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createSubscription(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options?: CreateSubscriptionOptions
+        
+    ): Promise<CreateSubscriptionResponse>;
+    // Implementation
     async createSubscription(
         
         
@@ -281,7 +473,7 @@ export class AccountActivityClient {
         
         options: CreateSubscriptionOptions = {}
         
-    ): Promise<CreateSubscriptionResponse> {
+    ): Promise<CreateSubscriptionResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -313,7 +505,7 @@ export class AccountActivityClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
-            body: body ? JSON.stringify(body) : undefined,
+            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
             
             
             // Pass security requirements for smart auth selection
@@ -366,9 +558,49 @@ export class AccountActivityClient {
 
 
 
-   * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response
+   * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    createReplayJob(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        fromDate: string,
+        
+        
+        
+        toDate: string,
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createReplayJob(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        fromDate: string,
+        
+        
+        
+        toDate: string,
+        
+        
+        
+        
+    ): Promise<CreateReplayJobResponse>;
+    // Implementation
     async createReplayJob(
         
         
@@ -390,7 +622,7 @@ export class AccountActivityClient {
         
         
         
-    ): Promise<CreateReplayJobResponse> {
+    ): Promise<CreateReplayJobResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
@@ -461,100 +693,30 @@ export class AccountActivityClient {
 
 
   /**
-   * Delete subscription
-   * Deletes an Account Activity subscription for the given webhook and user ID.
-
-
-   * @param webhookId The webhook ID to check subscription against.
-
-
-
-   * @param userId User ID to unsubscribe from.
-
-
-
-
-   * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
-   */
-    // Overload 1: Default behavior (unwrapped response)
-    async deleteSubscription(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteSubscriptionResponse> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteSubscriptionResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
    * Get subscription count
    * Retrieves a count of currently active Account Activity subscriptions.
 
 
 
-   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response
+   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    getSubscriptionCount(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSubscriptionCount(
+        
+        
+        
+        
+    ): Promise<GetSubscriptionCountResponse>;
+    // Implementation
     async getSubscriptionCount(
         
         
@@ -564,7 +726,7 @@ export class AccountActivityClient {
         
         
         
-    ): Promise<GetSubscriptionCountResponse> {
+    ): Promise<GetSubscriptionCountResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};

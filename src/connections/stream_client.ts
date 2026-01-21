@@ -11,10 +11,60 @@ import { Client, ApiResponse, RequestOptions } from '../client.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
+  GetConnectionHistoryResponse,
+
+
   DeleteAllResponse,
 
 } from './models.js';
 
+/**
+ * Options for getConnectionHistory method
+ * 
+ * @public
+ */
+export interface GetConnectionHistoryStreamingOptions {
+    
+    
+    /** Filter by connection status. Use 'active' for current connections, 'inactive' for historical/disconnected connections, or 'all' for both. 
+     * Also accepts: status or proper camelCase (e.g., status) */
+    status?: string;
+    
+    
+    
+    /** Filter by streaming endpoint. Specify one or more endpoint names to filter results. 
+     * Also accepts: endpoints or proper camelCase (e.g., endpoints) */
+    endpoints?: Array<any>;
+    
+    
+    
+    /** The maximum number of results to return per page. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** Token for paginating through results. Use the value from 'next_token' in the previous response. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of Connection fields to display. 
+     * Also accepts: connection.fields or proper camelCase (e.g., connectionFields) */
+    connectionFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for deleteAll method
  * 
@@ -71,6 +121,180 @@ export class ConnectionsClient {
 
 
 
+
+
+
+
+
+
+    /**
+     * Get Connection History
+     * Returns active and historical streaming connections with disconnect reasons for the authenticated application.
+     * 
+     * @returns Promise with the API response
+     */
+    async getConnectionHistory(
+        
+        
+        
+        
+        
+        
+        
+        options: GetConnectionHistoryStreamingOptions = {}
+    ): Promise<GetConnectionHistoryResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getConnectionHistory');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+            
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'connection.fields': 'connectionFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            status = undefined,
+            
+            
+            
+            endpoints = [],
+            
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            connectionFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (status !== undefined) {
+            
+            params.append('status', String(status));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (endpoints !== undefined && endpoints.length > 0) {
+            
+            params.append('endpoints', endpoints.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (connectionFields !== undefined && connectionFields.length > 0) {
+            
+            params.append('connection.fields', connectionFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetConnectionHistoryResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 

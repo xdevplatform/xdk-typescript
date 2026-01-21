@@ -1,8 +1,8 @@
 /**
  * Environment-aware HTTP client for the X API SDK.
  *
- * This module provides a universal HTTP client that works in both Node.js and browser environments
- * without requiring manual polyfills.
+ * This module provides a universal HTTP client that works in Node.js, browser,
+ * and React Native environments without requiring manual polyfills.
  */
 interface RequestOptions$1 {
     method?: string;
@@ -62,6 +62,64 @@ declare class HttpClient {
 declare const httpClient: HttpClient;
 
 /**
+ * Response for getOpenApiSpec
+ *
+ * @public
+ */
+type GetOpenApiSpecResponse = Record<string, any>;
+
+type models$h_GetOpenApiSpecResponse = GetOpenApiSpecResponse;
+declare namespace models$h {
+  export {
+    models$h_GetOpenApiSpecResponse as GetOpenApiSpecResponse,
+  };
+}
+
+/**
+ * general client for the X API.
+ *
+ * This module provides a client for interacting with the general endpoints of the X API.
+ */
+
+/**
+ * Client for general operations
+ *
+ * This client provides methods for interacting with the general endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all general related operations.
+ *
+ * @category general
+ */
+declare class GeneralClient {
+    private client;
+    /**
+     * Creates a new general client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get OpenAPI Spec.
+     * Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
+  
+  
+  
+     * @returns {Promise<GetOpenApiSpecResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getOpenApiSpec(options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getOpenApiSpec(): Promise<GetOpenApiSpecResponse>;
+}
+
+/**
  * OpenAPI Schema Types
  * Auto-generated from OpenAPI components/schemas
  *
@@ -93,11 +151,11 @@ An XActivity subscription.
  */
 interface ActivitySubscription {
     createdAt: string; /** none */
-    eventType: string;
-    filter: ActivitySubscriptionFilter;
+    eventType: string; /** An XAA subscription. */
+    filter: ActivitySubscriptionFilter; /** The unique identifier of this subscription. */
     subscriptionId: ActivitySubscriptionId; /** none */
     tag?: string; /** none */
-    updatedAt: string;
+    updatedAt: string; /** The unique identifier of this webhook config. */
     webhookId?: WebhookConfigId;
 } /**
 Schema type for ActivitySubscriptionCreateRequest
@@ -105,9 +163,9 @@ Schema type for ActivitySubscriptionCreateRequest
  * @public
  */
 interface ActivitySubscriptionCreateRequest {
-    eventType: "ProfileBioUpdate" | "ProfilePictureUpdate" | "ProfileBannerPictureUpdate" | "ProfileScreennameUpdate" | "ProfileGeoUpdate" | "ProfileUrlUpdate" | "ProfileVerifiedBadgeUpdate" | "TrendsNew";
+    eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "news.new" | "follow.follow" | "follow.unfollow" | "ProfileBioUpdate" | "ProfilePictureUpdate" | "ProfileBannerPictureUpdate" | "ProfileScreennameUpdate" | "ProfileGeoUpdate" | "ProfileUrlUpdate" | "ProfileVerifiedBadgeUpdate" | "NewsNew" | "FollowFollow" | "FollowUnfollow"; /** An XAA subscription. */
     filter: ActivitySubscriptionFilter; /** none */
-    tag?: string;
+    tag?: string; /** The unique identifier of this webhook config. */
     webhookId?: WebhookConfigId;
 } /**
 Schema type for ActivitySubscriptionCreateResponse
@@ -133,7 +191,7 @@ An XAA subscription.
  * @public
  */
 interface ActivitySubscriptionFilter {
-    keyword?: Keyword;
+    keyword?: Keyword; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     userId?: UserId;
 } /**
 Schema type for ActivitySubscriptionGetResponse
@@ -155,7 +213,7 @@ Schema type for ActivitySubscriptionUpdateRequest
  * @public
  */
 interface ActivitySubscriptionUpdateRequest {
-    tag?: string;
+    tag?: string; /** The unique identifier of this webhook config. */
     webhookId?: WebhookConfigId;
 } /**
 Schema type for ActivitySubscriptionUpdateResponse
@@ -177,7 +235,7 @@ A response from modifying user-specified stream filtering rules.
  */
 interface AddOrDeleteRulesResponse {
     data?: Array<Rule>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     meta: RulesResponseMetadata;
 } /**
 A request to add a user-specified stream filtering rule.
@@ -192,11 +250,6 @@ The sum of results returned in this response.
  * @public
  */
 type Aggregate = number; /**
-Unique identifier of ai trend.
- *
- * @public
- */
-type AiTrendId = string; /**
 Schema type for AllowDownloadStatus
  *
  * @public
@@ -328,7 +381,7 @@ A X Community is a curated group of Posts.
  * @public
  */
 interface Community {
-    createdAt?: string;
+    createdAt?: string; /** The unique identifier of this Community. */
     id: CommunityId; /** The name of this Community. */
     name: string;
 } /**
@@ -342,14 +395,14 @@ Schema type for ComplianceJob
  * @public
  */
 interface ComplianceJob {
-    createdAt: CreatedAt;
-    downloadExpiresAt: DownloadExpiration;
-    downloadUrl: DownloadUrl;
-    id: JobId;
-    name?: ComplianceJobName;
-    status: ComplianceJobStatus;
-    type: ComplianceJobType;
-    uploadExpiresAt: UploadExpiration;
+    createdAt: CreatedAt; /** Expiration time of the download URL. */
+    downloadExpiresAt: DownloadExpiration; /** URL from which the user will retrieve their compliance results. */
+    downloadUrl: DownloadUrl; /** Compliance Job ID. */
+    id: JobId; /** User-provided name for a compliance job. */
+    name?: ComplianceJobName; /** Status of a compliance job. */
+    status: ComplianceJobStatus; /** Type of compliance job to list. */
+    type: ComplianceJobType; /** Expiration time of the upload URL. */
+    uploadExpiresAt: UploadExpiration; /** URL to which the user will upload their Tweet or user IDs. */
     uploadUrl: UploadUrl;
 } /**
 User-provided name for a compliance job.
@@ -372,7 +425,18 @@ You cannot create a new job if one is already in progress.
  *
  * @public
  */
-type ConflictProblem = any;
+type ConflictProblem = any; /**
+Schema type for Connection
+ *
+ * @public
+ */
+interface Connection {
+    clientIp?: string; /** The timestamp when the connection was established. */
+    connectedAt: string; /** The reason for disconnection, if the connection is inactive. */
+    disconnectReason?: string; /** The timestamp when the connection was disconnected, if applicable. */
+    disconnectedAt?: string; /** The name of the streaming endpoint. */
+    endpointName: string;
+}
 /**
 A problem that indicates something is wrong with the connection.
  *
@@ -391,7 +455,7 @@ Annotation inferred from the Tweet text.
  * @public
  */
 interface ContextAnnotation {
-    domain: ContextAnnotationDomainFields;
+    domain: ContextAnnotationDomainFields; /** Represents the data for the context annotation entity. */
     entity: ContextAnnotationEntityFields;
 } /**
 Represents the data for the context annotation domain.
@@ -452,8 +516,8 @@ Schema type for CreateDmConversationRequest
  * @public
  */
 interface CreateDmConversationRequest {
-    conversationType: "Group";
-    message: CreateMessageRequest;
+    conversationType: "Group"; /** none */
+    message: CreateMessageRequest; /** Participants for the DM Conversation. */
     participantIds: DmParticipants;
 } /**
 Schema type for CreateDmEventResponse
@@ -475,7 +539,7 @@ Schema type for CreateNoteRequest
  * @public
  */
 interface CreateNoteRequest {
-    info: NoteInfo;
+    info: NoteInfo; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     postId: TweetId; /** If true, the note being submitted is only for testing the capability of the bot, and won't be publicly visible. If false, the note being submitted will be a new proposed note on the product. */
     testMode: boolean;
 } /**
@@ -546,14 +610,14 @@ Schema type for DmEvent
 interface DmEvent {
     attachments?: Record<string, any>; /** none */
     cashtags?: Array<CashtagEntity>; /** none */
-    createdAt?: string;
+    createdAt?: string; /** Unique identifier of a DM conversation. This can either be a numeric string, or a pair of numeric strings separated by a '-' character in the case of one-on-one DM Conversations. */
     dmConversationId?: DmConversationId; /** none */
     eventType: string; /** none */
-    hashtags?: Array<HashtagEntity>;
+    hashtags?: Array<HashtagEntity>; /** Unique identifier of a DM Event. */
     id: DmEventId; /** none */
     mentions?: Array<MentionEntity>; /** A list of participants for a ParticipantsJoin or ParticipantsLeave event_type. */
     participantIds?: Array<UserId>; /** A list of Posts this DM refers to. */
-    referencedTweets?: Array<Record<string, any>>;
+    referencedTweets?: Array<Record<string, any>>; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     senderId?: UserId; /** none */
     text?: string; /** none */
     urls?: Array<UrlEntityDm>;
@@ -640,7 +704,7 @@ Schema type for EvaluateNoteRequest
  * @public
  */
 interface EvaluateNoteRequest {
-    noteText: string;
+    noteText: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     postId: TweetId;
 } /**
 Schema type for EvaluateNoteResponse
@@ -675,9 +739,17 @@ A Tweet or error that can be returned by the streaming Tweet API. The values ret
  */
 interface FilteredStreamingTweetResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** The list of rules which matched the Tweet */
     matchingRules?: Array<Record<string, any>>;
+} /**
+Schema type for FollowActivityResponsePayload
+ *
+ * @public
+ */
+interface FollowActivityResponsePayload {
+    source?: User; /** The X User object. */
+    target?: User;
 } /**
 Schema type for FoundMediaOrigin
  *
@@ -709,7 +781,7 @@ Schema type for Geo
  * @public
  */
 interface Geo {
-    bbox: Array<number>;
+    bbox: Array<number>; /** A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object. */
     geometry?: Point; /** none */
     properties: Record<string, any>; /** none */
     type: "Feature";
@@ -720,14 +792,6 @@ Schema type for GeoRestrictions
  * @public
  */
 type GeoRestrictions = any; /**
-Schema type for Get2AiTrendsIdResponse
- *
- * @public
- */
-interface Get2AiTrendsIdResponse {
-    data?: News; /** none */
-    errors?: Array<Problem>;
-} /**
 Schema type for Get2CommunitiesIdResponse
  *
  * @public
@@ -762,13 +826,22 @@ interface Get2ComplianceJobsResponse {
     errors?: Array<Problem>; /** none */
     meta?: Record<string, any>;
 } /**
+Schema type for Get2ConnectionsResponse
+ *
+ * @public
+ */
+interface Get2ConnectionsResponse {
+    data?: Array<Connection>; /** none */
+    errors?: Array<Problem>; /** none */
+    meta?: Record<string, any>;
+} /**
 Schema type for Get2DmConversationsIdDmEventsResponse
  *
  * @public
  */
 interface Get2DmConversationsIdDmEventsResponse {
     data?: Array<DmEvent>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -778,7 +851,7 @@ Schema type for Get2DmConversationsWithParticipantIdDmEventsResponse
  */
 interface Get2DmConversationsWithParticipantIdDmEventsResponse {
     data?: Array<DmEvent>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -788,7 +861,7 @@ Schema type for Get2DmEventsEventIdResponse
  */
 interface Get2DmEventsEventIdResponse {
     data?: DmEvent; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2DmEventsResponse
@@ -797,7 +870,7 @@ Schema type for Get2DmEventsResponse
  */
 interface Get2DmEventsResponse {
     data?: Array<DmEvent>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -863,7 +936,7 @@ Schema type for Get2LikesFirehoseStreamResponse
  */
 interface Get2LikesFirehoseStreamResponse {
     data?: LikeWithTweetAuthor; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2LikesSample10StreamResponse
@@ -872,7 +945,7 @@ Schema type for Get2LikesSample10StreamResponse
  */
 interface Get2LikesSample10StreamResponse {
     data?: LikeWithTweetAuthor; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2ListsIdFollowersResponse
@@ -881,7 +954,7 @@ Schema type for Get2ListsIdFollowersResponse
  */
 interface Get2ListsIdFollowersResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -891,7 +964,7 @@ Schema type for Get2ListsIdMembersResponse
  */
 interface Get2ListsIdMembersResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -901,7 +974,7 @@ Schema type for Get2ListsIdResponse
  */
 interface Get2ListsIdResponse {
     data?: List; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2ListsIdTweetsResponse
@@ -910,7 +983,7 @@ Schema type for Get2ListsIdTweetsResponse
  */
 interface Get2ListsIdTweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -970,7 +1043,7 @@ Schema type for Get2NotesSearchPostsEligibleForNotesResponse
  */
 interface Get2NotesSearchPostsEligibleForNotesResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -980,7 +1053,7 @@ Schema type for Get2SpacesByCreatorIdsResponse
  */
 interface Get2SpacesByCreatorIdsResponse {
     data?: Array<Space>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -990,7 +1063,7 @@ Schema type for Get2SpacesIdBuyersResponse
  */
 interface Get2SpacesIdBuyersResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1000,7 +1073,7 @@ Schema type for Get2SpacesIdResponse
  */
 interface Get2SpacesIdResponse {
     data?: Space; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2SpacesIdTweetsResponse
@@ -1009,7 +1082,7 @@ Schema type for Get2SpacesIdTweetsResponse
  */
 interface Get2SpacesIdTweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1019,7 +1092,7 @@ Schema type for Get2SpacesResponse
  */
 interface Get2SpacesResponse {
     data?: Array<Space>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2SpacesSearchResponse
@@ -1028,7 +1101,7 @@ Schema type for Get2SpacesSearchResponse
  */
 interface Get2SpacesSearchResponse {
     data?: Array<Space>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1072,7 +1145,7 @@ Schema type for Get2TweetsFirehoseStreamLangEnResponse
  */
 interface Get2TweetsFirehoseStreamLangEnResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsFirehoseStreamLangJaResponse
@@ -1081,7 +1154,7 @@ Schema type for Get2TweetsFirehoseStreamLangJaResponse
  */
 interface Get2TweetsFirehoseStreamLangJaResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsFirehoseStreamLangKoResponse
@@ -1090,7 +1163,7 @@ Schema type for Get2TweetsFirehoseStreamLangKoResponse
  */
 interface Get2TweetsFirehoseStreamLangKoResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsFirehoseStreamLangPtResponse
@@ -1099,7 +1172,7 @@ Schema type for Get2TweetsFirehoseStreamLangPtResponse
  */
 interface Get2TweetsFirehoseStreamLangPtResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsFirehoseStreamResponse
@@ -1108,7 +1181,7 @@ Schema type for Get2TweetsFirehoseStreamResponse
  */
 interface Get2TweetsFirehoseStreamResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsIdLikingUsersResponse
@@ -1117,7 +1190,7 @@ Schema type for Get2TweetsIdLikingUsersResponse
  */
 interface Get2TweetsIdLikingUsersResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1127,7 +1200,7 @@ Schema type for Get2TweetsIdQuoteTweetsResponse
  */
 interface Get2TweetsIdQuoteTweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1137,7 +1210,7 @@ Schema type for Get2TweetsIdResponse
  */
 interface Get2TweetsIdResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsIdRetweetedByResponse
@@ -1146,7 +1219,7 @@ Schema type for Get2TweetsIdRetweetedByResponse
  */
 interface Get2TweetsIdRetweetedByResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1156,7 +1229,7 @@ Schema type for Get2TweetsIdRetweetsResponse
  */
 interface Get2TweetsIdRetweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1166,7 +1239,7 @@ Schema type for Get2TweetsResponse
  */
 interface Get2TweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsSample10StreamResponse
@@ -1175,7 +1248,7 @@ Schema type for Get2TweetsSample10StreamResponse
  */
 interface Get2TweetsSample10StreamResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsSampleStreamResponse
@@ -1184,7 +1257,7 @@ Schema type for Get2TweetsSampleStreamResponse
  */
 interface Get2TweetsSampleStreamResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsSearchAllResponse
@@ -1193,7 +1266,7 @@ Schema type for Get2TweetsSearchAllResponse
  */
 interface Get2TweetsSearchAllResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1203,7 +1276,7 @@ Schema type for Get2TweetsSearchRecentResponse
  */
 interface Get2TweetsSearchRecentResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1213,7 +1286,7 @@ Schema type for Get2TweetsSearchStreamResponse
  */
 interface Get2TweetsSearchStreamResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2TweetsSearchStreamRulesCountsResponse
@@ -1238,7 +1311,7 @@ Schema type for Get2UsersByResponse
  */
 interface Get2UsersByResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2UsersByUsernameUsernameResponse
@@ -1247,7 +1320,7 @@ Schema type for Get2UsersByUsernameUsernameResponse
  */
 interface Get2UsersByUsernameUsernameResponse {
     data?: User; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2UsersIdBlockingResponse
@@ -1256,7 +1329,7 @@ Schema type for Get2UsersIdBlockingResponse
  */
 interface Get2UsersIdBlockingResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1266,7 +1339,7 @@ Schema type for Get2UsersIdBookmarksResponse
  */
 interface Get2UsersIdBookmarksResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1276,7 +1349,7 @@ Schema type for Get2UsersIdFollowedListsResponse
  */
 interface Get2UsersIdFollowedListsResponse {
     data?: Array<List>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1286,7 +1359,7 @@ Schema type for Get2UsersIdFollowersResponse
  */
 interface Get2UsersIdFollowersResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1296,7 +1369,7 @@ Schema type for Get2UsersIdFollowingResponse
  */
 interface Get2UsersIdFollowingResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1306,7 +1379,7 @@ Schema type for Get2UsersIdLikedTweetsResponse
  */
 interface Get2UsersIdLikedTweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1316,7 +1389,7 @@ Schema type for Get2UsersIdListMembershipsResponse
  */
 interface Get2UsersIdListMembershipsResponse {
     data?: Array<List>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1326,7 +1399,7 @@ Schema type for Get2UsersIdMentionsResponse
  */
 interface Get2UsersIdMentionsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1336,7 +1409,7 @@ Schema type for Get2UsersIdMutingResponse
  */
 interface Get2UsersIdMutingResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1346,7 +1419,7 @@ Schema type for Get2UsersIdOwnedListsResponse
  */
 interface Get2UsersIdOwnedListsResponse {
     data?: Array<List>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1356,7 +1429,7 @@ Schema type for Get2UsersIdPinnedListsResponse
  */
 interface Get2UsersIdPinnedListsResponse {
     data?: Array<List>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1366,7 +1439,7 @@ Schema type for Get2UsersIdResponse
  */
 interface Get2UsersIdResponse {
     data?: User; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2UsersIdTimelinesReverseChronologicalResponse
@@ -1375,7 +1448,7 @@ Schema type for Get2UsersIdTimelinesReverseChronologicalResponse
  */
 interface Get2UsersIdTimelinesReverseChronologicalResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1385,7 +1458,7 @@ Schema type for Get2UsersIdTweetsResponse
  */
 interface Get2UsersIdTweetsResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1395,7 +1468,7 @@ Schema type for Get2UsersMeResponse
  */
 interface Get2UsersMeResponse {
     data?: User; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2UsersPersonalizedTrendsResponse
@@ -1412,7 +1485,7 @@ Schema type for Get2UsersRepostsOfMeResponse
  */
 interface Get2UsersRepostsOfMeResponse {
     data?: Array<Tweet>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1422,7 +1495,7 @@ Schema type for Get2UsersResponse
  */
 interface Get2UsersResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for Get2UsersSearchResponse
@@ -1431,7 +1504,7 @@ Schema type for Get2UsersSearchResponse
  */
 interface Get2UsersSearchResponse {
     data?: Array<User>; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions; /** none */
     meta?: Record<string, any>;
 } /**
@@ -1515,10 +1588,10 @@ A Like event, with the tweet author user and the tweet being liked
  * @public
  */
 interface LikeWithTweetAuthor {
-    createdAt?: string;
-    id?: LikeId;
+    createdAt?: string; /** The unique identifier of this Like. */
+    id?: LikeId; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     likedTweetId?: TweetId; /** Timestamp in milliseconds of creation. */
-    timestampMs?: number;
+    timestampMs?: number; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     tweetAuthorId?: UserId;
 } /**
 A X List is a curated group of accounts.
@@ -1528,10 +1601,10 @@ A X List is a curated group of accounts.
 interface List {
     createdAt?: string; /** none */
     description?: string; /** none */
-    followerCount?: number;
+    followerCount?: number; /** The unique identifier of this List. */
     id: ListId; /** none */
     memberCount?: number; /** The name of this List. */
-    name: string;
+    name: string; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     ownerId?: UserId; /** none */
     private?: boolean;
 } /**
@@ -1647,9 +1720,9 @@ Schema type for Media
  * @public
  */
 interface Media {
-    height?: MediaHeight;
+    height?: MediaHeight; /** The Media Key identifier for this attachment. */
     mediaKey?: MediaKey; /** none */
-    type: string;
+    type: string; /** The width of the media in pixels. */
     width?: MediaWidth;
 } /**
 Schema type for MediaAnalytics
@@ -1749,7 +1822,7 @@ Schema type for MediaUploadConfigRequest
  * @public
  */
 interface MediaUploadConfigRequest {
-    additionalOwners?: Array<UserId>;
+    additionalOwners?: Array<UserId>; /** A string enum value which identifies a media use-case. This identifier is used to enforce use-case specific constraints (e.g. file size, video duration) and enable advanced features. */
     mediaCategory?: MediaCategory; /** The type of media. */
     mediaType?: "video/mp4" | "video/webm" | "video/mp2t" | "video/quicktime" | "text/srt" | "text/vtt" | "image/jpeg" | "image/gif" | "image/bmp" | "image/png" | "image/webp" | "image/pjpeg" | "image/tiff" | "model/gltf-binary" | "model/vnd.usdz+zip"; /** Whether this media is shared or not. */
     shared?: boolean; /** The total size of the media upload in bytes. */
@@ -1761,7 +1834,7 @@ Schema type for MediaUploadRequestOneShot
  */
 interface MediaUploadRequestOneShot {
     additionalOwners?: Array<UserId>; /** none */
-    media: any;
+    media: any; /** A string enum value which identifies a media use-case. This identifier is used to enforce use-case specific constraints (e.g. file size) and enable advanced features. */
     mediaCategory: MediaCategoryOneShot; /** The type of image or subtitle. */
     mediaType?: "text/srt" | "text/vtt" | "image/jpeg" | "image/bmp" | "image/png" | "image/webp" | "image/pjpeg" | "image/tiff"; /** Whether this media is shared or not. */
     shared?: boolean;
@@ -1790,7 +1863,7 @@ Represent the portion of text recognized as a User mention, and its start and en
  * @public
  */
 interface MentionFields {
-    id?: UserId;
+    id?: UserId; /** The X handle (screen name) of this user. */
     username: UserName;
 } /**
 Schema type for MetadataCreateRequest
@@ -1871,8 +1944,18 @@ interface News {
     hook?: string; /** none */
     keywords?: Array<string>; /** none */
     lastUpdatedAtMs?: string; /** The headline. */
-    name?: string;
+    name?: string; /** Unique identifier of news story. */
     restId: NewsId; /** The news summary. */
+    summary?: string;
+} /**
+Schema type for NewsActivityResponsePayload
+ *
+ * @public
+ */
+interface NewsActivityResponsePayload {
+    category?: string; /** none */
+    headline?: string; /** none */
+    hook?: string; /** none */
     summary?: string;
 } /**
 Unique identifier of news story.
@@ -1896,10 +1979,10 @@ A X Community Note is a note on a Post.
  * @public
  */
 interface Note {
-    id: NoteId;
-    info?: NoteInfo;
-    postId: TweetId;
-    status?: NoteRatingStatus;
+    id: NoteId; /** A X Community Note is a note on a Post. */
+    info?: NoteInfo; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
+    postId: TweetId; /** Community Note rating status */
+    status?: NoteRatingStatus; /** The evaluation result of a community note. */
     testResult?: NoteTestResult;
 } /**
 Community Note classification type.
@@ -1994,12 +2077,12 @@ Schema type for Place
  */
 interface Place {
     containedWithin?: Array<PlaceId>; /** The full name of the county in which this place exists. */
-    country?: string;
+    country?: string; /** A two-letter ISO 3166-1 alpha-2 country code. */
     countryCode?: CountryCode; /** The full name of this place. */
-    fullName: string;
-    geo?: Geo;
+    fullName: string; /** none */
+    geo?: Geo; /** The identifier for this place. */
     id: PlaceId; /** The human readable name of this place. */
-    name?: string;
+    name?: string; /** none */
     placeType?: PlaceType;
 } /**
 The identifier for this place.
@@ -2021,7 +2104,7 @@ interface PlaidAccount {
     accountId: string; /** The last 2-4 digits of the account number. */
     accountNumberDisplay: string; /** The type of the account (e.g., checking, savings). */
     accountType: string; /** The available balance of the account. */
-    availableBalance?: number;
+    availableBalance?: number; /** Currency information. */
     currency: PlaidCurrency; /** The current balance of the account. */
     currentBalance?: number; /** The nickname of the account. */
     nickname?: string; /** The name of the product associated with the account. */
@@ -2034,7 +2117,7 @@ Contact information associated with a Plaid account.
  */
 interface PlaidAccountContact {
     addresses: Array<PlaidAddress>; /** List of email addresses associated with the account holder. */
-    emails: Array<string>;
+    emails: Array<string>; /** Name information for the account holder. */
     name: PlaidName; /** Relationship of the contact to the account. */
     relationship?: string; /** List of telephone numbers associated with the account holder. */
     telephones: Array<PlaidTelephone>;
@@ -2121,7 +2204,7 @@ Represent a Poll attached to a Tweet.
  */
 interface Poll {
     durationMinutes?: number; /** none */
-    endDatetime?: string;
+    endDatetime?: string; /** Unique identifier of this poll. */
     id: PollId; /** none */
     options: Array<PollOption>; /** none */
     votingStatus?: "open" | "closed";
@@ -2235,8 +2318,8 @@ A user-provided stream filtering rule.
  * @public
  */
 interface Rule {
-    id?: RuleId;
-    tag?: RuleTag;
+    id?: RuleId; /** A tag meant for the labeling of user provided rules. */
+    tag?: RuleTag; /** The filterlang value of the rule. */
     value: RuleValue;
 } /**
 Unique identifier of this rule.
@@ -2249,7 +2332,7 @@ A user-provided stream filtering rule.
  * @public
  */
 interface RuleNoId {
-    tag?: RuleTag;
+    tag?: RuleTag; /** The filterlang value of the rule. */
     value: RuleValue;
 }
 /**
@@ -2265,7 +2348,7 @@ A count of user-provided stream filtering rules at the application and project l
 interface RulesCount {
     allProjectClientApps?: AllProjectClientApps; /** Cap of number of rules allowed per client application */
     capPerClientApp?: number; /** Cap of number of rules allowed per project */
-    capPerProject?: number;
+    capPerProject?: number; /** A count of user-provided stream filtering rules at the client application level. */
     clientAppRulesCount?: AppRulesCount; /** Number of rules for project */
     projectRulesCount?: number;
 } /**
@@ -2274,7 +2357,7 @@ Schema type for RulesLookupResponse
  * @public
  */
 interface RulesLookupResponse {
-    data?: Array<Rule>;
+    data?: Array<Rule>; /** none */
     meta: RulesResponseMetadata;
 }
 /**
@@ -2290,7 +2373,7 @@ Schema type for RulesResponseMetadata
 interface RulesResponseMetadata {
     nextToken?: NextToken; /** Number of Rules in result set. */
     resultCount?: number; /** none */
-    sent: string;
+    sent: string; /** none */
     summary?: RulesRequestSummary;
 } /**
 A tag meant for the labeling of user provided rules.
@@ -2308,8 +2391,8 @@ Represent a Search Count Result.
  * @public
  */
 interface SearchCount {
-    end: End;
-    start: Start;
+    end: End; /** The start time of the bucket. */
+    start: Start; /** The count for the bucket. */
     tweetCount: TweetCount;
 } /**
 Schema type for SensitiveMediaWarning
@@ -2333,10 +2416,10 @@ Schema type for Space
  * @public
  */
 interface Space {
-    createdAt?: string;
+    createdAt?: string; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     creatorId?: UserId; /** End time of the Space. */
     endedAt?: string; /** The user ids for the hosts of the Space. */
-    hostIds?: Array<UserId>;
+    hostIds?: Array<UserId>; /** The unique identifier of this Space. */
     id: SpaceId; /** An array of user ids for people who were invited to a Space. */
     invitedUserIds?: Array<UserId>; /** Denotes if the Space is a ticketed Space. */
     isTicketed?: boolean; /** The language of the Space. */
@@ -2390,7 +2473,7 @@ Schema type for StreamingLikeResponseV2
  */
 interface StreamingLikeResponseV2 {
     data?: LikeWithTweetAuthor; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for StreamingTweetResponse
@@ -2399,7 +2482,7 @@ Schema type for StreamingTweetResponse
  */
 interface StreamingTweetResponse {
     data?: Tweet; /** none */
-    errors?: Array<Problem>;
+    errors?: Array<Problem>; /** none */
     includes?: Expansions;
 } /**
 Schema type for SubscriptionsCountGetResponse
@@ -2457,8 +2540,8 @@ Schema type for Subtitles
  * @public
  */
 interface Subtitles {
-    displayName?: string;
-    id?: MediaId;
+    displayName?: string; /** The unique identifier of this Media. */
+    id?: MediaId; /** The language code should be a BCP47 code (e.g. 'EN", "SP") */
     languageCode?: SubtitleLanguageCode;
 } /**
 Schema type for SubtitlesCreateRequest
@@ -2466,8 +2549,8 @@ Schema type for SubtitlesCreateRequest
  * @public
  */
 interface SubtitlesCreateRequest {
-    id?: MediaId;
-    mediaCategory?: MediaCategorySubtitles;
+    id?: MediaId; /** The media category of uploaded media to which subtitles should be added/deleted */
+    mediaCategory?: MediaCategorySubtitles; /** none */
     subtitles?: Subtitles;
 } /**
 Schema type for SubtitlesCreateResponse
@@ -2483,8 +2566,8 @@ Schema type for SubtitlesDeleteRequest
  * @public
  */
 interface SubtitlesDeleteRequest {
-    id?: MediaId;
-    languageCode?: SubtitleLanguageCode;
+    id?: MediaId; /** The language code should be a BCP47 code (e.g. 'EN", "SP") */
+    languageCode?: SubtitleLanguageCode; /** The media category of uploaded media to which subtitles should be added/deleted */
     mediaCategory?: MediaCategorySubtitles;
 } /**
 Schema type for SubtitlesDeleteResponse
@@ -2508,7 +2591,7 @@ The topic of a Space, as selected by its creator.
  * @public
  */
 interface Topic {
-    description?: string;
+    description?: string; /** Unique identifier of this Topic. */
     id: TopicId; /** The name of the given topic. */
     name: string;
 } /**
@@ -2525,33 +2608,23 @@ interface Trend {
     trendName?: string; /** Number of Posts in this trend. */
     tweetCount?: number;
 } /**
-Schema type for TrendActivityResponsePayload
- *
- * @public
- */
-interface TrendActivityResponsePayload {
-    category?: string; /** none */
-    headline?: string; /** none */
-    hook?: string; /** none */
-    summary?: string;
-} /**
 Schema type for Tweet
  *
  * @public
  */
 interface Tweet {
-    attachments?: Record<string, any>;
-    authorId?: UserId;
+    attachments?: Record<string, any>; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
+    authorId?: UserId; /** The unique identifier of this Community. */
     communityId?: CommunityId; /** none */
-    contextAnnotations?: Array<ContextAnnotation>;
+    contextAnnotations?: Array<ContextAnnotation>; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     conversationId?: TweetId; /** Creation time of the Tweet. */
-    createdAt?: string;
+    createdAt?: string; /** Represent a boundary range (start and end zero-based indices) for the portion of text that is displayed for a post. `start` must be smaller than `end`. The start index is inclusive, the end index is exclusive. */
     displayTextRange?: DisplayTextRange; /** none */
     editControls?: Record<string, any>; /** A list of Tweet Ids in this Tweet chain. */
-    editHistoryTweetIds?: Array<TweetId>;
+    editHistoryTweetIds?: Array<TweetId>; /** none */
     entities?: FullTextEntities; /** The location tagged on the Tweet, if the user provided one. */
-    geo?: Record<string, any>;
-    id?: TweetId;
+    geo?: Record<string, any>; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
+    id?: TweetId; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     inReplyToUserId?: UserId; /** Language of the Tweet, if detected by X. Returned as a BCP47 language tag. */
     lang?: string; /** Nonpublic engagement metrics for the Tweet at the time of the request. */
     nonPublicMetrics?: Record<string, any>; /** The full-content of the Tweet, including text beyond 280 characters. */
@@ -2560,13 +2633,14 @@ interface Tweet {
     possiblySensitive?: boolean; /** Promoted nonpublic engagement metrics for the Tweet at the time of the request. */
     promotedMetrics?: Record<string, any>; /** Engagement metrics for the Tweet at the time of the request. */
     publicMetrics?: Record<string, any>; /** A list of Posts this Tweet refers to. For example, if the parent Tweet is a Retweet, a Quoted Tweet or a Reply, it will include the related Tweet referenced to by its parent. */
-    referencedTweets?: Array<Record<string, any>>;
+    referencedTweets?: Array<Record<string, any>>; /** Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, subscribers, verified and following. */
     replySettings?: ReplySettingsWithVerifiedUsers; /** The scopes for this tweet */
     scopes?: Record<string, any>; /** This is deprecated. */
     source?: string; /** none */
-    suggestedSourceLinks?: Array<UrlEntity>;
-    text?: TweetText;
-    username?: UserName;
+    suggestedSourceLinks?: Array<UrlEntity>; /** Suggested source links and the number of requests that included each link. */
+    suggestedSourceLinksWithCounts?: Record<string, any>; /** The content of the Tweet. */
+    text?: TweetText; /** The X handle (screen name) of this user. */
+    username?: UserName; /** Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country). */
     withheld?: TweetWithheld;
 }
 /**
@@ -2580,7 +2654,7 @@ Schema type for TweetComplianceSchema
  * @public
  */
 interface TweetComplianceSchema {
-    eventAt: string;
+    eventAt: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     quoteTweetId?: TweetId; /** none */
     tweet: Record<string, any>;
 }
@@ -2600,7 +2674,7 @@ Schema type for TweetCreateRequest
  * @public
  */
 interface TweetCreateRequest {
-    cardUri?: string;
+    cardUri?: string; /** The unique identifier of this Community. */
     communityId?: CommunityId; /** Link to take the conversation from the public timeline to a private Direct Message. */
     directMessageDeepLink?: string; /** Options for editing an existing Post. When provided, this request will edit the specified Post instead of creating a new one. */
     editOptions?: Record<string, any>; /** Exclusive Tweet for super followers. */
@@ -2608,11 +2682,11 @@ interface TweetCreateRequest {
     geo?: Record<string, any>; /** Media information being attached to created Tweet. This is mutually exclusive from Quote Tweet Id, Poll, and Card URI. */
     media?: Record<string, any>; /** Nullcasted (promoted-only) Posts do not appear in the public timeline and are not served to followers. */
     nullcast?: boolean; /** Poll options for a Tweet with a poll. This is mutually exclusive from Media, Quote Tweet Id, and Card URI. */
-    poll?: Record<string, any>;
+    poll?: Record<string, any>; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     quoteTweetId?: TweetId; /** Tweet information of the Tweet being replied to. */
     reply?: Record<string, any>; /** Settings to indicate who can reply to the Tweet. */
     replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified"; /** Share community post with followers too. */
-    shareWithFollowers?: boolean;
+    shareWithFollowers?: boolean; /** The content of the Tweet. */
     text?: TweetText;
 } /**
 Schema type for TweetCreateResponse
@@ -2651,7 +2725,7 @@ Schema type for TweetEditComplianceObjectSchema
  */
 interface TweetEditComplianceObjectSchema {
     editTweetIds: Array<TweetId>; /** Event time. */
-    eventAt: string;
+    eventAt: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     initialTweetId: TweetId; /** none */
     tweet: Record<string, any>;
 } /**
@@ -2718,7 +2792,7 @@ Schema type for TweetTakedownComplianceSchema
  * @public
  */
 interface TweetTakedownComplianceSchema {
-    eventAt: string;
+    eventAt: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     quoteTweetId?: TweetId; /** none */
     tweet: Record<string, any>; /** none */
     withheldInCountries: Array<CountryCode>;
@@ -2821,13 +2895,13 @@ Represent the portion of text recognized as a URL.
  */
 interface UrlFields {
     description?: string; /** The URL as displayed in the X client. */
-    displayUrl?: string;
+    displayUrl?: string; /** A validly formatted URL. */
     expandedUrl?: Url; /** none */
-    images?: Array<UrlImage>;
-    mediaKey?: MediaKey;
+    images?: Array<UrlImage>; /** The Media Key identifier for this attachment. */
+    mediaKey?: MediaKey; /** HTTP Status Code. */
     status?: HttpStatusCode; /** Title of the page the URL points to. */
     title?: string; /** Fully resolved url. */
-    unwoundUrl?: string;
+    unwoundUrl?: string; /** A validly formatted URL. */
     url: Url;
 } /**
 Represent the information for the URL image.
@@ -2835,8 +2909,8 @@ Represent the information for the URL image.
  * @public
  */
 interface UrlImage {
-    height?: MediaHeight;
-    url?: Url;
+    height?: MediaHeight; /** A validly formatted URL. */
+    url?: Url; /** The width of the media in pixels. */
     width?: MediaWidth;
 } /**
 Usage per client app
@@ -2874,11 +2948,11 @@ interface User {
     connectionStatus?: Array<"follow_request_received" | "follow_request_sent" | "blocking" | "followed_by" | "following" | "muting">; /** Creation time of this User. */
     createdAt?: string; /** The text of this User's profile description (also known as bio), if the User provided one. */
     description?: string; /** A list of metadata found in the User's profile description. */
-    entities?: Record<string, any>;
+    entities?: Record<string, any>; /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     id: UserId; /** The location specified in the User's profile, if the User provided one. As this is a freeform value, it may not indicate a valid location, but it may be fuzzily evaluated when performing searches with location queries. */
-    location?: string;
+    location?: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     mostRecentTweetId?: TweetId; /** The friendly name of this User, as shown on their profile. */
-    name: string;
+    name: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     pinnedTweetId?: TweetId; /** The URL to the profile banner for this User. */
     profileBannerUrl?: string; /** The URL to the profile image for this User. */
     profileImageUrl?: string; /** Indicates if this User has chosen to protect their Posts (in other words, if this User's Posts are private). */
@@ -2886,10 +2960,10 @@ interface User {
     publicMetrics?: Record<string, any>; /** Indicates if you can send a DM to this User */
     receivesYourDm?: boolean; /** The X Blue subscription type of the user, eg: Basic, Premium, PremiumPlus or None. */
     subscriptionType?: "Basic" | "Premium" | "PremiumPlus" | "None"; /** The URL specified in the User's profile. */
-    url?: string;
+    url?: string; /** The X handle (screen name) of this user. */
     username: UserName; /** Indicate if this User is a verified X User. */
     verified?: boolean; /** The X Blue verified type of the user, eg: blue, government, business or none. */
-    verifiedType?: "blue" | "government" | "business" | "none";
+    verifiedType?: "blue" | "government" | "business" | "none"; /** Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country). */
     withheld?: UserWithheld;
 }
 /**
@@ -2963,7 +3037,7 @@ Schema type for UserScrubGeoObjectSchema
  * @public
  */
 interface UserScrubGeoObjectSchema {
-    eventAt: string;
+    eventAt: string; /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
     upToTweetId: TweetId; /** none */
     user: Record<string, any>;
 } /**
@@ -3141,7 +3215,7 @@ A Webhook Configuration
  * @public
  */
 interface WebhookConfig {
-    createdAt: string;
+    createdAt: string; /** The unique identifier of this webhook config. */
     id: WebhookConfigId; /** The callback URL of the webhook. */
     url: string; /** none */
     valid: boolean;
@@ -3158,7 +3232,7 @@ A Webhook Configuration
  * @public
  */
 interface WebhookConfigCreateResponse {
-    createdAt: string;
+    createdAt: string; /** The unique identifier of this webhook config. */
     id: WebhookConfigId; /** The callback URL of the webhook. */
     url: string; /** none */
     valid: boolean;
@@ -3214,7 +3288,7 @@ Schema type for WebhookReplayCreateRequest
  */
 interface WebhookReplayCreateRequest {
     fromDate: string; /** The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in yyyymmddhhmm format. */
-    toDate: string;
+    toDate: string; /** The unique identifier of this webhook config. */
     webhookId: WebhookConfigId;
 }
 
@@ -3234,7 +3308,6 @@ type schemas_AddOrDeleteRulesRequest = AddOrDeleteRulesRequest;
 type schemas_AddOrDeleteRulesResponse = AddOrDeleteRulesResponse;
 type schemas_AddRulesRequest = AddRulesRequest;
 type schemas_Aggregate = Aggregate;
-type schemas_AiTrendId = AiTrendId;
 type schemas_AllProjectClientApps = AllProjectClientApps;
 type schemas_AllowDownloadStatus = AllowDownloadStatus;
 type schemas_AltText = AltText;
@@ -3260,6 +3333,7 @@ type schemas_ComplianceJobName = ComplianceJobName;
 type schemas_ComplianceJobStatus = ComplianceJobStatus;
 type schemas_ComplianceJobType = ComplianceJobType;
 type schemas_ConflictProblem = ConflictProblem;
+type schemas_Connection = Connection;
 type schemas_ConnectionExceptionProblem = ConnectionExceptionProblem;
 type schemas_ContentExpiration = ContentExpiration;
 type schemas_ContextAnnotation = ContextAnnotation;
@@ -3300,16 +3374,17 @@ type schemas_EvaluateNoteResponse = EvaluateNoteResponse;
 type schemas_Expansions = Expansions;
 type schemas_FieldUnauthorizedProblem = FieldUnauthorizedProblem;
 type schemas_FilteredStreamingTweetResponse = FilteredStreamingTweetResponse;
+type schemas_FollowActivityResponsePayload = FollowActivityResponsePayload;
 type schemas_FoundMediaOrigin = FoundMediaOrigin;
 type schemas_FullTextEntities = FullTextEntities;
 type schemas_GenericProblem = GenericProblem;
 type schemas_Geo = Geo;
 type schemas_GeoRestrictions = GeoRestrictions;
-type schemas_Get2AiTrendsIdResponse = Get2AiTrendsIdResponse;
 type schemas_Get2CommunitiesIdResponse = Get2CommunitiesIdResponse;
 type schemas_Get2CommunitiesSearchResponse = Get2CommunitiesSearchResponse;
 type schemas_Get2ComplianceJobsIdResponse = Get2ComplianceJobsIdResponse;
 type schemas_Get2ComplianceJobsResponse = Get2ComplianceJobsResponse;
+type schemas_Get2ConnectionsResponse = Get2ConnectionsResponse;
 type schemas_Get2DmConversationsIdDmEventsResponse = Get2DmConversationsIdDmEventsResponse;
 type schemas_Get2DmConversationsWithParticipantIdDmEventsResponse = Get2DmConversationsWithParticipantIdDmEventsResponse;
 type schemas_Get2DmEventsEventIdResponse = Get2DmEventsEventIdResponse;
@@ -3440,6 +3515,7 @@ type schemas_MuteUserMutationResponse = MuteUserMutationResponse;
 type schemas_MuteUserRequest = MuteUserRequest;
 type schemas_NewestId = NewestId;
 type schemas_News = News;
+type schemas_NewsActivityResponsePayload = NewsActivityResponsePayload;
 type schemas_NewsId = NewsId;
 type schemas_NextToken = NextToken;
 type schemas_NonCompliantRulesProblem = NonCompliantRulesProblem;
@@ -3524,7 +3600,6 @@ type schemas_TimestampedMetrics = TimestampedMetrics;
 type schemas_Topic = Topic;
 type schemas_TopicId = TopicId;
 type schemas_Trend = Trend;
-type schemas_TrendActivityResponsePayload = TrendActivityResponsePayload;
 type schemas_Tweet = Tweet;
 type schemas_TweetComplianceData = TweetComplianceData;
 type schemas_TweetComplianceSchema = TweetComplianceSchema;
@@ -3627,7 +3702,6 @@ declare namespace schemas {
     schemas_AddOrDeleteRulesResponse as AddOrDeleteRulesResponse,
     schemas_AddRulesRequest as AddRulesRequest,
     schemas_Aggregate as Aggregate,
-    schemas_AiTrendId as AiTrendId,
     schemas_AllProjectClientApps as AllProjectClientApps,
     schemas_AllowDownloadStatus as AllowDownloadStatus,
     schemas_AltText as AltText,
@@ -3653,6 +3727,7 @@ declare namespace schemas {
     schemas_ComplianceJobStatus as ComplianceJobStatus,
     schemas_ComplianceJobType as ComplianceJobType,
     schemas_ConflictProblem as ConflictProblem,
+    schemas_Connection as Connection,
     schemas_ConnectionExceptionProblem as ConnectionExceptionProblem,
     schemas_ContentExpiration as ContentExpiration,
     schemas_ContextAnnotation as ContextAnnotation,
@@ -3694,16 +3769,17 @@ declare namespace schemas {
     schemas_Expansions as Expansions,
     schemas_FieldUnauthorizedProblem as FieldUnauthorizedProblem,
     schemas_FilteredStreamingTweetResponse as FilteredStreamingTweetResponse,
+    schemas_FollowActivityResponsePayload as FollowActivityResponsePayload,
     schemas_FoundMediaOrigin as FoundMediaOrigin,
     schemas_FullTextEntities as FullTextEntities,
     schemas_GenericProblem as GenericProblem,
     schemas_Geo as Geo,
     schemas_GeoRestrictions as GeoRestrictions,
-    schemas_Get2AiTrendsIdResponse as Get2AiTrendsIdResponse,
     schemas_Get2CommunitiesIdResponse as Get2CommunitiesIdResponse,
     schemas_Get2CommunitiesSearchResponse as Get2CommunitiesSearchResponse,
     schemas_Get2ComplianceJobsIdResponse as Get2ComplianceJobsIdResponse,
     schemas_Get2ComplianceJobsResponse as Get2ComplianceJobsResponse,
+    schemas_Get2ConnectionsResponse as Get2ConnectionsResponse,
     schemas_Get2DmConversationsIdDmEventsResponse as Get2DmConversationsIdDmEventsResponse,
     schemas_Get2DmConversationsWithParticipantIdDmEventsResponse as Get2DmConversationsWithParticipantIdDmEventsResponse,
     schemas_Get2DmEventsEventIdResponse as Get2DmEventsEventIdResponse,
@@ -3834,6 +3910,7 @@ declare namespace schemas {
     schemas_MuteUserRequest as MuteUserRequest,
     schemas_NewestId as NewestId,
     schemas_News as News,
+    schemas_NewsActivityResponsePayload as NewsActivityResponsePayload,
     schemas_NewsId as NewsId,
     schemas_NextToken as NextToken,
     schemas_NonCompliantRulesProblem as NonCompliantRulesProblem,
@@ -3918,7 +3995,6 @@ declare namespace schemas {
     schemas_Topic as Topic,
     schemas_TopicId as TopicId,
     schemas_Trend as Trend,
-    schemas_TrendActivityResponsePayload as TrendActivityResponsePayload,
     schemas_Tweet as Tweet,
     schemas_TweetComplianceData as TweetComplianceData,
     schemas_TweetComplianceSchema as TweetComplianceSchema,
@@ -4007,6 +4083,751 @@ declare namespace schemas {
 }
 
 /**
+ * Models for account activity operations
+ */
+
+/**
+ * Response for getSubscriptions
+ *
+ * @public
+ */
+type GetSubscriptionsResponse$1 = SubscriptionsListGetResponse;
+/**
+ * Response for deleteSubscription
+ *
+ * @public
+ */
+type DeleteSubscriptionResponse$1 = SubscriptionsDeleteResponse;
+/**
+ * Response for validateSubscription
+ *
+ * @public
+ */
+type ValidateSubscriptionResponse = SubscriptionsGetResponse;
+/**
+ * Request for createSubscription
+ *
+ * @public
+ */
+type CreateSubscriptionRequest$1 = SubscriptionsCreateRequest;
+/**
+ * Response for createSubscription
+ *
+ * @public
+ */
+type CreateSubscriptionResponse$1 = SubscriptionsCreateResponse;
+/**
+ * Response for createReplayJob
+ *
+ * @public
+ */
+type CreateReplayJobResponse = ReplayJobCreateResponse;
+/**
+ * Response for getSubscriptionCount
+ *
+ * @public
+ */
+type GetSubscriptionCountResponse = SubscriptionsCountGetResponse;
+
+type models$g_CreateReplayJobResponse = CreateReplayJobResponse;
+type models$g_GetSubscriptionCountResponse = GetSubscriptionCountResponse;
+type models$g_ValidateSubscriptionResponse = ValidateSubscriptionResponse;
+declare namespace models$g {
+  export {
+    models$g_CreateReplayJobResponse as CreateReplayJobResponse,
+    CreateSubscriptionRequest$1 as CreateSubscriptionRequest,
+    CreateSubscriptionResponse$1 as CreateSubscriptionResponse,
+    DeleteSubscriptionResponse$1 as DeleteSubscriptionResponse,
+    models$g_GetSubscriptionCountResponse as GetSubscriptionCountResponse,
+    GetSubscriptionsResponse$1 as GetSubscriptionsResponse,
+    models$g_ValidateSubscriptionResponse as ValidateSubscriptionResponse,
+  };
+}
+
+/**
+ * account activity client for the X API.
+ *
+ * This module provides a client for interacting with the account activity endpoints of the X API.
+ */
+
+/**
+ * Options for createSubscription method
+ *
+ * @public
+ */
+interface CreateSubscriptionOptions$1 {
+    /** Request body */
+    body?: CreateSubscriptionRequest$1;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for account activity operations
+ *
+ * This client provides methods for interacting with the account activity endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all account activity related operations.
+ *
+ * @category account activity
+ */
+declare class AccountActivityClient {
+    private client;
+    /**
+     * Creates a new account activity client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get subscriptions
+     * Retrieves a list of all active subscriptions for a given webhook.
+  
+  
+     * @param webhookId The webhook ID to pull subscriptions for.
+  
+  
+  
+  
+     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getSubscriptions(webhookId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getSubscriptions(webhookId: string): Promise<GetSubscriptionsResponse$1>;
+    /**
+     * Delete subscription
+     * Deletes an Account Activity subscription for the given webhook and user ID.
+  
+  
+     * @param webhookId The webhook ID to check subscription against.
+  
+  
+  
+     * @param userId User ID to unsubscribe from.
+  
+  
+  
+  
+     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteSubscription(webhookId: string, userId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteSubscription(webhookId: string, userId: string): Promise<DeleteSubscriptionResponse$1>;
+    /**
+     * Validate subscription
+     * Checks a user’s Account Activity subscription for a given webhook.
+  
+  
+     * @param webhookId The webhook ID to check subscription against.
+  
+  
+  
+  
+     * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    validateSubscription(webhookId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    validateSubscription(webhookId: string): Promise<ValidateSubscriptionResponse>;
+    /**
+     * Create subscription
+     * Creates an Account Activity subscription for the user and the given webhook.
+  
+  
+     * @param webhookId The webhook ID to check subscription against.
+  
+  
+  
+  
+     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createSubscription(webhookId: string, options: CreateSubscriptionOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createSubscription(webhookId: string, options?: CreateSubscriptionOptions$1): Promise<CreateSubscriptionResponse$1>;
+    /**
+     * Create replay job
+     * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
+  
+  
+     * @param webhookId The unique identifier for the webhook configuration.
+  
+  
+  
+  
+     * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
+  
+  
+  
+     * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
+  
+  
+  
+     * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createReplayJob(webhookId: string, fromDate: string, toDate: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createReplayJob(webhookId: string, fromDate: string, toDate: string): Promise<CreateReplayJobResponse>;
+    /**
+     * Get subscription count
+     * Retrieves a count of currently active Account Activity subscriptions.
+  
+  
+  
+     * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getSubscriptionCount(options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getSubscriptionCount(): Promise<GetSubscriptionCountResponse>;
+}
+
+/**
+ * Models for community notes operations
+ */
+
+/**
+ * Response for searchEligiblePosts
+ *
+ * @public
+ */
+type SearchEligiblePostsResponse = Get2NotesSearchPostsEligibleForNotesResponse;
+/**
+ * Request for evaluate
+ *
+ * @public
+ */
+type EvaluateRequest = EvaluateNoteRequest;
+/**
+ * Response for evaluate
+ *
+ * @public
+ */
+type EvaluateResponse = EvaluateNoteResponse;
+/**
+ * Response for searchWritten
+ *
+ * @public
+ */
+type SearchWrittenResponse = Get2NotesSearchNotesWrittenResponse;
+/**
+ * Response for delete
+ *
+ * @public
+ */
+type DeleteResponse$3 = DeleteNoteResponse;
+/**
+ * Request for create
+ *
+ * @public
+ */
+type CreateRequest$3 = CreateNoteRequest;
+/**
+ * Response for create
+ *
+ * @public
+ */
+type CreateResponse$3 = CreateNoteResponse;
+
+type models$f_EvaluateRequest = EvaluateRequest;
+type models$f_EvaluateResponse = EvaluateResponse;
+type models$f_SearchEligiblePostsResponse = SearchEligiblePostsResponse;
+type models$f_SearchWrittenResponse = SearchWrittenResponse;
+declare namespace models$f {
+  export {
+    CreateRequest$3 as CreateRequest,
+    CreateResponse$3 as CreateResponse,
+    DeleteResponse$3 as DeleteResponse,
+    models$f_EvaluateRequest as EvaluateRequest,
+    models$f_EvaluateResponse as EvaluateResponse,
+    models$f_SearchEligiblePostsResponse as SearchEligiblePostsResponse,
+    models$f_SearchWrittenResponse as SearchWrittenResponse,
+  };
+}
+
+/**
+ * community notes client for the X API.
+ *
+ * This module provides a client for interacting with the community notes endpoints of the X API.
+ */
+
+/**
+ * Options for searchEligiblePosts method
+ *
+ * @public
+ */
+interface SearchEligiblePostsOptions {
+    /** Pagination token to get next set of posts eligible for notes.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** Max results to return.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** The selection of posts to return. Valid values are 'feed_size: small' and 'feed_size: large'. Default is 'feed_size: small', only top AI writers have access to large size feed.
+     * Also accepts: post_selection or proper camelCase (e.g., postSelection) */
+    postSelection?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for evaluate method
+ *
+ * @public
+ */
+interface EvaluateOptions {
+    /** Request body */
+    body?: EvaluateRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for searchWritten method
+ *
+ * @public
+ */
+interface SearchWrittenOptions {
+    /** Pagination token to get next set of posts eligible for notes.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** Max results to return.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** A comma separated list of Note fields to display.
+     * Also accepts: note.fields or proper camelCase (e.g., noteFields) */
+    noteFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for create method
+ *
+ * @public
+ */
+interface CreateOptions$2 {
+    /** Request body */
+    body?: CreateRequest$3;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for community notes operations
+ *
+ * This client provides methods for interacting with the community notes endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all community notes related operations.
+ *
+ * @category community notes
+ */
+declare class CommunityNotesClient {
+    private client;
+    /**
+     * Creates a new community notes client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Search for Posts Eligible for Community Notes
+     * Returns all the posts that are eligible for community notes.
+  
+  
+  
+     * @param testMode If true, return a list of posts that are for the test. If false, return a list of posts that the bots can write proposed notes on the product.
+  
+  
+  
+     * @returns {Promise<SearchEligiblePostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    searchEligiblePosts(testMode: boolean, options: SearchEligiblePostsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    searchEligiblePosts(testMode: boolean, options?: SearchEligiblePostsOptions): Promise<SearchEligiblePostsResponse>;
+    /**
+     * Evaluate a Community Note
+     * Endpoint to evaluate a community note.
+  
+  
+  
+     * @returns {Promise<EvaluateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    evaluate(options: EvaluateOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    evaluate(options?: EvaluateOptions): Promise<EvaluateResponse>;
+    /**
+     * Search for Community Notes Written
+     * Returns all the community notes written by the user.
+  
+  
+  
+     * @param testMode If true, return the notes the caller wrote for the test. If false, return the notes the caller wrote on the product.
+  
+  
+  
+     * @returns {Promise<SearchWrittenResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    searchWritten(testMode: boolean, options: SearchWrittenOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    searchWritten(testMode: boolean, options?: SearchWrittenOptions): Promise<SearchWrittenResponse>;
+    /**
+     * Delete a Community Note
+     * Deletes a community note.
+  
+  
+     * @param id The community note id to delete.
+  
+  
+  
+  
+     * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    delete(id: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    delete(id: string): Promise<DeleteResponse$3>;
+    /**
+     * Create a Community Note
+     * Creates a community note endpoint for LLM use case.
+  
+  
+  
+     * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    create(options: CreateOptions$2 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    create(options?: CreateOptions$2): Promise<CreateResponse$3>;
+}
+
+/**
+ * Models for compliance operations
+ */
+
+/**
+ * Response for getJobsById
+ *
+ * @public
+ */
+type GetJobsByIdResponse = Get2ComplianceJobsIdResponse;
+/**
+ * Response for getJobs
+ *
+ * @public
+ */
+type GetJobsResponse = Get2ComplianceJobsResponse;
+/**
+ * Request for createJobs
+ *
+ * @public
+ */
+type CreateJobsRequest = CreateComplianceJobRequest;
+/**
+ * Response for createJobs
+ *
+ * @public
+ */
+type CreateJobsResponse = CreateComplianceJobResponse;
+
+type models$e_CreateJobsRequest = CreateJobsRequest;
+type models$e_CreateJobsResponse = CreateJobsResponse;
+type models$e_GetJobsByIdResponse = GetJobsByIdResponse;
+type models$e_GetJobsResponse = GetJobsResponse;
+declare namespace models$e {
+  export {
+    models$e_CreateJobsRequest as CreateJobsRequest,
+    models$e_CreateJobsResponse as CreateJobsResponse,
+    models$e_GetJobsByIdResponse as GetJobsByIdResponse,
+    models$e_GetJobsResponse as GetJobsResponse,
+  };
+}
+
+/**
+ * compliance client for the X API.
+ *
+ * This module provides a client for interacting with the compliance endpoints of the X API.
+ */
+
+/**
+ * Options for getJobsById method
+ *
+ * @public
+ */
+interface GetJobsByIdOptions {
+    /** A comma separated list of ComplianceJob fields to display.
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getJobs method
+ *
+ * @public
+ */
+interface GetJobsOptions {
+    /** Status of Compliance Job to list.
+     * Also accepts: status or proper camelCase (e.g., status) */
+    status?: string;
+    /** A comma separated list of ComplianceJob fields to display.
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for compliance operations
+ *
+ * This client provides methods for interacting with the compliance endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all compliance related operations.
+ *
+ * @category compliance
+ */
+declare class ComplianceClient {
+    private client;
+    /**
+     * Creates a new compliance client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get Compliance Job by ID
+     * Retrieves details of a specific Compliance Job by its ID.
+  
+  
+     * @param id The ID of the Compliance Job to retrieve.
+  
+  
+  
+  
+     * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getJobsById(id: string, options: GetJobsByIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getJobsById(id: string, options?: GetJobsByIdOptions): Promise<GetJobsByIdResponse>;
+    /**
+     * Get Compliance Jobs
+     * Retrieves a list of Compliance Jobs filtered by job type and optional status.
+  
+  
+  
+     * @param type Type of Compliance Job to list.
+  
+  
+  
+     * @returns {Promise<GetJobsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getJobs(type: string, options: GetJobsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getJobs(type: string, options?: GetJobsOptions): Promise<GetJobsResponse>;
+    /**
+     * Create Compliance Job
+     * Creates a new Compliance Job for the specified job type.
+  
+  
+  
+     * @param body A request to create a new batch compliance job.
+  
+     * @returns {Promise<CreateJobsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createJobs(body: CreateJobsRequest, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createJobs(body: CreateJobsRequest): Promise<CreateJobsResponse>;
+}
+
+/**
+ * Models for connections operations
+ */
+
+/**
+ * Response for getConnectionHistory
+ *
+ * @public
+ */
+type GetConnectionHistoryResponse = Get2ConnectionsResponse;
+/**
+ * Response for deleteAll
+ *
+ * @public
+ */
+type DeleteAllResponse = KillAllConnectionsResponse;
+
+type models$d_DeleteAllResponse = DeleteAllResponse;
+type models$d_GetConnectionHistoryResponse = GetConnectionHistoryResponse;
+declare namespace models$d {
+  export {
+    models$d_DeleteAllResponse as DeleteAllResponse,
+    models$d_GetConnectionHistoryResponse as GetConnectionHistoryResponse,
+  };
+}
+
+/**
+ * connections client for the X API.
+ *
+ * This module provides a client for interacting with the connections endpoints of the X API.
+ */
+
+/**
+ * Options for getConnectionHistory method
+ *
+ * @public
+ */
+interface GetConnectionHistoryOptions {
+    /** Filter by connection status. Use 'active' for current connections, 'inactive' for historical/disconnected connections, or 'all' for both.
+     * Also accepts: status or proper camelCase (e.g., status) */
+    status?: string;
+    /** Filter by streaming endpoint. Specify one or more endpoint names to filter results.
+     * Also accepts: endpoints or proper camelCase (e.g., endpoints) */
+    endpoints?: Array<any>;
+    /** The maximum number of results to return per page.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** Token for paginating through results. Use the value from 'next_token' in the previous response.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of Connection fields to display.
+     * Also accepts: connection.fields or proper camelCase (e.g., connectionFields) */
+    connectionFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for connections operations
+ *
+ * This client provides methods for interacting with the connections endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all connections related operations.
+ *
+ * @category connections
+ */
+declare class ConnectionsClient {
+    private client;
+    /**
+     * Creates a new connections client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get Connection History
+     * Returns active and historical streaming connections with disconnect reasons for the authenticated application.
+  
+  
+  
+     * @returns {Promise<GetConnectionHistoryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getConnectionHistory(options: GetConnectionHistoryOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getConnectionHistory(options?: GetConnectionHistoryOptions): Promise<GetConnectionHistoryResponse>;
+    /**
+     * Terminate all connections
+     * Terminates all active streaming connections for the authenticated application.
+  
+  
+  
+     * @returns {Promise<DeleteAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteAll(options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteAll(): Promise<DeleteAllResponse>;
+}
+
+/**
  * Models for users operations
  */
 
@@ -4016,6 +4837,18 @@ declare namespace schemas {
  * @public
  */
 type GetByUsernamesResponse = Get2UsersByResponse;
+/**
+ * Response for getRepostsOfMe
+ *
+ * @public
+ */
+type GetRepostsOfMeResponse = Get2UsersRepostsOfMeResponse;
+/**
+ * Response for unlikePost
+ *
+ * @public
+ */
+type UnlikePostResponse = UsersLikesDeleteResponse;
 /**
  * Response for getBookmarks
  *
@@ -4035,6 +4868,60 @@ type CreateBookmarkRequest = BookmarkAddRequest;
  */
 type CreateBookmarkResponse = BookmarkMutationResponse;
 /**
+ * Response for getFollowers
+ *
+ * @public
+ */
+type GetFollowersResponse$1 = Get2UsersIdFollowersResponse;
+/**
+ * Response for unpinList
+ *
+ * @public
+ */
+type UnpinListResponse = ListUnpinResponse;
+/**
+ * Response for getById
+ *
+ * @public
+ */
+type GetByIdResponse$4 = Get2UsersIdResponse;
+/**
+ * Response for getMentions
+ *
+ * @public
+ */
+type GetMentionsResponse = Get2UsersIdMentionsResponse;
+/**
+ * Response for unrepostPost
+ *
+ * @public
+ */
+type UnrepostPostResponse = UsersRetweetsDeleteResponse;
+/**
+ * Response for deleteBookmark
+ *
+ * @public
+ */
+type DeleteBookmarkResponse = BookmarkMutationResponse;
+/**
+ * Response for unfollowList
+ *
+ * @public
+ */
+type UnfollowListResponse = ListFollowedResponse;
+/**
+ * Response for unmuteUser
+ *
+ * @public
+ */
+type UnmuteUserResponse = MuteUserMutationResponse;
+/**
+ * Response for getMe
+ *
+ * @public
+ */
+type GetMeResponse = Get2UsersMeResponse;
+/**
  * Response for getMuting
  *
  * @public
@@ -4048,125 +4935,17 @@ type GetMutingResponse = Get2UsersIdMutingResponse;
  */
 type MuteUserResponse = MuteUserMutationResponse;
 /**
- * Response for unrepostPost
+ * Response for search
  *
  * @public
  */
-type UnrepostPostResponse = UsersRetweetsDeleteResponse;
+type SearchResponse$3 = Get2UsersSearchResponse;
 /**
- * Response for getById
+ * Response for getBlocking
  *
  * @public
  */
-type GetByIdResponse$4 = Get2UsersIdResponse;
-/**
- * Response for getLikedPosts
- *
- * @public
- */
-type GetLikedPostsResponse = Get2UsersIdLikedTweetsResponse;
-/**
- * Request for likePost
- *
- * @public
- */
-type LikePostRequest = UsersLikesCreateRequest;
-/**
- * Response for likePost
- *
- * @public
- */
-type LikePostResponse = UsersLikesCreateResponse;
-/**
- * Response for unlikePost
- *
- * @public
- */
-type UnlikePostResponse = UsersLikesDeleteResponse;
-/**
- * Response for getPinnedLists
- *
- * @public
- */
-type GetPinnedListsResponse = Get2UsersIdPinnedListsResponse;
-/**
- * Request for pinList
- *
- * @public
- */
-type PinListRequest = ListPinnedRequest;
-/**
- * Response for pinList
- *
- * @public
- */
-type PinListResponse = ListPinnedResponse;
-/**
- * Request for repostPost
- *
- * @public
- */
-type RepostPostRequest = UsersRetweetsCreateRequest;
-/**
- * Response for repostPost
- *
- * @public
- */
-type RepostPostResponse = UsersRetweetsCreateResponse;
-/**
- * Response for blockDms
- *
- * @public
- */
-type BlockDmsResponse = UsersDMBlockCreateResponse;
-/**
- * Response for unblockDms
- *
- * @public
- */
-type UnblockDmsResponse = UsersDMUnBlockCreateResponse;
-/**
- * Response for getFollowers
- *
- * @public
- */
-type GetFollowersResponse$1 = Get2UsersIdFollowersResponse;
-/**
- * Response for getBookmarkFolders
- *
- * @public
- */
-type GetBookmarkFoldersResponse = BookmarkFoldersResponse;
-/**
- * Response for getFollowedLists
- *
- * @public
- */
-type GetFollowedListsResponse = Get2UsersIdFollowedListsResponse;
-/**
- * Request for followList
- *
- * @public
- */
-type FollowListRequest = ListFollowedRequest;
-/**
- * Response for followList
- *
- * @public
- */
-type FollowListResponse = ListFollowedResponse;
-/**
- * Response for unpinList
- *
- * @public
- */
-type UnpinListResponse = ListUnpinResponse;
-/**
- * Response for unmuteUser
- *
- * @public
- */
-type UnmuteUserResponse = MuteUserMutationResponse;
+type GetBlockingResponse = Get2UsersIdBlockingResponse;
 /**
  * Response for getByIds
  *
@@ -4192,17 +4971,35 @@ type FollowUserRequest = UsersFollowingCreateRequest;
  */
 type FollowUserResponse = UsersFollowingCreateResponse;
 /**
- * Response for getTimeline
+ * Request for likePost
  *
  * @public
  */
-type GetTimelineResponse = Get2UsersIdTimelinesReverseChronologicalResponse;
+type LikePostRequest = UsersLikesCreateRequest;
 /**
- * Response for getMentions
+ * Response for likePost
  *
  * @public
  */
-type GetMentionsResponse = Get2UsersIdMentionsResponse;
+type LikePostResponse = UsersLikesCreateResponse;
+/**
+ * Response for getLikedPosts
+ *
+ * @public
+ */
+type GetLikedPostsResponse = Get2UsersIdLikedTweetsResponse;
+/**
+ * Response for getPosts
+ *
+ * @public
+ */
+type GetPostsResponse$2 = Get2UsersIdTweetsResponse;
+/**
+ * Response for blockDms
+ *
+ * @public
+ */
+type BlockDmsResponse = UsersDMBlockCreateResponse;
 /**
  * Response for getListMemberships
  *
@@ -4210,17 +5007,23 @@ type GetMentionsResponse = Get2UsersIdMentionsResponse;
  */
 type GetListMembershipsResponse = Get2UsersIdListMembershipsResponse;
 /**
- * Response for getOwnedLists
+ * Response for getPinnedLists
  *
  * @public
  */
-type GetOwnedListsResponse = Get2UsersIdOwnedListsResponse;
+type GetPinnedListsResponse = Get2UsersIdPinnedListsResponse;
 /**
- * Response for getPosts
+ * Request for pinList
  *
  * @public
  */
-type GetPostsResponse$2 = Get2UsersIdTweetsResponse;
+type PinListRequest = ListPinnedRequest;
+/**
+ * Response for pinList
+ *
+ * @public
+ */
+type PinListResponse = ListPinnedResponse;
 /**
  * Response for getByUsername
  *
@@ -4234,135 +5037,153 @@ type GetByUsernameResponse = Get2UsersByUsernameUsernameResponse;
  */
 type UnfollowUserResponse = UsersFollowingDeleteResponse;
 /**
- * Response for search
+ * Response for getTimeline
  *
  * @public
  */
-type SearchResponse$3 = Get2UsersSearchResponse;
+type GetTimelineResponse = Get2UsersIdTimelinesReverseChronologicalResponse;
+/**
+ * Response for getFollowedLists
+ *
+ * @public
+ */
+type GetFollowedListsResponse = Get2UsersIdFollowedListsResponse;
+/**
+ * Request for followList
+ *
+ * @public
+ */
+type FollowListRequest = ListFollowedRequest;
+/**
+ * Response for followList
+ *
+ * @public
+ */
+type FollowListResponse = ListFollowedResponse;
+/**
+ * Response for unblockDms
+ *
+ * @public
+ */
+type UnblockDmsResponse = UsersDMUnBlockCreateResponse;
+/**
+ * Request for repostPost
+ *
+ * @public
+ */
+type RepostPostRequest = UsersRetweetsCreateRequest;
+/**
+ * Response for repostPost
+ *
+ * @public
+ */
+type RepostPostResponse = UsersRetweetsCreateResponse;
+/**
+ * Response for getBookmarkFolders
+ *
+ * @public
+ */
+type GetBookmarkFoldersResponse = BookmarkFoldersResponse;
+/**
+ * Response for getOwnedLists
+ *
+ * @public
+ */
+type GetOwnedListsResponse = Get2UsersIdOwnedListsResponse;
 /**
  * Response for getBookmarksByFolderId
  *
  * @public
  */
 type GetBookmarksByFolderIdResponse = BookmarkFolderPostsResponse;
-/**
- * Response for unfollowList
- *
- * @public
- */
-type UnfollowListResponse = ListFollowedResponse;
-/**
- * Response for getBlocking
- *
- * @public
- */
-type GetBlockingResponse = Get2UsersIdBlockingResponse;
-/**
- * Response for getMe
- *
- * @public
- */
-type GetMeResponse = Get2UsersMeResponse;
-/**
- * Response for deleteBookmark
- *
- * @public
- */
-type DeleteBookmarkResponse = BookmarkMutationResponse;
-/**
- * Response for getRepostsOfMe
- *
- * @public
- */
-type GetRepostsOfMeResponse = Get2UsersRepostsOfMeResponse;
 
-type models$h_BlockDmsResponse = BlockDmsResponse;
-type models$h_CreateBookmarkRequest = CreateBookmarkRequest;
-type models$h_CreateBookmarkResponse = CreateBookmarkResponse;
-type models$h_DeleteBookmarkResponse = DeleteBookmarkResponse;
-type models$h_FollowListRequest = FollowListRequest;
-type models$h_FollowListResponse = FollowListResponse;
-type models$h_FollowUserRequest = FollowUserRequest;
-type models$h_FollowUserResponse = FollowUserResponse;
-type models$h_GetBlockingResponse = GetBlockingResponse;
-type models$h_GetBookmarkFoldersResponse = GetBookmarkFoldersResponse;
-type models$h_GetBookmarksByFolderIdResponse = GetBookmarksByFolderIdResponse;
-type models$h_GetBookmarksResponse = GetBookmarksResponse;
-type models$h_GetByUsernameResponse = GetByUsernameResponse;
-type models$h_GetByUsernamesResponse = GetByUsernamesResponse;
-type models$h_GetFollowedListsResponse = GetFollowedListsResponse;
-type models$h_GetFollowingResponse = GetFollowingResponse;
-type models$h_GetLikedPostsResponse = GetLikedPostsResponse;
-type models$h_GetListMembershipsResponse = GetListMembershipsResponse;
-type models$h_GetMeResponse = GetMeResponse;
-type models$h_GetMentionsResponse = GetMentionsResponse;
-type models$h_GetMutingResponse = GetMutingResponse;
-type models$h_GetOwnedListsResponse = GetOwnedListsResponse;
-type models$h_GetPinnedListsResponse = GetPinnedListsResponse;
-type models$h_GetRepostsOfMeResponse = GetRepostsOfMeResponse;
-type models$h_GetTimelineResponse = GetTimelineResponse;
-type models$h_LikePostRequest = LikePostRequest;
-type models$h_LikePostResponse = LikePostResponse;
-type models$h_MuteUserRequest = MuteUserRequest;
-type models$h_MuteUserResponse = MuteUserResponse;
-type models$h_PinListRequest = PinListRequest;
-type models$h_PinListResponse = PinListResponse;
-type models$h_RepostPostRequest = RepostPostRequest;
-type models$h_RepostPostResponse = RepostPostResponse;
-type models$h_UnblockDmsResponse = UnblockDmsResponse;
-type models$h_UnfollowListResponse = UnfollowListResponse;
-type models$h_UnfollowUserResponse = UnfollowUserResponse;
-type models$h_UnlikePostResponse = UnlikePostResponse;
-type models$h_UnmuteUserResponse = UnmuteUserResponse;
-type models$h_UnpinListResponse = UnpinListResponse;
-type models$h_UnrepostPostResponse = UnrepostPostResponse;
-declare namespace models$h {
+type models$c_BlockDmsResponse = BlockDmsResponse;
+type models$c_CreateBookmarkRequest = CreateBookmarkRequest;
+type models$c_CreateBookmarkResponse = CreateBookmarkResponse;
+type models$c_DeleteBookmarkResponse = DeleteBookmarkResponse;
+type models$c_FollowListRequest = FollowListRequest;
+type models$c_FollowListResponse = FollowListResponse;
+type models$c_FollowUserRequest = FollowUserRequest;
+type models$c_FollowUserResponse = FollowUserResponse;
+type models$c_GetBlockingResponse = GetBlockingResponse;
+type models$c_GetBookmarkFoldersResponse = GetBookmarkFoldersResponse;
+type models$c_GetBookmarksByFolderIdResponse = GetBookmarksByFolderIdResponse;
+type models$c_GetBookmarksResponse = GetBookmarksResponse;
+type models$c_GetByUsernameResponse = GetByUsernameResponse;
+type models$c_GetByUsernamesResponse = GetByUsernamesResponse;
+type models$c_GetFollowedListsResponse = GetFollowedListsResponse;
+type models$c_GetFollowingResponse = GetFollowingResponse;
+type models$c_GetLikedPostsResponse = GetLikedPostsResponse;
+type models$c_GetListMembershipsResponse = GetListMembershipsResponse;
+type models$c_GetMeResponse = GetMeResponse;
+type models$c_GetMentionsResponse = GetMentionsResponse;
+type models$c_GetMutingResponse = GetMutingResponse;
+type models$c_GetOwnedListsResponse = GetOwnedListsResponse;
+type models$c_GetPinnedListsResponse = GetPinnedListsResponse;
+type models$c_GetRepostsOfMeResponse = GetRepostsOfMeResponse;
+type models$c_GetTimelineResponse = GetTimelineResponse;
+type models$c_LikePostRequest = LikePostRequest;
+type models$c_LikePostResponse = LikePostResponse;
+type models$c_MuteUserRequest = MuteUserRequest;
+type models$c_MuteUserResponse = MuteUserResponse;
+type models$c_PinListRequest = PinListRequest;
+type models$c_PinListResponse = PinListResponse;
+type models$c_RepostPostRequest = RepostPostRequest;
+type models$c_RepostPostResponse = RepostPostResponse;
+type models$c_UnblockDmsResponse = UnblockDmsResponse;
+type models$c_UnfollowListResponse = UnfollowListResponse;
+type models$c_UnfollowUserResponse = UnfollowUserResponse;
+type models$c_UnlikePostResponse = UnlikePostResponse;
+type models$c_UnmuteUserResponse = UnmuteUserResponse;
+type models$c_UnpinListResponse = UnpinListResponse;
+type models$c_UnrepostPostResponse = UnrepostPostResponse;
+declare namespace models$c {
   export {
-    models$h_BlockDmsResponse as BlockDmsResponse,
-    models$h_CreateBookmarkRequest as CreateBookmarkRequest,
-    models$h_CreateBookmarkResponse as CreateBookmarkResponse,
-    models$h_DeleteBookmarkResponse as DeleteBookmarkResponse,
-    models$h_FollowListRequest as FollowListRequest,
-    models$h_FollowListResponse as FollowListResponse,
-    models$h_FollowUserRequest as FollowUserRequest,
-    models$h_FollowUserResponse as FollowUserResponse,
-    models$h_GetBlockingResponse as GetBlockingResponse,
-    models$h_GetBookmarkFoldersResponse as GetBookmarkFoldersResponse,
-    models$h_GetBookmarksByFolderIdResponse as GetBookmarksByFolderIdResponse,
-    models$h_GetBookmarksResponse as GetBookmarksResponse,
+    models$c_BlockDmsResponse as BlockDmsResponse,
+    models$c_CreateBookmarkRequest as CreateBookmarkRequest,
+    models$c_CreateBookmarkResponse as CreateBookmarkResponse,
+    models$c_DeleteBookmarkResponse as DeleteBookmarkResponse,
+    models$c_FollowListRequest as FollowListRequest,
+    models$c_FollowListResponse as FollowListResponse,
+    models$c_FollowUserRequest as FollowUserRequest,
+    models$c_FollowUserResponse as FollowUserResponse,
+    models$c_GetBlockingResponse as GetBlockingResponse,
+    models$c_GetBookmarkFoldersResponse as GetBookmarkFoldersResponse,
+    models$c_GetBookmarksByFolderIdResponse as GetBookmarksByFolderIdResponse,
+    models$c_GetBookmarksResponse as GetBookmarksResponse,
     GetByIdResponse$4 as GetByIdResponse,
     GetByIdsResponse$2 as GetByIdsResponse,
-    models$h_GetByUsernameResponse as GetByUsernameResponse,
-    models$h_GetByUsernamesResponse as GetByUsernamesResponse,
-    models$h_GetFollowedListsResponse as GetFollowedListsResponse,
+    models$c_GetByUsernameResponse as GetByUsernameResponse,
+    models$c_GetByUsernamesResponse as GetByUsernamesResponse,
+    models$c_GetFollowedListsResponse as GetFollowedListsResponse,
     GetFollowersResponse$1 as GetFollowersResponse,
-    models$h_GetFollowingResponse as GetFollowingResponse,
-    models$h_GetLikedPostsResponse as GetLikedPostsResponse,
-    models$h_GetListMembershipsResponse as GetListMembershipsResponse,
-    models$h_GetMeResponse as GetMeResponse,
-    models$h_GetMentionsResponse as GetMentionsResponse,
-    models$h_GetMutingResponse as GetMutingResponse,
-    models$h_GetOwnedListsResponse as GetOwnedListsResponse,
-    models$h_GetPinnedListsResponse as GetPinnedListsResponse,
+    models$c_GetFollowingResponse as GetFollowingResponse,
+    models$c_GetLikedPostsResponse as GetLikedPostsResponse,
+    models$c_GetListMembershipsResponse as GetListMembershipsResponse,
+    models$c_GetMeResponse as GetMeResponse,
+    models$c_GetMentionsResponse as GetMentionsResponse,
+    models$c_GetMutingResponse as GetMutingResponse,
+    models$c_GetOwnedListsResponse as GetOwnedListsResponse,
+    models$c_GetPinnedListsResponse as GetPinnedListsResponse,
     GetPostsResponse$2 as GetPostsResponse,
-    models$h_GetRepostsOfMeResponse as GetRepostsOfMeResponse,
-    models$h_GetTimelineResponse as GetTimelineResponse,
-    models$h_LikePostRequest as LikePostRequest,
-    models$h_LikePostResponse as LikePostResponse,
-    models$h_MuteUserRequest as MuteUserRequest,
-    models$h_MuteUserResponse as MuteUserResponse,
-    models$h_PinListRequest as PinListRequest,
-    models$h_PinListResponse as PinListResponse,
-    models$h_RepostPostRequest as RepostPostRequest,
-    models$h_RepostPostResponse as RepostPostResponse,
+    models$c_GetRepostsOfMeResponse as GetRepostsOfMeResponse,
+    models$c_GetTimelineResponse as GetTimelineResponse,
+    models$c_LikePostRequest as LikePostRequest,
+    models$c_LikePostResponse as LikePostResponse,
+    models$c_MuteUserRequest as MuteUserRequest,
+    models$c_MuteUserResponse as MuteUserResponse,
+    models$c_PinListRequest as PinListRequest,
+    models$c_PinListResponse as PinListResponse,
+    models$c_RepostPostRequest as RepostPostRequest,
+    models$c_RepostPostResponse as RepostPostResponse,
     SearchResponse$3 as SearchResponse,
-    models$h_UnblockDmsResponse as UnblockDmsResponse,
-    models$h_UnfollowListResponse as UnfollowListResponse,
-    models$h_UnfollowUserResponse as UnfollowUserResponse,
-    models$h_UnlikePostResponse as UnlikePostResponse,
-    models$h_UnmuteUserResponse as UnmuteUserResponse,
-    models$h_UnpinListResponse as UnpinListResponse,
-    models$h_UnrepostPostResponse as UnrepostPostResponse,
+    models$c_UnblockDmsResponse as UnblockDmsResponse,
+    models$c_UnfollowListResponse as UnfollowListResponse,
+    models$c_UnfollowUserResponse as UnfollowUserResponse,
+    models$c_UnlikePostResponse as UnlikePostResponse,
+    models$c_UnmuteUserResponse as UnmuteUserResponse,
+    models$c_UnpinListResponse as UnpinListResponse,
+    models$c_UnrepostPostResponse as UnrepostPostResponse,
   };
 }
 
@@ -4393,17 +5214,17 @@ interface GetByUsernamesOptions {
     [key: string]: any;
 }
 /**
- * Options for getBookmarks method
+ * Options for getRepostsOfMe method
  *
  * @public
  */
-interface GetBookmarksOptions {
+interface GetRepostsOfMeOptions {
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get the next 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
@@ -4428,6 +5249,154 @@ interface GetBookmarksOptions {
     [key: string]: any;
 }
 /**
+ * Options for getBookmarks method
+ *
+ * @public
+ */
+interface GetBookmarksOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getFollowers method
+ *
+ * @public
+ */
+interface GetFollowersOptions$1 {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getById method
+ *
+ * @public
+ */
+interface GetByIdOptions$4 {
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getMentions method
+ *
+ * @public
+ */
+interface GetMentionsOptions {
+    /** The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    /** The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified.
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified.
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getMe method
+ *
+ * @public
+ */
+interface GetMeOptions {
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
  * Options for getMuting method
  *
  * @public
@@ -4438,7 +5407,7 @@ interface GetMutingOptions {
     maxResults?: number;
     /** This parameter is used to get the next 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
@@ -4467,118 +5436,43 @@ interface MuteUserOptions {
     [key: string]: any;
 }
 /**
- * Options for getById method
+ * Options for search method
  *
  * @public
  */
-interface GetByIdOptions$4 {
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getLikedPosts method
- *
- * @public
- */
-interface GetLikedPostsOptions {
+interface SearchOptions$3 {
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
-    /** This parameter is used to get the next 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
 /**
- * Options for likePost method
+ * Options for getBlocking method
  *
  * @public
  */
-interface LikePostOptions {
-    /** Request body */
-    body?: LikePostRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getPinnedLists method
- *
- * @public
- */
-interface GetPinnedListsOptions {
-    /** A comma separated list of List fields to display.
-     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
-    listFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for repostPost method
- *
- * @public
- */
-interface RepostPostOptions {
-    /** Request body */
-    body?: RepostPostRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getFollowers method
- *
- * @public
- */
-interface GetFollowersOptions$1 {
+interface GetBlockingOptions {
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get a specified 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
@@ -4588,62 +5482,6 @@ interface GetFollowersOptions$1 {
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getBookmarkFolders method
- *
- * @public
- */
-interface GetBookmarkFoldersOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getFollowedLists method
- *
- * @public
- */
-interface GetFollowedListsOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of List fields to display.
-     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
-    listFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for followList method
- *
- * @public
- */
-interface FollowListOptions {
-    /** Request body */
-    body?: FollowListRequest;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
@@ -4680,7 +5518,7 @@ interface GetFollowingOptions {
     maxResults?: number;
     /** This parameter is used to get a specified 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
@@ -4709,32 +5547,30 @@ interface FollowUserOptions {
     [key: string]: any;
 }
 /**
- * Options for getTimeline method
+ * Options for likePost method
  *
  * @public
  */
-interface GetTimelineOptions {
-    /** The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
-    /** The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
+interface LikePostOptions {
+    /** Request body */
+    body?: LikePostRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getLikedPosts method
+ *
+ * @public
+ */
+interface GetLikedPostsOptions {
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get the next 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The set of entities to exclude (e.g. 'replies' or 'retweets').
-     * Also accepts: exclude or proper camelCase (e.g., exclude) */
-    exclude?: Array<any>;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified.
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided. The until_id parameter takes precedence if it is also specified.
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
+    paginationToken?: string;
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
@@ -4759,23 +5595,26 @@ interface GetTimelineOptions {
     [key: string]: any;
 }
 /**
- * Options for getMentions method
+ * Options for getPosts method
  *
  * @public
  */
-interface GetMentionsOptions {
+interface GetPostsOptions$2 {
     /** The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
      * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
+    sinceId?: string;
     /** The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
      * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
+    untilId?: string;
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get the next 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
+    /** The set of entities to exclude (e.g. 'replies' or 'retweets').
+     * Also accepts: exclude or proper camelCase (e.g., exclude) */
+    exclude?: Array<any>;
     /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided. The since_id parameter takes precedence if it is also specified.
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
@@ -4816,7 +5655,7 @@ interface GetListMembershipsOptions {
     maxResults?: number;
     /** This parameter is used to get a specified 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of List fields to display.
      * Also accepts: list.fields or proper camelCase (e.g., listFields) */
     listFields?: Array<any>;
@@ -4832,17 +5671,11 @@ interface GetListMembershipsOptions {
     [key: string]: any;
 }
 /**
- * Options for getOwnedLists method
+ * Options for getPinnedLists method
  *
  * @public
  */
-interface GetOwnedListsOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+interface GetPinnedListsOptions {
     /** A comma separated list of List fields to display.
      * Also accepts: list.fields or proper camelCase (e.g., listFields) */
     listFields?: Array<any>;
@@ -4858,23 +5691,43 @@ interface GetOwnedListsOptions {
     [key: string]: any;
 }
 /**
- * Options for getPosts method
+ * Options for getByUsername method
  *
  * @public
  */
-interface GetPostsOptions$2 {
+interface GetByUsernameOptions {
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getTimeline method
+ *
+ * @public
+ */
+interface GetTimelineOptions {
     /** The minimum Post ID to be included in the result set. This parameter takes precedence over start_time if both are specified.
      * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
+    sinceId?: string;
     /** The maximum Post ID to be included in the result set. This parameter takes precedence over end_time if both are specified.
      * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
+    untilId?: string;
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get the next 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** The set of entities to exclude (e.g. 'replies' or 'retweets').
      * Also accepts: exclude or proper camelCase (e.g., exclude) */
     exclude?: Array<any>;
@@ -4908,127 +5761,95 @@ interface GetPostsOptions$2 {
     [key: string]: any;
 }
 /**
- * Options for getByUsername method
+ * Options for getFollowedLists method
  *
  * @public
  */
-interface GetByUsernameOptions {
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for search method
- *
- * @public
- */
-interface SearchOptions$3 {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getBlocking method
- *
- * @public
- */
-interface GetBlockingOptions {
+interface GetFollowedListsOptions {
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get a specified 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
+    paginationToken?: string;
+    /** A comma separated list of List fields to display.
+     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
+    listFields?: Array<any>;
     /** A comma separated list of fields to expand.
      * Also accepts: expansions or proper camelCase (e.g., expansions) */
     expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
 /**
- * Options for getMe method
+ * Options for followList method
  *
  * @public
  */
-interface GetMeOptions {
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
+interface FollowListOptions {
+    /** Request body */
+    body?: FollowListRequest;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
 /**
- * Options for getRepostsOfMe method
+ * Options for repostPost method
  *
  * @public
  */
-interface GetRepostsOfMeOptions {
+interface RepostPostOptions {
+    /** Request body */
+    body?: RepostPostRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getBookmarkFolders method
+ *
+ * @public
+ */
+interface GetBookmarkFoldersOptions {
     /** The maximum number of results.
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     /** This parameter is used to get the next 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
+    paginationToken?: string;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getOwnedLists method
+ *
+ * @public
+ */
+interface GetOwnedListsOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of List fields to display.
+     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
+    listFields?: Array<any>;
     /** A comma separated list of fields to expand.
      * Also accepts: expansions or proper camelCase (e.g., expansions) */
     expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
@@ -5066,119 +5887,28 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetByUsernamesResponse>} Promise resolving to the API response
+     * @returns {Promise<GetByUsernamesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getByUsernames(usernames: Array<any>, options: GetByUsernamesOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getByUsernames(usernames: Array<any>, options?: GetByUsernamesOptions): Promise<GetByUsernamesResponse>;
     /**
-     * Get Bookmarks
-     * Retrieves a list of Posts bookmarked by the authenticated user.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
+     * Get Reposts of me
+     * Retrieves a list of Posts that repost content from the authenticated user.
   
   
   
-  
-     * @returns {Promise<GetBookmarksResponse>} Promise resolving to the API response
+     * @returns {Promise<GetRepostsOfMeResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    getBookmarks(id: string, options?: GetBookmarksOptions): Promise<GetBookmarksResponse>;
-    /**
-     * Create Bookmark
-     * Adds a post to the authenticated user’s bookmarks.
-  
-  
-     * @param id The ID of the authenticated source User for whom to add bookmarks.
-  
-  
-  
-  
-     * @param body Request body
-  
-     * @returns {Promise<CreateBookmarkResponse>} Promise resolving to the API response
-     */
-    createBookmark(id: string, body: CreateBookmarkRequest): Promise<CreateBookmarkResponse>;
-    /**
-     * Get muting
-     * Retrieves a list of Users muted by the authenticated user.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-  
-     * @returns {Promise<GetMutingResponse>} Promise resolving to the API response
-     */
-    getMuting(id: string, options?: GetMutingOptions): Promise<GetMutingResponse>;
-    /**
-     * Mute User
-     * Causes the authenticated user to mute a specific User by their ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to mute the target User.
-  
-  
-  
-  
-     * @returns {Promise<MuteUserResponse>} Promise resolving to the API response
-     */
-    muteUser(id: string, options?: MuteUserOptions): Promise<MuteUserResponse>;
-    /**
-     * Unrepost Post
-     * Causes the authenticated user to unrepost a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to repost the Post.
-  
-  
-  
-     * @param sourceTweetId The ID of the Post that the User is requesting to unretweet.
-  
-  
-  
-  
-     * @returns {Promise<UnrepostPostResponse>} Promise resolving to the API response
-     */
-    unrepostPost(id: string, sourceTweetId: string): Promise<UnrepostPostResponse>;
-    /**
-     * Get User by ID
-     * Retrieves details of a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-    getById(id: string, options?: GetByIdOptions$4): Promise<GetByIdResponse$4>;
-    /**
-     * Get liked Posts
-     * Retrieves a list of Posts liked by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetLikedPostsResponse>} Promise resolving to the API response
-     */
-    getLikedPosts(id: string, options?: GetLikedPostsOptions): Promise<GetLikedPostsResponse>;
-    /**
-     * Like Post
-     * Causes the authenticated user to Like a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to like the Post.
-  
-  
-  
-  
-     * @returns {Promise<LikePostResponse>} Promise resolving to the API response
-     */
-    likePost(id: string, options?: LikePostOptions): Promise<LikePostResponse>;
+    getRepostsOfMe(options: GetRepostsOfMeOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getRepostsOfMe(options?: GetRepostsOfMeOptions): Promise<GetRepostsOfMeResponse>;
     /**
      * Unlike Post
      * Causes the authenticated user to Unlike a specific Post by its ID.
@@ -5193,12 +5923,17 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<UnlikePostResponse>} Promise resolving to the API response
+     * @returns {Promise<UnlikePostResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    unlikePost(id: string, tweetId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     unlikePost(id: string, tweetId: string): Promise<UnlikePostResponse>;
     /**
-     * Get pinned Lists
-     * Retrieves a list of Lists pinned by the authenticated user.
+     * Get Bookmarks
+     * Retrieves a list of Posts bookmarked by the authenticated user.
   
   
      * @param id The ID of the authenticated source User for whom to return results.
@@ -5206,63 +5941,34 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetPinnedListsResponse>} Promise resolving to the API response
+     * @returns {Promise<GetBookmarksResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    getPinnedLists(id: string, options?: GetPinnedListsOptions): Promise<GetPinnedListsResponse>;
+    getBookmarks(id: string, options: GetBookmarksOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getBookmarks(id: string, options?: GetBookmarksOptions): Promise<GetBookmarksResponse>;
     /**
-     * Pin List
-     * Causes the authenticated user to pin a specific List by its ID.
+     * Create Bookmark
+     * Adds a post to the authenticated user’s bookmarks.
   
   
-     * @param id The ID of the authenticated source User that will pin the List.
+     * @param id The ID of the authenticated source User for whom to add bookmarks.
   
   
   
   
      * @param body Request body
   
-     * @returns {Promise<PinListResponse>} Promise resolving to the API response
+     * @returns {Promise<CreateBookmarkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    pinList(id: string, body: PinListRequest): Promise<PinListResponse>;
-    /**
-     * Repost Post
-     * Causes the authenticated user to repost a specific Post by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that is requesting to repost the Post.
-  
-  
-  
-  
-     * @returns {Promise<RepostPostResponse>} Promise resolving to the API response
-     */
-    repostPost(id: string, options?: RepostPostOptions): Promise<RepostPostResponse>;
-    /**
-     * Block DMs
-     * Blocks direct messages to or from a specific User by their ID for the authenticated user.
-  
-  
-     * @param id The ID of the target User that the authenticated user requesting to block dms for.
-  
-  
-  
-  
-     * @returns {Promise<BlockDmsResponse>} Promise resolving to the API response
-     */
-    blockDms(id: string): Promise<BlockDmsResponse>;
-    /**
-     * Unblock DMs
-     * Unblocks direct messages to or from a specific User by their ID for the authenticated user.
-  
-  
-     * @param id The ID of the target User that the authenticated user requesting to unblock dms for.
-  
-  
-  
-  
-     * @returns {Promise<UnblockDmsResponse>} Promise resolving to the API response
-     */
-    unblockDms(id: string): Promise<UnblockDmsResponse>;
+    createBookmark(id: string, body: CreateBookmarkRequest, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createBookmark(id: string, body: CreateBookmarkRequest): Promise<CreateBookmarkResponse>;
     /**
      * Get followers
      * Retrieves a list of Users who follow a specific User by their ID.
@@ -5273,48 +5979,14 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetFollowersResponse>} Promise resolving to the API response
+     * @returns {Promise<GetFollowersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getFollowers(id: string, options: GetFollowersOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getFollowers(id: string, options?: GetFollowersOptions$1): Promise<GetFollowersResponse$1>;
-    /**
-     * Get Bookmark folders
-     * Retrieves a list of Bookmark folders created by the authenticated user.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-  
-     * @returns {Promise<GetBookmarkFoldersResponse>} Promise resolving to the API response
-     */
-    getBookmarkFolders(id: string, options?: GetBookmarkFoldersOptions): Promise<GetBookmarkFoldersResponse>;
-    /**
-     * Get followed Lists
-     * Retrieves a list of Lists followed by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetFollowedListsResponse>} Promise resolving to the API response
-     */
-    getFollowedLists(id: string, options?: GetFollowedListsOptions): Promise<GetFollowedListsResponse>;
-    /**
-     * Follow List
-     * Causes the authenticated user to follow a specific List by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that will follow the List.
-  
-  
-  
-  
-     * @returns {Promise<FollowListResponse>} Promise resolving to the API response
-     */
-    followList(id: string, options?: FollowListOptions): Promise<FollowListResponse>;
     /**
      * Unpin List
      * Causes the authenticated user to unpin a specific List by its ID.
@@ -5329,9 +6001,116 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<UnpinListResponse>} Promise resolving to the API response
+     * @returns {Promise<UnpinListResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    unpinList(id: string, listId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     unpinList(id: string, listId: string): Promise<UnpinListResponse>;
+    /**
+     * Get User by ID
+     * Retrieves details of a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getById(id: string, options: GetByIdOptions$4 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getById(id: string, options?: GetByIdOptions$4): Promise<GetByIdResponse$4>;
+    /**
+     * Get mentions
+     * Retrieves a list of Posts that mention a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetMentionsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getMentions(id: string, options: GetMentionsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getMentions(id: string, options?: GetMentionsOptions): Promise<GetMentionsResponse>;
+    /**
+     * Unrepost Post
+     * Causes the authenticated user to unrepost a specific Post by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to repost the Post.
+  
+  
+  
+     * @param sourceTweetId The ID of the Post that the User is requesting to unretweet.
+  
+  
+  
+  
+     * @returns {Promise<UnrepostPostResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    unrepostPost(id: string, sourceTweetId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    unrepostPost(id: string, sourceTweetId: string): Promise<UnrepostPostResponse>;
+    /**
+     * Delete Bookmark
+     * Removes a Post from the authenticated user’s Bookmarks by its ID.
+  
+  
+     * @param id The ID of the authenticated source User whose bookmark is to be removed.
+  
+  
+  
+     * @param tweetId The ID of the Post that the source User is removing from bookmarks.
+  
+  
+  
+  
+     * @returns {Promise<DeleteBookmarkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteBookmark(id: string, tweetId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteBookmark(id: string, tweetId: string): Promise<DeleteBookmarkResponse>;
+    /**
+     * Unfollow List
+     * Causes the authenticated user to unfollow a specific List by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that will unfollow the List.
+  
+  
+  
+     * @param listId The ID of the List to unfollow.
+  
+  
+  
+  
+     * @returns {Promise<UnfollowListResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    unfollowList(id: string, listId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    unfollowList(id: string, listId: string): Promise<UnfollowListResponse>;
     /**
      * Unmute User
      * Causes the authenticated user to unmute a specific user by their ID.
@@ -5346,9 +6125,100 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<UnmuteUserResponse>} Promise resolving to the API response
+     * @returns {Promise<UnmuteUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    unmuteUser(sourceUserId: string, targetUserId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     unmuteUser(sourceUserId: string, targetUserId: string): Promise<UnmuteUserResponse>;
+    /**
+     * Get my User
+     * Retrieves details of the authenticated user.
+  
+  
+  
+     * @returns {Promise<GetMeResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getMe(options: GetMeOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getMe(options?: GetMeOptions): Promise<GetMeResponse>;
+    /**
+     * Get muting
+     * Retrieves a list of Users muted by the authenticated user.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+  
+     * @returns {Promise<GetMutingResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getMuting(id: string, options: GetMutingOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getMuting(id: string, options?: GetMutingOptions): Promise<GetMutingResponse>;
+    /**
+     * Mute User
+     * Causes the authenticated user to mute a specific User by their ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to mute the target User.
+  
+  
+  
+  
+     * @returns {Promise<MuteUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    muteUser(id: string, options: MuteUserOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    muteUser(id: string, options?: MuteUserOptions): Promise<MuteUserResponse>;
+    /**
+     * Search Users
+     * Retrieves a list of Users matching a search query.
+  
+  
+  
+     * @param query TThe the query string by which to query for users.
+  
+  
+  
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    search(query: string, options: SearchOptions$3 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    search(query: string, options?: SearchOptions$3): Promise<SearchResponse$3>;
+    /**
+     * Get blocking
+     * Retrieves a list of Users blocked by the specified User ID.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+  
+     * @returns {Promise<GetBlockingResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getBlocking(id: string, options: GetBlockingOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getBlocking(id: string, options?: GetBlockingOptions): Promise<GetBlockingResponse>;
     /**
      * Get Users by IDs
      * Retrieves details of multiple Users by their IDs.
@@ -5359,8 +6229,13 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
+     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getByIds(ids: Array<any>, options: GetByIdsOptions$2 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getByIds(ids: Array<any>, options?: GetByIdsOptions$2): Promise<GetByIdsResponse$2>;
     /**
      * Get following
@@ -5372,8 +6247,13 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetFollowingResponse>} Promise resolving to the API response
+     * @returns {Promise<GetFollowingResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getFollowing(id: string, options: GetFollowingOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getFollowing(id: string, options?: GetFollowingOptions): Promise<GetFollowingResponse>;
     /**
      * Follow User
@@ -5385,25 +6265,35 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<FollowUserResponse>} Promise resolving to the API response
+     * @returns {Promise<FollowUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    followUser(id: string, options: FollowUserOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     followUser(id: string, options?: FollowUserOptions): Promise<FollowUserResponse>;
     /**
-     * Get Timeline
-     * Retrieves a reverse chronological list of Posts in the authenticated User’s Timeline.
+     * Like Post
+     * Causes the authenticated user to Like a specific Post by its ID.
   
   
-     * @param id The ID of the authenticated source User to list Reverse Chronological Timeline Posts of.
+     * @param id The ID of the authenticated source User that is requesting to like the Post.
   
   
   
   
-     * @returns {Promise<GetTimelineResponse>} Promise resolving to the API response
+     * @returns {Promise<LikePostResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    getTimeline(id: string, options?: GetTimelineOptions): Promise<GetTimelineResponse>;
+    likePost(id: string, options: LikePostOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    likePost(id: string, options?: LikePostOptions): Promise<LikePostResponse>;
     /**
-     * Get mentions
-     * Retrieves a list of Posts that mention a specific User by their ID.
+     * Get liked Posts
+     * Retrieves a list of Posts liked by a specific User by their ID.
   
   
      * @param id The ID of the User to lookup.
@@ -5411,35 +6301,14 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetMentionsResponse>} Promise resolving to the API response
+     * @returns {Promise<GetLikedPostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    getMentions(id: string, options?: GetMentionsOptions): Promise<GetMentionsResponse>;
-    /**
-     * Get List memberships
-     * Retrieves a list of Lists that a specific User is a member of by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetListMembershipsResponse>} Promise resolving to the API response
-     */
-    getListMemberships(id: string, options?: GetListMembershipsOptions): Promise<GetListMembershipsResponse>;
-    /**
-     * Get owned Lists
-     * Retrieves a list of Lists owned by a specific User by their ID.
-  
-  
-     * @param id The ID of the User to lookup.
-  
-  
-  
-  
-     * @returns {Promise<GetOwnedListsResponse>} Promise resolving to the API response
-     */
-    getOwnedLists(id: string, options?: GetOwnedListsOptions): Promise<GetOwnedListsResponse>;
+    getLikedPosts(id: string, options: GetLikedPostsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getLikedPosts(id: string, options?: GetLikedPostsOptions): Promise<GetLikedPostsResponse>;
     /**
      * Get Posts
      * Retrieves a list of posts authored by a specific User by their ID.
@@ -5450,9 +6319,88 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
+     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getPosts(id: string, options: GetPostsOptions$2 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getPosts(id: string, options?: GetPostsOptions$2): Promise<GetPostsResponse$2>;
+    /**
+     * Block DMs
+     * Blocks direct messages to or from a specific User by their ID for the authenticated user.
+  
+  
+     * @param id The ID of the target User that the authenticated user requesting to block dms for.
+  
+  
+  
+  
+     * @returns {Promise<BlockDmsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    blockDms(id: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    blockDms(id: string): Promise<BlockDmsResponse>;
+    /**
+     * Get List memberships
+     * Retrieves a list of Lists that a specific User is a member of by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetListMembershipsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getListMemberships(id: string, options: GetListMembershipsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getListMemberships(id: string, options?: GetListMembershipsOptions): Promise<GetListMembershipsResponse>;
+    /**
+     * Get pinned Lists
+     * Retrieves a list of Lists pinned by the authenticated user.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+  
+     * @returns {Promise<GetPinnedListsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getPinnedLists(id: string, options: GetPinnedListsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getPinnedLists(id: string, options?: GetPinnedListsOptions): Promise<GetPinnedListsResponse>;
+    /**
+     * Pin List
+     * Causes the authenticated user to pin a specific List by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that will pin the List.
+  
+  
+  
+  
+     * @param body Request body
+  
+     * @returns {Promise<PinListResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    pinList(id: string, body: PinListRequest, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    pinList(id: string, body: PinListRequest): Promise<PinListResponse>;
     /**
      * Get User by username
      * Retrieves details of a specific User by their username.
@@ -5463,8 +6411,13 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetByUsernameResponse>} Promise resolving to the API response
+     * @returns {Promise<GetByUsernameResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getByUsername(username: string, options: GetByUsernameOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getByUsername(username: string, options?: GetByUsernameOptions): Promise<GetByUsernameResponse>;
     /**
      * Unfollow User
@@ -5480,22 +6433,140 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<UnfollowUserResponse>} Promise resolving to the API response
+     * @returns {Promise<UnfollowUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    unfollowUser(sourceUserId: string, targetUserId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     unfollowUser(sourceUserId: string, targetUserId: string): Promise<UnfollowUserResponse>;
     /**
-     * Search Users
-     * Retrieves a list of Users matching a search query.
+     * Get Timeline
+     * Retrieves a reverse chronological list of Posts in the authenticated User’s Timeline.
+  
+  
+     * @param id The ID of the authenticated source User to list Reverse Chronological Timeline Posts of.
   
   
   
-     * @param query TThe the query string by which to query for users.
   
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
+     * @returns {Promise<GetTimelineResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    search(query: any, options?: SearchOptions$3): Promise<SearchResponse$3>;
+    getTimeline(id: string, options: GetTimelineOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getTimeline(id: string, options?: GetTimelineOptions): Promise<GetTimelineResponse>;
+    /**
+     * Get followed Lists
+     * Retrieves a list of Lists followed by a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetFollowedListsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getFollowedLists(id: string, options: GetFollowedListsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getFollowedLists(id: string, options?: GetFollowedListsOptions): Promise<GetFollowedListsResponse>;
+    /**
+     * Follow List
+     * Causes the authenticated user to follow a specific List by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that will follow the List.
+  
+  
+  
+  
+     * @returns {Promise<FollowListResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    followList(id: string, options: FollowListOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    followList(id: string, options?: FollowListOptions): Promise<FollowListResponse>;
+    /**
+     * Unblock DMs
+     * Unblocks direct messages to or from a specific User by their ID for the authenticated user.
+  
+  
+     * @param id The ID of the target User that the authenticated user requesting to unblock dms for.
+  
+  
+  
+  
+     * @returns {Promise<UnblockDmsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    unblockDms(id: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    unblockDms(id: string): Promise<UnblockDmsResponse>;
+    /**
+     * Repost Post
+     * Causes the authenticated user to repost a specific Post by its ID.
+  
+  
+     * @param id The ID of the authenticated source User that is requesting to repost the Post.
+  
+  
+  
+  
+     * @returns {Promise<RepostPostResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    repostPost(id: string, options: RepostPostOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    repostPost(id: string, options?: RepostPostOptions): Promise<RepostPostResponse>;
+    /**
+     * Get Bookmark folders
+     * Retrieves a list of Bookmark folders created by the authenticated user.
+  
+  
+     * @param id The ID of the authenticated source User for whom to return results.
+  
+  
+  
+  
+     * @returns {Promise<GetBookmarkFoldersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getBookmarkFolders(id: string, options: GetBookmarkFoldersOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getBookmarkFolders(id: string, options?: GetBookmarkFoldersOptions): Promise<GetBookmarkFoldersResponse>;
+    /**
+     * Get owned Lists
+     * Retrieves a list of Lists owned by a specific User by their ID.
+  
+  
+     * @param id The ID of the User to lookup.
+  
+  
+  
+  
+     * @returns {Promise<GetOwnedListsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getOwnedLists(id: string, options: GetOwnedListsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getOwnedLists(id: string, options?: GetOwnedListsOptions): Promise<GetOwnedListsResponse>;
     /**
      * Get Bookmarks by folder ID
      * Retrieves Posts in a specific Bookmark folder by its ID for the authenticated user.
@@ -5510,74 +6581,3194 @@ declare class UsersClient {
   
   
   
-     * @returns {Promise<GetBookmarksByFolderIdResponse>} Promise resolving to the API response
+     * @returns {Promise<GetBookmarksByFolderIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    getBookmarksByFolderId(id: string, folderId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     getBookmarksByFolderId(id: string, folderId: string): Promise<GetBookmarksByFolderIdResponse>;
+}
+
+/**
+ * Models for news operations
+ */
+
+/**
+ * Response for get
+ *
+ * @public
+ */
+type GetResponse$2 = Get2NewsIdResponse;
+/**
+ * Response for search
+ *
+ * @public
+ */
+type SearchResponse$2 = Get2NewsSearchResponse;
+
+declare namespace models$b {
+  export {
+    GetResponse$2 as GetResponse,
+    SearchResponse$2 as SearchResponse,
+  };
+}
+
+/**
+ * news client for the X API.
+ *
+ * This module provides a client for interacting with the news endpoints of the X API.
+ */
+
+/**
+ * Options for get method
+ *
+ * @public
+ */
+interface GetOptions$2 {
+    /** A comma separated list of News fields to display.
+     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
+    newsFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for search method
+ *
+ * @public
+ */
+interface SearchOptions$2 {
+    /** The number of results to return.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** The maximum age of the News story to search for.
+     * Also accepts: max_age_hours or proper camelCase (e.g., maxAgeHours) */
+    maxAgeHours?: number;
+    /** A comma separated list of News fields to display.
+     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
+    newsFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for news operations
+ *
+ * This client provides methods for interacting with the news endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all news related operations.
+ *
+ * @category news
+ */
+declare class NewsClient {
+    private client;
     /**
-     * Unfollow List
-     * Causes the authenticated user to unfollow a specific List by its ID.
-  
-  
-     * @param id The ID of the authenticated source User that will unfollow the List.
-  
-  
-  
-     * @param listId The ID of the List to unfollow.
-  
-  
-  
-  
-     * @returns {Promise<UnfollowListResponse>} Promise resolving to the API response
+     * Creates a new news client instance
+     *
+     * @param client - The main X API client instance
      */
-    unfollowList(id: string, listId: string): Promise<UnfollowListResponse>;
+    constructor(client: Client);
     /**
-     * Get blocking
-     * Retrieves a list of Users blocked by the specified User ID.
-  
-  
-     * @param id The ID of the authenticated source User for whom to return results.
-  
-  
-  
-  
-     * @returns {Promise<GetBlockingResponse>} Promise resolving to the API response
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
      */
-    getBlocking(id: string, options?: GetBlockingOptions): Promise<GetBlockingResponse>;
+    private _normalizeOptions;
     /**
-     * Get my User
-     * Retrieves details of the authenticated user.
+     * Get news stories by ID
+     * Retrieves news story by its ID.
+  
+  
+     * @param id The ID of the news story.
   
   
   
-     * @returns {Promise<GetMeResponse>} Promise resolving to the API response
+  
+     * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    getMe(options?: GetMeOptions): Promise<GetMeResponse>;
+    get(id: string, options: GetOptions$2 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    get(id: string, options?: GetOptions$2): Promise<GetResponse$2>;
     /**
-     * Delete Bookmark
-     * Removes a Post from the authenticated user’s Bookmarks by its ID.
-  
-  
-     * @param id The ID of the authenticated source User whose bookmark is to be removed.
+     * Search News
+     * Retrieves a list of News stories matching the specified search query.
   
   
   
-     * @param tweetId The ID of the Post that the source User is removing from bookmarks.
+     * @param query The search query.
   
   
   
-  
-     * @returns {Promise<DeleteBookmarkResponse>} Promise resolving to the API response
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    deleteBookmark(id: string, tweetId: string): Promise<DeleteBookmarkResponse>;
+    search(query: string, options: SearchOptions$2 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    search(query: string, options?: SearchOptions$2): Promise<SearchResponse$2>;
+}
+
+/**
+ * Models for spaces operations
+ */
+
+/**
+ * Response for getByIds
+ *
+ * @public
+ */
+type GetByIdsResponse$1 = Get2SpacesResponse;
+/**
+ * Response for getPosts
+ *
+ * @public
+ */
+type GetPostsResponse$1 = Get2SpacesIdTweetsResponse;
+/**
+ * Response for search
+ *
+ * @public
+ */
+type SearchResponse$1 = Get2SpacesSearchResponse;
+/**
+ * Response for getBuyers
+ *
+ * @public
+ */
+type GetBuyersResponse = Get2SpacesIdBuyersResponse;
+/**
+ * Response for getById
+ *
+ * @public
+ */
+type GetByIdResponse$3 = Get2SpacesIdResponse;
+/**
+ * Response for getByCreatorIds
+ *
+ * @public
+ */
+type GetByCreatorIdsResponse = Get2SpacesByCreatorIdsResponse;
+
+type models$a_GetBuyersResponse = GetBuyersResponse;
+type models$a_GetByCreatorIdsResponse = GetByCreatorIdsResponse;
+declare namespace models$a {
+  export {
+    models$a_GetBuyersResponse as GetBuyersResponse,
+    models$a_GetByCreatorIdsResponse as GetByCreatorIdsResponse,
+    GetByIdResponse$3 as GetByIdResponse,
+    GetByIdsResponse$1 as GetByIdsResponse,
+    GetPostsResponse$1 as GetPostsResponse,
+    SearchResponse$1 as SearchResponse,
+  };
+}
+
+/**
+ * spaces client for the X API.
+ *
+ * This module provides a client for interacting with the spaces endpoints of the X API.
+ */
+
+/**
+ * Options for getByIds method
+ *
+ * @public
+ */
+interface GetByIdsOptions$1 {
+    /** A comma separated list of Space fields to display.
+     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
+    spaceFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Topic fields to display.
+     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
+    topicFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getPosts method
+ *
+ * @public
+ */
+interface GetPostsOptions$1 {
+    /** The number of Posts to fetch from the provided space. If not provided, the value will default to the maximum of 100.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for search method
+ *
+ * @public
+ */
+interface SearchOptions$1 {
+    /** The state of Spaces to search for.
+     * Also accepts: state or proper camelCase (e.g., state) */
+    state?: string;
+    /** The number of results to return.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** A comma separated list of Space fields to display.
+     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
+    spaceFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Topic fields to display.
+     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
+    topicFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getBuyers method
+ *
+ * @public
+ */
+interface GetBuyersOptions {
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getById method
+ *
+ * @public
+ */
+interface GetByIdOptions$3 {
+    /** A comma separated list of Space fields to display.
+     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
+    spaceFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Topic fields to display.
+     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
+    topicFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByCreatorIds method
+ *
+ * @public
+ */
+interface GetByCreatorIdsOptions {
+    /** A comma separated list of Space fields to display.
+     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
+    spaceFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Topic fields to display.
+     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
+    topicFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for spaces operations
+ *
+ * This client provides methods for interacting with the spaces endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all spaces related operations.
+ *
+ * @category spaces
+ */
+declare class SpacesClient {
+    private client;
     /**
-     * Get Reposts of me
-     * Retrieves a list of Posts that repost content from the authenticated user.
-  
-  
-  
-     * @returns {Promise<GetRepostsOfMeResponse>} Promise resolving to the API response
+     * Creates a new spaces client instance
+     *
+     * @param client - The main X API client instance
      */
-    getRepostsOfMe(options?: GetRepostsOfMeOptions): Promise<GetRepostsOfMeResponse>;
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get Spaces by IDs
+     * Retrieves details of multiple Spaces by their IDs.
+  
+  
+  
+     * @param ids The list of Space IDs to return.
+  
+  
+  
+     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getByIds(ids: Array<any>, options: GetByIdsOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getByIds(ids: Array<any>, options?: GetByIdsOptions$1): Promise<GetByIdsResponse$1>;
+    /**
+     * Get Space Posts
+     * Retrieves a list of Posts shared in a specific Space by its ID.
+  
+  
+     * @param id The ID of the Space to be retrieved.
+  
+  
+  
+  
+     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getPosts(id: string, options: GetPostsOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getPosts(id: string, options?: GetPostsOptions$1): Promise<GetPostsResponse$1>;
+    /**
+     * Search Spaces
+     * Retrieves a list of Spaces matching the specified search query.
+  
+  
+  
+     * @param query The search query.
+  
+  
+  
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    search(query: string, options: SearchOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    search(query: string, options?: SearchOptions$1): Promise<SearchResponse$1>;
+    /**
+     * Get Space ticket buyers
+     * Retrieves a list of Users who purchased tickets to a specific Space by its ID.
+  
+  
+     * @param id The ID of the Space to be retrieved.
+  
+  
+  
+  
+     * @returns {Promise<GetBuyersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getBuyers(id: string, options: GetBuyersOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getBuyers(id: string, options?: GetBuyersOptions): Promise<GetBuyersResponse>;
+    /**
+     * Get space by ID
+     * Retrieves details of a specific space by its ID.
+  
+  
+     * @param id The ID of the Space to be retrieved.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getById(id: string, options: GetByIdOptions$3 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getById(id: string, options?: GetByIdOptions$3): Promise<GetByIdResponse$3>;
+    /**
+     * Get Spaces by creator IDs
+     * Retrieves details of Spaces created by specified User IDs.
+  
+  
+  
+     * @param userIds The IDs of Users to search through.
+  
+  
+  
+     * @returns {Promise<GetByCreatorIdsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getByCreatorIds(userIds: Array<any>, options: GetByCreatorIdsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getByCreatorIds(userIds: Array<any>, options?: GetByCreatorIdsOptions): Promise<GetByCreatorIdsResponse>;
+}
+
+/**
+ * Models for activity operations
+ */
+
+/**
+ * Response for getSubscriptions
+ *
+ * @public
+ */
+type GetSubscriptionsResponse = ActivitySubscriptionGetResponse;
+/**
+ * Request for createSubscription
+ *
+ * @public
+ */
+type CreateSubscriptionRequest = ActivitySubscriptionCreateRequest;
+/**
+ * Response for createSubscription
+ *
+ * @public
+ */
+type CreateSubscriptionResponse = ActivitySubscriptionCreateResponse;
+/**
+ * Response for stream
+ *
+ * @public
+ */
+type StreamResponse = ActivityStreamingResponse;
+/**
+ * Request for updateSubscription
+ *
+ * @public
+ */
+type UpdateSubscriptionRequest = ActivitySubscriptionUpdateRequest;
+/**
+ * Response for updateSubscription
+ *
+ * @public
+ */
+type UpdateSubscriptionResponse = ActivitySubscriptionUpdateResponse;
+/**
+ * Response for deleteSubscription
+ *
+ * @public
+ */
+type DeleteSubscriptionResponse = ActivitySubscriptionDeleteResponse;
+
+type models$9_CreateSubscriptionRequest = CreateSubscriptionRequest;
+type models$9_CreateSubscriptionResponse = CreateSubscriptionResponse;
+type models$9_DeleteSubscriptionResponse = DeleteSubscriptionResponse;
+type models$9_GetSubscriptionsResponse = GetSubscriptionsResponse;
+type models$9_StreamResponse = StreamResponse;
+type models$9_UpdateSubscriptionRequest = UpdateSubscriptionRequest;
+type models$9_UpdateSubscriptionResponse = UpdateSubscriptionResponse;
+declare namespace models$9 {
+  export {
+    models$9_CreateSubscriptionRequest as CreateSubscriptionRequest,
+    models$9_CreateSubscriptionResponse as CreateSubscriptionResponse,
+    models$9_DeleteSubscriptionResponse as DeleteSubscriptionResponse,
+    models$9_GetSubscriptionsResponse as GetSubscriptionsResponse,
+    models$9_StreamResponse as StreamResponse,
+    models$9_UpdateSubscriptionRequest as UpdateSubscriptionRequest,
+    models$9_UpdateSubscriptionResponse as UpdateSubscriptionResponse,
+  };
+}
+
+/**
+ * activity client for the X API.
+ *
+ * This module provides a client for interacting with the activity endpoints of the X API.
+ */
+
+/**
+ * Options for createSubscription method
+ *
+ * @public
+ */
+interface CreateSubscriptionOptions {
+    /** Request body */
+    body?: CreateSubscriptionRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for stream method
+ *
+ * @public
+ */
+interface StreamOptions {
+    /** The number of minutes of backfill requested.
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateSubscription method
+ *
+ * @public
+ */
+interface UpdateSubscriptionOptions {
+    /** Request body */
+    body?: UpdateSubscriptionRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for activity operations
+ *
+ * This client provides methods for interacting with the activity endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all activity related operations.
+ *
+ * @category activity
+ */
+declare class ActivityClient {
+    private client;
+    /**
+     * Creates a new activity client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get X activity subscriptions
+     * Get a list of active subscriptions for XAA
+  
+  
+  
+     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getSubscriptions(options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getSubscriptions(): Promise<GetSubscriptionsResponse>;
+    /**
+     * Create X activity subscription
+     * Creates a subscription for an X activity event
+  
+  
+  
+     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createSubscription(options: CreateSubscriptionOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createSubscription(options?: CreateSubscriptionOptions): Promise<CreateSubscriptionResponse>;
+    /**
+     * Activity Stream
+     * Stream of X Activities
+  
+  
+  
+     * @returns {Promise<StreamResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    stream(options: StreamOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    stream(options?: StreamOptions): Promise<StreamResponse>;
+    /**
+     * Update X activity subscription
+     * Updates a subscription for an X activity event
+  
+  
+     * @param subscriptionId The ID of the subscription to update.
+  
+  
+  
+  
+     * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    updateSubscription(subscriptionId: string, options: UpdateSubscriptionOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    updateSubscription(subscriptionId: string, options?: UpdateSubscriptionOptions): Promise<UpdateSubscriptionResponse>;
+    /**
+     * Deletes X activity subscription
+     * Deletes a subscription for an X activity event
+  
+  
+     * @param subscriptionId The ID of the subscription to delete.
+  
+  
+  
+  
+     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteSubscription(subscriptionId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteSubscription(subscriptionId: string): Promise<DeleteSubscriptionResponse>;
+}
+
+/**
+ * Models for usage operations
+ */
+
+/**
+ * Response for get
+ *
+ * @public
+ */
+type GetResponse$1 = Get2UsageTweetsResponse;
+
+declare namespace models$8 {
+  export {
+    GetResponse$1 as GetResponse,
+  };
+}
+
+/**
+ * usage client for the X API.
+ *
+ * This module provides a client for interacting with the usage endpoints of the X API.
+ */
+
+/**
+ * Options for get method
+ *
+ * @public
+ */
+interface GetOptions$1 {
+    /** The number of days for which you need usage for.
+     * Also accepts: days or proper camelCase (e.g., days) */
+    days?: number;
+    /** A comma separated list of Usage fields to display.
+     * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
+    usageFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for usage operations
+ *
+ * This client provides methods for interacting with the usage endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all usage related operations.
+ *
+ * @category usage
+ */
+declare class UsageClient {
+    private client;
+    /**
+     * Creates a new usage client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get usage
+     * Retrieves usage statistics for Posts over a specified number of days.
+  
+  
+  
+     * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    get(options: GetOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    get(options?: GetOptions$1): Promise<GetResponse$1>;
+}
+
+/**
+ * Models for trends operations
+ */
+
+/**
+ * Response for getByWoeid
+ *
+ * @public
+ */
+type GetByWoeidResponse = Get2TrendsByWoeidWoeidResponse;
+/**
+ * Response for getPersonalized
+ *
+ * @public
+ */
+type GetPersonalizedResponse = Get2UsersPersonalizedTrendsResponse;
+
+type models$7_GetByWoeidResponse = GetByWoeidResponse;
+type models$7_GetPersonalizedResponse = GetPersonalizedResponse;
+declare namespace models$7 {
+  export {
+    models$7_GetByWoeidResponse as GetByWoeidResponse,
+    models$7_GetPersonalizedResponse as GetPersonalizedResponse,
+  };
+}
+
+/**
+ * trends client for the X API.
+ *
+ * This module provides a client for interacting with the trends endpoints of the X API.
+ */
+
+/**
+ * Options for getByWoeid method
+ *
+ * @public
+ */
+interface GetByWoeidOptions {
+    /** The maximum number of results.
+     * Also accepts: max_trends or proper camelCase (e.g., maxTrends) */
+    maxTrends?: number;
+    /** A comma separated list of Trend fields to display.
+     * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
+    trendFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getPersonalized method
+ *
+ * @public
+ */
+interface GetPersonalizedOptions {
+    /** A comma separated list of PersonalizedTrend fields to display.
+     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
+    personalizedTrendFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for trends operations
+ *
+ * This client provides methods for interacting with the trends endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all trends related operations.
+ *
+ * @category trends
+ */
+declare class TrendsClient {
+    private client;
+    /**
+     * Creates a new trends client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get Trends by WOEID
+     * Retrieves trending topics for a specific location identified by its WOEID.
+  
+  
+     * @param woeid The WOEID of the place to lookup a trend for.
+  
+  
+  
+  
+     * @returns {Promise<GetByWoeidResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getByWoeid(woeid: number, options: GetByWoeidOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getByWoeid(woeid: number, options?: GetByWoeidOptions): Promise<GetByWoeidResponse>;
+    /**
+     * Get personalized Trends
+     * Retrieves personalized trending topics for the authenticated user.
+  
+  
+  
+     * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getPersonalized(options: GetPersonalizedOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getPersonalized(options?: GetPersonalizedOptions): Promise<GetPersonalizedResponse>;
+}
+
+/**
+ * Models for posts operations
+ */
+
+/**
+ * Response for getInsights28hr
+ *
+ * @public
+ */
+type GetInsights28hrResponse = Get2Insights28hrResponse;
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+type GetAnalyticsResponse$1 = Analytics;
+/**
+ * Response for getReposts
+ *
+ * @public
+ */
+type GetRepostsResponse = Get2TweetsIdRetweetsResponse;
+/**
+ * Response for searchRecent
+ *
+ * @public
+ */
+type SearchRecentResponse = Get2TweetsSearchRecentResponse;
+/**
+ * Response for searchAll
+ *
+ * @public
+ */
+type SearchAllResponse = Get2TweetsSearchAllResponse;
+/**
+ * Response for getByIds
+ *
+ * @public
+ */
+type GetByIdsResponse = Get2TweetsResponse;
+/**
+ * Request for create
+ *
+ * @public
+ */
+type CreateRequest$2 = TweetCreateRequest;
+/**
+ * Response for create
+ *
+ * @public
+ */
+type CreateResponse$2 = TweetCreateResponse;
+/**
+ * Response for getQuoted
+ *
+ * @public
+ */
+type GetQuotedResponse = Get2TweetsIdQuoteTweetsResponse;
+/**
+ * Response for getCountsRecent
+ *
+ * @public
+ */
+type GetCountsRecentResponse = Get2TweetsCountsRecentResponse;
+/**
+ * Request for hideReply
+ *
+ * @public
+ */
+type HideReplyRequest = TweetHideRequest;
+/**
+ * Response for hideReply
+ *
+ * @public
+ */
+type HideReplyResponse = TweetHideResponse;
+/**
+ * Response for getInsightsHistorical
+ *
+ * @public
+ */
+type GetInsightsHistoricalResponse = Get2InsightsHistoricalResponse;
+/**
+ * Response for getCountsAll
+ *
+ * @public
+ */
+type GetCountsAllResponse = Get2TweetsCountsAllResponse;
+/**
+ * Response for getById
+ *
+ * @public
+ */
+type GetByIdResponse$2 = Get2TweetsIdResponse;
+/**
+ * Response for delete
+ *
+ * @public
+ */
+type DeleteResponse$2 = TweetDeleteResponse;
+/**
+ * Response for getLikingUsers
+ *
+ * @public
+ */
+type GetLikingUsersResponse = Get2TweetsIdLikingUsersResponse;
+/**
+ * Response for getRepostedBy
+ *
+ * @public
+ */
+type GetRepostedByResponse = Get2TweetsIdRetweetedByResponse;
+
+type models$6_GetByIdsResponse = GetByIdsResponse;
+type models$6_GetCountsAllResponse = GetCountsAllResponse;
+type models$6_GetCountsRecentResponse = GetCountsRecentResponse;
+type models$6_GetInsights28hrResponse = GetInsights28hrResponse;
+type models$6_GetInsightsHistoricalResponse = GetInsightsHistoricalResponse;
+type models$6_GetLikingUsersResponse = GetLikingUsersResponse;
+type models$6_GetQuotedResponse = GetQuotedResponse;
+type models$6_GetRepostedByResponse = GetRepostedByResponse;
+type models$6_GetRepostsResponse = GetRepostsResponse;
+type models$6_HideReplyRequest = HideReplyRequest;
+type models$6_HideReplyResponse = HideReplyResponse;
+type models$6_SearchAllResponse = SearchAllResponse;
+type models$6_SearchRecentResponse = SearchRecentResponse;
+declare namespace models$6 {
+  export {
+    CreateRequest$2 as CreateRequest,
+    CreateResponse$2 as CreateResponse,
+    DeleteResponse$2 as DeleteResponse,
+    GetAnalyticsResponse$1 as GetAnalyticsResponse,
+    GetByIdResponse$2 as GetByIdResponse,
+    models$6_GetByIdsResponse as GetByIdsResponse,
+    models$6_GetCountsAllResponse as GetCountsAllResponse,
+    models$6_GetCountsRecentResponse as GetCountsRecentResponse,
+    models$6_GetInsights28hrResponse as GetInsights28hrResponse,
+    models$6_GetInsightsHistoricalResponse as GetInsightsHistoricalResponse,
+    models$6_GetLikingUsersResponse as GetLikingUsersResponse,
+    models$6_GetQuotedResponse as GetQuotedResponse,
+    models$6_GetRepostedByResponse as GetRepostedByResponse,
+    models$6_GetRepostsResponse as GetRepostsResponse,
+    models$6_HideReplyRequest as HideReplyRequest,
+    models$6_HideReplyResponse as HideReplyResponse,
+    models$6_SearchAllResponse as SearchAllResponse,
+    models$6_SearchRecentResponse as SearchRecentResponse,
+  };
+}
+
+/**
+ * posts client for the X API.
+ *
+ * This module provides a client for interacting with the posts endpoints of the X API.
+ */
+
+/**
+ * Options for getInsights28hr method
+ *
+ * @public
+ */
+interface GetInsights28hrOptions {
+    /** A comma separated list of Engagement fields to display.
+     * Also accepts: engagement.fields or proper camelCase (e.g., engagementFields) */
+    engagementFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getAnalytics method
+ *
+ * @public
+ */
+interface GetAnalyticsOptions$1 {
+    /** A comma separated list of Analytics fields to display.
+     * Also accepts: analytics.fields or proper camelCase (e.g., analyticsFields) */
+    analyticsFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getReposts method
+ *
+ * @public
+ */
+interface GetRepostsOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for searchRecent method
+ *
+ * @public
+ */
+interface SearchRecentOptions {
+    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    /** Returns results with a Post ID less than (that is, older than) the specified ID.
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    /** The maximum number of search results to be returned by a request.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** This order in which to return results.
+     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
+    sortOrder?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for searchAll method
+ *
+ * @public
+ */
+interface SearchAllOptions {
+    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    /** Returns results with a Post ID less than (that is, older than) the specified ID.
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    /** The maximum number of search results to be returned by a request.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** This order in which to return results.
+     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
+    sortOrder?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByIds method
+ *
+ * @public
+ */
+interface GetByIdsOptions {
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getQuoted method
+ *
+ * @public
+ */
+interface GetQuotedOptions {
+    /** The maximum number of results to be returned.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The set of entities to exclude (e.g. 'replies' or 'retweets').
+     * Also accepts: exclude or proper camelCase (e.g., exclude) */
+    exclude?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getCountsRecent method
+ *
+ * @public
+ */
+interface GetCountsRecentOptions {
+    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    /** Returns results with a Post ID less than (that is, older than) the specified ID.
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The granularity for the search counts results.
+     * Also accepts: granularity or proper camelCase (e.g., granularity) */
+    granularity?: string;
+    /** A comma separated list of SearchCount fields to display.
+     * Also accepts: search_count.fields or proper camelCase (e.g., searchCountFields) */
+    searchCountFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for hideReply method
+ *
+ * @public
+ */
+interface HideReplyOptions {
+    /** Request body */
+    body?: HideReplyRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getInsightsHistorical method
+ *
+ * @public
+ */
+interface GetInsightsHistoricalOptions {
+    /** A comma separated list of Engagement fields to display.
+     * Also accepts: engagement.fields or proper camelCase (e.g., engagementFields) */
+    engagementFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getCountsAll method
+ *
+ * @public
+ */
+interface GetCountsAllOptions {
+    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    /** Returns results with a Post ID less than (that is, older than) the specified ID.
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The granularity for the search counts results.
+     * Also accepts: granularity or proper camelCase (e.g., granularity) */
+    granularity?: string;
+    /** A comma separated list of SearchCount fields to display.
+     * Also accepts: search_count.fields or proper camelCase (e.g., searchCountFields) */
+    searchCountFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getById method
+ *
+ * @public
+ */
+interface GetByIdOptions$2 {
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getLikingUsers method
+ *
+ * @public
+ */
+interface GetLikingUsersOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getRepostedBy method
+ *
+ * @public
+ */
+interface GetRepostedByOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for posts operations
+ *
+ * This client provides methods for interacting with the posts endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all posts related operations.
+ *
+ * @category posts
+ */
+declare class PostsClient {
+    private client;
+    /**
+     * Creates a new posts client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get 28-hour Post insights
+     * Retrieves engagement metrics for specified Posts over the last 28 hours.
+  
+  
+  
+     * @param tweetIds List of PostIds for 28hr metrics.
+  
+  
+  
+     * @param granularity granularity of metrics response.
+  
+  
+  
+     * @param requestedMetrics request metrics for historical request.
+  
+  
+  
+     * @returns {Promise<GetInsights28hrResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getInsights28hr(tweetIds: Array<any>, granularity: string, requestedMetrics: Array<any>, options: GetInsights28hrOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getInsights28hr(tweetIds: Array<any>, granularity: string, requestedMetrics: Array<any>, options?: GetInsights28hrOptions): Promise<GetInsights28hrResponse>;
+    /**
+     * Get Post analytics
+     * Retrieves analytics data for specified Posts within a defined time range.
+  
+  
+  
+     * @param ids A comma separated list of Post IDs. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
+  
+  
+  
+     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
+  
+  
+  
+     * @param granularity The granularity for the search counts results.
+  
+  
+  
+     * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getAnalytics(ids: Array<any>, endTime: string, startTime: string, granularity: string, options: GetAnalyticsOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getAnalytics(ids: Array<any>, endTime: string, startTime: string, granularity: string, options?: GetAnalyticsOptions$1): Promise<GetAnalyticsResponse$1>;
+    /**
+     * Get Reposts
+     * Retrieves a list of Posts that repost a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetRepostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getReposts(id: string, options: GetRepostsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getReposts(id: string, options?: GetRepostsOptions): Promise<GetRepostsResponse>;
+    /**
+     * Search recent Posts
+     * Retrieves Posts from the last 7 days matching a search query.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<SearchRecentResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    searchRecent(query: string, options: SearchRecentOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    searchRecent(query: string, options?: SearchRecentOptions): Promise<SearchRecentResponse>;
+    /**
+     * Search all Posts
+     * Retrieves Posts from the full archive matching a search query.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<SearchAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    searchAll(query: string, options: SearchAllOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    searchAll(query: string, options?: SearchAllOptions): Promise<SearchAllResponse>;
+    /**
+     * Get Posts by IDs
+     * Retrieves details of multiple Posts by their IDs.
+  
+  
+  
+     * @param ids A comma separated list of Post IDs. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getByIds(ids: Array<any>, options: GetByIdsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getByIds(ids: Array<any>, options?: GetByIdsOptions): Promise<GetByIdsResponse>;
+    /**
+     * Create or Edit Post
+     * Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided.
+  
+  
+  
+     * @param body Request body
+  
+     * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    create(body: CreateRequest$2, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    create(body: CreateRequest$2): Promise<CreateResponse$2>;
+    /**
+     * Get Quoted Posts
+     * Retrieves a list of Posts that quote a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetQuotedResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getQuoted(id: string, options: GetQuotedOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getQuoted(id: string, options?: GetQuotedOptions): Promise<GetQuotedResponse>;
+    /**
+     * Get count of recent Posts
+     * Retrieves the count of Posts from the last 7 days matching a search query.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<GetCountsRecentResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getCountsRecent(query: string, options: GetCountsRecentOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getCountsRecent(query: string, options?: GetCountsRecentOptions): Promise<GetCountsRecentResponse>;
+    /**
+     * Hide reply
+     * Hides or unhides a reply to a conversation owned by the authenticated user.
+  
+  
+     * @param tweetId The ID of the reply that you want to hide or unhide.
+  
+  
+  
+  
+     * @returns {Promise<HideReplyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    hideReply(tweetId: string, options: HideReplyOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    hideReply(tweetId: string, options?: HideReplyOptions): Promise<HideReplyResponse>;
+    /**
+     * Get historical Post insights
+     * Retrieves historical engagement metrics for specified Posts within a defined time range.
+  
+  
+  
+     * @param tweetIds List of PostIds for historical metrics.
+  
+  
+  
+     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
+  
+  
+  
+     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
+  
+  
+  
+     * @param granularity granularity of metrics response.
+  
+  
+  
+     * @param requestedMetrics request metrics for historical request.
+  
+  
+  
+     * @returns {Promise<GetInsightsHistoricalResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getInsightsHistorical(tweetIds: Array<any>, endTime: string, startTime: string, granularity: string, requestedMetrics: Array<any>, options: GetInsightsHistoricalOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getInsightsHistorical(tweetIds: Array<any>, endTime: string, startTime: string, granularity: string, requestedMetrics: Array<any>, options?: GetInsightsHistoricalOptions): Promise<GetInsightsHistoricalResponse>;
+    /**
+     * Get count of all Posts
+     * Retrieves the count of Posts matching a search query from the full archive.
+  
+  
+  
+     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
+  
+  
+  
+     * @returns {Promise<GetCountsAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getCountsAll(query: string, options: GetCountsAllOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getCountsAll(query: string, options?: GetCountsAllOptions): Promise<GetCountsAllResponse>;
+    /**
+     * Get Post by ID
+     * Retrieves details of a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getById(id: string, options: GetByIdOptions$2 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getById(id: string, options?: GetByIdOptions$2): Promise<GetByIdResponse$2>;
+    /**
+     * Delete Post
+     * Deletes a specific Post by its ID, if owned by the authenticated user.
+  
+  
+     * @param id The ID of the Post to be deleted.
+  
+  
+  
+  
+     * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    delete(id: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    delete(id: string): Promise<DeleteResponse$2>;
+    /**
+     * Get Liking Users
+     * Retrieves a list of Users who liked a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetLikingUsersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getLikingUsers(id: string, options: GetLikingUsersOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getLikingUsers(id: string, options?: GetLikingUsersOptions): Promise<GetLikingUsersResponse>;
+    /**
+     * Get Reposted by
+     * Retrieves a list of Users who reposted a specific Post by its ID.
+  
+  
+     * @param id A single Post ID.
+  
+  
+  
+  
+     * @returns {Promise<GetRepostedByResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getRepostedBy(id: string, options: GetRepostedByOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getRepostedBy(id: string, options?: GetRepostedByOptions): Promise<GetRepostedByResponse>;
+}
+
+/**
+ * Models for direct messages operations
+ */
+
+/**
+ * Request for createByConversationId
+ *
+ * @public
+ */
+type CreateByConversationIdRequest = CreateMessageRequest;
+/**
+ * Response for createByConversationId
+ *
+ * @public
+ */
+type CreateByConversationIdResponse = CreateDmEventResponse;
+/**
+ * Response for getEventsByConversationId
+ *
+ * @public
+ */
+type GetEventsByConversationIdResponse = Get2DmConversationsIdDmEventsResponse;
+/**
+ * Request for createConversation
+ *
+ * @public
+ */
+type CreateConversationRequest = CreateDmConversationRequest;
+/**
+ * Response for createConversation
+ *
+ * @public
+ */
+type CreateConversationResponse = CreateDmEventResponse;
+/**
+ * Response for getEventsByParticipantId
+ *
+ * @public
+ */
+type GetEventsByParticipantIdResponse = Get2DmConversationsWithParticipantIdDmEventsResponse;
+/**
+ * Response for getEvents
+ *
+ * @public
+ */
+type GetEventsResponse = Get2DmEventsResponse;
+/**
+ * Response for getEventsById
+ *
+ * @public
+ */
+type GetEventsByIdResponse = Get2DmEventsEventIdResponse;
+/**
+ * Response for deleteEvents
+ *
+ * @public
+ */
+type DeleteEventsResponse = DeleteDmResponse;
+/**
+ * Request for createByParticipantId
+ *
+ * @public
+ */
+type CreateByParticipantIdRequest = CreateMessageRequest;
+/**
+ * Response for createByParticipantId
+ *
+ * @public
+ */
+type CreateByParticipantIdResponse = CreateDmEventResponse;
+
+type models$5_CreateByConversationIdRequest = CreateByConversationIdRequest;
+type models$5_CreateByConversationIdResponse = CreateByConversationIdResponse;
+type models$5_CreateByParticipantIdRequest = CreateByParticipantIdRequest;
+type models$5_CreateByParticipantIdResponse = CreateByParticipantIdResponse;
+type models$5_CreateConversationRequest = CreateConversationRequest;
+type models$5_CreateConversationResponse = CreateConversationResponse;
+type models$5_DeleteEventsResponse = DeleteEventsResponse;
+type models$5_GetEventsByConversationIdResponse = GetEventsByConversationIdResponse;
+type models$5_GetEventsByIdResponse = GetEventsByIdResponse;
+type models$5_GetEventsByParticipantIdResponse = GetEventsByParticipantIdResponse;
+type models$5_GetEventsResponse = GetEventsResponse;
+declare namespace models$5 {
+  export {
+    models$5_CreateByConversationIdRequest as CreateByConversationIdRequest,
+    models$5_CreateByConversationIdResponse as CreateByConversationIdResponse,
+    models$5_CreateByParticipantIdRequest as CreateByParticipantIdRequest,
+    models$5_CreateByParticipantIdResponse as CreateByParticipantIdResponse,
+    models$5_CreateConversationRequest as CreateConversationRequest,
+    models$5_CreateConversationResponse as CreateConversationResponse,
+    models$5_DeleteEventsResponse as DeleteEventsResponse,
+    models$5_GetEventsByConversationIdResponse as GetEventsByConversationIdResponse,
+    models$5_GetEventsByIdResponse as GetEventsByIdResponse,
+    models$5_GetEventsByParticipantIdResponse as GetEventsByParticipantIdResponse,
+    models$5_GetEventsResponse as GetEventsResponse,
+  };
+}
+
+/**
+ * direct messages client for the X API.
+ *
+ * This module provides a client for interacting with the direct messages endpoints of the X API.
+ */
+
+/**
+ * Options for createByConversationId method
+ *
+ * @public
+ */
+interface CreateByConversationIdOptions {
+    /** Request body */
+    body?: CreateByConversationIdRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getEventsByConversationId method
+ *
+ * @public
+ */
+interface GetEventsByConversationIdOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The set of event_types to include in the results.
+     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
+    eventTypes?: Array<any>;
+    /** A comma separated list of DmEvent fields to display.
+     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
+    dmEventFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createConversation method
+ *
+ * @public
+ */
+interface CreateConversationOptions {
+    /** Request body */
+    body?: CreateConversationRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getEventsByParticipantId method
+ *
+ * @public
+ */
+interface GetEventsByParticipantIdOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The set of event_types to include in the results.
+     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
+    eventTypes?: Array<any>;
+    /** A comma separated list of DmEvent fields to display.
+     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
+    dmEventFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getEvents method
+ *
+ * @public
+ */
+interface GetEventsOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get a specified 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** The set of event_types to include in the results.
+     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
+    eventTypes?: Array<any>;
+    /** A comma separated list of DmEvent fields to display.
+     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
+    dmEventFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getEventsById method
+ *
+ * @public
+ */
+interface GetEventsByIdOptions {
+    /** A comma separated list of DmEvent fields to display.
+     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
+    dmEventFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createByParticipantId method
+ *
+ * @public
+ */
+interface CreateByParticipantIdOptions {
+    /** Request body */
+    body?: CreateByParticipantIdRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for direct messages operations
+ *
+ * This client provides methods for interacting with the direct messages endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all direct messages related operations.
+ *
+ * @category direct messages
+ */
+declare class DirectMessagesClient {
+    private client;
+    /**
+     * Creates a new direct messages client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Create DM message by conversation ID
+     * Sends a new direct message to a specific conversation by its ID.
+  
+  
+     * @param dmConversationId The DM Conversation ID.
+  
+  
+  
+  
+     * @returns {Promise<CreateByConversationIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createByConversationId(dmConversationId: string, options: CreateByConversationIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createByConversationId(dmConversationId: string, options?: CreateByConversationIdOptions): Promise<CreateByConversationIdResponse>;
+    /**
+     * Get DM events for a DM conversation
+     * Retrieves direct message events for a specific conversation.
+  
+  
+     * @param id The DM conversation ID.
+  
+  
+  
+  
+     * @returns {Promise<GetEventsByConversationIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getEventsByConversationId(id: string, options: GetEventsByConversationIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getEventsByConversationId(id: string, options?: GetEventsByConversationIdOptions): Promise<GetEventsByConversationIdResponse>;
+    /**
+     * Create DM conversation
+     * Initiates a new direct message conversation with specified participants.
+  
+  
+  
+     * @returns {Promise<CreateConversationResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createConversation(options: CreateConversationOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createConversation(options?: CreateConversationOptions): Promise<CreateConversationResponse>;
+    /**
+     * Get DM events for a DM conversation
+     * Retrieves direct message events for a specific conversation.
+  
+  
+     * @param participantId The ID of the participant user for the One to One DM conversation.
+  
+  
+  
+  
+     * @returns {Promise<GetEventsByParticipantIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getEventsByParticipantId(participantId: string, options: GetEventsByParticipantIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getEventsByParticipantId(participantId: string, options?: GetEventsByParticipantIdOptions): Promise<GetEventsByParticipantIdResponse>;
+    /**
+     * Get DM events
+     * Retrieves a list of recent direct message events across all conversations.
+  
+  
+  
+     * @returns {Promise<GetEventsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getEvents(options: GetEventsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getEvents(options?: GetEventsOptions): Promise<GetEventsResponse>;
+    /**
+     * Get DM event by ID
+     * Retrieves details of a specific direct message event by its ID.
+  
+  
+     * @param eventId dm event id.
+  
+  
+  
+  
+     * @returns {Promise<GetEventsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getEventsById(eventId: string, options: GetEventsByIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getEventsById(eventId: string, options?: GetEventsByIdOptions): Promise<GetEventsByIdResponse>;
+    /**
+     * Delete DM event
+     * Deletes a specific direct message event by its ID, if owned by the authenticated user.
+  
+  
+     * @param eventId The ID of the direct-message event to delete.
+  
+  
+  
+  
+     * @returns {Promise<DeleteEventsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteEvents(eventId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteEvents(eventId: string): Promise<DeleteEventsResponse>;
+    /**
+     * Create DM message by participant ID
+     * Sends a new direct message to a specific participant by their ID.
+  
+  
+     * @param participantId The ID of the recipient user that will receive the DM.
+  
+  
+  
+  
+     * @returns {Promise<CreateByParticipantIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createByParticipantId(participantId: string, options: CreateByParticipantIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createByParticipantId(participantId: string, options?: CreateByParticipantIdOptions): Promise<CreateByParticipantIdResponse>;
+}
+
+/**
+ * Models for communities operations
+ */
+
+/**
+ * Response for search
+ *
+ * @public
+ */
+type SearchResponse = Get2CommunitiesSearchResponse;
+/**
+ * Response for getById
+ *
+ * @public
+ */
+type GetByIdResponse$1 = Get2CommunitiesIdResponse;
+
+type models$4_SearchResponse = SearchResponse;
+declare namespace models$4 {
+  export {
+    GetByIdResponse$1 as GetByIdResponse,
+    models$4_SearchResponse as SearchResponse,
+  };
+}
+
+/**
+ * communities client for the X API.
+ *
+ * This module provides a client for interacting with the communities endpoints of the X API.
+ */
+
+/**
+ * Options for search method
+ *
+ * @public
+ */
+interface SearchOptions {
+    /** The maximum number of search results to be returned by a request.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of Community fields to display.
+     * Also accepts: community.fields or proper camelCase (e.g., communityFields) */
+    communityFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getById method
+ *
+ * @public
+ */
+interface GetByIdOptions$1 {
+    /** A comma separated list of Community fields to display.
+     * Also accepts: community.fields or proper camelCase (e.g., communityFields) */
+    communityFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for communities operations
+ *
+ * This client provides methods for interacting with the communities endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all communities related operations.
+ *
+ * @category communities
+ */
+declare class CommunitiesClient {
+    private client;
+    /**
+     * Creates a new communities client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Search Communities
+     * Retrieves a list of Communities matching the specified search query.
+  
+  
+  
+     * @param query Query to search communities.
+  
+  
+  
+     * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    search(query: string, options: SearchOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    search(query: string, options?: SearchOptions): Promise<SearchResponse>;
+    /**
+     * Get Community by ID
+     * Retrieves details of a specific Community by its ID.
+  
+  
+     * @param id The ID of the Community.
+  
+  
+  
+  
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getById(id: string, options: GetByIdOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getById(id: string, options?: GetByIdOptions$1): Promise<GetByIdResponse$1>;
+}
+
+/**
+ * Models for media operations
+ */
+
+/**
+ * Response for getByKey
+ *
+ * @public
+ */
+type GetByKeyResponse = Get2MediaMediaKeyResponse;
+/**
+ * Response for getUploadStatus
+ *
+ * @public
+ */
+type GetUploadStatusResponse = MediaUploadResponse;
+/**
+ * Request for upload
+ *
+ * @public
+ */
+type UploadRequest = MediaUploadRequestOneShot;
+/**
+ * Response for upload
+ *
+ * @public
+ */
+type UploadResponse = MediaUploadResponse;
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+type GetAnalyticsResponse = MediaAnalytics;
+/**
+ * Request for appendUpload
+ *
+ * @public
+ */
+type AppendUploadRequest = MediaUploadAppendRequest;
+/**
+ * Response for appendUpload
+ *
+ * @public
+ */
+type AppendUploadResponse = MediaUploadAppendResponse;
+/**
+ * Response for getByKeys
+ *
+ * @public
+ */
+type GetByKeysResponse = Get2MediaResponse;
+/**
+ * Request for createMetadata
+ *
+ * @public
+ */
+type CreateMetadataRequest = MetadataCreateRequest;
+/**
+ * Response for createMetadata
+ *
+ * @public
+ */
+type CreateMetadataResponse = MetadataCreateResponse;
+/**
+ * Response for finalizeUpload
+ *
+ * @public
+ */
+type FinalizeUploadResponse = MediaUploadResponse;
+/**
+ * Request for initializeUpload
+ *
+ * @public
+ */
+type InitializeUploadRequest = MediaUploadConfigRequest;
+/**
+ * Response for initializeUpload
+ *
+ * @public
+ */
+type InitializeUploadResponse = MediaUploadResponse;
+/**
+ * Request for createSubtitles
+ *
+ * @public
+ */
+type CreateSubtitlesRequest = SubtitlesCreateRequest;
+/**
+ * Response for createSubtitles
+ *
+ * @public
+ */
+type CreateSubtitlesResponse = SubtitlesCreateResponse;
+/**
+ * Request for deleteSubtitles
+ *
+ * @public
+ */
+type DeleteSubtitlesRequest = SubtitlesDeleteRequest;
+/**
+ * Response for deleteSubtitles
+ *
+ * @public
+ */
+type DeleteSubtitlesResponse = SubtitlesDeleteResponse;
+
+type models$3_AppendUploadRequest = AppendUploadRequest;
+type models$3_AppendUploadResponse = AppendUploadResponse;
+type models$3_CreateMetadataRequest = CreateMetadataRequest;
+type models$3_CreateMetadataResponse = CreateMetadataResponse;
+type models$3_CreateSubtitlesRequest = CreateSubtitlesRequest;
+type models$3_CreateSubtitlesResponse = CreateSubtitlesResponse;
+type models$3_DeleteSubtitlesRequest = DeleteSubtitlesRequest;
+type models$3_DeleteSubtitlesResponse = DeleteSubtitlesResponse;
+type models$3_FinalizeUploadResponse = FinalizeUploadResponse;
+type models$3_GetAnalyticsResponse = GetAnalyticsResponse;
+type models$3_GetByKeyResponse = GetByKeyResponse;
+type models$3_GetByKeysResponse = GetByKeysResponse;
+type models$3_GetUploadStatusResponse = GetUploadStatusResponse;
+type models$3_InitializeUploadRequest = InitializeUploadRequest;
+type models$3_InitializeUploadResponse = InitializeUploadResponse;
+type models$3_UploadRequest = UploadRequest;
+type models$3_UploadResponse = UploadResponse;
+declare namespace models$3 {
+  export {
+    models$3_AppendUploadRequest as AppendUploadRequest,
+    models$3_AppendUploadResponse as AppendUploadResponse,
+    models$3_CreateMetadataRequest as CreateMetadataRequest,
+    models$3_CreateMetadataResponse as CreateMetadataResponse,
+    models$3_CreateSubtitlesRequest as CreateSubtitlesRequest,
+    models$3_CreateSubtitlesResponse as CreateSubtitlesResponse,
+    models$3_DeleteSubtitlesRequest as DeleteSubtitlesRequest,
+    models$3_DeleteSubtitlesResponse as DeleteSubtitlesResponse,
+    models$3_FinalizeUploadResponse as FinalizeUploadResponse,
+    models$3_GetAnalyticsResponse as GetAnalyticsResponse,
+    models$3_GetByKeyResponse as GetByKeyResponse,
+    models$3_GetByKeysResponse as GetByKeysResponse,
+    models$3_GetUploadStatusResponse as GetUploadStatusResponse,
+    models$3_InitializeUploadRequest as InitializeUploadRequest,
+    models$3_InitializeUploadResponse as InitializeUploadResponse,
+    models$3_UploadRequest as UploadRequest,
+    models$3_UploadResponse as UploadResponse,
+  };
+}
+
+/**
+ * media client for the X API.
+ *
+ * This module provides a client for interacting with the media endpoints of the X API.
+ */
+
+/**
+ * Options for getByKey method
+ *
+ * @public
+ */
+interface GetByKeyOptions {
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getUploadStatus method
+ *
+ * @public
+ */
+interface GetUploadStatusOptions {
+    /** The command for the media upload request.
+     * Also accepts: command or proper camelCase (e.g., command) */
+    command?: string;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for upload method
+ *
+ * @public
+ */
+interface UploadOptions {
+    /** Request body */
+    body?: UploadRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getAnalytics method
+ *
+ * @public
+ */
+interface GetAnalyticsOptions {
+    /** A comma separated list of MediaAnalytics fields to display.
+     * Also accepts: media_analytics.fields or proper camelCase (e.g., mediaAnalyticsFields) */
+    mediaAnalyticsFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for appendUpload method
+ *
+ * @public
+ */
+interface AppendUploadOptions {
+    /** Request body */
+    body?: AppendUploadRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByKeys method
+ *
+ * @public
+ */
+interface GetByKeysOptions {
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createMetadata method
+ *
+ * @public
+ */
+interface CreateMetadataOptions {
+    /** Request body */
+    body?: CreateMetadataRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for initializeUpload method
+ *
+ * @public
+ */
+interface InitializeUploadOptions {
+    /** Request body */
+    body?: InitializeUploadRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createSubtitles method
+ *
+ * @public
+ */
+interface CreateSubtitlesOptions {
+    /** Request body */
+    body?: CreateSubtitlesRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteSubtitles method
+ *
+ * @public
+ */
+interface DeleteSubtitlesOptions {
+    /** Request body */
+    body?: DeleteSubtitlesRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for media operations
+ *
+ * This client provides methods for interacting with the media endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all media related operations.
+ *
+ * @category media
+ */
+declare class MediaClient {
+    private client;
+    /**
+     * Creates a new media client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Get Media by media key
+     * Retrieves details of a specific Media file by its media key.
+  
+  
+     * @param mediaKey A single Media Key.
+  
+  
+  
+  
+     * @returns {Promise<GetByKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getByKey(mediaKey: string, options: GetByKeyOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getByKey(mediaKey: string, options?: GetByKeyOptions): Promise<GetByKeyResponse>;
+    /**
+     * Get Media upload status
+     * Retrieves the status of a Media upload by its ID.
+  
+  
+  
+     * @param mediaId Media id for the requested media upload status.
+  
+  
+  
+     * @returns {Promise<GetUploadStatusResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getUploadStatus(mediaId: string, options: GetUploadStatusOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getUploadStatus(mediaId: string, options?: GetUploadStatusOptions): Promise<GetUploadStatusResponse>;
+    /**
+     * Upload media
+     * Uploads a media file for use in posts or other content.
+  
+  
+  
+     * @returns {Promise<UploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    upload(options: UploadOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    upload(options?: UploadOptions): Promise<UploadResponse>;
+    /**
+     * Get Media analytics
+     * Retrieves analytics data for media.
+  
+  
+  
+     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
+  
+  
+  
+     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
+  
+  
+  
+     * @param granularity The granularity for the search counts results.
+  
+  
+  
+     * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getAnalytics(mediaKeys: Array<any>, endTime: string, startTime: string, granularity: string, options: GetAnalyticsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getAnalytics(mediaKeys: Array<any>, endTime: string, startTime: string, granularity: string, options?: GetAnalyticsOptions): Promise<GetAnalyticsResponse>;
+    /**
+     * Append Media upload
+     * Appends data to a Media upload request.
+  
+  
+     * @param id The media identifier for the media to perform the append operation.
+  
+  
+  
+  
+     * @returns {Promise<AppendUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    appendUpload(id: string, options: AppendUploadOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    appendUpload(id: string, options?: AppendUploadOptions): Promise<AppendUploadResponse>;
+    /**
+     * Get Media by media keys
+     * Retrieves details of Media files by their media keys.
+  
+  
+  
+     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
+  
+  
+  
+     * @returns {Promise<GetByKeysResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getByKeys(mediaKeys: Array<any>, options: GetByKeysOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getByKeys(mediaKeys: Array<any>, options?: GetByKeysOptions): Promise<GetByKeysResponse>;
+    /**
+     * Create Media metadata
+     * Creates metadata for a Media file.
+  
+  
+  
+     * @returns {Promise<CreateMetadataResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createMetadata(options: CreateMetadataOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createMetadata(options?: CreateMetadataOptions): Promise<CreateMetadataResponse>;
+    /**
+     * Finalize Media upload
+     * Finalizes a Media upload request.
+  
+  
+     * @param id The media id of the targeted media to finalize.
+  
+  
+  
+  
+     * @returns {Promise<FinalizeUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    finalizeUpload(id: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    finalizeUpload(id: string): Promise<FinalizeUploadResponse>;
+    /**
+     * Initialize media upload
+     * Initializes a media upload.
+  
+  
+  
+     * @returns {Promise<InitializeUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    initializeUpload(options: InitializeUploadOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    initializeUpload(options?: InitializeUploadOptions): Promise<InitializeUploadResponse>;
+    /**
+     * Create Media subtitles
+     * Creates subtitles for a specific Media file.
+  
+  
+  
+     * @returns {Promise<CreateSubtitlesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createSubtitles(options: CreateSubtitlesOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createSubtitles(options?: CreateSubtitlesOptions): Promise<CreateSubtitlesResponse>;
+    /**
+     * Delete Media subtitles
+     * Deletes subtitles for a specific Media file.
+  
+  
+  
+     * @returns {Promise<DeleteSubtitlesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteSubtitles(options: DeleteSubtitlesOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteSubtitles(options?: DeleteSubtitlesOptions): Promise<DeleteSubtitlesResponse>;
+}
+
+/**
+ * Models for webhooks operations
+ */
+
+/**
+ * Response for createStreamLink
+ *
+ * @public
+ */
+type CreateStreamLinkResponse = WebhookLinksCreateResponse;
+/**
+ * Response for deleteStreamLink
+ *
+ * @public
+ */
+type DeleteStreamLinkResponse = WebhookLinksDeleteResponse;
+/**
+ * Response for getStreamLinks
+ *
+ * @public
+ */
+type GetStreamLinksResponse = WebhookLinksGetResponse;
+/**
+ * Request for createWebhookReplayJob
+ *
+ * @public
+ */
+type CreateWebhookReplayJobRequest = WebhookReplayCreateRequest;
+/**
+ * Response for createWebhookReplayJob
+ *
+ * @public
+ */
+type CreateWebhookReplayJobResponse = ReplayJobCreateResponse;
+/**
+ * Response for validate
+ *
+ * @public
+ */
+type ValidateResponse = WebhookConfigPutResponse;
+/**
+ * Response for delete
+ *
+ * @public
+ */
+type DeleteResponse$1 = WebhookConfigDeleteResponse;
+/**
+ * Response for get
+ *
+ * @public
+ */
+type GetResponse = Get2WebhooksResponse;
+/**
+ * Request for create
+ *
+ * @public
+ */
+type CreateRequest$1 = WebhookConfigCreateRequest;
+/**
+ * Response for create
+ *
+ * @public
+ */
+type CreateResponse$1 = WebhookConfigCreateResponse;
+
+type models$2_CreateStreamLinkResponse = CreateStreamLinkResponse;
+type models$2_CreateWebhookReplayJobRequest = CreateWebhookReplayJobRequest;
+type models$2_CreateWebhookReplayJobResponse = CreateWebhookReplayJobResponse;
+type models$2_DeleteStreamLinkResponse = DeleteStreamLinkResponse;
+type models$2_GetResponse = GetResponse;
+type models$2_GetStreamLinksResponse = GetStreamLinksResponse;
+type models$2_ValidateResponse = ValidateResponse;
+declare namespace models$2 {
+  export {
+    CreateRequest$1 as CreateRequest,
+    CreateResponse$1 as CreateResponse,
+    models$2_CreateStreamLinkResponse as CreateStreamLinkResponse,
+    models$2_CreateWebhookReplayJobRequest as CreateWebhookReplayJobRequest,
+    models$2_CreateWebhookReplayJobResponse as CreateWebhookReplayJobResponse,
+    DeleteResponse$1 as DeleteResponse,
+    models$2_DeleteStreamLinkResponse as DeleteStreamLinkResponse,
+    models$2_GetResponse as GetResponse,
+    models$2_GetStreamLinksResponse as GetStreamLinksResponse,
+    models$2_ValidateResponse as ValidateResponse,
+  };
+}
+
+/**
+ * webhooks client for the X API.
+ *
+ * This module provides a client for interacting with the webhooks endpoints of the X API.
+ */
+
+/**
+ * Options for createStreamLink method
+ *
+ * @public
+ */
+interface CreateStreamLinkOptions {
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: string;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: string;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: string;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: string;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: string;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: string;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createWebhookReplayJob method
+ *
+ * @public
+ */
+interface CreateWebhookReplayJobOptions {
+    /** Request body */
+    body?: CreateWebhookReplayJobRequest;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for get method
+ *
+ * @public
+ */
+interface GetOptions {
+    /** A comma separated list of WebhookConfig fields to display.
+     * Also accepts: webhook_config.fields or proper camelCase (e.g., webhookConfigFields) */
+    webhookConfigFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for create method
+ *
+ * @public
+ */
+interface CreateOptions$1 {
+    /** Request body */
+    body?: CreateRequest$1;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Client for webhooks operations
+ *
+ * This client provides methods for interacting with the webhooks endpoints
+ * of the X API. It handles authentication, request formatting, and response
+ * parsing for all webhooks related operations.
+ *
+ * @category webhooks
+ */
+declare class WebhooksClient {
+    private client;
+    /**
+     * Creates a new webhooks client instance
+     *
+     * @param client - The main X API client instance
+     */
+    constructor(client: Client);
+    /**
+     * Normalize options object to handle both camelCase and original API parameter names
+     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+     */
+    private _normalizeOptions;
+    /**
+     * Create stream link
+     * Creates a link to deliver FilteredStream events to the given webhook.
+  
+  
+     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
+  
+  
+  
+  
+     * @returns {Promise<CreateStreamLinkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createStreamLink(webhookId: string, options: CreateStreamLinkOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createStreamLink(webhookId: string, options?: CreateStreamLinkOptions): Promise<CreateStreamLinkResponse>;
+    /**
+     * Delete stream link
+     * Deletes a link from FilteredStream events to the given webhook.
+  
+  
+     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
+  
+  
+  
+  
+     * @returns {Promise<DeleteStreamLinkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    deleteStreamLink(webhookId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    deleteStreamLink(webhookId: string): Promise<DeleteStreamLinkResponse>;
+    /**
+     * Get stream links
+     * Get a list of webhook links associated with a filtered stream ruleset.
+  
+  
+  
+     * @returns {Promise<GetStreamLinksResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getStreamLinks(options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getStreamLinks(): Promise<GetStreamLinksResponse>;
+    /**
+     * Create replay job for webhook
+     * Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.
+  
+  
+  
+     * @returns {Promise<CreateWebhookReplayJobResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    createWebhookReplayJob(options: CreateWebhookReplayJobOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    createWebhookReplayJob(options?: CreateWebhookReplayJobOptions): Promise<CreateWebhookReplayJobResponse>;
+    /**
+     * Validate webhook
+     * Triggers a CRC check for a given webhook.
+  
+  
+     * @param webhookId The ID of the webhook to check.
+  
+  
+  
+  
+     * @returns {Promise<ValidateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    validate(webhookId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    validate(webhookId: string): Promise<ValidateResponse>;
+    /**
+     * Delete webhook
+     * Deletes an existing webhook configuration.
+  
+  
+     * @param webhookId The ID of the webhook to delete.
+  
+  
+  
+  
+     * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    delete(webhookId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    delete(webhookId: string): Promise<DeleteResponse$1>;
+    /**
+     * Get webhook
+     * Get a list of webhook configs associated with a client app.
+  
+  
+  
+     * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    get(options: GetOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    get(options?: GetOptions): Promise<GetResponse>;
+    /**
+     * Create webhook
+     * Creates a new webhook configuration.
+  
+  
+  
+     * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    create(options: CreateOptions$1 & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    create(options?: CreateOptions$1): Promise<CreateResponse$1>;
 }
 
 interface StreamDataEvent {
@@ -5686,17 +9877,47 @@ declare class EventDrivenStream {
  */
 type LikesComplianceResponse = LikesComplianceStreamResponse;
 /**
- * Response for labelsCompliance
+ * Response for usersCompliance
  *
  * @public
  */
-type LabelsComplianceResponse = TweetLabelStreamResponse;
+type UsersComplianceResponse = UserComplianceStreamResponse;
 /**
- * Response for postsFirehose
+ * Response for postsFirehoseKo
  *
  * @public
  */
-type PostsFirehoseResponse = StreamingTweetResponse;
+type PostsFirehoseKoResponse = StreamingTweetResponse;
+/**
+ * Response for likesSample10
+ *
+ * @public
+ */
+type LikesSample10Response = StreamingLikeResponseV2;
+/**
+ * Response for getRuleCounts
+ *
+ * @public
+ */
+type GetRuleCountsResponse = Get2TweetsSearchStreamRulesCountsResponse;
+/**
+ * Response for likesFirehose
+ *
+ * @public
+ */
+type LikesFirehoseResponse = StreamingLikeResponseV2;
+/**
+ * Response for postsFirehoseJa
+ *
+ * @public
+ */
+type PostsFirehoseJaResponse = StreamingTweetResponse;
+/**
+ * Response for postsFirehoseEn
+ *
+ * @public
+ */
+type PostsFirehoseEnResponse = StreamingTweetResponse;
 /**
  * Response for getRules
  *
@@ -5716,41 +9937,17 @@ type UpdateRulesRequest = AddOrDeleteRulesRequest;
  */
 type UpdateRulesResponse = AddOrDeleteRulesResponse;
 /**
- * Response for postsSample10
- *
- * @public
- */
-type PostsSample10Response = Get2TweetsSample10StreamResponse;
-/**
- * Response for postsFirehoseKo
- *
- * @public
- */
-type PostsFirehoseKoResponse = StreamingTweetResponse;
-/**
- * Response for postsFirehoseEn
- *
- * @public
- */
-type PostsFirehoseEnResponse = StreamingTweetResponse;
-/**
  * Response for postsSample
  *
  * @public
  */
 type PostsSampleResponse = StreamingTweetResponse;
 /**
- * Response for usersCompliance
+ * Response for postsSample10
  *
  * @public
  */
-type UsersComplianceResponse = UserComplianceStreamResponse;
-/**
- * Response for getRuleCounts
- *
- * @public
- */
-type GetRuleCountsResponse = Get2TweetsSearchStreamRulesCountsResponse;
+type PostsSample10Response = Get2TweetsSample10StreamResponse;
 /**
  * Response for postsCompliance
  *
@@ -5758,74 +9955,68 @@ type GetRuleCountsResponse = Get2TweetsSearchStreamRulesCountsResponse;
  */
 type PostsComplianceResponse = TweetComplianceStreamResponse;
 /**
- * Response for likesFirehose
+ * Response for labelsCompliance
  *
  * @public
  */
-type LikesFirehoseResponse = StreamingLikeResponseV2;
-/**
- * Response for postsFirehoseJa
- *
- * @public
- */
-type PostsFirehoseJaResponse = StreamingTweetResponse;
-/**
- * Response for postsFirehosePt
- *
- * @public
- */
-type PostsFirehosePtResponse = StreamingTweetResponse;
-/**
- * Response for likesSample10
- *
- * @public
- */
-type LikesSample10Response = StreamingLikeResponseV2;
+type LabelsComplianceResponse = TweetLabelStreamResponse;
 /**
  * Response for posts
  *
  * @public
  */
 type PostsResponse = FilteredStreamingTweetResponse;
+/**
+ * Response for postsFirehose
+ *
+ * @public
+ */
+type PostsFirehoseResponse = StreamingTweetResponse;
+/**
+ * Response for postsFirehosePt
+ *
+ * @public
+ */
+type PostsFirehosePtResponse = StreamingTweetResponse;
 
-type models$g_GetRuleCountsResponse = GetRuleCountsResponse;
-type models$g_GetRulesResponse = GetRulesResponse;
-type models$g_LabelsComplianceResponse = LabelsComplianceResponse;
-type models$g_LikesComplianceResponse = LikesComplianceResponse;
-type models$g_LikesFirehoseResponse = LikesFirehoseResponse;
-type models$g_LikesSample10Response = LikesSample10Response;
-type models$g_PostsComplianceResponse = PostsComplianceResponse;
-type models$g_PostsFirehoseEnResponse = PostsFirehoseEnResponse;
-type models$g_PostsFirehoseJaResponse = PostsFirehoseJaResponse;
-type models$g_PostsFirehoseKoResponse = PostsFirehoseKoResponse;
-type models$g_PostsFirehosePtResponse = PostsFirehosePtResponse;
-type models$g_PostsFirehoseResponse = PostsFirehoseResponse;
-type models$g_PostsResponse = PostsResponse;
-type models$g_PostsSample10Response = PostsSample10Response;
-type models$g_PostsSampleResponse = PostsSampleResponse;
-type models$g_UpdateRulesRequest = UpdateRulesRequest;
-type models$g_UpdateRulesResponse = UpdateRulesResponse;
-type models$g_UsersComplianceResponse = UsersComplianceResponse;
-declare namespace models$g {
+type models$1_GetRuleCountsResponse = GetRuleCountsResponse;
+type models$1_GetRulesResponse = GetRulesResponse;
+type models$1_LabelsComplianceResponse = LabelsComplianceResponse;
+type models$1_LikesComplianceResponse = LikesComplianceResponse;
+type models$1_LikesFirehoseResponse = LikesFirehoseResponse;
+type models$1_LikesSample10Response = LikesSample10Response;
+type models$1_PostsComplianceResponse = PostsComplianceResponse;
+type models$1_PostsFirehoseEnResponse = PostsFirehoseEnResponse;
+type models$1_PostsFirehoseJaResponse = PostsFirehoseJaResponse;
+type models$1_PostsFirehoseKoResponse = PostsFirehoseKoResponse;
+type models$1_PostsFirehosePtResponse = PostsFirehosePtResponse;
+type models$1_PostsFirehoseResponse = PostsFirehoseResponse;
+type models$1_PostsResponse = PostsResponse;
+type models$1_PostsSample10Response = PostsSample10Response;
+type models$1_PostsSampleResponse = PostsSampleResponse;
+type models$1_UpdateRulesRequest = UpdateRulesRequest;
+type models$1_UpdateRulesResponse = UpdateRulesResponse;
+type models$1_UsersComplianceResponse = UsersComplianceResponse;
+declare namespace models$1 {
   export {
-    models$g_GetRuleCountsResponse as GetRuleCountsResponse,
-    models$g_GetRulesResponse as GetRulesResponse,
-    models$g_LabelsComplianceResponse as LabelsComplianceResponse,
-    models$g_LikesComplianceResponse as LikesComplianceResponse,
-    models$g_LikesFirehoseResponse as LikesFirehoseResponse,
-    models$g_LikesSample10Response as LikesSample10Response,
-    models$g_PostsComplianceResponse as PostsComplianceResponse,
-    models$g_PostsFirehoseEnResponse as PostsFirehoseEnResponse,
-    models$g_PostsFirehoseJaResponse as PostsFirehoseJaResponse,
-    models$g_PostsFirehoseKoResponse as PostsFirehoseKoResponse,
-    models$g_PostsFirehosePtResponse as PostsFirehosePtResponse,
-    models$g_PostsFirehoseResponse as PostsFirehoseResponse,
-    models$g_PostsResponse as PostsResponse,
-    models$g_PostsSample10Response as PostsSample10Response,
-    models$g_PostsSampleResponse as PostsSampleResponse,
-    models$g_UpdateRulesRequest as UpdateRulesRequest,
-    models$g_UpdateRulesResponse as UpdateRulesResponse,
-    models$g_UsersComplianceResponse as UsersComplianceResponse,
+    models$1_GetRuleCountsResponse as GetRuleCountsResponse,
+    models$1_GetRulesResponse as GetRulesResponse,
+    models$1_LabelsComplianceResponse as LabelsComplianceResponse,
+    models$1_LikesComplianceResponse as LikesComplianceResponse,
+    models$1_LikesFirehoseResponse as LikesFirehoseResponse,
+    models$1_LikesSample10Response as LikesSample10Response,
+    models$1_PostsComplianceResponse as PostsComplianceResponse,
+    models$1_PostsFirehoseEnResponse as PostsFirehoseEnResponse,
+    models$1_PostsFirehoseJaResponse as PostsFirehoseJaResponse,
+    models$1_PostsFirehoseKoResponse as PostsFirehoseKoResponse,
+    models$1_PostsFirehosePtResponse as PostsFirehosePtResponse,
+    models$1_PostsFirehoseResponse as PostsFirehoseResponse,
+    models$1_PostsResponse as PostsResponse,
+    models$1_PostsSample10Response as PostsSample10Response,
+    models$1_PostsSampleResponse as PostsSampleResponse,
+    models$1_UpdateRulesRequest as UpdateRulesRequest,
+    models$1_UpdateRulesResponse as UpdateRulesResponse,
+    models$1_UsersComplianceResponse as UsersComplianceResponse,
   };
 }
 
@@ -5860,149 +10051,20 @@ interface LikesComplianceStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for labelsCompliance method
+ * Options for usersCompliance method
  *
  * @public
  */
-interface LabelsComplianceStreamingOptions {
+interface UsersComplianceStreamingOptions {
     /** The number of minutes of backfill requested.
      * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
     backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided.
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided.
      * Also accepts: end_time or proper camelCase (e.g., endTime) */
     endTime?: string;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for postsFirehose method
- *
- * @public
- */
-interface PostsFirehoseStreamingOptions {
-    /** The number of minutes of backfill requested.
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getRules method
- *
- * @public
- */
-interface GetRulesStreamingOptions {
-    /** A comma-separated list of Rule IDs.
-     * Also accepts: ids or proper camelCase (e.g., ids) */
-    ids?: Array<any>;
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This value is populated by passing the 'next_token' returned in a request to paginate through results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for updateRules method
- *
- * @public
- */
-interface UpdateRulesStreamingOptions {
-    /** Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes.
-     * Also accepts: dry_run or proper camelCase (e.g., dryRun) */
-    dryRun?: boolean;
-    /** Delete All can be used to delete all of the rules associated this client app, it should be specified with no other parameters. Once deleted, rules cannot be recovered.
-     * Also accepts: delete_all or proper camelCase (e.g., deleteAll) */
-    deleteAll?: boolean;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for postsSample10 method
- *
- * @public
- */
-interface PostsSample10StreamingOptions {
-    /** The number of minutes of backfill requested.
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Additional headers */
@@ -6055,98 +10117,32 @@ interface PostsFirehoseKoStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for postsFirehoseEn method
+ * Options for likesSample10 method
  *
  * @public
  */
-interface PostsFirehoseEnStreamingOptions {
+interface LikesSample10StreamingOptions {
     /** The number of minutes of backfill requested.
      * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
     backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided.
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
      * Also accepts: end_time or proper camelCase (e.g., endTime) */
     endTime?: string;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
+    /** A comma separated list of LikeWithTweetAuthor fields to display.
+     * Also accepts: like_with_tweet_author.fields or proper camelCase (e.g., likeWithTweetAuthorFields) */
+    likeWithTweetAuthorFields?: Array<any>;
     /** A comma separated list of fields to expand.
      * Also accepts: expansions or proper camelCase (e.g., expansions) */
     expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for postsSample method
- *
- * @public
- */
-interface PostsSampleStreamingOptions {
-    /** The number of minutes of backfill requested.
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for usersCompliance method
- *
- * @public
- */
-interface UsersComplianceStreamingOptions {
-    /** The number of minutes of backfill requested.
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the User Compliance events will be provided.
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the User Compliance events will be provided.
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Additional headers */
@@ -6165,30 +10161,6 @@ interface GetRuleCountsStreamingOptions {
     /** A comma separated list of RulesCount fields to display.
      * Also accepts: rules_count.fields or proper camelCase (e.g., rulesCountFields) */
     rulesCountFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for postsCompliance method
- *
- * @public
- */
-interface PostsComplianceStreamingOptions {
-    /** The number of minutes of backfill requested.
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided.
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided.
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Additional headers */
@@ -6277,11 +10249,11 @@ interface PostsFirehoseJaStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for postsFirehosePt method
+ * Options for postsFirehoseEn method
  *
  * @public
  */
-interface PostsFirehosePtStreamingOptions {
+interface PostsFirehoseEnStreamingOptions {
     /** The number of minutes of backfill requested.
      * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
     backfillMinutes?: number;
@@ -6319,32 +10291,167 @@ interface PostsFirehosePtStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for likesSample10 method
+ * Options for getRules method
  *
  * @public
  */
-interface LikesSample10StreamingOptions {
+interface GetRulesStreamingOptions {
+    /** A comma-separated list of Rule IDs.
+     * Also accepts: ids or proper camelCase (e.g., ids) */
+    ids?: Array<any>;
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This value is populated by passing the 'next_token' returned in a request to paginate through results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateRules method
+ *
+ * @public
+ */
+interface UpdateRulesStreamingOptions {
+    /** Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes.
+     * Also accepts: dry_run or proper camelCase (e.g., dryRun) */
+    dryRun?: boolean;
+    /** Delete All can be used to delete all of the rules associated this client app, it should be specified with no other parameters. Once deleted, rules cannot be recovered.
+     * Also accepts: delete_all or proper camelCase (e.g., deleteAll) */
+    deleteAll?: boolean;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsSample method
+ *
+ * @public
+ */
+interface PostsSampleStreamingOptions {
     /** The number of minutes of backfill requested.
      * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
     backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Likes will be provided.
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsSample10 method
+ *
+ * @public
+ */
+interface PostsSample10StreamingOptions {
+    /** The number of minutes of backfill requested.
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
      * Also accepts: end_time or proper camelCase (e.g., endTime) */
     endTime?: string;
-    /** A comma separated list of LikeWithTweetAuthor fields to display.
-     * Also accepts: like_with_tweet_author.fields or proper camelCase (e.g., likeWithTweetAuthorFields) */
-    likeWithTweetAuthorFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsCompliance method
+ *
+ * @public
+ */
+interface PostsComplianceStreamingOptions {
+    /** The number of minutes of backfill requested.
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post Compliance events will be provided.
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Post Compliance events will be provided.
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for labelsCompliance method
+ *
+ * @public
+ */
+interface LabelsComplianceStreamingOptions {
+    /** The number of minutes of backfill requested.
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Additional headers */
@@ -6364,6 +10471,90 @@ interface PostsStreamingOptions {
      * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
     backfillMinutes?: number;
     /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Posts will be provided.
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsFirehose method
+ *
+ * @public
+ */
+interface PostsFirehoseStreamingOptions {
+    /** The number of minutes of backfill requested.
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for postsFirehosePt method
+ *
+ * @public
+ */
+interface PostsFirehosePtStreamingOptions {
+    /** The number of minutes of backfill requested.
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Posts will be provided.
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Posts will be provided.
@@ -6418,21 +10609,8 @@ declare class StreamClient {
      */
     likesCompliance(options?: LikesComplianceStreamingOptions): Promise<EventDrivenStream>;
     /**
-     * Stream Post labels
-     * Streams all labeling events applied to Posts.
-     *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    labelsCompliance(options?: LabelsComplianceStreamingOptions): Promise<EventDrivenStream>;
-    /**
-     * Stream all Posts
-     * Streams all public Posts in real-time.
+     * Stream Users compliance data
+     * Streams all compliance data related to Users.
      *
      * Returns an event-driven stream that's easy to use.
      * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -6446,24 +10624,7 @@ declare class StreamClient {
 
      * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    postsFirehose(partition: number, options?: PostsFirehoseStreamingOptions): Promise<EventDrivenStream>;
-    /**
-     * Stream 10% sampled Posts
-     * Streams a 10% sample of public Posts in real-time.
-     *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @param partition The partition number.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    postsSample10(partition: number, options?: PostsSample10StreamingOptions): Promise<EventDrivenStream>;
+    usersCompliance(partition: number, options?: UsersComplianceStreamingOptions): Promise<EventDrivenStream>;
     /**
      * Stream Korean Posts
      * Streams all public Korean-language Posts in real-time.
@@ -6482,8 +10643,8 @@ declare class StreamClient {
      */
     postsFirehoseKo(partition: number, options?: PostsFirehoseKoStreamingOptions): Promise<EventDrivenStream>;
     /**
-     * Stream English Posts
-     * Streams all public English-language Posts in real-time.
+     * Stream sampled Likes
+     * Streams a 10% sample of public Likes in real-time.
      *
      * Returns an event-driven stream that's easy to use.
      * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -6497,54 +10658,7 @@ declare class StreamClient {
 
      * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    postsFirehoseEn(partition: number, options?: PostsFirehoseEnStreamingOptions): Promise<EventDrivenStream>;
-    /**
-     * Stream sampled Posts
-     * Streams a 1% sample of public Posts in real-time.
-     *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    postsSample(options?: PostsSampleStreamingOptions): Promise<EventDrivenStream>;
-    /**
-     * Stream Users compliance data
-     * Streams all compliance data related to Users.
-     *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @param partition The partition number.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    usersCompliance(partition: number, options?: UsersComplianceStreamingOptions): Promise<EventDrivenStream>;
-    /**
-     * Stream Posts compliance data
-     * Streams all compliance data related to Posts.
-     *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @param partition The partition number.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    postsCompliance(partition: number, options?: PostsComplianceStreamingOptions): Promise<EventDrivenStream>;
+    likesSample10(partition: number, options?: LikesSample10StreamingOptions): Promise<EventDrivenStream>;
     /**
      * Stream all Likes
      * Streams all public Likes in real-time.
@@ -6580,6 +10694,113 @@ declare class StreamClient {
      */
     postsFirehoseJa(partition: number, options?: PostsFirehoseJaStreamingOptions): Promise<EventDrivenStream>;
     /**
+     * Stream English Posts
+     * Streams all public English-language Posts in real-time.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @param partition The partition number.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    postsFirehoseEn(partition: number, options?: PostsFirehoseEnStreamingOptions): Promise<EventDrivenStream>;
+    /**
+     * Stream sampled Posts
+     * Streams a 1% sample of public Posts in real-time.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    postsSample(options?: PostsSampleStreamingOptions): Promise<EventDrivenStream>;
+    /**
+     * Stream 10% sampled Posts
+     * Streams a 10% sample of public Posts in real-time.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @param partition The partition number.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    postsSample10(partition: number, options?: PostsSample10StreamingOptions): Promise<EventDrivenStream>;
+    /**
+     * Stream Posts compliance data
+     * Streams all compliance data related to Posts.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @param partition The partition number.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    postsCompliance(partition: number, options?: PostsComplianceStreamingOptions): Promise<EventDrivenStream>;
+    /**
+     * Stream Post labels
+     * Streams all labeling events applied to Posts.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    labelsCompliance(options?: LabelsComplianceStreamingOptions): Promise<EventDrivenStream>;
+    /**
+     * Stream filtered Posts
+     * Streams Posts in real-time matching the active rule set.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    posts(options?: PostsStreamingOptions): Promise<EventDrivenStream>;
+    /**
+     * Stream all Posts
+     * Streams all public Posts in real-time.
+     *
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+
+     * @param partition The partition number.
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     */
+    postsFirehose(partition: number, options?: PostsFirehoseStreamingOptions): Promise<EventDrivenStream>;
+    /**
      * Stream Portuguese Posts
      * Streams all public Portuguese-language Posts in real-time.
      *
@@ -6597,35 +10818,12 @@ declare class StreamClient {
      */
     postsFirehosePt(partition: number, options?: PostsFirehosePtStreamingOptions): Promise<EventDrivenStream>;
     /**
-     * Stream sampled Likes
-     * Streams a 10% sample of public Likes in real-time.
+     * Get stream rule counts
+     * Retrieves the count of rules in the active rule set for the filtered stream.
      *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @param partition The partition number.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+     * @returns Promise with the API response
      */
-    likesSample10(partition: number, options?: LikesSample10StreamingOptions): Promise<EventDrivenStream>;
-    /**
-     * Stream filtered Posts
-     * Streams Posts in real-time matching the active rule set.
-     *
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    posts(options?: PostsStreamingOptions): Promise<EventDrivenStream>;
+    getRuleCounts(options?: GetRuleCountsStreamingOptions): Promise<GetRuleCountsResponse>;
     /**
      * Get stream rules
      * Retrieves the active rule set or a subset of rules for the filtered stream.
@@ -6640,565 +10838,6 @@ declare class StreamClient {
      * @returns Promise with the API response
      */
     updateRules(body: any, options?: UpdateRulesStreamingOptions): Promise<UpdateRulesResponse>;
-    /**
-     * Get stream rule counts
-     * Retrieves the count of rules in the active rule set for the filtered stream.
-     *
-     * @returns Promise with the API response
-     */
-    getRuleCounts(options?: GetRuleCountsStreamingOptions): Promise<GetRuleCountsResponse>;
-}
-
-/**
- * Models for connections operations
- */
-
-/**
- * Response for deleteAll
- *
- * @public
- */
-type DeleteAllResponse = KillAllConnectionsResponse;
-
-type models$f_DeleteAllResponse = DeleteAllResponse;
-declare namespace models$f {
-  export {
-    models$f_DeleteAllResponse as DeleteAllResponse,
-  };
-}
-
-/**
- * connections client for the X API.
- *
- * This module provides a client for interacting with the connections endpoints of the X API.
- */
-
-/**
- * Client for connections operations
- *
- * This client provides methods for interacting with the connections endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all connections related operations.
- *
- * @category connections
- */
-declare class ConnectionsClient {
-    private client;
-    /**
-     * Creates a new connections client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Terminate all connections
-     * Terminates all active streaming connections for the authenticated application.
-  
-  
-  
-     * @returns {Promise<DeleteAllResponse>} Promise resolving to the API response
-     */
-    deleteAll(): Promise<DeleteAllResponse>;
-}
-
-/**
- * Models for communities operations
- */
-
-/**
- * Response for search
- *
- * @public
- */
-type SearchResponse$2 = Get2CommunitiesSearchResponse;
-/**
- * Response for getById
- *
- * @public
- */
-type GetByIdResponse$3 = Get2CommunitiesIdResponse;
-
-declare namespace models$e {
-  export {
-    GetByIdResponse$3 as GetByIdResponse,
-    SearchResponse$2 as SearchResponse,
-  };
-}
-
-/**
- * communities client for the X API.
- *
- * This module provides a client for interacting with the communities endpoints of the X API.
- */
-
-/**
- * Options for search method
- *
- * @public
- */
-interface SearchOptions$2 {
-    /** The maximum number of search results to be returned by a request.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of Community fields to display.
-     * Also accepts: community.fields or proper camelCase (e.g., communityFields) */
-    communityFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getById method
- *
- * @public
- */
-interface GetByIdOptions$3 {
-    /** A comma separated list of Community fields to display.
-     * Also accepts: community.fields or proper camelCase (e.g., communityFields) */
-    communityFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for communities operations
- *
- * This client provides methods for interacting with the communities endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all communities related operations.
- *
- * @category communities
- */
-declare class CommunitiesClient {
-    private client;
-    /**
-     * Creates a new communities client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Search Communities
-     * Retrieves a list of Communities matching the specified search query.
-  
-  
-  
-     * @param query Query to search communities.
-  
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
-     */
-    search(query: string, options?: SearchOptions$2): Promise<SearchResponse$2>;
-    /**
-     * Get Community by ID
-     * Retrieves details of a specific Community by its ID.
-  
-  
-     * @param id The ID of the Community.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-    getById(id: string, options?: GetByIdOptions$3): Promise<GetByIdResponse$3>;
-}
-
-/**
- * Models for community notes operations
- */
-
-/**
- * Response for delete
- *
- * @public
- */
-type DeleteResponse$3 = DeleteNoteResponse;
-/**
- * Response for searchWritten
- *
- * @public
- */
-type SearchWrittenResponse = Get2NotesSearchNotesWrittenResponse;
-/**
- * Request for create
- *
- * @public
- */
-type CreateRequest$3 = CreateNoteRequest;
-/**
- * Response for create
- *
- * @public
- */
-type CreateResponse$3 = CreateNoteResponse;
-/**
- * Response for searchEligiblePosts
- *
- * @public
- */
-type SearchEligiblePostsResponse = Get2NotesSearchPostsEligibleForNotesResponse;
-/**
- * Request for evaluate
- *
- * @public
- */
-type EvaluateRequest = EvaluateNoteRequest;
-/**
- * Response for evaluate
- *
- * @public
- */
-type EvaluateResponse = EvaluateNoteResponse;
-
-type models$d_EvaluateRequest = EvaluateRequest;
-type models$d_EvaluateResponse = EvaluateResponse;
-type models$d_SearchEligiblePostsResponse = SearchEligiblePostsResponse;
-type models$d_SearchWrittenResponse = SearchWrittenResponse;
-declare namespace models$d {
-  export {
-    CreateRequest$3 as CreateRequest,
-    CreateResponse$3 as CreateResponse,
-    DeleteResponse$3 as DeleteResponse,
-    models$d_EvaluateRequest as EvaluateRequest,
-    models$d_EvaluateResponse as EvaluateResponse,
-    models$d_SearchEligiblePostsResponse as SearchEligiblePostsResponse,
-    models$d_SearchWrittenResponse as SearchWrittenResponse,
-  };
-}
-
-/**
- * community notes client for the X API.
- *
- * This module provides a client for interacting with the community notes endpoints of the X API.
- */
-
-/**
- * Options for searchWritten method
- *
- * @public
- */
-interface SearchWrittenOptions {
-    /** Pagination token to get next set of posts eligible for notes.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    /** Max results to return.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** A comma separated list of Note fields to display.
-     * Also accepts: note.fields or proper camelCase (e.g., noteFields) */
-    noteFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for create method
- *
- * @public
- */
-interface CreateOptions$2 {
-    /** Request body */
-    body?: CreateRequest$3;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for searchEligiblePosts method
- *
- * @public
- */
-interface SearchEligiblePostsOptions {
-    /** Pagination token to get next set of posts eligible for notes.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    /** Max results to return.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** The selection of posts to return. Valid values are 'feed_size: small' and 'feed_size: large'. Default is 'feed_size: small', only top AI writers have access to large size feed.
-     * Also accepts: post_selection or proper camelCase (e.g., postSelection) */
-    postSelection?: string;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for evaluate method
- *
- * @public
- */
-interface EvaluateOptions {
-    /** Request body */
-    body?: EvaluateRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for community notes operations
- *
- * This client provides methods for interacting with the community notes endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all community notes related operations.
- *
- * @category community notes
- */
-declare class CommunityNotesClient {
-    private client;
-    /**
-     * Creates a new community notes client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Delete a Community Note
-     * Deletes a community note.
-  
-  
-     * @param id The community note id to delete.
-  
-  
-  
-  
-     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
-     */
-    delete(id: string): Promise<DeleteResponse$3>;
-    /**
-     * Search for Community Notes Written
-     * Returns all the community notes written by the user.
-  
-  
-  
-     * @param testMode If true, return the notes the caller wrote for the test. If false, return the notes the caller wrote on the product.
-  
-  
-  
-     * @returns {Promise<SearchWrittenResponse>} Promise resolving to the API response
-     */
-    searchWritten(testMode: boolean, options?: SearchWrittenOptions): Promise<SearchWrittenResponse>;
-    /**
-     * Create a Community Note
-     * Creates a community note endpoint for LLM use case.
-  
-  
-  
-     * @returns {Promise<CreateResponse>} Promise resolving to the API response
-     */
-    create(options?: CreateOptions$2): Promise<CreateResponse$3>;
-    /**
-     * Search for Posts Eligible for Community Notes
-     * Returns all the posts that are eligible for community notes.
-  
-  
-  
-     * @param testMode If true, return a list of posts that are for the test. If false, return a list of posts that the bots can write proposed notes on the product.
-  
-  
-  
-     * @returns {Promise<SearchEligiblePostsResponse>} Promise resolving to the API response
-     */
-    searchEligiblePosts(testMode: boolean, options?: SearchEligiblePostsOptions): Promise<SearchEligiblePostsResponse>;
-    /**
-     * Evaluate a Community Note
-     * Endpoint to evaluate a community note.
-  
-  
-  
-     * @returns {Promise<EvaluateResponse>} Promise resolving to the API response
-     */
-    evaluate(options?: EvaluateOptions): Promise<EvaluateResponse>;
-}
-
-/**
- * Models for trends operations
- */
-
-/**
- * Response for getPersonalized
- *
- * @public
- */
-type GetPersonalizedResponse = Get2UsersPersonalizedTrendsResponse;
-/**
- * Response for getAi
- *
- * @public
- */
-type GetAiResponse = Get2AiTrendsIdResponse;
-/**
- * Response for getByWoeid
- *
- * @public
- */
-type GetByWoeidResponse = Get2TrendsByWoeidWoeidResponse;
-
-type models$c_GetAiResponse = GetAiResponse;
-type models$c_GetByWoeidResponse = GetByWoeidResponse;
-type models$c_GetPersonalizedResponse = GetPersonalizedResponse;
-declare namespace models$c {
-  export {
-    models$c_GetAiResponse as GetAiResponse,
-    models$c_GetByWoeidResponse as GetByWoeidResponse,
-    models$c_GetPersonalizedResponse as GetPersonalizedResponse,
-  };
-}
-
-/**
- * trends client for the X API.
- *
- * This module provides a client for interacting with the trends endpoints of the X API.
- */
-
-/**
- * Options for getPersonalized method
- *
- * @public
- */
-interface GetPersonalizedOptions {
-    /** A comma separated list of PersonalizedTrend fields to display.
-     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
-    personalizedTrendFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getAi method
- *
- * @public
- */
-interface GetAiOptions {
-    /** A comma separated list of News fields to display.
-     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByWoeid method
- *
- * @public
- */
-interface GetByWoeidOptions {
-    /** The maximum number of results.
-     * Also accepts: max_trends or proper camelCase (e.g., maxTrends) */
-    maxTrends?: number;
-    /** A comma separated list of Trend fields to display.
-     * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
-    trendFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for trends operations
- *
- * This client provides methods for interacting with the trends endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all trends related operations.
- *
- * @category trends
- */
-declare class TrendsClient {
-    private client;
-    /**
-     * Creates a new trends client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get personalized Trends
-     * Retrieves personalized trending topics for the authenticated user.
-  
-  
-  
-     * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response
-     */
-    getPersonalized(options?: GetPersonalizedOptions): Promise<GetPersonalizedResponse>;
-    /**
-     * Get AI Trends by ID
-     * Retrieves an AI trend by its ID.
-  
-  
-     * @param id The ID of the ai trend.
-  
-  
-  
-  
-     * @returns {Promise<GetAiResponse>} Promise resolving to the API response
-     */
-    getAi(id: string, options?: GetAiOptions): Promise<GetAiResponse>;
-    /**
-     * Get Trends by WOEID
-     * Retrieves trending topics for a specific location identified by its WOEID.
-  
-  
-     * @param woeid The WOEID of the place to lookup a trend for.
-  
-  
-  
-  
-     * @returns {Promise<GetByWoeidResponse>} Promise resolving to the API response
-     */
-    getByWoeid(woeid: number, options?: GetByWoeidOptions): Promise<GetByWoeidResponse>;
 }
 
 /**
@@ -7206,23 +10845,23 @@ declare class TrendsClient {
  */
 
 /**
- * Response for removeMemberByUserId
- *
- * @public
- */
-type RemoveMemberByUserIdResponse = ListMutateResponse;
-/**
- * Response for getPosts
- *
- * @public
- */
-type GetPostsResponse$1 = Get2ListsIdTweetsResponse;
-/**
  * Response for getFollowers
  *
  * @public
  */
 type GetFollowersResponse = Get2ListsIdFollowersResponse;
+/**
+ * Request for create
+ *
+ * @public
+ */
+type CreateRequest = ListCreateRequest;
+/**
+ * Response for create
+ *
+ * @public
+ */
+type CreateResponse = ListCreateResponse;
 /**
  * Response for getMembers
  *
@@ -7242,23 +10881,23 @@ type AddMemberRequest = ListAddUserRequest;
  */
 type AddMemberResponse = ListMutateResponse;
 /**
- * Request for create
+ * Response for getPosts
  *
  * @public
  */
-type CreateRequest$2 = ListCreateRequest;
+type GetPostsResponse = Get2ListsIdTweetsResponse;
 /**
- * Response for create
+ * Response for removeMemberByUserId
  *
  * @public
  */
-type CreateResponse$2 = ListCreateResponse;
+type RemoveMemberByUserIdResponse = ListMutateResponse;
 /**
  * Response for getById
  *
  * @public
  */
-type GetByIdResponse$2 = Get2ListsIdResponse;
+type GetByIdResponse = Get2ListsIdResponse;
 /**
  * Request for update
  *
@@ -7276,29 +10915,34 @@ type UpdateResponse = ListUpdateResponse;
  *
  * @public
  */
-type DeleteResponse$2 = ListDeleteResponse;
+type DeleteResponse = ListDeleteResponse;
 
-type models$b_AddMemberRequest = AddMemberRequest;
-type models$b_AddMemberResponse = AddMemberResponse;
-type models$b_GetFollowersResponse = GetFollowersResponse;
-type models$b_GetMembersResponse = GetMembersResponse;
-type models$b_RemoveMemberByUserIdResponse = RemoveMemberByUserIdResponse;
-type models$b_UpdateRequest = UpdateRequest;
-type models$b_UpdateResponse = UpdateResponse;
-declare namespace models$b {
+type models_AddMemberRequest = AddMemberRequest;
+type models_AddMemberResponse = AddMemberResponse;
+type models_CreateRequest = CreateRequest;
+type models_CreateResponse = CreateResponse;
+type models_DeleteResponse = DeleteResponse;
+type models_GetByIdResponse = GetByIdResponse;
+type models_GetFollowersResponse = GetFollowersResponse;
+type models_GetMembersResponse = GetMembersResponse;
+type models_GetPostsResponse = GetPostsResponse;
+type models_RemoveMemberByUserIdResponse = RemoveMemberByUserIdResponse;
+type models_UpdateRequest = UpdateRequest;
+type models_UpdateResponse = UpdateResponse;
+declare namespace models {
   export {
-    models$b_AddMemberRequest as AddMemberRequest,
-    models$b_AddMemberResponse as AddMemberResponse,
-    CreateRequest$2 as CreateRequest,
-    CreateResponse$2 as CreateResponse,
-    DeleteResponse$2 as DeleteResponse,
-    GetByIdResponse$2 as GetByIdResponse,
-    models$b_GetFollowersResponse as GetFollowersResponse,
-    models$b_GetMembersResponse as GetMembersResponse,
-    GetPostsResponse$1 as GetPostsResponse,
-    models$b_RemoveMemberByUserIdResponse as RemoveMemberByUserIdResponse,
-    models$b_UpdateRequest as UpdateRequest,
-    models$b_UpdateResponse as UpdateResponse,
+    models_AddMemberRequest as AddMemberRequest,
+    models_AddMemberResponse as AddMemberResponse,
+    models_CreateRequest as CreateRequest,
+    models_CreateResponse as CreateResponse,
+    models_DeleteResponse as DeleteResponse,
+    models_GetByIdResponse as GetByIdResponse,
+    models_GetFollowersResponse as GetFollowersResponse,
+    models_GetMembersResponse as GetMembersResponse,
+    models_GetPostsResponse as GetPostsResponse,
+    models_RemoveMemberByUserIdResponse as RemoveMemberByUserIdResponse,
+    models_UpdateRequest as UpdateRequest,
+    models_UpdateResponse as UpdateResponse,
   };
 }
 
@@ -7308,41 +10952,6 @@ declare namespace models$b {
  * This module provides a client for interacting with the lists endpoints of the X API.
  */
 
-/**
- * Options for getPosts method
- *
- * @public
- */
-interface GetPostsOptions$1 {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 /**
  * Options for getFollowers method
  *
@@ -7354,7 +10963,7 @@ interface GetFollowersOptions {
     maxResults?: number;
     /** This parameter is used to get a specified 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
@@ -7364,6 +10973,19 @@ interface GetFollowersOptions {
     /** A comma separated list of Tweet fields to display.
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<any>;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for create method
+ *
+ * @public
+ */
+interface CreateOptions {
+    /** Request body */
+    body?: CreateRequest;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
@@ -7380,7 +11002,7 @@ interface GetMembersOptions {
     maxResults?: number;
     /** This parameter is used to get a specified 'page' of results.
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     /** A comma separated list of User fields to display.
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<any>;
@@ -7409,13 +11031,35 @@ interface AddMemberOptions {
     [key: string]: any;
 }
 /**
- * Options for create method
+ * Options for getPosts method
  *
  * @public
  */
-interface CreateOptions$1 {
-    /** Request body */
-    body?: CreateRequest$2;
+interface GetPostsOptions {
+    /** The maximum number of results.
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    /** This parameter is used to get the next 'page' of results.
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    /** A comma separated list of Tweet fields to display.
+     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
+    tweetFields?: Array<any>;
+    /** A comma separated list of fields to expand.
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<any>;
+    /** A comma separated list of Media fields to display.
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<any>;
+    /** A comma separated list of Poll fields to display.
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<any>;
+    /** A comma separated list of User fields to display.
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<any>;
+    /** A comma separated list of Place fields to display.
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<any>;
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
@@ -7426,7 +11070,7 @@ interface CreateOptions$1 {
  *
  * @public
  */
-interface GetByIdOptions$2 {
+interface GetByIdOptions {
     /** A comma separated list of List fields to display.
      * Also accepts: list.fields or proper camelCase (e.g., listFields) */
     listFields?: Array<any>;
@@ -7477,6 +11121,92 @@ declare class ListsClient {
      */
     private _normalizeOptions;
     /**
+     * Get List followers
+     * Retrieves a list of Users who follow a specific List by its ID.
+  
+  
+     * @param id The ID of the List.
+  
+  
+  
+  
+     * @returns {Promise<GetFollowersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getFollowers(id: string, options: GetFollowersOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getFollowers(id: string, options?: GetFollowersOptions): Promise<GetFollowersResponse>;
+    /**
+     * Create List
+     * Creates a new List for the authenticated user.
+  
+  
+  
+     * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    create(options: CreateOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    create(options?: CreateOptions): Promise<CreateResponse>;
+    /**
+     * Get List members
+     * Retrieves a list of Users who are members of a specific List by its ID.
+  
+  
+     * @param id The ID of the List.
+  
+  
+  
+  
+     * @returns {Promise<GetMembersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getMembers(id: string, options: GetMembersOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getMembers(id: string, options?: GetMembersOptions): Promise<GetMembersResponse>;
+    /**
+     * Add List member
+     * Adds a User to a specific List by its ID.
+  
+  
+     * @param id The ID of the List for which to add a member.
+  
+  
+  
+  
+     * @returns {Promise<AddMemberResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    addMember(id: string, options: AddMemberOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    addMember(id: string, options?: AddMemberOptions): Promise<AddMemberResponse>;
+    /**
+     * Get List Posts
+     * Retrieves a list of Posts associated with a specific List by its ID.
+  
+  
+     * @param id The ID of the List.
+  
+  
+  
+  
+     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+     */
+    getPosts(id: string, options: GetPostsOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getPosts(id: string, options?: GetPostsOptions): Promise<GetPostsResponse>;
+    /**
      * Remove List member
      * Removes a User from a specific List by its ID and the User’s ID.
   
@@ -7490,70 +11220,14 @@ declare class ListsClient {
   
   
   
-     * @returns {Promise<RemoveMemberByUserIdResponse>} Promise resolving to the API response
+     * @returns {Promise<RemoveMemberByUserIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    removeMemberByUserId(id: string, userId: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     removeMemberByUserId(id: string, userId: string): Promise<RemoveMemberByUserIdResponse>;
-    /**
-     * Get List Posts
-     * Retrieves a list of Posts associated with a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
-     */
-    getPosts(id: string, options?: GetPostsOptions$1): Promise<GetPostsResponse$1>;
-    /**
-     * Get List followers
-     * Retrieves a list of Users who follow a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetFollowersResponse>} Promise resolving to the API response
-     */
-    getFollowers(id: string, options?: GetFollowersOptions): Promise<GetFollowersResponse>;
-    /**
-     * Get List members
-     * Retrieves a list of Users who are members of a specific List by its ID.
-  
-  
-     * @param id The ID of the List.
-  
-  
-  
-  
-     * @returns {Promise<GetMembersResponse>} Promise resolving to the API response
-     */
-    getMembers(id: string, options?: GetMembersOptions): Promise<GetMembersResponse>;
-    /**
-     * Add List member
-     * Adds a User to a specific List by its ID.
-  
-  
-     * @param id The ID of the List for which to add a member.
-  
-  
-  
-  
-     * @returns {Promise<AddMemberResponse>} Promise resolving to the API response
-     */
-    addMember(id: string, options?: AddMemberOptions): Promise<AddMemberResponse>;
-    /**
-     * Create List
-     * Creates a new List for the authenticated user.
-  
-  
-  
-     * @returns {Promise<CreateResponse>} Promise resolving to the API response
-     */
-    create(options?: CreateOptions$1): Promise<CreateResponse$2>;
     /**
      * Get List by ID
      * Retrieves details of a specific List by its ID.
@@ -7564,9 +11238,14 @@ declare class ListsClient {
   
   
   
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
+     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    getById(id: string, options?: GetByIdOptions$2): Promise<GetByIdResponse$2>;
+    getById(id: string, options: GetByIdOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
+    getById(id: string, options?: GetByIdOptions): Promise<GetByIdResponse>;
     /**
      * Update List
      * Updates the details of a specific List owned by the authenticated user by its ID.
@@ -7577,8 +11256,13 @@ declare class ListsClient {
   
   
   
-     * @returns {Promise<UpdateResponse>} Promise resolving to the API response
+     * @returns {Promise<UpdateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
+    update(id: string, options: UpdateOptions & {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     update(id: string, options?: UpdateOptions): Promise<UpdateResponse>;
     /**
      * Delete List
@@ -7590,3047 +11274,14 @@ declare class ListsClient {
   
   
   
-     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
+     * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
      */
-    delete(id: string): Promise<DeleteResponse$2>;
-}
-
-/**
- * Response for getOpenApiSpec
- *
- * @public
- */
-type GetOpenApiSpecResponse = Record<string, any>;
-
-type models$a_GetOpenApiSpecResponse = GetOpenApiSpecResponse;
-declare namespace models$a {
-  export {
-    models$a_GetOpenApiSpecResponse as GetOpenApiSpecResponse,
-  };
-}
-
-/**
- * general client for the X API.
- *
- * This module provides a client for interacting with the general endpoints of the X API.
- */
-
-/**
- * Client for general operations
- *
- * This client provides methods for interacting with the general endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all general related operations.
- *
- * @category general
- */
-declare class GeneralClient {
-    private client;
-    /**
-     * Creates a new general client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get OpenAPI Spec.
-     * Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
-  
-  
-  
-     * @returns {Promise<GetOpenApiSpecResponse>} Promise resolving to the API response
-     */
-    getOpenApiSpec(): Promise<GetOpenApiSpecResponse>;
-}
-
-/**
- * Models for direct messages operations
- */
-
-/**
- * Response for getEvents
- *
- * @public
- */
-type GetEventsResponse = Get2DmEventsResponse;
-/**
- * Request for createByConversationId
- *
- * @public
- */
-type CreateByConversationIdRequest = CreateMessageRequest;
-/**
- * Response for createByConversationId
- *
- * @public
- */
-type CreateByConversationIdResponse = CreateDmEventResponse;
-/**
- * Request for createConversation
- *
- * @public
- */
-type CreateConversationRequest = CreateDmConversationRequest;
-/**
- * Response for createConversation
- *
- * @public
- */
-type CreateConversationResponse = CreateDmEventResponse;
-/**
- * Request for createByParticipantId
- *
- * @public
- */
-type CreateByParticipantIdRequest = CreateMessageRequest;
-/**
- * Response for createByParticipantId
- *
- * @public
- */
-type CreateByParticipantIdResponse = CreateDmEventResponse;
-/**
- * Response for getEventsByParticipantId
- *
- * @public
- */
-type GetEventsByParticipantIdResponse = Get2DmConversationsWithParticipantIdDmEventsResponse;
-/**
- * Response for getEventsByConversationId
- *
- * @public
- */
-type GetEventsByConversationIdResponse = Get2DmConversationsIdDmEventsResponse;
-/**
- * Response for getEventsById
- *
- * @public
- */
-type GetEventsByIdResponse = Get2DmEventsEventIdResponse;
-/**
- * Response for deleteEvents
- *
- * @public
- */
-type DeleteEventsResponse = DeleteDmResponse;
-
-type models$9_CreateByConversationIdRequest = CreateByConversationIdRequest;
-type models$9_CreateByConversationIdResponse = CreateByConversationIdResponse;
-type models$9_CreateByParticipantIdRequest = CreateByParticipantIdRequest;
-type models$9_CreateByParticipantIdResponse = CreateByParticipantIdResponse;
-type models$9_CreateConversationRequest = CreateConversationRequest;
-type models$9_CreateConversationResponse = CreateConversationResponse;
-type models$9_DeleteEventsResponse = DeleteEventsResponse;
-type models$9_GetEventsByConversationIdResponse = GetEventsByConversationIdResponse;
-type models$9_GetEventsByIdResponse = GetEventsByIdResponse;
-type models$9_GetEventsByParticipantIdResponse = GetEventsByParticipantIdResponse;
-type models$9_GetEventsResponse = GetEventsResponse;
-declare namespace models$9 {
-  export {
-    models$9_CreateByConversationIdRequest as CreateByConversationIdRequest,
-    models$9_CreateByConversationIdResponse as CreateByConversationIdResponse,
-    models$9_CreateByParticipantIdRequest as CreateByParticipantIdRequest,
-    models$9_CreateByParticipantIdResponse as CreateByParticipantIdResponse,
-    models$9_CreateConversationRequest as CreateConversationRequest,
-    models$9_CreateConversationResponse as CreateConversationResponse,
-    models$9_DeleteEventsResponse as DeleteEventsResponse,
-    models$9_GetEventsByConversationIdResponse as GetEventsByConversationIdResponse,
-    models$9_GetEventsByIdResponse as GetEventsByIdResponse,
-    models$9_GetEventsByParticipantIdResponse as GetEventsByParticipantIdResponse,
-    models$9_GetEventsResponse as GetEventsResponse,
-  };
-}
-
-/**
- * direct messages client for the X API.
- *
- * This module provides a client for interacting with the direct messages endpoints of the X API.
- */
-
-/**
- * Options for getEvents method
- *
- * @public
- */
-interface GetEventsOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The set of event_types to include in the results.
-     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
-    eventTypes?: Array<any>;
-    /** A comma separated list of DmEvent fields to display.
-     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
-    dmEventFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createByConversationId method
- *
- * @public
- */
-interface CreateByConversationIdOptions {
-    /** Request body */
-    body?: CreateByConversationIdRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createConversation method
- *
- * @public
- */
-interface CreateConversationOptions {
-    /** Request body */
-    body?: CreateConversationRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createByParticipantId method
- *
- * @public
- */
-interface CreateByParticipantIdOptions {
-    /** Request body */
-    body?: CreateByParticipantIdRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getEventsByParticipantId method
- *
- * @public
- */
-interface GetEventsByParticipantIdOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The set of event_types to include in the results.
-     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
-    eventTypes?: Array<any>;
-    /** A comma separated list of DmEvent fields to display.
-     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
-    dmEventFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getEventsByConversationId method
- *
- * @public
- */
-interface GetEventsByConversationIdOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The set of event_types to include in the results.
-     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
-    eventTypes?: Array<any>;
-    /** A comma separated list of DmEvent fields to display.
-     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
-    dmEventFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getEventsById method
- *
- * @public
- */
-interface GetEventsByIdOptions {
-    /** A comma separated list of DmEvent fields to display.
-     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
-    dmEventFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for direct messages operations
- *
- * This client provides methods for interacting with the direct messages endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all direct messages related operations.
- *
- * @category direct messages
- */
-declare class DirectMessagesClient {
-    private client;
-    /**
-     * Creates a new direct messages client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get DM events
-     * Retrieves a list of recent direct message events across all conversations.
-  
-  
-  
-     * @returns {Promise<GetEventsResponse>} Promise resolving to the API response
-     */
-    getEvents(options?: GetEventsOptions): Promise<GetEventsResponse>;
-    /**
-     * Create DM message by conversation ID
-     * Sends a new direct message to a specific conversation by its ID.
-  
-  
-     * @param dmConversationId The DM Conversation ID.
-  
-  
-  
-  
-     * @returns {Promise<CreateByConversationIdResponse>} Promise resolving to the API response
-     */
-    createByConversationId(dmConversationId: string, options?: CreateByConversationIdOptions): Promise<CreateByConversationIdResponse>;
-    /**
-     * Create DM conversation
-     * Initiates a new direct message conversation with specified participants.
-  
-  
-  
-     * @returns {Promise<CreateConversationResponse>} Promise resolving to the API response
-     */
-    createConversation(options?: CreateConversationOptions): Promise<CreateConversationResponse>;
-    /**
-     * Create DM message by participant ID
-     * Sends a new direct message to a specific participant by their ID.
-  
-  
-     * @param participantId The ID of the recipient user that will receive the DM.
-  
-  
-  
-  
-     * @returns {Promise<CreateByParticipantIdResponse>} Promise resolving to the API response
-     */
-    createByParticipantId(participantId: string, options?: CreateByParticipantIdOptions): Promise<CreateByParticipantIdResponse>;
-    /**
-     * Get DM events for a DM conversation
-     * Retrieves direct message events for a specific conversation.
-  
-  
-     * @param participantId The ID of the participant user for the One to One DM conversation.
-  
-  
-  
-  
-     * @returns {Promise<GetEventsByParticipantIdResponse>} Promise resolving to the API response
-     */
-    getEventsByParticipantId(participantId: string, options?: GetEventsByParticipantIdOptions): Promise<GetEventsByParticipantIdResponse>;
-    /**
-     * Get DM events for a DM conversation
-     * Retrieves direct message events for a specific conversation.
-  
-  
-     * @param id The DM conversation ID.
-  
-  
-  
-  
-     * @returns {Promise<GetEventsByConversationIdResponse>} Promise resolving to the API response
-     */
-    getEventsByConversationId(id: string, options?: GetEventsByConversationIdOptions): Promise<GetEventsByConversationIdResponse>;
-    /**
-     * Get DM event by ID
-     * Retrieves details of a specific direct message event by its ID.
-  
-  
-     * @param eventId dm event id.
-  
-  
-  
-  
-     * @returns {Promise<GetEventsByIdResponse>} Promise resolving to the API response
-     */
-    getEventsById(eventId: string, options?: GetEventsByIdOptions): Promise<GetEventsByIdResponse>;
-    /**
-     * Delete DM event
-     * Deletes a specific direct message event by its ID, if owned by the authenticated user.
-  
-  
-     * @param eventId The ID of the direct-message event to delete.
-  
-  
-  
-  
-     * @returns {Promise<DeleteEventsResponse>} Promise resolving to the API response
-     */
-    deleteEvents(eventId: string): Promise<DeleteEventsResponse>;
-}
-
-/**
- * Models for activity operations
- */
-
-/**
- * Response for getSubscriptions
- *
- * @public
- */
-type GetSubscriptionsResponse$1 = ActivitySubscriptionGetResponse;
-/**
- * Request for createSubscription
- *
- * @public
- */
-type CreateSubscriptionRequest$1 = ActivitySubscriptionCreateRequest;
-/**
- * Response for createSubscription
- *
- * @public
- */
-type CreateSubscriptionResponse$1 = ActivitySubscriptionCreateResponse;
-/**
- * Request for updateSubscription
- *
- * @public
- */
-type UpdateSubscriptionRequest = ActivitySubscriptionUpdateRequest;
-/**
- * Response for updateSubscription
- *
- * @public
- */
-type UpdateSubscriptionResponse = ActivitySubscriptionUpdateResponse;
-/**
- * Response for deleteSubscription
- *
- * @public
- */
-type DeleteSubscriptionResponse$1 = ActivitySubscriptionDeleteResponse;
-/**
- * Response for stream
- *
- * @public
- */
-type StreamResponse = ActivityStreamingResponse;
-
-type models$8_StreamResponse = StreamResponse;
-type models$8_UpdateSubscriptionRequest = UpdateSubscriptionRequest;
-type models$8_UpdateSubscriptionResponse = UpdateSubscriptionResponse;
-declare namespace models$8 {
-  export {
-    CreateSubscriptionRequest$1 as CreateSubscriptionRequest,
-    CreateSubscriptionResponse$1 as CreateSubscriptionResponse,
-    DeleteSubscriptionResponse$1 as DeleteSubscriptionResponse,
-    GetSubscriptionsResponse$1 as GetSubscriptionsResponse,
-    models$8_StreamResponse as StreamResponse,
-    models$8_UpdateSubscriptionRequest as UpdateSubscriptionRequest,
-    models$8_UpdateSubscriptionResponse as UpdateSubscriptionResponse,
-  };
-}
-
-/**
- * activity client for the X API.
- *
- * This module provides a client for interacting with the activity endpoints of the X API.
- */
-
-/**
- * Options for createSubscription method
- *
- * @public
- */
-interface CreateSubscriptionOptions$1 {
-    /** Request body */
-    body?: CreateSubscriptionRequest$1;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for updateSubscription method
- *
- * @public
- */
-interface UpdateSubscriptionOptions {
-    /** Request body */
-    body?: UpdateSubscriptionRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for stream method
- *
- * @public
- */
-interface StreamOptions {
-    /** The number of minutes of backfill requested.
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided.
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided.
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for activity operations
- *
- * This client provides methods for interacting with the activity endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all activity related operations.
- *
- * @category activity
- */
-declare class ActivityClient {
-    private client;
-    /**
-     * Creates a new activity client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get X activity subscriptions
-     * Get a list of active subscriptions for XAA
-  
-  
-  
-     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
-     */
-    getSubscriptions(): Promise<GetSubscriptionsResponse$1>;
-    /**
-     * Create X activity subscription
-     * Creates a subscription for an X activity event
-  
-  
-  
-     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
-     */
-    createSubscription(options?: CreateSubscriptionOptions$1): Promise<CreateSubscriptionResponse$1>;
-    /**
-     * Update X activity subscription
-     * Updates a subscription for an X activity event
-  
-  
-     * @param subscriptionId The ID of the subscription to update.
-  
-  
-  
-  
-     * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response
-     */
-    updateSubscription(subscriptionId: string, options?: UpdateSubscriptionOptions): Promise<UpdateSubscriptionResponse>;
-    /**
-     * Deletes X activity subscription
-     * Deletes a subscription for an X activity event
-  
-  
-     * @param subscriptionId The ID of the subscription to delete.
-  
-  
-  
-  
-     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
-     */
-    deleteSubscription(subscriptionId: string): Promise<DeleteSubscriptionResponse$1>;
-    /**
-     * Activity Stream
-     * Stream of X Activities
-  
-  
-  
-     * @returns {Promise<StreamResponse>} Promise resolving to the API response
-     */
-    stream(options?: StreamOptions): Promise<StreamResponse>;
-}
-
-/**
- * Models for usage operations
- */
-
-/**
- * Response for get
- *
- * @public
- */
-type GetResponse$2 = Get2UsageTweetsResponse;
-
-declare namespace models$7 {
-  export {
-    GetResponse$2 as GetResponse,
-  };
-}
-
-/**
- * usage client for the X API.
- *
- * This module provides a client for interacting with the usage endpoints of the X API.
- */
-
-/**
- * Options for get method
- *
- * @public
- */
-interface GetOptions$2 {
-    /** The number of days for which you need usage for.
-     * Also accepts: days or proper camelCase (e.g., days) */
-    days?: number;
-    /** A comma separated list of Usage fields to display.
-     * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
-    usageFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for usage operations
- *
- * This client provides methods for interacting with the usage endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all usage related operations.
- *
- * @category usage
- */
-declare class UsageClient {
-    private client;
-    /**
-     * Creates a new usage client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get usage
-     * Retrieves usage statistics for Posts over a specified number of days.
-  
-  
-  
-     * @returns {Promise<GetResponse>} Promise resolving to the API response
-     */
-    get(options?: GetOptions$2): Promise<GetResponse$2>;
-}
-
-/**
- * Models for webhooks operations
- */
-
-/**
- * Response for get
- *
- * @public
- */
-type GetResponse$1 = Get2WebhooksResponse;
-/**
- * Request for create
- *
- * @public
- */
-type CreateRequest$1 = WebhookConfigCreateRequest;
-/**
- * Response for create
- *
- * @public
- */
-type CreateResponse$1 = WebhookConfigCreateResponse;
-/**
- * Response for getStreamLinks
- *
- * @public
- */
-type GetStreamLinksResponse = WebhookLinksGetResponse;
-/**
- * Response for validate
- *
- * @public
- */
-type ValidateResponse = WebhookConfigPutResponse;
-/**
- * Response for delete
- *
- * @public
- */
-type DeleteResponse$1 = WebhookConfigDeleteResponse;
-/**
- * Response for createStreamLink
- *
- * @public
- */
-type CreateStreamLinkResponse = WebhookLinksCreateResponse;
-/**
- * Response for deleteStreamLink
- *
- * @public
- */
-type DeleteStreamLinkResponse = WebhookLinksDeleteResponse;
-/**
- * Request for createWebhookReplayJob
- *
- * @public
- */
-type CreateWebhookReplayJobRequest = WebhookReplayCreateRequest;
-/**
- * Response for createWebhookReplayJob
- *
- * @public
- */
-type CreateWebhookReplayJobResponse = ReplayJobCreateResponse;
-
-type models$6_CreateStreamLinkResponse = CreateStreamLinkResponse;
-type models$6_CreateWebhookReplayJobRequest = CreateWebhookReplayJobRequest;
-type models$6_CreateWebhookReplayJobResponse = CreateWebhookReplayJobResponse;
-type models$6_DeleteStreamLinkResponse = DeleteStreamLinkResponse;
-type models$6_GetStreamLinksResponse = GetStreamLinksResponse;
-type models$6_ValidateResponse = ValidateResponse;
-declare namespace models$6 {
-  export {
-    CreateRequest$1 as CreateRequest,
-    CreateResponse$1 as CreateResponse,
-    models$6_CreateStreamLinkResponse as CreateStreamLinkResponse,
-    models$6_CreateWebhookReplayJobRequest as CreateWebhookReplayJobRequest,
-    models$6_CreateWebhookReplayJobResponse as CreateWebhookReplayJobResponse,
-    DeleteResponse$1 as DeleteResponse,
-    models$6_DeleteStreamLinkResponse as DeleteStreamLinkResponse,
-    GetResponse$1 as GetResponse,
-    models$6_GetStreamLinksResponse as GetStreamLinksResponse,
-    models$6_ValidateResponse as ValidateResponse,
-  };
-}
-
-/**
- * webhooks client for the X API.
- *
- * This module provides a client for interacting with the webhooks endpoints of the X API.
- */
-
-/**
- * Options for get method
- *
- * @public
- */
-interface GetOptions$1 {
-    /** A comma separated list of WebhookConfig fields to display.
-     * Also accepts: webhook_config.fields or proper camelCase (e.g., webhookConfigFields) */
-    webhookConfigFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for create method
- *
- * @public
- */
-interface CreateOptions {
-    /** Request body */
-    body?: CreateRequest$1;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createStreamLink method
- *
- * @public
- */
-interface CreateStreamLinkOptions {
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: string;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: string;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: string;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: string;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: string;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: string;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createWebhookReplayJob method
- *
- * @public
- */
-interface CreateWebhookReplayJobOptions {
-    /** Request body */
-    body?: CreateWebhookReplayJobRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for webhooks operations
- *
- * This client provides methods for interacting with the webhooks endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all webhooks related operations.
- *
- * @category webhooks
- */
-declare class WebhooksClient {
-    private client;
-    /**
-     * Creates a new webhooks client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get webhook
-     * Get a list of webhook configs associated with a client app.
-  
-  
-  
-     * @returns {Promise<GetResponse>} Promise resolving to the API response
-     */
-    get(options?: GetOptions$1): Promise<GetResponse$1>;
-    /**
-     * Create webhook
-     * Creates a new webhook configuration.
-  
-  
-  
-     * @returns {Promise<CreateResponse>} Promise resolving to the API response
-     */
-    create(options?: CreateOptions): Promise<CreateResponse$1>;
-    /**
-     * Get stream links
-     * Get a list of webhook links associated with a filtered stream ruleset.
-  
-  
-  
-     * @returns {Promise<GetStreamLinksResponse>} Promise resolving to the API response
-     */
-    getStreamLinks(): Promise<GetStreamLinksResponse>;
-    /**
-     * Validate webhook
-     * Triggers a CRC check for a given webhook.
-  
-  
-     * @param webhookId The ID of the webhook to check.
-  
-  
-  
-  
-     * @returns {Promise<ValidateResponse>} Promise resolving to the API response
-     */
-    validate(webhookId: string): Promise<ValidateResponse>;
-    /**
-     * Delete webhook
-     * Deletes an existing webhook configuration.
-  
-  
-     * @param webhookId The ID of the webhook to delete.
-  
-  
-  
-  
-     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
-     */
-    delete(webhookId: string): Promise<DeleteResponse$1>;
-    /**
-     * Create stream link
-     * Creates a link to deliver FilteredStream events to the given webhook.
-  
-  
-     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
-  
-  
-  
-  
-     * @returns {Promise<CreateStreamLinkResponse>} Promise resolving to the API response
-     */
-    createStreamLink(webhookId: string, options?: CreateStreamLinkOptions): Promise<CreateStreamLinkResponse>;
-    /**
-     * Delete stream link
-     * Deletes a link from FilteredStream events to the given webhook.
-  
-  
-     * @param webhookId The webhook ID to link to your FilteredStream ruleset.
-  
-  
-  
-  
-     * @returns {Promise<DeleteStreamLinkResponse>} Promise resolving to the API response
-     */
-    deleteStreamLink(webhookId: string): Promise<DeleteStreamLinkResponse>;
-    /**
-     * Create replay job for webhook
-     * Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.
-  
-  
-  
-     * @returns {Promise<CreateWebhookReplayJobResponse>} Promise resolving to the API response
-     */
-    createWebhookReplayJob(options?: CreateWebhookReplayJobOptions): Promise<CreateWebhookReplayJobResponse>;
-}
-
-/**
- * Models for account activity operations
- */
-
-/**
- * Response for getSubscriptions
- *
- * @public
- */
-type GetSubscriptionsResponse = SubscriptionsListGetResponse;
-/**
- * Response for validateSubscription
- *
- * @public
- */
-type ValidateSubscriptionResponse = SubscriptionsGetResponse;
-/**
- * Request for createSubscription
- *
- * @public
- */
-type CreateSubscriptionRequest = SubscriptionsCreateRequest;
-/**
- * Response for createSubscription
- *
- * @public
- */
-type CreateSubscriptionResponse = SubscriptionsCreateResponse;
-/**
- * Response for createReplayJob
- *
- * @public
- */
-type CreateReplayJobResponse = ReplayJobCreateResponse;
-/**
- * Response for deleteSubscription
- *
- * @public
- */
-type DeleteSubscriptionResponse = SubscriptionsDeleteResponse;
-/**
- * Response for getSubscriptionCount
- *
- * @public
- */
-type GetSubscriptionCountResponse = SubscriptionsCountGetResponse;
-
-type models$5_CreateReplayJobResponse = CreateReplayJobResponse;
-type models$5_CreateSubscriptionRequest = CreateSubscriptionRequest;
-type models$5_CreateSubscriptionResponse = CreateSubscriptionResponse;
-type models$5_DeleteSubscriptionResponse = DeleteSubscriptionResponse;
-type models$5_GetSubscriptionCountResponse = GetSubscriptionCountResponse;
-type models$5_GetSubscriptionsResponse = GetSubscriptionsResponse;
-type models$5_ValidateSubscriptionResponse = ValidateSubscriptionResponse;
-declare namespace models$5 {
-  export {
-    models$5_CreateReplayJobResponse as CreateReplayJobResponse,
-    models$5_CreateSubscriptionRequest as CreateSubscriptionRequest,
-    models$5_CreateSubscriptionResponse as CreateSubscriptionResponse,
-    models$5_DeleteSubscriptionResponse as DeleteSubscriptionResponse,
-    models$5_GetSubscriptionCountResponse as GetSubscriptionCountResponse,
-    models$5_GetSubscriptionsResponse as GetSubscriptionsResponse,
-    models$5_ValidateSubscriptionResponse as ValidateSubscriptionResponse,
-  };
-}
-
-/**
- * account activity client for the X API.
- *
- * This module provides a client for interacting with the account activity endpoints of the X API.
- */
-
-/**
- * Options for createSubscription method
- *
- * @public
- */
-interface CreateSubscriptionOptions {
-    /** Request body */
-    body?: CreateSubscriptionRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for account activity operations
- *
- * This client provides methods for interacting with the account activity endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all account activity related operations.
- *
- * @category account activity
- */
-declare class AccountActivityClient {
-    private client;
-    /**
-     * Creates a new account activity client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get subscriptions
-     * Retrieves a list of all active subscriptions for a given webhook.
-  
-  
-     * @param webhookId The webhook ID to pull subscriptions for.
-  
-  
-  
-  
-     * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response
-     */
-    getSubscriptions(webhookId: string): Promise<GetSubscriptionsResponse>;
-    /**
-     * Validate subscription
-     * Checks a user’s Account Activity subscription for a given webhook.
-  
-  
-     * @param webhookId The webhook ID to check subscription against.
-  
-  
-  
-  
-     * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response
-     */
-    validateSubscription(webhookId: string): Promise<ValidateSubscriptionResponse>;
-    /**
-     * Create subscription
-     * Creates an Account Activity subscription for the user and the given webhook.
-  
-  
-     * @param webhookId The webhook ID to check subscription against.
-  
-  
-  
-  
-     * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response
-     */
-    createSubscription(webhookId: string, options?: CreateSubscriptionOptions): Promise<CreateSubscriptionResponse>;
-    /**
-     * Create replay job
-     * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
-  
-  
-     * @param webhookId The unique identifier for the webhook configuration.
-  
-  
-  
-  
-     * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
-  
-  
-  
-     * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
-  
-  
-  
-     * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response
-     */
-    createReplayJob(webhookId: string, fromDate: string, toDate: string): Promise<CreateReplayJobResponse>;
-    /**
-     * Delete subscription
-     * Deletes an Account Activity subscription for the given webhook and user ID.
-  
-  
-     * @param webhookId The webhook ID to check subscription against.
-  
-  
-  
-     * @param userId User ID to unsubscribe from.
-  
-  
-  
-  
-     * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response
-     */
-    deleteSubscription(webhookId: string, userId: string): Promise<DeleteSubscriptionResponse>;
-    /**
-     * Get subscription count
-     * Retrieves a count of currently active Account Activity subscriptions.
-  
-  
-  
-     * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response
-     */
-    getSubscriptionCount(): Promise<GetSubscriptionCountResponse>;
-}
-
-/**
- * Models for news operations
- */
-
-/**
- * Response for get
- *
- * @public
- */
-type GetResponse = Get2NewsIdResponse;
-/**
- * Response for search
- *
- * @public
- */
-type SearchResponse$1 = Get2NewsSearchResponse;
-
-type models$4_GetResponse = GetResponse;
-declare namespace models$4 {
-  export {
-    models$4_GetResponse as GetResponse,
-    SearchResponse$1 as SearchResponse,
-  };
-}
-
-/**
- * news client for the X API.
- *
- * This module provides a client for interacting with the news endpoints of the X API.
- */
-
-/**
- * Options for get method
- *
- * @public
- */
-interface GetOptions {
-    /** A comma separated list of News fields to display.
-     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for search method
- *
- * @public
- */
-interface SearchOptions$1 {
-    /** The number of results to return.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** The maximum age of the News story to search for.
-     * Also accepts: max_age_hours or proper camelCase (e.g., maxAgeHours) */
-    maxAgeHours?: number;
-    /** A comma separated list of News fields to display.
-     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for news operations
- *
- * This client provides methods for interacting with the news endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all news related operations.
- *
- * @category news
- */
-declare class NewsClient {
-    private client;
-    /**
-     * Creates a new news client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get news stories by ID
-     * Retrieves news story by its ID.
-  
-  
-     * @param id The ID of the news story.
-  
-  
-  
-  
-     * @returns {Promise<GetResponse>} Promise resolving to the API response
-     */
-    get(id: string, options?: GetOptions): Promise<GetResponse>;
-    /**
-     * Search News
-     * Retrieves a list of News stories matching the specified search query.
-  
-  
-  
-     * @param query The search query.
-  
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
-     */
-    search(query: string, options?: SearchOptions$1): Promise<SearchResponse$1>;
-}
-
-/**
- * Models for spaces operations
- */
-
-/**
- * Response for getByIds
- *
- * @public
- */
-type GetByIdsResponse$1 = Get2SpacesResponse;
-/**
- * Response for getBuyers
- *
- * @public
- */
-type GetBuyersResponse = Get2SpacesIdBuyersResponse;
-/**
- * Response for getPosts
- *
- * @public
- */
-type GetPostsResponse = Get2SpacesIdTweetsResponse;
-/**
- * Response for search
- *
- * @public
- */
-type SearchResponse = Get2SpacesSearchResponse;
-/**
- * Response for getById
- *
- * @public
- */
-type GetByIdResponse$1 = Get2SpacesIdResponse;
-/**
- * Response for getByCreatorIds
- *
- * @public
- */
-type GetByCreatorIdsResponse = Get2SpacesByCreatorIdsResponse;
-
-type models$3_GetBuyersResponse = GetBuyersResponse;
-type models$3_GetByCreatorIdsResponse = GetByCreatorIdsResponse;
-type models$3_GetPostsResponse = GetPostsResponse;
-type models$3_SearchResponse = SearchResponse;
-declare namespace models$3 {
-  export {
-    models$3_GetBuyersResponse as GetBuyersResponse,
-    models$3_GetByCreatorIdsResponse as GetByCreatorIdsResponse,
-    GetByIdResponse$1 as GetByIdResponse,
-    GetByIdsResponse$1 as GetByIdsResponse,
-    models$3_GetPostsResponse as GetPostsResponse,
-    models$3_SearchResponse as SearchResponse,
-  };
-}
-
-/**
- * spaces client for the X API.
- *
- * This module provides a client for interacting with the spaces endpoints of the X API.
- */
-
-/**
- * Options for getByIds method
- *
- * @public
- */
-interface GetByIdsOptions$1 {
-    /** A comma separated list of Space fields to display.
-     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
-    spaceFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Topic fields to display.
-     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
-    topicFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getBuyers method
- *
- * @public
- */
-interface GetBuyersOptions {
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getPosts method
- *
- * @public
- */
-interface GetPostsOptions {
-    /** The number of Posts to fetch from the provided space. If not provided, the value will default to the maximum of 100.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for search method
- *
- * @public
- */
-interface SearchOptions {
-    /** The state of Spaces to search for.
-     * Also accepts: state or proper camelCase (e.g., state) */
-    state?: string;
-    /** The number of results to return.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** A comma separated list of Space fields to display.
-     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
-    spaceFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Topic fields to display.
-     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
-    topicFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getById method
- *
- * @public
- */
-interface GetByIdOptions$1 {
-    /** A comma separated list of Space fields to display.
-     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
-    spaceFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Topic fields to display.
-     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
-    topicFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByCreatorIds method
- *
- * @public
- */
-interface GetByCreatorIdsOptions {
-    /** A comma separated list of Space fields to display.
-     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
-    spaceFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Topic fields to display.
-     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
-    topicFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for spaces operations
- *
- * This client provides methods for interacting with the spaces endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all spaces related operations.
- *
- * @category spaces
- */
-declare class SpacesClient {
-    private client;
-    /**
-     * Creates a new spaces client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get Spaces by IDs
-     * Retrieves details of multiple Spaces by their IDs.
-  
-  
-  
-     * @param ids The list of Space IDs to return.
-  
-  
-  
-     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
-     */
-    getByIds(ids: Array<any>, options?: GetByIdsOptions$1): Promise<GetByIdsResponse$1>;
-    /**
-     * Get Space ticket buyers
-     * Retrieves a list of Users who purchased tickets to a specific Space by its ID.
-  
-  
-     * @param id The ID of the Space to be retrieved.
-  
-  
-  
-  
-     * @returns {Promise<GetBuyersResponse>} Promise resolving to the API response
-     */
-    getBuyers(id: string, options?: GetBuyersOptions): Promise<GetBuyersResponse>;
-    /**
-     * Get Space Posts
-     * Retrieves a list of Posts shared in a specific Space by its ID.
-  
-  
-     * @param id The ID of the Space to be retrieved.
-  
-  
-  
-  
-     * @returns {Promise<GetPostsResponse>} Promise resolving to the API response
-     */
-    getPosts(id: string, options?: GetPostsOptions): Promise<GetPostsResponse>;
-    /**
-     * Search Spaces
-     * Retrieves a list of Spaces matching the specified search query.
-  
-  
-  
-     * @param query The search query.
-  
-  
-  
-     * @returns {Promise<SearchResponse>} Promise resolving to the API response
-     */
-    search(query: string, options?: SearchOptions): Promise<SearchResponse>;
-    /**
-     * Get space by ID
-     * Retrieves details of a specific space by its ID.
-  
-  
-     * @param id The ID of the Space to be retrieved.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-    getById(id: string, options?: GetByIdOptions$1): Promise<GetByIdResponse$1>;
-    /**
-     * Get Spaces by creator IDs
-     * Retrieves details of Spaces created by specified User IDs.
-  
-  
-  
-     * @param userIds The IDs of Users to search through.
-  
-  
-  
-     * @returns {Promise<GetByCreatorIdsResponse>} Promise resolving to the API response
-     */
-    getByCreatorIds(userIds: Array<any>, options?: GetByCreatorIdsOptions): Promise<GetByCreatorIdsResponse>;
-}
-
-/**
- * Models for posts operations
- */
-
-/**
- * Response for searchRecent
- *
- * @public
- */
-type SearchRecentResponse = Get2TweetsSearchRecentResponse;
-/**
- * Response for searchAll
- *
- * @public
- */
-type SearchAllResponse = Get2TweetsSearchAllResponse;
-/**
- * Response for getCountsAll
- *
- * @public
- */
-type GetCountsAllResponse = Get2TweetsCountsAllResponse;
-/**
- * Response for getByIds
- *
- * @public
- */
-type GetByIdsResponse = Get2TweetsResponse;
-/**
- * Request for create
- *
- * @public
- */
-type CreateRequest = TweetCreateRequest;
-/**
- * Response for create
- *
- * @public
- */
-type CreateResponse = TweetCreateResponse;
-/**
- * Response for getById
- *
- * @public
- */
-type GetByIdResponse = Get2TweetsIdResponse;
-/**
- * Response for delete
- *
- * @public
- */
-type DeleteResponse = TweetDeleteResponse;
-/**
- * Response for getInsightsHistorical
- *
- * @public
- */
-type GetInsightsHistoricalResponse = Get2InsightsHistoricalResponse;
-/**
- * Response for getCountsRecent
- *
- * @public
- */
-type GetCountsRecentResponse = Get2TweetsCountsRecentResponse;
-/**
- * Request for hideReply
- *
- * @public
- */
-type HideReplyRequest = TweetHideRequest;
-/**
- * Response for hideReply
- *
- * @public
- */
-type HideReplyResponse = TweetHideResponse;
-/**
- * Response for getQuoted
- *
- * @public
- */
-type GetQuotedResponse = Get2TweetsIdQuoteTweetsResponse;
-/**
- * Response for getAnalytics
- *
- * @public
- */
-type GetAnalyticsResponse$1 = Analytics;
-/**
- * Response for getReposts
- *
- * @public
- */
-type GetRepostsResponse = Get2TweetsIdRetweetsResponse;
-/**
- * Response for getLikingUsers
- *
- * @public
- */
-type GetLikingUsersResponse = Get2TweetsIdLikingUsersResponse;
-/**
- * Response for getRepostedBy
- *
- * @public
- */
-type GetRepostedByResponse = Get2TweetsIdRetweetedByResponse;
-/**
- * Response for getInsights28hr
- *
- * @public
- */
-type GetInsights28hrResponse = Get2Insights28hrResponse;
-
-type models$2_CreateRequest = CreateRequest;
-type models$2_CreateResponse = CreateResponse;
-type models$2_DeleteResponse = DeleteResponse;
-type models$2_GetByIdResponse = GetByIdResponse;
-type models$2_GetByIdsResponse = GetByIdsResponse;
-type models$2_GetCountsAllResponse = GetCountsAllResponse;
-type models$2_GetCountsRecentResponse = GetCountsRecentResponse;
-type models$2_GetInsights28hrResponse = GetInsights28hrResponse;
-type models$2_GetInsightsHistoricalResponse = GetInsightsHistoricalResponse;
-type models$2_GetLikingUsersResponse = GetLikingUsersResponse;
-type models$2_GetQuotedResponse = GetQuotedResponse;
-type models$2_GetRepostedByResponse = GetRepostedByResponse;
-type models$2_GetRepostsResponse = GetRepostsResponse;
-type models$2_HideReplyRequest = HideReplyRequest;
-type models$2_HideReplyResponse = HideReplyResponse;
-type models$2_SearchAllResponse = SearchAllResponse;
-type models$2_SearchRecentResponse = SearchRecentResponse;
-declare namespace models$2 {
-  export {
-    models$2_CreateRequest as CreateRequest,
-    models$2_CreateResponse as CreateResponse,
-    models$2_DeleteResponse as DeleteResponse,
-    GetAnalyticsResponse$1 as GetAnalyticsResponse,
-    models$2_GetByIdResponse as GetByIdResponse,
-    models$2_GetByIdsResponse as GetByIdsResponse,
-    models$2_GetCountsAllResponse as GetCountsAllResponse,
-    models$2_GetCountsRecentResponse as GetCountsRecentResponse,
-    models$2_GetInsights28hrResponse as GetInsights28hrResponse,
-    models$2_GetInsightsHistoricalResponse as GetInsightsHistoricalResponse,
-    models$2_GetLikingUsersResponse as GetLikingUsersResponse,
-    models$2_GetQuotedResponse as GetQuotedResponse,
-    models$2_GetRepostedByResponse as GetRepostedByResponse,
-    models$2_GetRepostsResponse as GetRepostsResponse,
-    models$2_HideReplyRequest as HideReplyRequest,
-    models$2_HideReplyResponse as HideReplyResponse,
-    models$2_SearchAllResponse as SearchAllResponse,
-    models$2_SearchRecentResponse as SearchRecentResponse,
-  };
-}
-
-/**
- * posts client for the X API.
- *
- * This module provides a client for interacting with the posts endpoints of the X API.
- */
-
-/**
- * Options for searchRecent method
- *
- * @public
- */
-interface SearchRecentOptions {
-    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
-    /** Returns results with a Post ID less than (that is, older than) the specified ID.
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
-    /** The maximum number of search results to be returned by a request.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** This order in which to return results.
-     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
-    sortOrder?: string;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for searchAll method
- *
- * @public
- */
-interface SearchAllOptions {
-    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
-    /** Returns results with a Post ID less than (that is, older than) the specified ID.
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
-    /** The maximum number of search results to be returned by a request.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** This order in which to return results.
-     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
-    sortOrder?: string;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getCountsAll method
- *
- * @public
- */
-interface GetCountsAllOptions {
-    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
-    /** Returns results with a Post ID less than (that is, older than) the specified ID.
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The granularity for the search counts results.
-     * Also accepts: granularity or proper camelCase (e.g., granularity) */
-    granularity?: string;
-    /** A comma separated list of SearchCount fields to display.
-     * Also accepts: search_count.fields or proper camelCase (e.g., searchCountFields) */
-    searchCountFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByIds method
- *
- * @public
- */
-interface GetByIdsOptions {
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getById method
- *
- * @public
- */
-interface GetByIdOptions {
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getInsightsHistorical method
- *
- * @public
- */
-interface GetInsightsHistoricalOptions {
-    /** A comma separated list of Engagement fields to display.
-     * Also accepts: engagement.fields or proper camelCase (e.g., engagementFields) */
-    engagementFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getCountsRecent method
- *
- * @public
- */
-interface GetCountsRecentOptions {
-    /** YYYY-MM-DDTHH:mm:ssZ. The oldest UTC timestamp (from most recent 7 days) from which the Posts will be provided. Timestamp is in second granularity and is inclusive (i.e. 12:00:01 includes the first second of the minute).
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    /** YYYY-MM-DDTHH:mm:ssZ. The newest, most recent UTC timestamp to which the Posts will be provided. Timestamp is in second granularity and is exclusive (i.e. 12:00:01 excludes the first second of the minute).
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    /** Returns results with a Post ID greater than (that is, more recent than) the specified ID.
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: any;
-    /** Returns results with a Post ID less than (that is, older than) the specified ID.
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The granularity for the search counts results.
-     * Also accepts: granularity or proper camelCase (e.g., granularity) */
-    granularity?: string;
-    /** A comma separated list of SearchCount fields to display.
-     * Also accepts: search_count.fields or proper camelCase (e.g., searchCountFields) */
-    searchCountFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for hideReply method
- *
- * @public
- */
-interface HideReplyOptions {
-    /** Request body */
-    body?: HideReplyRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getQuoted method
- *
- * @public
- */
-interface GetQuotedOptions {
-    /** The maximum number of results to be returned.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get a specified 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** The set of entities to exclude (e.g. 'replies' or 'retweets').
-     * Also accepts: exclude or proper camelCase (e.g., exclude) */
-    exclude?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getAnalytics method
- *
- * @public
- */
-interface GetAnalyticsOptions$1 {
-    /** A comma separated list of Analytics fields to display.
-     * Also accepts: analytics.fields or proper camelCase (e.g., analyticsFields) */
-    analyticsFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getReposts method
- *
- * @public
- */
-interface GetRepostsOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** A comma separated list of Poll fields to display.
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<any>;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of Place fields to display.
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getLikingUsers method
- *
- * @public
- */
-interface GetLikingUsersOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getRepostedBy method
- *
- * @public
- */
-interface GetRepostedByOptions {
-    /** The maximum number of results.
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    /** This parameter is used to get the next 'page' of results.
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
-    /** A comma separated list of User fields to display.
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<any>;
-    /** A comma separated list of fields to expand.
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<any>;
-    /** A comma separated list of Tweet fields to display.
-     * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
-    tweetFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getInsights28hr method
- *
- * @public
- */
-interface GetInsights28hrOptions {
-    /** A comma separated list of Engagement fields to display.
-     * Also accepts: engagement.fields or proper camelCase (e.g., engagementFields) */
-    engagementFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for posts operations
- *
- * This client provides methods for interacting with the posts endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all posts related operations.
- *
- * @category posts
- */
-declare class PostsClient {
-    private client;
-    /**
-     * Creates a new posts client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Search recent Posts
-     * Retrieves Posts from the last 7 days matching a search query.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<SearchRecentResponse>} Promise resolving to the API response
-     */
-    searchRecent(query: string, options?: SearchRecentOptions): Promise<SearchRecentResponse>;
-    /**
-     * Search all Posts
-     * Retrieves Posts from the full archive matching a search query.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<SearchAllResponse>} Promise resolving to the API response
-     */
-    searchAll(query: string, options?: SearchAllOptions): Promise<SearchAllResponse>;
-    /**
-     * Get count of all Posts
-     * Retrieves the count of Posts matching a search query from the full archive.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<GetCountsAllResponse>} Promise resolving to the API response
-     */
-    getCountsAll(query: string, options?: GetCountsAllOptions): Promise<GetCountsAllResponse>;
-    /**
-     * Get Posts by IDs
-     * Retrieves details of multiple Posts by their IDs.
-  
-  
-  
-     * @param ids A comma separated list of Post IDs. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @returns {Promise<GetByIdsResponse>} Promise resolving to the API response
-     */
-    getByIds(ids: Array<any>, options?: GetByIdsOptions): Promise<GetByIdsResponse>;
-    /**
-     * Create or Edit Post
-     * Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided.
-  
-  
-  
-     * @param body Request body
-  
-     * @returns {Promise<CreateResponse>} Promise resolving to the API response
-     */
-    create(body: CreateRequest): Promise<CreateResponse>;
-    /**
-     * Get Post by ID
-     * Retrieves details of a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetByIdResponse>} Promise resolving to the API response
-     */
-    getById(id: string, options?: GetByIdOptions): Promise<GetByIdResponse>;
-    /**
-     * Delete Post
-     * Deletes a specific Post by its ID, if owned by the authenticated user.
-  
-  
-     * @param id The ID of the Post to be deleted.
-  
-  
-  
-  
-     * @returns {Promise<DeleteResponse>} Promise resolving to the API response
-     */
+    delete(id: string, options: {
+        requestOptions: {
+            raw: true;
+        };
+    }): Promise<Response>;
     delete(id: string): Promise<DeleteResponse>;
-    /**
-     * Get historical Post insights
-     * Retrieves historical engagement metrics for specified Posts within a defined time range.
-  
-  
-  
-     * @param tweetIds List of PostIds for historical metrics.
-  
-  
-  
-     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
-  
-  
-  
-     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
-  
-  
-  
-     * @param granularity granularity of metrics response.
-  
-  
-  
-     * @param requestedMetrics request metrics for historical request.
-  
-  
-  
-     * @returns {Promise<GetInsightsHistoricalResponse>} Promise resolving to the API response
-     */
-    getInsightsHistorical(tweetIds: Array<any>, endTime: string, startTime: string, granularity: string, requestedMetrics: Array<any>, options?: GetInsightsHistoricalOptions): Promise<GetInsightsHistoricalResponse>;
-    /**
-     * Get count of recent Posts
-     * Retrieves the count of Posts from the last 7 days matching a search query.
-  
-  
-  
-     * @param query One query/rule/filter for matching Posts. Refer to https://t.co/rulelength to identify the max query length.
-  
-  
-  
-     * @returns {Promise<GetCountsRecentResponse>} Promise resolving to the API response
-     */
-    getCountsRecent(query: string, options?: GetCountsRecentOptions): Promise<GetCountsRecentResponse>;
-    /**
-     * Hide reply
-     * Hides or unhides a reply to a conversation owned by the authenticated user.
-  
-  
-     * @param tweetId The ID of the reply that you want to hide or unhide.
-  
-  
-  
-  
-     * @returns {Promise<HideReplyResponse>} Promise resolving to the API response
-     */
-    hideReply(tweetId: string, options?: HideReplyOptions): Promise<HideReplyResponse>;
-    /**
-     * Get Quoted Posts
-     * Retrieves a list of Posts that quote a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetQuotedResponse>} Promise resolving to the API response
-     */
-    getQuoted(id: string, options?: GetQuotedOptions): Promise<GetQuotedResponse>;
-    /**
-     * Get Post analytics
-     * Retrieves analytics data for specified Posts within a defined time range.
-  
-  
-  
-     * @param ids A comma separated list of Post IDs. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
-  
-  
-  
-     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
-  
-  
-  
-     * @param granularity The granularity for the search counts results.
-  
-  
-  
-     * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response
-     */
-    getAnalytics(ids: Array<any>, endTime: string, startTime: string, granularity: string, options?: GetAnalyticsOptions$1): Promise<GetAnalyticsResponse$1>;
-    /**
-     * Get Reposts
-     * Retrieves a list of Posts that repost a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetRepostsResponse>} Promise resolving to the API response
-     */
-    getReposts(id: string, options?: GetRepostsOptions): Promise<GetRepostsResponse>;
-    /**
-     * Get Liking Users
-     * Retrieves a list of Users who liked a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetLikingUsersResponse>} Promise resolving to the API response
-     */
-    getLikingUsers(id: string, options?: GetLikingUsersOptions): Promise<GetLikingUsersResponse>;
-    /**
-     * Get Reposted by
-     * Retrieves a list of Users who reposted a specific Post by its ID.
-  
-  
-     * @param id A single Post ID.
-  
-  
-  
-  
-     * @returns {Promise<GetRepostedByResponse>} Promise resolving to the API response
-     */
-    getRepostedBy(id: string, options?: GetRepostedByOptions): Promise<GetRepostedByResponse>;
-    /**
-     * Get 28-hour Post insights
-     * Retrieves engagement metrics for specified Posts over the last 28 hours.
-  
-  
-  
-     * @param tweetIds List of PostIds for 28hr metrics.
-  
-  
-  
-     * @param granularity granularity of metrics response.
-  
-  
-  
-     * @param requestedMetrics request metrics for historical request.
-  
-  
-  
-     * @returns {Promise<GetInsights28hrResponse>} Promise resolving to the API response
-     */
-    getInsights28hr(tweetIds: Array<any>, granularity: string, requestedMetrics: Array<any>, options?: GetInsights28hrOptions): Promise<GetInsights28hrResponse>;
-}
-
-/**
- * Models for media operations
- */
-
-/**
- * Response for finalizeUpload
- *
- * @public
- */
-type FinalizeUploadResponse = MediaUploadResponse;
-/**
- * Response for getUploadStatus
- *
- * @public
- */
-type GetUploadStatusResponse = MediaUploadResponse;
-/**
- * Request for upload
- *
- * @public
- */
-type UploadRequest = MediaUploadRequestOneShot;
-/**
- * Response for upload
- *
- * @public
- */
-type UploadResponse = MediaUploadResponse;
-/**
- * Response for getByKey
- *
- * @public
- */
-type GetByKeyResponse = Get2MediaMediaKeyResponse;
-/**
- * Request for createMetadata
- *
- * @public
- */
-type CreateMetadataRequest = MetadataCreateRequest;
-/**
- * Response for createMetadata
- *
- * @public
- */
-type CreateMetadataResponse = MetadataCreateResponse;
-/**
- * Request for initializeUpload
- *
- * @public
- */
-type InitializeUploadRequest = MediaUploadConfigRequest;
-/**
- * Response for initializeUpload
- *
- * @public
- */
-type InitializeUploadResponse = MediaUploadResponse;
-/**
- * Response for getByKeys
- *
- * @public
- */
-type GetByKeysResponse = Get2MediaResponse;
-/**
- * Response for getAnalytics
- *
- * @public
- */
-type GetAnalyticsResponse = MediaAnalytics;
-/**
- * Request for appendUpload
- *
- * @public
- */
-type AppendUploadRequest = MediaUploadAppendRequest;
-/**
- * Response for appendUpload
- *
- * @public
- */
-type AppendUploadResponse = MediaUploadAppendResponse;
-/**
- * Request for createSubtitles
- *
- * @public
- */
-type CreateSubtitlesRequest = SubtitlesCreateRequest;
-/**
- * Response for createSubtitles
- *
- * @public
- */
-type CreateSubtitlesResponse = SubtitlesCreateResponse;
-/**
- * Request for deleteSubtitles
- *
- * @public
- */
-type DeleteSubtitlesRequest = SubtitlesDeleteRequest;
-/**
- * Response for deleteSubtitles
- *
- * @public
- */
-type DeleteSubtitlesResponse = SubtitlesDeleteResponse;
-
-type models$1_AppendUploadRequest = AppendUploadRequest;
-type models$1_AppendUploadResponse = AppendUploadResponse;
-type models$1_CreateMetadataRequest = CreateMetadataRequest;
-type models$1_CreateMetadataResponse = CreateMetadataResponse;
-type models$1_CreateSubtitlesRequest = CreateSubtitlesRequest;
-type models$1_CreateSubtitlesResponse = CreateSubtitlesResponse;
-type models$1_DeleteSubtitlesRequest = DeleteSubtitlesRequest;
-type models$1_DeleteSubtitlesResponse = DeleteSubtitlesResponse;
-type models$1_FinalizeUploadResponse = FinalizeUploadResponse;
-type models$1_GetAnalyticsResponse = GetAnalyticsResponse;
-type models$1_GetByKeyResponse = GetByKeyResponse;
-type models$1_GetByKeysResponse = GetByKeysResponse;
-type models$1_GetUploadStatusResponse = GetUploadStatusResponse;
-type models$1_InitializeUploadRequest = InitializeUploadRequest;
-type models$1_InitializeUploadResponse = InitializeUploadResponse;
-type models$1_UploadRequest = UploadRequest;
-type models$1_UploadResponse = UploadResponse;
-declare namespace models$1 {
-  export {
-    models$1_AppendUploadRequest as AppendUploadRequest,
-    models$1_AppendUploadResponse as AppendUploadResponse,
-    models$1_CreateMetadataRequest as CreateMetadataRequest,
-    models$1_CreateMetadataResponse as CreateMetadataResponse,
-    models$1_CreateSubtitlesRequest as CreateSubtitlesRequest,
-    models$1_CreateSubtitlesResponse as CreateSubtitlesResponse,
-    models$1_DeleteSubtitlesRequest as DeleteSubtitlesRequest,
-    models$1_DeleteSubtitlesResponse as DeleteSubtitlesResponse,
-    models$1_FinalizeUploadResponse as FinalizeUploadResponse,
-    models$1_GetAnalyticsResponse as GetAnalyticsResponse,
-    models$1_GetByKeyResponse as GetByKeyResponse,
-    models$1_GetByKeysResponse as GetByKeysResponse,
-    models$1_GetUploadStatusResponse as GetUploadStatusResponse,
-    models$1_InitializeUploadRequest as InitializeUploadRequest,
-    models$1_InitializeUploadResponse as InitializeUploadResponse,
-    models$1_UploadRequest as UploadRequest,
-    models$1_UploadResponse as UploadResponse,
-  };
-}
-
-/**
- * media client for the X API.
- *
- * This module provides a client for interacting with the media endpoints of the X API.
- */
-
-/**
- * Options for getUploadStatus method
- *
- * @public
- */
-interface GetUploadStatusOptions {
-    /** The command for the media upload request.
-     * Also accepts: command or proper camelCase (e.g., command) */
-    command?: string;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for upload method
- *
- * @public
- */
-interface UploadOptions {
-    /** Request body */
-    body?: UploadRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByKey method
- *
- * @public
- */
-interface GetByKeyOptions {
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createMetadata method
- *
- * @public
- */
-interface CreateMetadataOptions {
-    /** Request body */
-    body?: CreateMetadataRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for initializeUpload method
- *
- * @public
- */
-interface InitializeUploadOptions {
-    /** Request body */
-    body?: InitializeUploadRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByKeys method
- *
- * @public
- */
-interface GetByKeysOptions {
-    /** A comma separated list of Media fields to display.
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getAnalytics method
- *
- * @public
- */
-interface GetAnalyticsOptions {
-    /** A comma separated list of MediaAnalytics fields to display.
-     * Also accepts: media_analytics.fields or proper camelCase (e.g., mediaAnalyticsFields) */
-    mediaAnalyticsFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for appendUpload method
- *
- * @public
- */
-interface AppendUploadOptions {
-    /** Request body */
-    body?: AppendUploadRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createSubtitles method
- *
- * @public
- */
-interface CreateSubtitlesOptions {
-    /** Request body */
-    body?: CreateSubtitlesRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for deleteSubtitles method
- *
- * @public
- */
-interface DeleteSubtitlesOptions {
-    /** Request body */
-    body?: DeleteSubtitlesRequest;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for media operations
- *
- * This client provides methods for interacting with the media endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all media related operations.
- *
- * @category media
- */
-declare class MediaClient {
-    private client;
-    /**
-     * Creates a new media client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Finalize Media upload
-     * Finalizes a Media upload request.
-  
-  
-     * @param id The media id of the targeted media to finalize.
-  
-  
-  
-  
-     * @returns {Promise<FinalizeUploadResponse>} Promise resolving to the API response
-     */
-    finalizeUpload(id: string): Promise<FinalizeUploadResponse>;
-    /**
-     * Get Media upload status
-     * Retrieves the status of a Media upload by its ID.
-  
-  
-  
-     * @param mediaId Media id for the requested media upload status.
-  
-  
-  
-     * @returns {Promise<GetUploadStatusResponse>} Promise resolving to the API response
-     */
-    getUploadStatus(mediaId: any, options?: GetUploadStatusOptions): Promise<GetUploadStatusResponse>;
-    /**
-     * Upload media
-     * Uploads a media file for use in posts or other content.
-  
-  
-  
-     * @returns {Promise<UploadResponse>} Promise resolving to the API response
-     */
-    upload(options?: UploadOptions): Promise<UploadResponse>;
-    /**
-     * Get Media by media key
-     * Retrieves details of a specific Media file by its media key.
-  
-  
-     * @param mediaKey A single Media Key.
-  
-  
-  
-  
-     * @returns {Promise<GetByKeyResponse>} Promise resolving to the API response
-     */
-    getByKey(mediaKey: string, options?: GetByKeyOptions): Promise<GetByKeyResponse>;
-    /**
-     * Create Media metadata
-     * Creates metadata for a Media file.
-  
-  
-  
-     * @returns {Promise<CreateMetadataResponse>} Promise resolving to the API response
-     */
-    createMetadata(options?: CreateMetadataOptions): Promise<CreateMetadataResponse>;
-    /**
-     * Initialize media upload
-     * Initializes a media upload.
-  
-  
-  
-     * @returns {Promise<InitializeUploadResponse>} Promise resolving to the API response
-     */
-    initializeUpload(options?: InitializeUploadOptions): Promise<InitializeUploadResponse>;
-    /**
-     * Get Media by media keys
-     * Retrieves details of Media files by their media keys.
-  
-  
-  
-     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @returns {Promise<GetByKeysResponse>} Promise resolving to the API response
-     */
-    getByKeys(mediaKeys: Array<any>, options?: GetByKeysOptions): Promise<GetByKeysResponse>;
-    /**
-     * Get Media analytics
-     * Retrieves analytics data for media.
-  
-  
-  
-     * @param mediaKeys A comma separated list of Media Keys. Up to 100 are allowed in a single request.
-  
-  
-  
-     * @param endTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the end of the time range.
-  
-  
-  
-     * @param startTime YYYY-MM-DDTHH:mm:ssZ. The UTC timestamp representing the start of the time range.
-  
-  
-  
-     * @param granularity The granularity for the search counts results.
-  
-  
-  
-     * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response
-     */
-    getAnalytics(mediaKeys: Array<any>, endTime: string, startTime: string, granularity: string, options?: GetAnalyticsOptions): Promise<GetAnalyticsResponse>;
-    /**
-     * Append Media upload
-     * Appends data to a Media upload request.
-  
-  
-     * @param id The media identifier for the media to perform the append operation.
-  
-  
-  
-  
-     * @returns {Promise<AppendUploadResponse>} Promise resolving to the API response
-     */
-    appendUpload(id: string, options?: AppendUploadOptions): Promise<AppendUploadResponse>;
-    /**
-     * Create Media subtitles
-     * Creates subtitles for a specific Media file.
-  
-  
-  
-     * @returns {Promise<CreateSubtitlesResponse>} Promise resolving to the API response
-     */
-    createSubtitles(options?: CreateSubtitlesOptions): Promise<CreateSubtitlesResponse>;
-    /**
-     * Delete Media subtitles
-     * Deletes subtitles for a specific Media file.
-  
-  
-  
-     * @returns {Promise<DeleteSubtitlesResponse>} Promise resolving to the API response
-     */
-    deleteSubtitles(options?: DeleteSubtitlesOptions): Promise<DeleteSubtitlesResponse>;
-}
-
-/**
- * Models for compliance operations
- */
-
-/**
- * Response for getJobs
- *
- * @public
- */
-type GetJobsResponse = Get2ComplianceJobsResponse;
-/**
- * Request for createJobs
- *
- * @public
- */
-type CreateJobsRequest = CreateComplianceJobRequest;
-/**
- * Response for createJobs
- *
- * @public
- */
-type CreateJobsResponse = CreateComplianceJobResponse;
-/**
- * Response for getJobsById
- *
- * @public
- */
-type GetJobsByIdResponse = Get2ComplianceJobsIdResponse;
-
-type models_CreateJobsRequest = CreateJobsRequest;
-type models_CreateJobsResponse = CreateJobsResponse;
-type models_GetJobsByIdResponse = GetJobsByIdResponse;
-type models_GetJobsResponse = GetJobsResponse;
-declare namespace models {
-  export {
-    models_CreateJobsRequest as CreateJobsRequest,
-    models_CreateJobsResponse as CreateJobsResponse,
-    models_GetJobsByIdResponse as GetJobsByIdResponse,
-    models_GetJobsResponse as GetJobsResponse,
-  };
-}
-
-/**
- * compliance client for the X API.
- *
- * This module provides a client for interacting with the compliance endpoints of the X API.
- */
-
-/**
- * Options for getJobs method
- *
- * @public
- */
-interface GetJobsOptions {
-    /** Status of Compliance Job to list.
-     * Also accepts: status or proper camelCase (e.g., status) */
-    status?: string;
-    /** A comma separated list of ComplianceJob fields to display.
-     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
-    complianceJobFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getJobsById method
- *
- * @public
- */
-interface GetJobsByIdOptions {
-    /** A comma separated list of ComplianceJob fields to display.
-     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
-    complianceJobFields?: Array<any>;
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Client for compliance operations
- *
- * This client provides methods for interacting with the compliance endpoints
- * of the X API. It handles authentication, request formatting, and response
- * parsing for all compliance related operations.
- *
- * @category compliance
- */
-declare class ComplianceClient {
-    private client;
-    /**
-     * Creates a new compliance client instance
-     *
-     * @param client - The main X API client instance
-     */
-    constructor(client: Client);
-    /**
-     * Normalize options object to handle both camelCase and original API parameter names
-     * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-     */
-    private _normalizeOptions;
-    /**
-     * Get Compliance Jobs
-     * Retrieves a list of Compliance Jobs filtered by job type and optional status.
-  
-  
-  
-     * @param type Type of Compliance Job to list.
-  
-  
-  
-     * @returns {Promise<GetJobsResponse>} Promise resolving to the API response
-     */
-    getJobs(type: string, options?: GetJobsOptions): Promise<GetJobsResponse>;
-    /**
-     * Create Compliance Job
-     * Creates a new Compliance Job for the specified job type.
-  
-  
-  
-     * @param body Request body
-  
-     * @returns {Promise<CreateJobsResponse>} Promise resolving to the API response
-     */
-    createJobs(body: CreateJobsRequest): Promise<CreateJobsResponse>;
-    /**
-     * Get Compliance Job by ID
-     * Retrieves details of a specific Compliance Job by its ID.
-  
-  
-     * @param id The ID of the Compliance Job to retrieve.
-  
-  
-  
-  
-     * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response
-     */
-    getJobsById(id: string, options?: GetJobsByIdOptions): Promise<GetJobsByIdResponse>;
 }
 
 /**
@@ -10701,13 +11352,13 @@ interface ApiResponse<T = any> {
  */
 interface PaginationMeta {
     /** Next page token */
-    next_token?: string;
+    nextToken?: string;
     /** Previous page token */
-    previous_token?: string;
+    previousToken?: string;
     /** Total count */
-    total_count?: number;
+    totalCount?: number;
     /** Result count */
-    result_count?: number;
+    resultCount?: number;
 }
 /**
  * Main client class for the X API
@@ -10760,42 +11411,42 @@ declare class Client {
     readonly maxRetries: number;
     /** HTTP client for making requests */
     readonly httpClient: HttpClient;
-    /** users client */
-    readonly users: UsersClient;
-    /** stream client */
-    readonly stream: StreamClient;
-    /** connections client */
-    readonly connections: ConnectionsClient;
-    /** communities client */
-    readonly communities: CommunitiesClient;
-    /** community notes client */
-    readonly communityNotes: CommunityNotesClient;
-    /** trends client */
-    readonly trends: TrendsClient;
-    /** lists client */
-    readonly lists: ListsClient;
     /** general client */
     readonly general: GeneralClient;
-    /** direct messages client */
-    readonly directMessages: DirectMessagesClient;
-    /** activity client */
-    readonly activity: ActivityClient;
-    /** usage client */
-    readonly usage: UsageClient;
-    /** webhooks client */
-    readonly webhooks: WebhooksClient;
     /** account activity client */
     readonly accountActivity: AccountActivityClient;
+    /** community notes client */
+    readonly communityNotes: CommunityNotesClient;
+    /** compliance client */
+    readonly compliance: ComplianceClient;
+    /** connections client */
+    readonly connections: ConnectionsClient;
+    /** users client */
+    readonly users: UsersClient;
     /** news client */
     readonly news: NewsClient;
     /** spaces client */
     readonly spaces: SpacesClient;
+    /** activity client */
+    readonly activity: ActivityClient;
+    /** usage client */
+    readonly usage: UsageClient;
+    /** trends client */
+    readonly trends: TrendsClient;
     /** posts client */
     readonly posts: PostsClient;
+    /** direct messages client */
+    readonly directMessages: DirectMessagesClient;
+    /** communities client */
+    readonly communities: CommunitiesClient;
     /** media client */
     readonly media: MediaClient;
-    /** compliance client */
-    readonly compliance: ComplianceClient;
+    /** webhooks client */
+    readonly webhooks: WebhooksClient;
+    /** stream client */
+    readonly stream: StreamClient;
+    /** lists client */
+    readonly lists: ListsClient;
     /**
      * Creates a new X API client instance
      *
@@ -10930,6 +11581,7 @@ interface OAuth2Token {
 declare class OAuth2 {
     private config;
     private token?;
+    private tokenExpiresAt?;
     private codeVerifier?;
     private codeChallenge?;
     constructor(config: OAuth2Config);
@@ -10947,10 +11599,28 @@ declare class OAuth2 {
      */
     exchangeCode(code: string, codeVerifier?: string): Promise<OAuth2Token>;
     /**
+     * Refresh an access token using a refresh token
+     * @param refreshToken The refresh token to use (uses stored token if not provided)
+     * @returns Promise with new OAuth2 token
+     */
+    refreshToken(refreshToken?: string): Promise<OAuth2Token>;
+    /**
      * Get the current token
      * @returns Current OAuth2 token if available
      */
     getToken(): OAuth2Token | undefined;
+    /**
+     * Set a token directly (useful for restoring from storage)
+     * @param token The OAuth2 token to set
+     * @param expiresAt Optional timestamp (ms) when the token expires
+     */
+    setToken(token: OAuth2Token, expiresAt?: number): void;
+    /**
+     * Check if the current token is expired or about to expire
+     * @param bufferSeconds Number of seconds before expiry to consider as "expiring" (default: 60)
+     * @returns True if token is expired or missing
+     */
+    isTokenExpired(bufferSeconds?: number): boolean;
     /**
      * Get the current code verifier (for PKCE)
      * @returns Current code verifier if available
@@ -11075,10 +11745,10 @@ declare class OAuth1 {
 
 /**
  * Environment-agnostic cryptographic utilities for the X API SDK.
- * Provides HMAC-SHA1 implementation that works in both Node.js and browser environments.
+ * Provides HMAC-SHA1 implementation that works in Node.js, browser, and React Native environments.
  */
 /**
- * HMAC-SHA1 implementation that works in both Node.js and browser environments
+ * HMAC-SHA1 implementation that works in Node.js, browser, and React Native environments
  */
 declare class CryptoUtils {
     /**
@@ -11098,9 +11768,17 @@ declare class CryptoUtils {
     private static _webCryptoHmacSha1;
     /**
      * Polyfill HMAC-SHA1 implementation using pure JavaScript
-     * This is a fallback that works everywhere but is slower
+     * This is a fallback that works everywhere including React Native
      */
     private static _polyfillHmacSha1;
+    /**
+     * Pure JavaScript SHA-1 implementation
+     */
+    private static _sha1;
+    /**
+     * Convert string to byte array
+     */
+    private static _stringToBytes;
     /**
      * Convert string to ArrayBuffer
      */
@@ -11142,9 +11820,13 @@ declare class CryptoUtils {
     private static _webCryptoSha256;
     /**
      * Polyfill SHA256 implementation for PKCE
-     * This is a fallback that works everywhere but is slower
+     * Pure JavaScript implementation that works in React Native and other environments
      */
     private static _polyfillSha256;
+    /**
+     * Pure JavaScript SHA-256 implementation
+     */
+    private static _sha256;
     /**
      * Convert ArrayBuffer or Uint8Array to base64url encoding (RFC 7636)
      */
@@ -11228,11 +11910,11 @@ interface PaginatedResponse<T> {
     /** Pagination metadata */
     meta?: {
         /** Number of results in the current page */
-        result_count?: number;
+        resultCount?: number;
         /** Token for fetching the next page */
-        next_token?: string;
+        nextToken?: string;
         /** Token for fetching the previous page */
-        previous_token?: string;
+        previousToken?: string;
     };
     /** Additional included objects (users, tweets, etc.) */
     includes?: Record<string, any>;
@@ -11263,7 +11945,7 @@ interface PaginatedResponse<T> {
  * const followers = await client.users.getFollowers('783214');
  * await followers.fetchNext();
  * console.log(followers.items.length); // Number of followers
- * console.log(followers.meta.next_token); // Next page token
+ * console.log(followers.meta.nextToken); // Next page token
  *
  * // Check status
  * if (!followers.done) {
@@ -11403,4 +12085,4 @@ declare class EventPaginator extends Paginator<any> {
     get events(): any[];
 }
 
-export { models$5 as AccountActivity, AccountActivityClient, models$8 as Activity, ActivityClient, ApiError, ApiResponse, Client, ClientConfig, models$e as Communities, CommunitiesClient, models$d as CommunityNotes, CommunityNotesClient, models as Compliance, ComplianceClient, models$f as Connections, ConnectionsClient, CryptoUtils, models$9 as DirectMessages, DirectMessagesClient, EventPaginator, models$a as General, GeneralClient, HttpClient, RequestOptions$1 as HttpClientRequestOptions, HttpResponse, models$b as Lists, ListsClient, models$1 as Media, MediaClient, models$4 as News, NewsClient, OAuth1, OAuth1AccessToken, OAuth1Config, OAuth1RequestToken, OAuth2, OAuth2Config, OAuth2Token, PaginatedResponse, PaginationMeta, Paginator, PostPaginator, models$2 as Posts, PostsClient, RequestOptions, schemas as Schemas, models$3 as Spaces, SpacesClient, models$g as Stream, StreamClient, StreamListener, models$c as Trends, TrendsClient, TweetStreamListener, models$7 as Usage, UsageClient, UserPaginator, models$h as Users, UsersClient, models$6 as Webhooks, WebhooksClient, generateCodeChallenge, generateCodeVerifier, generateNonce, generateTimestamp, hmacSha1, httpClient };
+export { models$g as AccountActivity, AccountActivityClient, models$9 as Activity, ActivityClient, ApiError, ApiResponse, Client, ClientConfig, models$4 as Communities, CommunitiesClient, models$f as CommunityNotes, CommunityNotesClient, models$e as Compliance, ComplianceClient, models$d as Connections, ConnectionsClient, CryptoUtils, models$5 as DirectMessages, DirectMessagesClient, EventPaginator, models$h as General, GeneralClient, HttpClient, RequestOptions$1 as HttpClientRequestOptions, HttpResponse, models as Lists, ListsClient, models$3 as Media, MediaClient, models$b as News, NewsClient, OAuth1, OAuth1AccessToken, OAuth1Config, OAuth1RequestToken, OAuth2, OAuth2Config, OAuth2Token, PaginatedResponse, PaginationMeta, Paginator, PostPaginator, models$6 as Posts, PostsClient, RequestOptions, schemas as Schemas, models$a as Spaces, SpacesClient, models$1 as Stream, StreamClient, StreamListener, models$7 as Trends, TrendsClient, TweetStreamListener, models$8 as Usage, UsageClient, UserPaginator, models$c as Users, UsersClient, models$2 as Webhooks, WebhooksClient, generateCodeChallenge, generateCodeVerifier, generateNonce, generateTimestamp, hmacSha1, httpClient };

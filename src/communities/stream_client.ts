@@ -34,13 +34,13 @@ export interface SearchStreamingOptions {
     
     /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified. 
      * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: any;
+    nextToken?: string;
     
     
     
     /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: any;
+    paginationToken?: string;
     
     
     

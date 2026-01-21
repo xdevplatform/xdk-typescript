@@ -17,17 +17,47 @@ import type * as Schemas from '../schemas.js';
  */
 export type LikesComplianceResponse = Schemas.LikesComplianceStreamResponse;
 /**
- * Response for labelsCompliance
+ * Response for usersCompliance
  * 
  * @public
  */
-export type LabelsComplianceResponse = Schemas.TweetLabelStreamResponse;
+export type UsersComplianceResponse = Schemas.UserComplianceStreamResponse;
 /**
- * Response for postsFirehose
+ * Response for postsFirehoseKo
  * 
  * @public
  */
-export type PostsFirehoseResponse = Schemas.StreamingTweetResponse;
+export type PostsFirehoseKoResponse = Schemas.StreamingTweetResponse;
+/**
+ * Response for likesSample10
+ * 
+ * @public
+ */
+export type LikesSample10Response = Schemas.StreamingLikeResponseV2;
+/**
+ * Response for getRuleCounts
+ * 
+ * @public
+ */
+export type GetRuleCountsResponse = Schemas.Get2TweetsSearchStreamRulesCountsResponse;
+/**
+ * Response for likesFirehose
+ * 
+ * @public
+ */
+export type LikesFirehoseResponse = Schemas.StreamingLikeResponseV2;
+/**
+ * Response for postsFirehoseJa
+ * 
+ * @public
+ */
+export type PostsFirehoseJaResponse = Schemas.StreamingTweetResponse;
+/**
+ * Response for postsFirehoseEn
+ * 
+ * @public
+ */
+export type PostsFirehoseEnResponse = Schemas.StreamingTweetResponse;
 /**
  * Response for getRules
  * 
@@ -47,41 +77,17 @@ export type UpdateRulesRequest = Schemas.AddOrDeleteRulesRequest;
  */
 export type UpdateRulesResponse = Schemas.AddOrDeleteRulesResponse;
 /**
- * Response for postsSample10
- * 
- * @public
- */
-export type PostsSample10Response = Schemas.Get2TweetsSample10StreamResponse;
-/**
- * Response for postsFirehoseKo
- * 
- * @public
- */
-export type PostsFirehoseKoResponse = Schemas.StreamingTweetResponse;
-/**
- * Response for postsFirehoseEn
- * 
- * @public
- */
-export type PostsFirehoseEnResponse = Schemas.StreamingTweetResponse;
-/**
  * Response for postsSample
  * 
  * @public
  */
 export type PostsSampleResponse = Schemas.StreamingTweetResponse;
 /**
- * Response for usersCompliance
+ * Response for postsSample10
  * 
  * @public
  */
-export type UsersComplianceResponse = Schemas.UserComplianceStreamResponse;
-/**
- * Response for getRuleCounts
- * 
- * @public
- */
-export type GetRuleCountsResponse = Schemas.Get2TweetsSearchStreamRulesCountsResponse;
+export type PostsSample10Response = Schemas.Get2TweetsSample10StreamResponse;
 /**
  * Response for postsCompliance
  * 
@@ -89,32 +95,26 @@ export type GetRuleCountsResponse = Schemas.Get2TweetsSearchStreamRulesCountsRes
  */
 export type PostsComplianceResponse = Schemas.TweetComplianceStreamResponse;
 /**
- * Response for likesFirehose
+ * Response for labelsCompliance
  * 
  * @public
  */
-export type LikesFirehoseResponse = Schemas.StreamingLikeResponseV2;
-/**
- * Response for postsFirehoseJa
- * 
- * @public
- */
-export type PostsFirehoseJaResponse = Schemas.StreamingTweetResponse;
-/**
- * Response for postsFirehosePt
- * 
- * @public
- */
-export type PostsFirehosePtResponse = Schemas.StreamingTweetResponse;
-/**
- * Response for likesSample10
- * 
- * @public
- */
-export type LikesSample10Response = Schemas.StreamingLikeResponseV2;
+export type LabelsComplianceResponse = Schemas.TweetLabelStreamResponse;
 /**
  * Response for posts
  * 
  * @public
  */
 export type PostsResponse = Schemas.FilteredStreamingTweetResponse;
+/**
+ * Response for postsFirehose
+ * 
+ * @public
+ */
+export type PostsFirehoseResponse = Schemas.StreamingTweetResponse;
+/**
+ * Response for postsFirehosePt
+ * 
+ * @public
+ */
+export type PostsFirehosePtResponse = Schemas.StreamingTweetResponse;

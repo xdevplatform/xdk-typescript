@@ -17,13 +17,13 @@ import {
   CreateSubscriptionResponse,
 
 
+  StreamResponse,
+
+
   UpdateSubscriptionResponse,
 
 
   DeleteSubscriptionResponse,
-
-
-  StreamResponse,
 
 } from './models.js';
 
@@ -54,6 +54,41 @@ export interface CreateSubscriptionStreamingOptions {
     
     /** Request body */
     body?: any;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for stream method
+ * 
+ * @public
+ */
+export interface StreamStreamingOptions {
+    
+    
+    /** The number of minutes of backfill requested. 
+     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
+    backfillMinutes?: number;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
     
     /** Additional request options */
     requestOptions?: RequestOptions;
@@ -101,41 +136,6 @@ export interface DeleteSubscriptionStreamingOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-/**
- * Options for stream method
- * 
- * @public
- */
-export interface StreamStreamingOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 export class ActivityClient {
@@ -170,12 +170,6 @@ export class ActivityClient {
         
         return normalized as T;
     }
-
-
-
-
-
-
 
 
 
@@ -363,6 +357,12 @@ export class ActivityClient {
 
 
 
+
+
+
+
+
+
     /**
      * Get X activity subscriptions
      * Get a list of active subscriptions for XAA
@@ -502,6 +502,8 @@ export class ActivityClient {
             finalRequestOptions
         );
     }
+
+
 
 
 
@@ -660,8 +662,6 @@ export class ActivityClient {
             finalRequestOptions
         );
     }
-
-
 
 
 }

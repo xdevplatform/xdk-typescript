@@ -8,7 +8,7 @@
  * This module provides a client for interacting with the general endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -77,9 +77,25 @@ export class GeneralClient {
 
 
 
-   * @returns {Promise<GetOpenApiSpecResponse>} Promise resolving to the API response
+   * @returns {Promise<GetOpenApiSpecResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
-    // Overload 1: Default behavior (unwrapped response)
+    // Overload 1: raw: true returns Response
+    getOpenApiSpec(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getOpenApiSpec(
+        
+        
+        
+        
+    ): Promise<GetOpenApiSpecResponse>;
+    // Implementation
     async getOpenApiSpec(
         
         
@@ -89,7 +105,7 @@ export class GeneralClient {
         
         
         
-    ): Promise<GetOpenApiSpecResponse> {
+    ): Promise<GetOpenApiSpecResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
