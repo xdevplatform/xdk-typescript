@@ -11,13 +11,53 @@ import { Client, ApiResponse, RequestOptions } from '../client.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
+  DeleteAllResponse,
+
+
+  DeleteByEndpointResponse,
+
+
   GetConnectionHistoryResponse,
 
 
-  DeleteAllResponse,
+  DeleteByUuidsResponse,
 
 } from './models.js';
 
+/**
+ * Options for deleteAll method
+ * 
+ * @public
+ */
+export interface DeleteAllStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteByEndpoint method
+ * 
+ * @public
+ */
+export interface DeleteByEndpointStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for getConnectionHistory method
  * 
@@ -66,11 +106,11 @@ export interface GetConnectionHistoryStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteAll method
+ * Options for deleteByUuids method
  * 
  * @public
  */
-export interface DeleteAllStreamingOptions {
+export interface DeleteByUuidsStreamingOptions {
     
     
     /** Additional request options */
@@ -124,6 +164,152 @@ export class ConnectionsClient {
 
 
 
+
+
+
+
+
+
+
+
+
+    /**
+     * Terminate all connections
+     * Terminates all active streaming connections for the authenticated application.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteAll(
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteAllStreamingOptions = {}
+    ): Promise<DeleteAllResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteAll');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections/all';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteAllResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Terminate connections by endpoint
+     * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteByEndpoint(
+        
+        
+        
+        endpointId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteByEndpointStreamingOptions = {}
+    ): Promise<DeleteByEndpointResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteByEndpoint');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections/{endpoint_id}';
+        
+        
+        path = path.replace('{endpoint_id}', encodeURIComponent(String(endpointId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteByEndpointResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 
@@ -299,21 +485,23 @@ export class ConnectionsClient {
 
 
     /**
-     * Terminate all connections
-     * Terminates all active streaming connections for the authenticated application.
+     * Terminate multiple connections
+     * Terminates multiple streaming connections by their UUIDs for the authenticated application.
      * 
      * @returns Promise with the API response
      */
-    async deleteAll(
+    async deleteByUuids(
         
         
         
         
         
         
+        body: any,
         
-        options: DeleteAllStreamingOptions = {}
-    ): Promise<DeleteAllResponse> {
+        
+        options: DeleteByUuidsStreamingOptions = {}
+    ): Promise<DeleteByUuidsResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -322,7 +510,7 @@ export class ConnectionsClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteAll');
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteByUuids');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -336,7 +524,7 @@ export class ConnectionsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/connections/all';
+        let path = '/2/connections';
         
 
         // Build query parameters
@@ -351,11 +539,13 @@ export class ConnectionsClient {
             },
             signal: signal,
             
+            body: JSON.stringify(body),
+            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<DeleteAllResponse>(
+        return this.client.request<DeleteByUuidsResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

@@ -16,14 +16,16 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-GetSubscriptionsResponse,
+GetSubscriptionCountResponse,
 DeleteSubscriptionResponse,
+GetSubscriptionsResponse,
+CreateReplayJobResponse,
 ValidateSubscriptionResponse,
 CreateSubscriptionRequest,
 CreateSubscriptionResponse,
-CreateReplayJobResponse,
-GetSubscriptionCountResponse,
 } from './models.js';
+
+
 
 
 
@@ -45,8 +47,6 @@ export interface CreateSubscriptionOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-
-
 
 
 
@@ -100,23 +100,15 @@ export class AccountActivityClient {
 
 
   /**
-   * Get subscriptions
-   * Retrieves a list of all active subscriptions for a given webhook.
-
-
-   * @param webhookId The webhook ID to pull subscriptions for.
+   * Get subscription count
+   * Retrieves a count of currently active Account Activity subscriptions.
 
 
 
-
-   * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getSubscriptions(
-        
-        
-        webhookId: string,
-        
+    getSubscriptionCount(
         
         
         
@@ -125,22 +117,14 @@ export class AccountActivityClient {
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getSubscriptions(
-        
-        
-        webhookId: string,
+    getSubscriptionCount(
         
         
         
         
-        
-    ): Promise<GetSubscriptionsResponse>;
+    ): Promise<GetSubscriptionCountResponse>;
     // Implementation
-    async getSubscriptions(
-        
-        
-        
-        webhookId: string,
+    async getSubscriptionCount(
         
         
         
@@ -149,18 +133,14 @@ export class AccountActivityClient {
         
         
         
-    ): Promise<GetSubscriptionsResponse | Response> {
+    ): Promise<GetSubscriptionCountResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
+        let path = '/2/account_activity/subscriptions/count';
         
 
         // Build query parameters
@@ -187,7 +167,7 @@ export class AccountActivityClient {
             
         };
 
-        return this.client.request<GetSubscriptionsResponse>(
+        return this.client.request<GetSubscriptionCountResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -307,6 +287,256 @@ export class AccountActivityClient {
 
         return this.client.request<DeleteSubscriptionResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Get subscriptions
+   * Retrieves a list of all active subscriptions for a given webhook.
+
+
+   * @param webhookId The webhook ID to pull subscriptions for.
+
+
+
+
+   * @returns {Promise<GetSubscriptionsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getSubscriptions(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSubscriptions(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionsResponse>;
+    // Implementation
+    async getSubscriptions(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetSubscriptionsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Create replay job
+   * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
+
+
+   * @param webhookId The unique identifier for the webhook configuration.
+
+
+
+
+   * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
+
+
+
+   * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
+
+
+
+   * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createReplayJob(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        fromDate: string,
+        
+        
+        
+        toDate: string,
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createReplayJob(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        fromDate: string,
+        
+        
+        
+        toDate: string,
+        
+        
+        
+        
+    ): Promise<CreateReplayJobResponse>;
+    // Implementation
+    async createReplayJob(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        fromDate: string,
+        
+        
+        
+        toDate: string,
+        
+        
+        
+        
+        
+        
+    ): Promise<CreateReplayJobResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/replay/webhooks/{webhook_id}/subscriptions/all';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (fromDate !== undefined) {
+            
+            params.append('from_date', String(fromDate));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (toDate !== undefined) {
+            
+            params.append('to_date', String(toDate));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateReplayJobResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -532,236 +762,6 @@ export class AccountActivityClient {
 
         return this.client.request<CreateSubscriptionResponse>(
             'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Create replay job
-   * Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
-
-
-   * @param webhookId The unique identifier for the webhook configuration.
-
-
-
-
-   * @param fromDate The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in `yyyymmddhhmm` format.
-
-
-
-   * @param toDate The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in `yyyymmddhhmm` format.
-
-
-
-   * @returns {Promise<CreateReplayJobResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createReplayJob(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        fromDate: string,
-        
-        
-        
-        toDate: string,
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createReplayJob(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        fromDate: string,
-        
-        
-        
-        toDate: string,
-        
-        
-        
-        
-    ): Promise<CreateReplayJobResponse>;
-    // Implementation
-    async createReplayJob(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        fromDate: string,
-        
-        
-        
-        toDate: string,
-        
-        
-        
-        
-        
-        
-    ): Promise<CreateReplayJobResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/replay/webhooks/{webhook_id}/subscriptions/all';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (fromDate !== undefined) {
-            
-            params.append('from_date', String(fromDate));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (toDate !== undefined) {
-            
-            params.append('to_date', String(toDate));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateReplayJobResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get subscription count
-   * Retrieves a count of currently active Account Activity subscriptions.
-
-
-
-   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getSubscriptionCount(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getSubscriptionCount(
-        
-        
-        
-        
-    ): Promise<GetSubscriptionCountResponse>;
-    // Implementation
-    async getSubscriptionCount(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetSubscriptionCountResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/subscriptions/count';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetSubscriptionCountResponse>(
-            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

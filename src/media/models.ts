@@ -11,12 +11,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getByKey
- * 
- * @public
- */
-export type GetByKeyResponse = Schemas.Get2MediaMediaKeyResponse;
-/**
  * Response for getUploadStatus
  * 
  * @public
@@ -35,11 +29,11 @@ export type UploadRequest = Schemas.MediaUploadRequestOneShot;
  */
 export type UploadResponse = Schemas.MediaUploadResponse;
 /**
- * Response for getAnalytics
+ * Response for getByKey
  * 
  * @public
  */
-export type GetAnalyticsResponse = Schemas.MediaAnalytics;
+export type GetByKeyResponse = Schemas.Get2MediaMediaKeyResponse;
 /**
  * Request for appendUpload
  * 
@@ -53,29 +47,11 @@ export type AppendUploadRequest = Schemas.MediaUploadAppendRequest;
  */
 export type AppendUploadResponse = Schemas.MediaUploadAppendResponse;
 /**
- * Response for getByKeys
+ * Response for getAnalytics
  * 
  * @public
  */
-export type GetByKeysResponse = Schemas.Get2MediaResponse;
-/**
- * Request for createMetadata
- * 
- * @public
- */
-export type CreateMetadataRequest = Schemas.MetadataCreateRequest;
-/**
- * Response for createMetadata
- * 
- * @public
- */
-export type CreateMetadataResponse = Schemas.MetadataCreateResponse;
-/**
- * Response for finalizeUpload
- * 
- * @public
- */
-export type FinalizeUploadResponse = Schemas.MediaUploadResponse;
+export type GetAnalyticsResponse = Schemas.MediaAnalytics;
 /**
  * Request for initializeUpload
  * 
@@ -88,6 +64,18 @@ export type InitializeUploadRequest = Schemas.MediaUploadConfigRequest;
  * @public
  */
 export type InitializeUploadResponse = Schemas.MediaUploadResponse;
+/**
+ * Request for createMetadata
+ * 
+ * @public
+ */
+export type CreateMetadataRequest = Schemas.MetadataCreateRequest;
+/**
+ * Response for createMetadata
+ * 
+ * @public
+ */
+export type CreateMetadataResponse = Schemas.MetadataCreateResponse;
 /**
  * Request for createSubtitles
  * 
@@ -112,3 +100,15 @@ export type DeleteSubtitlesRequest = Schemas.SubtitlesDeleteRequest;
  * @public
  */
 export type DeleteSubtitlesResponse = Schemas.SubtitlesDeleteResponse;
+/**
+ * Response for finalizeUpload
+ * 
+ * @public
+ */
+export type FinalizeUploadResponse = Schemas.MediaUploadResponse;
+/**
+ * Response for getByKeys
+ * 
+ * @public
+ */
+export type GetByKeysResponse = Schemas.Get2MediaResponse;

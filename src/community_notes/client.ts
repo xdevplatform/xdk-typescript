@@ -16,14 +16,83 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-SearchEligiblePostsResponse,
 EvaluateRequest,
 EvaluateResponse,
-SearchWrittenResponse,
-DeleteResponse,
 CreateRequest,
 CreateResponse,
+SearchWrittenResponse,
+SearchEligiblePostsResponse,
+DeleteResponse,
 } from './models.js';
+
+
+/**
+ * Options for evaluate method
+ * 
+ * @public
+ */
+export interface EvaluateOptions {
+    
+    
+    /** Request body */
+    body?: EvaluateRequest;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for create method
+ * 
+ * @public
+ */
+export interface CreateOptions {
+    
+    
+    /** Request body */
+    body?: CreateRequest;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for searchWritten method
+ * 
+ * @public
+ */
+export interface SearchWrittenOptions {
+    
+    
+    /** Pagination token to get next set of posts eligible for notes. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Max results to return. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A comma separated list of Note fields to display. 
+     * Also accepts: note.fields or proper camelCase (e.g., noteFields) */
+    noteFields?: Array<any>;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 /**
@@ -46,7 +115,7 @@ export interface SearchEligiblePostsOptions {
     
     
     
-    /** The selection of posts to return. Valid values are 'feed_size: small' and 'feed_size: large'. Default is 'feed_size: small', only top AI writers have access to large size feed. 
+    /** The selection of posts to return. Valid values are 'feed_size: [small|large|xl], feed_lang: [en|es|...|all]'. Default (if not specified) is 'feed_size: small, feed_lang: en'. Only top AI writers have access to large and xl size feeds. 
      * Also accepts: post_selection or proper camelCase (e.g., postSelection) */
     postSelection?: string;
     
@@ -94,75 +163,6 @@ export interface SearchEligiblePostsOptions {
     [key: string]: any;
 }
 
-
-/**
- * Options for evaluate method
- * 
- * @public
- */
-export interface EvaluateOptions {
-    
-    
-    /** Request body */
-    body?: EvaluateRequest;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for searchWritten method
- * 
- * @public
- */
-export interface SearchWrittenOptions {
-    
-    
-    /** Pagination token to get next set of posts eligible for notes. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** Max results to return. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A comma separated list of Note fields to display. 
-     * Also accepts: note.fields or proper camelCase (e.g., noteFields) */
-    noteFields?: Array<any>;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for create method
- * 
- * @public
- */
-export interface CreateOptions {
-    
-    
-    /** Request body */
-    body?: CreateRequest;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 
@@ -212,6 +212,394 @@ export class CommunityNotesClient {
         
         return normalized as T;
     }
+
+
+
+  /**
+   * Evaluate a Community Note
+   * Endpoint to evaluate a community note.
+
+
+
+   * @returns {Promise<EvaluateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    evaluate(
+        
+        
+        
+        
+        options: EvaluateOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    evaluate(
+        
+        
+        
+        
+        options?: EvaluateOptions
+        
+    ): Promise<EvaluateResponse>;
+    // Implementation
+    async evaluate(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: EvaluateOptions = {}
+        
+    ): Promise<EvaluateResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const normalizedOptions = options || {};
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            body,
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/evaluate_note';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<EvaluateResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Create a Community Note
+   * Creates a community note endpoint for LLM use case.
+
+
+
+   * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    create(
+        
+        
+        
+        
+        options: CreateOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    create(
+        
+        
+        
+        
+        options?: CreateOptions
+        
+    ): Promise<CreateResponse>;
+    // Implementation
+    async create(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: CreateOptions = {}
+        
+    ): Promise<CreateResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const normalizedOptions = options || {};
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            body,
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/notes';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<CreateResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Search for Community Notes Written
+   * Returns all the community notes written by the user.
+
+
+
+   * @param testMode If true, return the notes the caller wrote for the test. If false, return the notes the caller wrote on the product.
+
+
+
+   * @returns {Promise<SearchWrittenResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    searchWritten(
+        
+        
+        
+        testMode: boolean,
+        
+        
+        
+        
+        options: SearchWrittenOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    searchWritten(
+        
+        
+        
+        testMode: boolean,
+        
+        
+        
+        
+        options?: SearchWrittenOptions
+        
+    ): Promise<SearchWrittenResponse>;
+    // Implementation
+    async searchWritten(
+        
+        
+        
+        
+        
+        testMode: boolean,
+        
+        
+        
+        
+        
+        
+        options: SearchWrittenOptions = {}
+        
+    ): Promise<SearchWrittenResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'note.fields': 'noteFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            noteFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/notes/search/notes_written';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (testMode !== undefined) {
+            
+            params.append('test_mode', String(testMode));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (noteFields !== undefined && noteFields.length > 0) {
+            
+            
+            params.append('note.fields', normalizeFields(noteFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<SearchWrittenResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
 
 
@@ -524,293 +912,6 @@ export class CommunityNotesClient {
 
 
   /**
-   * Evaluate a Community Note
-   * Endpoint to evaluate a community note.
-
-
-
-   * @returns {Promise<EvaluateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    evaluate(
-        
-        
-        
-        
-        options: EvaluateOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    evaluate(
-        
-        
-        
-        
-        options?: EvaluateOptions
-        
-    ): Promise<EvaluateResponse>;
-    // Implementation
-    async evaluate(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: EvaluateOptions = {}
-        
-    ): Promise<EvaluateResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const normalizedOptions = options || {};
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            body,
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/evaluate_note';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<EvaluateResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Search for Community Notes Written
-   * Returns all the community notes written by the user.
-
-
-
-   * @param testMode If true, return the notes the caller wrote for the test. If false, return the notes the caller wrote on the product.
-
-
-
-   * @returns {Promise<SearchWrittenResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    searchWritten(
-        
-        
-        
-        testMode: boolean,
-        
-        
-        
-        
-        options: SearchWrittenOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    searchWritten(
-        
-        
-        
-        testMode: boolean,
-        
-        
-        
-        
-        options?: SearchWrittenOptions
-        
-    ): Promise<SearchWrittenResponse>;
-    // Implementation
-    async searchWritten(
-        
-        
-        
-        
-        
-        testMode: boolean,
-        
-        
-        
-        
-        
-        
-        options: SearchWrittenOptions = {}
-        
-    ): Promise<SearchWrittenResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'note.fields': 'noteFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            noteFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/notes/search/notes_written';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (testMode !== undefined) {
-            
-            params.append('test_mode', String(testMode));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (noteFields !== undefined && noteFields.length > 0) {
-            
-            
-            params.append('note.fields', normalizeFields(noteFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<SearchWrittenResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
    * Delete a Community Note
    * Deletes a community note.
 
@@ -906,107 +1007,6 @@ export class CommunityNotesClient {
 
         return this.client.request<DeleteResponse>(
             'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Create a Community Note
-   * Creates a community note endpoint for LLM use case.
-
-
-
-   * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    create(
-        
-        
-        
-        
-        options: CreateOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    create(
-        
-        
-        
-        
-        options?: CreateOptions
-        
-    ): Promise<CreateResponse>;
-    // Implementation
-    async create(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: CreateOptions = {}
-        
-    ): Promise<CreateResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const normalizedOptions = options || {};
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            body,
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/notes';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<CreateResponse>(
-            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

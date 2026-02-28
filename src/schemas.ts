@@ -37,7 +37,7 @@ Schema type for ActivitySubscriptionCreateRequest
  *
  * @public
  */
-export interface ActivitySubscriptionCreateRequest {/** none */eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "news.new" | "follow.follow" | "follow.unfollow" | "ProfileBioUpdate" | "ProfilePictureUpdate" | "ProfileBannerPictureUpdate" | "ProfileScreennameUpdate" | "ProfileGeoUpdate" | "ProfileUrlUpdate" | "ProfileVerifiedBadgeUpdate" | "NewsNew" | "FollowFollow" | "FollowUnfollow";/** An XAA subscription. */filter: ActivitySubscriptionFilter;/** none */tag?: string;/** The unique identifier of this webhook config. */webhookId?: WebhookConfigId;}/**
+export interface ActivitySubscriptionCreateRequest {/** none */eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "news.new" | "follow.follow" | "follow.unfollow" | "spaces.start" | "spaces.end" | "chat.received" | "chat.sent" | "ProfileBioUpdate" | "ProfilePictureUpdate" | "ProfileBannerPictureUpdate" | "ProfileScreennameUpdate" | "ProfileGeoUpdate" | "ProfileUrlUpdate" | "ProfileVerifiedBadgeUpdate" | "NewsNew" | "FollowFollow" | "FollowUnfollow";/** An XAA subscription. */filter: ActivitySubscriptionFilter;/** none */tag?: string;/** The unique identifier of this webhook config. */webhookId?: WebhookConfigId;}/**
 Schema type for ActivitySubscriptionCreateResponse
  *
  * @public
@@ -166,6 +166,107 @@ Represent the portion of text recognized as a Cashtag, and its start and end pos
  * @public
  */
 export interface CashtagFields {/** none */tag: string;}/**
+Schema type for ChatAddPublicKeyRequest
+ *
+ * @public
+ */
+export interface ChatAddPublicKeyRequest {/** When true, the server generates a new version. */generateVersion?: boolean;/** Public key registration payload. */publicKey: Record<string, any>;/** Public key version. */version: string;}/**
+Schema type for ChatAddPublicKeyResponse
+ *
+ * @public
+ */
+export interface ChatAddPublicKeyResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
+A Chat conversation resource representing either a direct or group conversation.
+ *
+ * @public
+ */
+export interface ChatConversation {/** User IDs of group admins. Only present for group conversations. */adminIds?: Array<string>;/** ISO 8601 timestamp when the group was created. Only present for group conversations. */createdAt?: string;/** URL for the group avatar. Only present for group conversations. */groupAvatarUrl?: string;/** Encrypted group name. Only present for group conversations. */groupName?: string;/** The unique identifier for this conversation. */id: string;/** Whether notifications are muted for this conversation. */isMuted?: boolean;/** User IDs of group members. Only present for group conversations. */memberIds?: Array<string>;/** Message time-to-live in milliseconds. */messageTtlMsec?: string;/** Array of user IDs who are participants in this conversation. */participantIds?: Array<string>;/** Whether screen capture blocking is enabled for this conversation. */screenCaptureBlockingEnabled?: boolean;/** Whether screen capture detection is enabled for this conversation. */screenCaptureDetectionEnabled?: boolean;/** The type of conversation: 'direct' or 'group'. */type?: "direct" | "group";/** ISO 8601 timestamp when the group was last updated. Only present for group conversations. */updatedAt?: string;}/**
+Unique identifier of an Chat conversation. Format is either two user IDs separated by a hyphen (e.g., '1215441834412953600-1603419180975409153') for direct conversations, or 'g' followed by a numeric ID (e.g., 'g1234567890123456789') for group conversations.
+ *
+ * @public
+ */
+export type ChatConversationId = string;/**
+Schema type for ChatGetConversationResponse
+ *
+ * @public
+ */
+export interface ChatGetConversationResponse {/** List of message events in the conversation. */data?: Array<ChatMessageEvent>;/** none */errors?: Array<Problem>;/** none */meta?: Record<string, any>;}/**
+Schema type for ChatGetConversationsResponse
+ *
+ * @public
+ */
+export interface ChatGetConversationsResponse {/** List of conversations in the user's inbox. */data?: Array<ChatConversation>;/** none */errors?: Array<Problem>;/** Expanded objects requested via expansions parameter. */includes?: Record<string, any>;/** none */meta?: Record<string, any>;}/**
+Schema type for ChatMarkConversationReadRequest
+ *
+ * @public
+ */
+export interface ChatMarkConversationReadRequest {/** The sequence ID of the last message to mark as read up to. */seenUntilSequenceId: string;}/**
+Schema type for ChatMarkConversationReadResponse
+ *
+ * @public
+ */
+export interface ChatMarkConversationReadResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
+Schema type for ChatMediaDownloadResponse
+ *
+ * @public
+ */
+export interface ChatMediaDownloadResponse {/** Raw encrypted media bytes. The actual response has content type application/octet-stream, not JSON. This schema exists only to satisfy platform constraints. */data?: string;/** none */errors?: Array<Problem>;}
+/**
+Schema type for ChatMediaUploadAppendRequest
+ *
+ * @public
+ */
+export type ChatMediaUploadAppendRequest = any;/**
+Request body for finalizing a Chat media upload.
+ *
+ * @public
+ */
+export interface ChatMediaUploadFinalizeRequest {/** XChat conversation identifier for the upload. */conversationId?: string;/** Media hash key returned from initialize. */mediaHashKey?: string;/** Optional message identifier associated with the upload. */messageId?: string;/** Total number of uploaded parts as a numeric string. */numParts?: string;/** Optional TTL for the media in milliseconds. */ttlMsec?: string;}/**
+Response from finalizing a Chat media upload.
+ *
+ * @public
+ */
+export interface ChatMediaUploadFinalizeResponse {/** none */data?: Record<string, any>;}/**
+Request body for initializing a Chat media upload.
+ *
+ * @public
+ */
+export interface ChatMediaUploadInitializeRequest {/** XChat conversation identifier for the upload. */conversationId?: string;/** Total size of the media upload in bytes. */totalBytes?: number;}/**
+Response from initializing a Chat media upload.
+ *
+ * @public
+ */
+export interface ChatMediaUploadInitializeResponse {/** none */data?: Record<string, any>;}/**
+An Chat message event with extracted envelope fields and the original encoded event.
+ *
+ * @public
+ */
+export interface ChatMessageEvent {/** The conversation ID this message belongs to. */conversationId?: string;/** The conversation token for this message. */conversationToken?: string;/** The creation timestamp in milliseconds. */createdAtMsec?: string;/** Base64-encoded MessageEvent for client decoding. */encodedEvent: string;/** The unique identifier for this message event (message_id). */id?: string;/** Whether the message is from a trusted source. */isTrusted?: boolean;/** Message event signature for verification. */messageEventSignature?: ChatMessageEventSignature;/** The sequence ID of the previous message. */previousSequenceId?: string;/** The user ID of the message sender. */senderId?: string;/** The sequence identifier for ordering messages. */sequenceId?: string;}/**
+Message event signature for verification.
+ *
+ * @public
+ */
+export interface ChatMessageEventSignature {/** List of signing key information for message verification. */messageSigningKeyInfoList?: Array<ChatMessageSigningKeyInfo>;/** The version of the public key used for signing. */publicKeyVersion?: string;/** The signature of the message event. */signature?: string;/** The version of the signature algorithm. */signatureVersion?: string;/** The public key used for signing. */signingPublicKey?: string;}/**
+Signing key information for message verification.
+ *
+ * @public
+ */
+export interface ChatMessageSigningKeyInfo {/** The member ID associated with this signing key. */memberId?: string;/** The version of the public key. */publicKeyVersion?: string;/** The signing public key. */signingPublicKey?: string;}/**
+Schema type for ChatSendMessageRequest
+ *
+ * @public
+ */
+export interface ChatSendMessageRequest {/** Optional conversation token. */conversationToken?: string;/** Base64-encoded Thrift MessageCreateEvent containing encrypted message contents. */encodedMessageCreateEvent: string;/** Base64-encoded Thrift MessageEventSignature for message verification. */encodedMessageEventSignature?: string;/** Unique identifier for this message. */messageId: string;}/**
+Schema type for ChatSendMessageResponse
+ *
+ * @public
+ */
+export interface ChatSendMessageResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
+Schema type for ChatSendTypingIndicatorResponse
+ *
+ * @public
+ */
+export interface ChatSendTypingIndicatorResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
 The ID of the client application
  *
  * @public
@@ -471,6 +572,16 @@ Schema type for GeoRestrictions
  * @public
  */
 export type GeoRestrictions = any;/**
+Schema type for Get2ChatConversationsConversationIdResponse
+ *
+ * @public
+ */
+export interface Get2ChatConversationsConversationIdResponse {/** none */data?: Array<ChatMessageEvent>;/** none */errors?: Array<Problem>;/** none */meta?: Record<string, any>;}/**
+Schema type for Get2ChatConversationsResponse
+ *
+ * @public
+ */
+export interface Get2ChatConversationsResponse {/** none */data?: Array<ChatConversation>;/** none */errors?: Array<Problem>;/** none */includes?: Expansions;/** none */meta?: Record<string, any>;}/**
 Schema type for Get2CommunitiesIdResponse
  *
  * @public
@@ -581,6 +692,11 @@ Schema type for Get2ListsIdTweetsResponse
  * @public
  */
 export interface Get2ListsIdTweetsResponse {/** none */data?: Array<Tweet>;/** none */errors?: Array<Problem>;/** none */includes?: Expansions;/** none */meta?: Record<string, any>;}/**
+Schema type for Get2MarketplaceHandlesHandleAvailabilityResponse
+ *
+ * @public
+ */
+export interface Get2MarketplaceHandlesHandleAvailabilityResponse {/** none */data?: MarketplaceHandleAvailability;/** none */errors?: Array<Problem>;}/**
 Schema type for Get2MediaAnalyticsResponse
  *
  * @public
@@ -766,6 +882,11 @@ Schema type for Get2UsersByUsernameUsernameResponse
  * @public
  */
 export interface Get2UsersByUsernameUsernameResponse {/** The X User object. */data?: User;/** none */errors?: Array<Problem>;/** none */includes?: Expansions;}/**
+Schema type for Get2UsersIdAffiliatesResponse
+ *
+ * @public
+ */
+export interface Get2UsersIdAffiliatesResponse {/** none */data?: Array<User>;/** none */errors?: Array<Problem>;/** none */includes?: Expansions;/** none */meta?: Record<string, any>;}/**
 Schema type for Get2UsersIdBlockingResponse
  *
  * @public
@@ -821,6 +942,11 @@ Schema type for Get2UsersIdPinnedListsResponse
  * @public
  */
 export interface Get2UsersIdPinnedListsResponse {/** none */data?: Array<List>;/** none */errors?: Array<Problem>;/** none */includes?: Expansions;/** none */meta?: Record<string, any>;}/**
+Schema type for Get2UsersIdPublicKeysResponse
+ *
+ * @public
+ */
+export interface Get2UsersIdPublicKeysResponse {/** none */data?: Array<PublicKey>;/** none */errors?: Array<Problem>;}/**
 Schema type for Get2UsersIdResponse
  *
  * @public
@@ -909,6 +1035,21 @@ Schema type for KillAllConnectionsResponse
  * @public
  */
 export interface KillAllConnectionsResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
+Schema type for KillConnectionsByEndpointResponse
+ *
+ * @public
+ */
+export interface KillConnectionsByEndpointResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
+Schema type for KillConnectionsByUuidsRequest
+ *
+ * @public
+ */
+export interface KillConnectionsByUuidsRequest {/** Array of connection UUIDs to terminate */uuids: Array<string>;}/**
+Schema type for KillConnectionsByUuidsResponse
+ *
+ * @public
+ */
+export interface KillConnectionsByUuidsResponse {/** none */data?: Record<string, any>;/** none */errors?: Array<Problem>;}/**
 Schema type for LikeComplianceSchema
  *
  * @public
@@ -1005,6 +1146,11 @@ Schema type for ManagementInfo
  * @public
  */
 export interface ManagementInfo {/** Indicates if the media is managed by Media Studio */managed: boolean;}/**
+Schema type for MarketplaceHandleAvailability
+ *
+ * @public
+ */
+export interface MarketplaceHandleAvailability {/** Availability state of the handle. */availabilityState: string;/** Redirect URL for marketplace handle search. */redirectUrl?: string;}/**
 Schema type for Media
  *
  * @public
@@ -1030,6 +1176,11 @@ The media category of uploaded media to which subtitles should be added/deleted
  * @public
  */
 export type MediaCategorySubtitles = "AmplifyVideo" | "TweetVideo";/**
+The media hash key returned from the upload initialize step. Alphanumeric characters only.
+ *
+ * @public
+ */
+export type MediaHashKey = string;/**
 The height of the media in pixels.
  *
  * @public
@@ -1367,6 +1518,11 @@ Schema type for ProfileUpdateActivityResponsePayload
  * @public
  */
 export interface ProfileUpdateActivityResponsePayload {/** none */after?: string;/** none */before?: string;}/**
+Public key information for Chat encryption
+ *
+ * @public
+ */
+export interface PublicKey {/** Identity public key (base64 encoded). */publicKey?: string;/** Signing public key (base64 encoded). */signingPublicKey?: string;/** Juicebox configuration. */tokenMap?: Record<string, any>;/** Public key version. */version?: string;}/**
 Confirmation that the replay job request was accepted.
  *
  * @public

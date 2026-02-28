@@ -11,14 +11,14 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for get
- * 
- * @public
- */
-export type GetResponse = Schemas.Get2NewsIdResponse;
-/**
  * Response for search
  * 
  * @public
  */
 export type SearchResponse = Schemas.Get2NewsSearchResponse;
+/**
+ * Response for get
+ * 
+ * @public
+ */
+export type GetResponse = Schemas.Get2NewsIdResponse;
