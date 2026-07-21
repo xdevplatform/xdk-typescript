@@ -7,109 +7,193 @@
 import type * as Schemas from '../schemas.js';
 
 
-
-
-
-/**
- * Request for mediaUploadInitialize
- * 
- * @public
- */
-export type MediaUploadInitializeRequest = Schemas.ChatMediaUploadInitializeRequest;
-/**
- * Response for mediaUploadInitialize
- * 
- * @public
- */
-export type MediaUploadInitializeResponse = Schemas.ChatMediaUploadInitializeResponse;
-/**
- * Response for getConversation
- * 
- * @public
- */
-export type GetConversationResponse = Schemas.ChatGetConversationResponse;
-/**
- * Response for sendTypingIndicator
- * 
- * @public
- */
-export type SendTypingIndicatorResponse = Schemas.ChatSendTypingIndicatorResponse;
-/**
- * Request for mediaUploadFinalize
- * 
- * @public
- */
-export type MediaUploadFinalizeRequest = Schemas.ChatMediaUploadFinalizeRequest;
-/**
- * Response for mediaUploadFinalize
- * 
- * @public
- */
-export type MediaUploadFinalizeResponse = Schemas.ChatMediaUploadFinalizeResponse;
-/**
- * Response for getConversations
- * 
- * @public
- */
-export type GetConversationsResponse = Schemas.ChatGetConversationsResponse;
-/**
- * Response for mediaDownload
- * 
- * @public
- */
-export type MediaDownloadResponse = Schemas.ChatMediaDownloadResponse;
-/**
- * Request for markConversationRead
- * 
- * @public
- */
-export type MarkConversationReadRequest = Schemas.ChatMarkConversationReadRequest;
-/**
- * Response for markConversationRead
- * 
- * @public
- */
-export type MarkConversationReadResponse = Schemas.ChatMarkConversationReadResponse;
-/**
- * Request for sendMessage
- * 
- * @public
- */
-export type SendMessageRequest = Schemas.ChatSendMessageRequest;
-/**
- * Response for sendMessage
- * 
- * @public
- */
-export type SendMessageResponse = Schemas.ChatSendMessageResponse;
 /**
  * Request for mediaUploadAppend
- * 
+ *
  * @public
  */
 export type MediaUploadAppendRequest = Schemas.ChatMediaUploadAppendRequest;
 
+
 /**
  * Response for mediaUploadAppend
- * 
+ *
  * @public
  */
-export type { MediaUploadAppendResponse as MediaUploadAppendResponse } from '../schemas.js';
+export type MediaUploadAppendResponse = Schemas.MediaUploadAppendResponse;
+
+
 /**
- * Response for getUserPublicKeys
- * 
+ * Request for addConversationKeys
+ *
  * @public
  */
-export type GetUserPublicKeysResponse = Schemas.Get2UsersIdPublicKeysResponse;
+export type AddConversationKeysRequest = Schemas.ChatInitializeConversationKeysRequest;
+
+
+/**
+ * Response for addConversationKeys
+ *
+ * @public
+ */
+export type AddConversationKeysResponse = Schemas.ChatInitializeConversationKeysResponse;
+
+
+/**
+ * Request for addGroupMembers
+ *
+ * @public
+ */
+export type AddGroupMembersRequest = Schemas.ChatAddGroupMembersRequest;
+
+
+/**
+ * Response for addGroupMembers
+ *
+ * @public
+ */
+export type AddGroupMembersResponse = Schemas.ChatAddGroupMembersResponse;
+
+
+/**
+ * Request for markConversationRead
+ *
+ * @public
+ */
+export type MarkConversationReadRequest = Schemas.ChatMarkConversationReadRequest;
+
+
+/**
+ * Response for markConversationRead
+ *
+ * @public
+ */
+export type MarkConversationReadResponse = Schemas.ChatMarkConversationReadResponse;
+
+
 /**
  * Request for addUserPublicKey
- * 
+ *
  * @public
  */
 export type AddUserPublicKeyRequest = Schemas.ChatAddPublicKeyRequest;
+
+
 /**
  * Response for addUserPublicKey
- * 
+ *
  * @public
  */
 export type AddUserPublicKeyResponse = Schemas.ChatAddPublicKeyResponse;
+
+
+
+/**
+ * Response for getConversations
+ *
+ * @public
+ */
+export type GetConversationsResponse = Schemas.ChatGetConversationsResponse;
+
+
+
+/**
+ * Response for initializeGroup
+ *
+ * @public
+ */
+export type InitializeGroupResponse = Schemas.ChatInitializeGroupResponse;
+
+
+/**
+ * Request for sendMessage
+ *
+ * @public
+ */
+export type SendMessageRequest = Schemas.ChatSendMessageRequest;
+
+
+/**
+ * Response for sendMessage
+ *
+ * @public
+ */
+export type SendMessageResponse = Schemas.ChatSendMessageResponse;
+
+
+/**
+ * Request for mediaUploadInitialize
+ *
+ * @public
+ */
+export type MediaUploadInitializeRequest = Schemas.ChatMediaUploadInitializeRequest;
+
+
+/**
+ * Response for mediaUploadInitialize
+ *
+ * @public
+ */
+export type MediaUploadInitializeResponse = Schemas.ChatMediaUploadInitializeResponse;
+
+
+
+/**
+ * Response for sendTypingIndicator
+ *
+ * @public
+ */
+export type SendTypingIndicatorResponse = Schemas.ChatSendTypingIndicatorResponse;
+
+
+
+/**
+ * Response for getConversationEvents
+ *
+ * @public
+ */
+export type GetConversationEventsResponse = Schemas.ChatGetConversationResponse;
+
+
+
+/**
+ * Response for getConversation
+ *
+ * @public
+ */
+export type GetConversationResponse = Schemas.ChatGetConversationsResponse;
+
+
+/**
+ * Request for createConversation
+ *
+ * @public
+ */
+export type CreateConversationRequest = Schemas.ChatCreateConversationRequest;
+
+
+/**
+ * Response for createConversation
+ *
+ * @public
+ */
+export type CreateConversationResponse = Schemas.ChatCreateConversationResponse;
+
+
+
+
+/**
+ * Request for mediaUploadFinalize
+ *
+ * @public
+ */
+export type MediaUploadFinalizeRequest = Schemas.ChatMediaUploadFinalizeRequest;
+
+
+/**
+ * Response for mediaUploadFinalize
+ *
+ * @public
+ */
+export type MediaUploadFinalizeResponse = Schemas.ChatMediaUploadFinalizeResponse;
+

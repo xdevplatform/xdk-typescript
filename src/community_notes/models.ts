@@ -8,47 +8,60 @@ import type * as Schemas from '../schemas.js';
 
 
 
+/**
+ * Response for delete
+ *
+ * @public
+ */
+export type DeleteResponse = Schemas.DeleteNoteResponse;
 
 
 /**
  * Request for evaluate
- * 
+ *
  * @public
  */
 export type EvaluateRequest = Schemas.EvaluateNoteRequest;
+
+
 /**
  * Response for evaluate
- * 
+ *
  * @public
  */
 export type EvaluateResponse = Schemas.EvaluateNoteResponse;
-/**
- * Request for create
- * 
- * @public
- */
-export type CreateRequest = Schemas.CreateNoteRequest;
-/**
- * Response for create
- * 
- * @public
- */
-export type CreateResponse = Schemas.CreateNoteResponse;
-/**
- * Response for searchWritten
- * 
- * @public
- */
-export type SearchWrittenResponse = Schemas.Get2NotesSearchNotesWrittenResponse;
+
+
+
 /**
  * Response for searchEligiblePosts
- * 
+ *
  * @public
  */
 export type SearchEligiblePostsResponse = Schemas.Get2NotesSearchPostsEligibleForNotesResponse;
+
+
+
 /**
- * Response for delete
- * 
+ * Response for searchWritten
+ *
  * @public
  */
-export type DeleteResponse = Schemas.DeleteNoteResponse;
+export type SearchWrittenResponse = Schemas.Get2NotesSearchNotesWrittenResponse;
+
+
+/**
+ * Request for create
+ *
+ * @public
+ */
+export type CreateRequest = Schemas.CreateNoteRequest;
+
+
+/**
+ * Response for create
+ *
+ * @public
+ */
+export type CreateResponse = Schemas.CreateNoteResponse;
+

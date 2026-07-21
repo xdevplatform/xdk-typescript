@@ -9,6 +9,7 @@
  */
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
+import type * as Schemas from '../schemas.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -16,6 +17,7 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
+
 GetOpenApiSpecResponse,
 } from './models.js';
 

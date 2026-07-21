@@ -8,8 +8,10 @@
  */
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
+import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
+
 
   GetOpenApiSpecResponse,
 

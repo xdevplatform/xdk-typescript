@@ -48,7 +48,8 @@ describe('UsageClient Contracts', () => {
         
         
       }),
-      text: async () => '{}'
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
     } as Response);
 
     try {
@@ -103,7 +104,8 @@ describe('UsageClient Contracts', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       
       json: async () => ({}),
-      text: async () => '{}'
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
     } as Response);
 
     try {
@@ -150,7 +152,8 @@ describe('UsageClient Contracts', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       
       json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData)
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
     } as Response);
 
     try {

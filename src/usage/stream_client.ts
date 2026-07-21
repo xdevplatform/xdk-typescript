@@ -8,8 +8,10 @@
  */
 
 import { Client, ApiResponse, RequestOptions } from '../client.js';
+import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
+
 
   GetResponse,
 
@@ -31,7 +33,7 @@ export interface GetStreamingOptions {
     
     /** A comma separated list of Usage fields to display. 
      * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
-    usageFields?: Array<any>;
+    usageFields?: Array<"cap_reset_day" | "daily_client_app_usage" | "daily_project_usage" | "project_cap" | "project_id" | "project_usage">;
     
     
     

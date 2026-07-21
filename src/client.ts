@@ -17,23 +17,7 @@ import {
 
 
 
-import { ListsClient } from "./lists/index.js";
-
-
-
-import { ActivityClient } from "./activity/index.js";
-
-
-
-import { StreamClient } from "./stream/client.js";
-
-
-
-import { PostsClient } from "./posts/index.js";
-
-
-
-import { ChatClient } from "./chat/index.js";
+import { NewsClient } from "./news/index.js";
 
 
 
@@ -41,19 +25,7 @@ import { SpacesClient } from "./spaces/index.js";
 
 
 
-import { ConnectionsClient } from "./connections/index.js";
-
-
-
-import { MediaClient } from "./media/index.js";
-
-
-
-import { UsageClient } from "./usage/index.js";
-
-
-
-import { CommunitiesClient } from "./communities/index.js";
+import { AccountActivityClient } from "./account_activity/index.js";
 
 
 
@@ -61,19 +33,15 @@ import { TrendsClient } from "./trends/index.js";
 
 
 
-import { WebhooksClient } from "./webhooks/index.js";
+import { ListsClient } from "./lists/index.js";
 
 
 
-import { AccountActivityClient } from "./account_activity/index.js";
+import { GeneralClient } from "./general/index.js";
 
 
 
-import { CommunityNotesClient } from "./community_notes/index.js";
-
-
-
-import { DirectMessagesClient } from "./direct_messages/index.js";
+import { ChatClient } from "./chat/index.js";
 
 
 
@@ -81,15 +49,51 @@ import { ComplianceClient } from "./compliance/index.js";
 
 
 
+import { PostsClient } from "./posts/index.js";
+
+
+
+import { UsageClient } from "./usage/index.js";
+
+
+
+import { StreamClient } from "./stream/client.js";
+
+
+
+import { ActivityClient } from "./activity/index.js";
+
+
+
+import { CommunitiesClient } from "./communities/index.js";
+
+
+
+import { CommunityNotesClient } from "./community_notes/index.js";
+
+
+
+import { WebhooksClient } from "./webhooks/index.js";
+
+
+
+import { MediaClient } from "./media/index.js";
+
+
+
+import { ConnectionsClient } from "./connections/index.js";
+
+
+
+import { ArticlesClient } from "./articles/index.js";
+
+
+
 import { UsersClient } from "./users/index.js";
 
 
 
-import { NewsClient } from "./news/index.js";
-
-
-
-import { GeneralClient } from "./general/index.js";
+import { DirectMessagesClient } from "./direct_messages/index.js";
 
 
 
@@ -150,6 +154,8 @@ export interface RequestOptions {
   raw?: boolean;
   /** Security requirements for the endpoint (from OpenAPI spec) - used for smart auth selection */
   security?: Array<Record<string, string[]>>;
+  /** Whether this endpoint returns binary data (ArrayBuffer) - determined from OpenAPI spec */
+  binary?: boolean;
 }
 
 /**
@@ -324,62 +330,65 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** lists client */
-  readonly lists: ListsClient;
-
-  /** activity client */
-  readonly activity: ActivityClient;
-
-  /** stream client */
-  readonly stream: StreamClient;
-
-  /** posts client */
-  readonly posts: PostsClient;
-
-  /** chat client */
-  readonly chat: ChatClient;
+  /** news client */
+  readonly news: NewsClient;
 
   /** spaces client */
   readonly spaces: SpacesClient;
 
-  /** connections client */
-  readonly connections: ConnectionsClient;
-
-  /** media client */
-  readonly media: MediaClient;
-
-  /** usage client */
-  readonly usage: UsageClient;
-
-  /** communities client */
-  readonly communities: CommunitiesClient;
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
 
   /** trends client */
   readonly trends: TrendsClient;
 
-  /** webhooks client */
-  readonly webhooks: WebhooksClient;
+  /** lists client */
+  readonly lists: ListsClient;
 
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
+  /** general client */
+  readonly general: GeneralClient;
 
-  /** community notes client */
-  readonly communityNotes: CommunityNotesClient;
-
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
+  /** chat client */
+  readonly chat: ChatClient;
 
   /** compliance client */
   readonly compliance: ComplianceClient;
 
+  /** posts client */
+  readonly posts: PostsClient;
+
+  /** usage client */
+  readonly usage: UsageClient;
+
+  /** stream client */
+  readonly stream: StreamClient;
+
+  /** activity client */
+  readonly activity: ActivityClient;
+
+  /** communities client */
+  readonly communities: CommunitiesClient;
+
+  /** community notes client */
+  readonly communityNotes: CommunityNotesClient;
+
+  /** webhooks client */
+  readonly webhooks: WebhooksClient;
+
+  /** media client */
+  readonly media: MediaClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
+
+  /** articles client */
+  readonly articles: ArticlesClient;
+
   /** users client */
   readonly users: UsersClient;
 
-  /** news client */
-  readonly news: NewsClient;
-
-  /** general client */
-  readonly general: GeneralClient;
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
 
 
   /**
@@ -426,7 +435,7 @@ export class Client {
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.5.0',
+      'User-Agent': 'xdk-typescript/0.6.0',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((config as ClientConfig).headers || {}),
@@ -435,43 +444,45 @@ export class Client {
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.lists = new ListsClient(this);
-
-    this.activity = new ActivityClient(this);
-
-    this.stream = new StreamClient(this);
-
-    this.posts = new PostsClient(this);
-
-    this.chat = new ChatClient(this);
+    this.news = new NewsClient(this);
 
     this.spaces = new SpacesClient(this);
 
-    this.connections = new ConnectionsClient(this);
-
-    this.media = new MediaClient(this);
-
-    this.usage = new UsageClient(this);
-
-    this.communities = new CommunitiesClient(this);
+    this.accountActivity = new AccountActivityClient(this);
 
     this.trends = new TrendsClient(this);
 
-    this.webhooks = new WebhooksClient(this);
+    this.lists = new ListsClient(this);
 
-    this.accountActivity = new AccountActivityClient(this);
+    this.general = new GeneralClient(this);
 
-    this.communityNotes = new CommunityNotesClient(this);
-
-    this.directMessages = new DirectMessagesClient(this);
+    this.chat = new ChatClient(this);
 
     this.compliance = new ComplianceClient(this);
 
+    this.posts = new PostsClient(this);
+
+    this.usage = new UsageClient(this);
+
+    this.stream = new StreamClient(this);
+
+    this.activity = new ActivityClient(this);
+
+    this.communities = new CommunitiesClient(this);
+
+    this.communityNotes = new CommunityNotesClient(this);
+
+    this.webhooks = new WebhooksClient(this);
+
+    this.media = new MediaClient(this);
+
+    this.connections = new ConnectionsClient(this);
+
+    this.articles = new ArticlesClient(this);
+
     this.users = new UsersClient(this);
 
-    this.news = new NewsClient(this);
-
-    this.general = new GeneralClient(this);
+    this.directMessages = new DirectMessagesClient(this);
 
   }
 
@@ -579,13 +590,14 @@ export class Client {
       }
 
       let data: T;
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const rawData = await response.json();
-        // Transform snake_case keys to camelCase to match TypeScript conventions
-        data = transformKeys<T>(rawData);
+      // Check if binary response is expected (from OpenAPI spec)
+      if (options.binary) {
+        // Return ArrayBuffer for binary endpoints
+        data = await response.arrayBuffer() as T;
       } else {
-        data = await response.text() as T;
+        // Default: parse as JSON and transform keys
+        const rawData = await response.json();
+        data = transformKeys<T>(rawData);
       }
 
       // Return parsed body for non-streaming requests

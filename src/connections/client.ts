@@ -9,6 +9,7 @@
  */
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
+import type * as Schemas from '../schemas.js';
 import { 
     Paginator, 
     PostPaginator, 
@@ -16,10 +17,14 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-DeleteAllResponse,
+
 DeleteByEndpointResponse,
+
+DeleteAllResponse,
+
 GetConnectionHistoryResponse,
 DeleteByUuidsRequest,
+
 DeleteByUuidsResponse,
 } from './models.js';
 
@@ -36,13 +41,13 @@ export interface GetConnectionHistoryOptions {
     
     /** Filter by connection status. Use 'active' for current connections, 'inactive' for historical/disconnected connections, or 'all' for both. 
      * Also accepts: status or proper camelCase (e.g., status) */
-    status?: string;
+    status?: "active" | "inactive" | "all";
     
     
     
     /** Filter by streaming endpoint. Specify one or more endpoint names to filter results. 
      * Also accepts: endpoints or proper camelCase (e.g., endpoints) */
-    endpoints?: Array<any>;
+    endpoints?: Array<"filtered_stream" | "sample_stream" | "sample10_stream" | "firehose_stream" | "tweets_compliance_stream" | "users_compliance_stream" | "tweet_label_stream" | "firehose_stream_lang_en" | "firehose_stream_lang_ja" | "firehose_stream_lang_ko" | "firehose_stream_lang_pt" | "likes_firehose_stream" | "likes_sample10_stream" | "likes_compliance_stream">;
     
     
     
@@ -60,7 +65,7 @@ export interface GetConnectionHistoryOptions {
     
     /** A comma separated list of Connection fields to display. 
      * Also accepts: connection.fields or proper camelCase (e.g., connectionFields) */
-    connectionFields?: Array<any>;
+    connectionFields?: Array<"client_ip" | "connected_at" | "disconnect_reason" | "disconnected_at" | "endpoint_name" | "id">;
     
     
     
@@ -119,6 +124,104 @@ export class ConnectionsClient {
         
         return normalized as T;
     }
+
+
+
+  /**
+   * Terminate connections by endpoint
+   * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
+
+
+   * @param endpointId The endpoint ID to terminate connections for.
+
+
+
+
+   * @returns {Promise<DeleteByEndpointResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteByEndpoint(
+        
+        
+        endpointId: "filtered_stream" | "sample_stream" | "sample10_stream" | "firehose_stream" | "tweets_compliance_stream" | "users_compliance_stream" | "tweet_label_stream" | "firehose_stream_lang_en" | "firehose_stream_lang_ja" | "firehose_stream_lang_ko" | "firehose_stream_lang_pt" | "likes_firehose_stream" | "likes_sample10_stream" | "likes_compliance_stream",
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteByEndpoint(
+        
+        
+        endpointId: "filtered_stream" | "sample_stream" | "sample10_stream" | "firehose_stream" | "tweets_compliance_stream" | "users_compliance_stream" | "tweet_label_stream" | "firehose_stream_lang_en" | "firehose_stream_lang_ja" | "firehose_stream_lang_ko" | "firehose_stream_lang_pt" | "likes_firehose_stream" | "likes_sample10_stream" | "likes_compliance_stream",
+        
+        
+        
+        
+        
+    ): Promise<DeleteByEndpointResponse>;
+    // Implementation
+    async deleteByEndpoint(
+        
+        
+        
+        endpointId: "filtered_stream" | "sample_stream" | "sample10_stream" | "firehose_stream" | "tweets_compliance_stream" | "users_compliance_stream" | "tweet_label_stream" | "firehose_stream_lang_en" | "firehose_stream_lang_ja" | "firehose_stream_lang_ko" | "firehose_stream_lang_pt" | "likes_firehose_stream" | "likes_sample10_stream" | "likes_compliance_stream",
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteByEndpointResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections/{endpoint_id}';
+        
+        
+        path = path.replace('{endpoint_id}', encodeURIComponent(String(endpointId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteByEndpointResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
 
 
@@ -191,104 +294,6 @@ export class ConnectionsClient {
         };
 
         return this.client.request<DeleteAllResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Terminate connections by endpoint
-   * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
-
-
-   * @param endpointId The endpoint ID to terminate connections for.
-
-
-
-
-   * @returns {Promise<DeleteByEndpointResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteByEndpoint(
-        
-        
-        endpointId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteByEndpoint(
-        
-        
-        endpointId: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteByEndpointResponse>;
-    // Implementation
-    async deleteByEndpoint(
-        
-        
-        
-        endpointId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteByEndpointResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/connections/{endpoint_id}';
-        
-        
-        path = path.replace('{endpoint_id}', encodeURIComponent(String(endpointId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteByEndpointResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
