@@ -55,7 +55,9 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # npm 12+ (required below for trusted publishing) needs Node >= 22.22;
+          # keep this on an LTS line that satisfies npm@latest's engine range.
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
       
       - name: Update npm for trusted publishing
