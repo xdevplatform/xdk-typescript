@@ -15,6 +15,10 @@ import {
 
   GetPersonalizedResponse,
 
+
+
+  GetByWoeidResponse,
+
 } from './models.js';
 
 /**
@@ -28,6 +32,35 @@ export interface GetPersonalizedStreamingOptions {
     /** A comma separated list of PersonalizedTrend fields to display. 
      * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
     personalizedTrendFields?: Array<"category" | "post_count" | "trend_name" | "trending_since">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByWoeid method
+ * 
+ * @public
+ */
+export interface GetByWoeidStreamingOptions {
+    
+    
+    /** max_trends 
+     * Also accepts: max_trends or proper camelCase (e.g., maxTrends) */
+    maxTrends?: number;
+    
+    
+    
+    /** A comma separated list of Trend fields to display. 
+     * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
+    trendFields?: Array<"trend_name" | "tweet_count">;
     
     
     
@@ -74,6 +107,9 @@ export class TrendsClient {
         
         return normalized as T;
     }
+
+
+
 
 
 
@@ -172,6 +208,132 @@ export class TrendsClient {
 
         // Make the request
         return this.client.request<GetPersonalizedResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Trends by Woeid
+     * 
+     * @returns Promise with the API response
+     */
+    async getByWoeid(
+        
+        
+        
+        woeid: number,
+        
+        
+        
+        
+        
+        
+        
+        options: GetByWoeidStreamingOptions = {}
+    ): Promise<GetByWoeidResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByWoeid');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_trends': 'maxTrends',
+            
+            
+            
+            'trend.fields': 'trendFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxTrends = undefined,
+            
+            
+            
+            trendFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/trends/by/woeid/{woeid}';
+        
+        
+        path = path.replace('{woeid}', encodeURIComponent(String(woeid)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxTrends !== undefined) {
+            
+            params.append('max_trends', String(maxTrends));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (trendFields !== undefined && trendFields.length > 0) {
+            
+            params.append('trend.fields', trendFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByWoeidResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

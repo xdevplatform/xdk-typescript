@@ -15,3 +15,12 @@ import type * as Schemas from '../schemas.js';
  */
 export type GetPersonalizedResponse = Schemas.GetTrendsPersonalizedTrendsResponse;
 
+
+
+/**
+ * Response for getByWoeid
+ *
+ * @public
+ */
+export type GetByWoeidResponse = Schemas.GetTrendsByWoeidResponse;
+

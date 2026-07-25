@@ -9,58 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for createStreamLink
- *
- * @public
- */
-export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
-
-
-
-/**
- * Response for deleteStreamLink
- *
- * @public
- */
-export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
-
-
-
-/**
- * Response for getStreamLinks
- *
- * @public
- */
-export type GetStreamLinksResponse = Schemas.GetWebhooksStreamLinksResponse;
-
-
-
-/**
- * Response for get
- *
- * @public
- */
-export type GetResponse = Schemas.GetWebhooksResponse;
-
-
-/**
- * Request for create
- *
- * @public
- */
-export type CreateRequest = Schemas.CreateWebhooksRequest;
-
-
-/**
- * Response for create
- *
- * @public
- */
-export type CreateResponse = Schemas.CreateWebhooksResponse;
-
-
-
-/**
  * Response for validate
  *
  * @public
@@ -91,4 +39,56 @@ export type CreateWebhookReplayJobRequest = Schemas.CreateWebhookReplayJobReques
  * @public
  */
 export type CreateWebhookReplayJobResponse = Schemas.CreateWebhookReplayJobResponse;
+
+
+
+/**
+ * Response for get
+ *
+ * @public
+ */
+export type GetResponse = Schemas.GetWebhooksResponse;
+
+
+/**
+ * Request for create
+ *
+ * @public
+ */
+export type CreateRequest = Schemas.CreateWebhooksRequest;
+
+
+/**
+ * Response for create
+ *
+ * @public
+ */
+export type CreateResponse = Schemas.CreateWebhooksResponse;
+
+
+
+/**
+ * Response for getStreamLinks
+ *
+ * @public
+ */
+export type GetStreamLinksResponse = Schemas.GetWebhooksStreamLinksResponse;
+
+
+
+/**
+ * Response for createStreamLink
+ *
+ * @public
+ */
+export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
+
+
+
+/**
+ * Response for deleteStreamLink
+ *
+ * @public
+ */
+export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
 

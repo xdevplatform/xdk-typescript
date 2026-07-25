@@ -9,45 +9,11 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getPosts
+ * Response for getFollowers
  *
  * @public
  */
-export type GetPostsResponse = Schemas.GetListsPostsResponse;
-
-
-
-/**
- * Response for getMembers
- *
- * @public
- */
-export type GetMembersResponse = Schemas.GetListsMembersResponse;
-
-
-/**
- * Request for addMember
- *
- * @public
- */
-export type AddMemberRequest = Schemas.AddListsMemberRequest;
-
-
-/**
- * Response for addMember
- *
- * @public
- */
-export type AddMemberResponse = Schemas.AddListsMemberResponse;
-
-
-
-/**
- * Response for unfollowList
- *
- * @public
- */
-export type UnfollowListResponse = Schemas.UnfollowListResponse;
+export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
 
 
 /**
@@ -66,47 +32,13 @@ export type CreateRequest = Schemas.CreateListsRequest;
 export type CreateResponse = Schemas.CreateListsResponse;
 
 
+
 /**
- * Request for pinList
+ * Response for getPosts
  *
  * @public
  */
-export type PinListRequest = Schemas.PinListRequest;
-
-
-/**
- * Response for pinList
- *
- * @public
- */
-export type PinListResponse = Schemas.PinListResponse;
-
-
-
-/**
- * Response for unpinList
- *
- * @public
- */
-export type UnpinListResponse = Schemas.UnpinListResponse;
-
-
-
-/**
- * Response for removeMemberByUserId
- *
- * @public
- */
-export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
-
-
-
-/**
- * Response for getFollowers
- *
- * @public
- */
-export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
+export type GetPostsResponse = Schemas.GetListsPostsResponse;
 
 
 
@@ -141,4 +73,38 @@ export type UpdateResponse = Schemas.UpdateListsResponse;
  * @public
  */
 export type DeleteResponse = Schemas.DeleteListsResponse;
+
+
+
+/**
+ * Response for removeMemberByUserId
+ *
+ * @public
+ */
+export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
+
+
+
+/**
+ * Response for getMembers
+ *
+ * @public
+ */
+export type GetMembersResponse = Schemas.GetListsMembersResponse;
+
+
+/**
+ * Request for addMember
+ *
+ * @public
+ */
+export type AddMemberRequest = Schemas.AddListsMemberRequest;
+
+
+/**
+ * Response for addMember
+ *
+ * @public
+ */
+export type AddMemberResponse = Schemas.AddListsMemberResponse;
 

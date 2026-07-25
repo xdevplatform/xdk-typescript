@@ -18,12 +18,12 @@ import {
 } from '../paginator.js';
 import {
 
-DeleteSubscriptionResponse,
-
 ValidateSubscriptionResponse,
 CreateSubscriptionRequest,
 
 CreateSubscriptionResponse,
+
+DeleteSubscriptionResponse,
 
 GetSubscriptionsResponse,
 
@@ -83,124 +83,6 @@ export class AccountActivityClient {
         
         return normalized as T;
     }
-
-
-
-  /**
-   * Delete subscription
-   * Deletes an Account Activity subscription for the given webhook and user ID.
-
-
-   * @param webhookId webhook_id
-
-
-
-   * @param userId user_id
-
-
-
-
-   * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteSubscription(
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        userId: Schemas.UserId,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteSubscription(
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        userId: Schemas.UserId,
-        
-        
-        
-        
-        
-    ): Promise<DeleteSubscriptionResponse>;
-    // Implementation
-    async deleteSubscription(
-        
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        userId: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteSubscriptionResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteSubscriptionResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
 
 
 
@@ -280,7 +162,7 @@ export class AccountActivityClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.write', 'dm.read', 'tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.write', 'dm.read'],
                     
                 },
                 
@@ -394,7 +276,7 @@ export class AccountActivityClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.read', 'dm.write', 'tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['dm.read', 'dm.write', 'users.read', 'tweet.read'],
                     
                 },
                 
@@ -413,6 +295,124 @@ export class AccountActivityClient {
 
         return this.client.request<CreateSubscriptionResponse>(
             'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Delete subscription
+   * Deletes an Account Activity subscription for the given webhook and user ID.
+
+
+   * @param webhookId webhook_id
+
+
+
+   * @param userId user_id
+
+
+
+
+   * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteSubscription(
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        userId: Schemas.UserId,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteSubscription(
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        userId: Schemas.UserId,
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse>;
+    // Implementation
+    async deleteSubscription(
+        
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        userId: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteSubscriptionResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

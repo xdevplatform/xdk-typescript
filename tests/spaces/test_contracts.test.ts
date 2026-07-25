@@ -28,7 +28,7 @@ describe('SpacesClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getBuyers', async () => {
+  it('should have correct request structure for getByIds', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -60,7 +60,7 @@ describe('SpacesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_id',
+      ['test_item'],
       
       
       ];
@@ -69,7 +69,7 @@ describe('SpacesClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (spacesClient as any)['getBuyers'];
+      const method = (spacesClient as any)['getByIds'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -81,7 +81,7 @@ describe('SpacesClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/spaces/{id}/buyers';
+      const expectedPath = '/2/spaces';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -94,7 +94,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getBuyers', async () => {
+  it('should handle required parameters correctly for getByIds', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -113,7 +113,7 @@ describe('SpacesClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (spacesClient as any)['getBuyers'];
+      const method = (spacesClient as any)['getByIds'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -121,7 +121,7 @@ describe('SpacesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_id',
+      ['test_item'],
       
       
       ];
@@ -138,7 +138,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getBuyers', async () => {
+  it('should validate response structure for getByIds', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -169,13 +169,13 @@ describe('SpacesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_id',
+      ['test_item'],
       
       
       ];
       const options: any = {};
 
-      const method = (spacesClient as any)['getBuyers'];
+      const method = (spacesClient as any)['getByIds'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -358,7 +358,7 @@ describe('SpacesClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getPosts', async () => {
+  it('should have correct request structure for getBuyers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -399,7 +399,7 @@ describe('SpacesClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (spacesClient as any)['getPosts'];
+      const method = (spacesClient as any)['getBuyers'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -411,7 +411,7 @@ describe('SpacesClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/spaces/{id}/tweets';
+      const expectedPath = '/2/spaces/{id}/buyers';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -424,7 +424,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getPosts', async () => {
+  it('should handle required parameters correctly for getBuyers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -443,7 +443,7 @@ describe('SpacesClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (spacesClient as any)['getPosts'];
+      const method = (spacesClient as any)['getBuyers'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -468,7 +468,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getPosts', async () => {
+  it('should validate response structure for getBuyers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -505,7 +505,7 @@ describe('SpacesClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (spacesClient as any)['getPosts'];
+      const method = (spacesClient as any)['getBuyers'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -523,7 +523,7 @@ describe('SpacesClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getByIds', async () => {
+  it('should have correct request structure for getByCreatorIds', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -564,7 +564,7 @@ describe('SpacesClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (spacesClient as any)['getByIds'];
+      const method = (spacesClient as any)['getByCreatorIds'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -576,7 +576,7 @@ describe('SpacesClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/spaces';
+      const expectedPath = '/2/spaces/by/creator_ids';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -589,7 +589,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getByIds', async () => {
+  it('should handle required parameters correctly for getByCreatorIds', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -608,7 +608,7 @@ describe('SpacesClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (spacesClient as any)['getByIds'];
+      const method = (spacesClient as any)['getByCreatorIds'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -633,7 +633,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getByIds', async () => {
+  it('should validate response structure for getByCreatorIds', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -670,7 +670,7 @@ describe('SpacesClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (spacesClient as any)['getByIds'];
+      const method = (spacesClient as any)['getByCreatorIds'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -853,7 +853,7 @@ describe('SpacesClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getByCreatorIds', async () => {
+  it('should have correct request structure for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -885,7 +885,7 @@ describe('SpacesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      ['test_item'],
+      'test_id',
       
       
       ];
@@ -894,7 +894,7 @@ describe('SpacesClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (spacesClient as any)['getByCreatorIds'];
+      const method = (spacesClient as any)['getPosts'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -906,7 +906,7 @@ describe('SpacesClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/spaces/by/creator_ids';
+      const expectedPath = '/2/spaces/{id}/tweets';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -919,7 +919,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getByCreatorIds', async () => {
+  it('should handle required parameters correctly for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -938,7 +938,7 @@ describe('SpacesClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (spacesClient as any)['getByCreatorIds'];
+      const method = (spacesClient as any)['getPosts'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -946,7 +946,7 @@ describe('SpacesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      ['test_item'],
+      'test_id',
       
       
       ];
@@ -963,7 +963,7 @@ describe('SpacesClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getByCreatorIds', async () => {
+  it('should validate response structure for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -994,13 +994,13 @@ describe('SpacesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      ['test_item'],
+      'test_id',
       
       
       ];
       const options: any = {};
 
-      const method = (spacesClient as any)['getByCreatorIds'];
+      const method = (spacesClient as any)['getPosts'];
       const result = await method.apply(spacesClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure

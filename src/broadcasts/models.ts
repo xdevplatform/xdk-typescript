@@ -66,15 +66,6 @@ export type UpdateScheduledBroadcastResponse = Schemas.UpdateScheduledBroadcastR
 export type DeleteScheduledBroadcastResponse = Schemas.DeleteScheduledBroadcastResponse;
 
 
-
-/**
- * Response for goLiveScheduledBroadcast
- *
- * @public
- */
-export type GoLiveScheduledBroadcastResponse = Schemas.GoLiveScheduledBroadcastResponse;
-
-
 /**
  * Request for sendBroadcastChat
  *
@@ -89,4 +80,13 @@ export type SendBroadcastChatRequest = Schemas.SendBroadcastChatRequest;
  * @public
  */
 export type SendBroadcastChatResponse = Schemas.SendBroadcastChatResponse;
+
+
+
+/**
+ * Response for goLiveScheduledBroadcast
+ *
+ * @public
+ */
+export type GoLiveScheduledBroadcastResponse = Schemas.GoLiveScheduledBroadcastResponse;
 

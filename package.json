@@ -1,6 +1,6 @@
 {
   "name": "@xdevplatform/xdk",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "A modern TypeScript/JavaScript SDK for the X API",
   "type": "module",
   "main": "./dist/index.cjs",

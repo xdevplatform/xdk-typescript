@@ -141,595 +141,6 @@ var HttpClient = class {
 };
 var httpClient = new HttpClient();
 
-// src/usage/client.ts
-var UsageClient = class {
-  client;
-  /**
-   * Creates a new usage client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async get(options = {}) {
-    const paramMappings = {
-      "usage.fields": "usageFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      days = void 0,
-      usageFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/usage/tweets";
-    const params = new URLSearchParams();
-    if (days !== void 0) {
-      params.append("days", String(days));
-    }
-    if (usageFields !== void 0 && usageFields.length > 0) {
-      params.append("usage.fields", normalizeFields(usageFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/usage/models.ts
-var models_exports = {};
-
-// src/news/client.ts
-var NewsClient = class {
-  client;
-  /**
-   * Creates a new news client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async get(id, options = {}) {
-    const paramMappings = {
-      "news.fields": "newsFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      newsFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/news/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (newsFields !== void 0 && newsFields.length > 0) {
-      params.append("news.fields", normalizeFields(newsFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/news/models.ts
-var models_exports2 = {};
-
-// src/lists/client.ts
-var ListsClient = class {
-  client;
-  /**
-   * Creates a new lists client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getPosts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "post.fields": "postFields",
-      "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      postFields = [],
-      expansions = [],
-      userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}/tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "list.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getMembers(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}/members";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "list.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async addMember(id, body) {
-    let path = "/2/lists/{id}/members";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async unfollowList(id, listId) {
-    let path = "/2/users/{id}/followed_lists/{list_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async create(body) {
-    let path = "/2/lists";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "list.write", "list.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async pinList(id, body) {
-    let path = "/2/users/{id}/pinned_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "list.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async unpinList(id, listId) {
-    let path = "/2/users/{id}/pinned_lists/{list_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "list.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async removeMemberByUserId(id, userId) {
-    let path = "/2/lists/{id}/members/{user_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getFollowers(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}/followers";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getById(id, options = {}) {
-    const paramMappings = {
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/lists/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", normalizeFields(listFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async update(id, body) {
-    let path = "/2/lists/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "PUT",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async delete(id) {
-    let path = "/2/lists/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "list.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/lists/models.ts
-var models_exports3 = {};
-
 // src/media/client.ts
 var MediaClient = class {
   client;
@@ -757,29 +168,6 @@ var MediaClient = class {
       }
     }
     return normalized;
-  }
-  // Implementation
-  async finalizeUpload(id) {
-    let path = "/2/media/upload/{id}/finalize";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
   }
   // Implementation
   async getAnalytics(mediaKeys, startTime, endTime, options = {}) {
@@ -828,12 +216,45 @@ var MediaClient = class {
     );
   }
   // Implementation
-  async appendUpload(id, body) {
-    let path = "/2/media/upload/{id}/append";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+  async getUploadStatus(mediaId, options = {}) {
+    const paramMappings = {};
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      command = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/media/upload";
+    const params = new URLSearchParams();
+    if (mediaId !== void 0) {
+      params.append("media_id", String(mediaId));
+    }
+    if (command !== void 0) {
+      params.append("command", String(command));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async upload(body) {
+    let path = "/2/media/upload";
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -847,6 +268,52 @@ var MediaClient = class {
     };
     return this.client.request(
       "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createSubtitles(body) {
+    let path = "/2/media/subtitles";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteSubtitles(body) {
+    let path = "/2/media/subtitles";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
@@ -891,11 +358,12 @@ var MediaClient = class {
     );
   }
   // Implementation
-  async createSubtitles(body) {
-    let path = "/2/media/subtitles";
+  async appendUpload(id, body) {
+    let path = "/2/media/upload/{id}/append";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -914,34 +382,11 @@ var MediaClient = class {
     );
   }
   // Implementation
-  async deleteSubtitles(body) {
-    let path = "/2/media/subtitles";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
   async createMetadata(body) {
     let path = "/2/media/metadata";
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -997,45 +442,11 @@ var MediaClient = class {
     );
   }
   // Implementation
-  async getUploadStatus(mediaId, options = {}) {
-    const paramMappings = {};
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      command = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/media/upload";
-    const params = new URLSearchParams();
-    if (mediaId !== void 0) {
-      params.append("media_id", String(mediaId));
-    }
-    if (command !== void 0) {
-      params.append("command", String(command));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async upload(body) {
-    let path = "/2/media/upload";
+  async initializeUpload(body) {
+    let path = "/2/media/upload/initialize";
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -1054,11 +465,11 @@ var MediaClient = class {
     );
   }
   // Implementation
-  async initializeUpload(body) {
-    let path = "/2/media/upload/initialize";
+  async finalizeUpload(id) {
+    let path = "/2/media/upload/{id}/finalize";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -1079,13 +490,13 @@ var MediaClient = class {
 };
 
 // src/media/models.ts
-var models_exports4 = {};
+var models_exports = {};
 
-// src/activity/client.ts
-var ActivityClient = class {
+// src/posts/client.ts
+var PostsClient = class {
   client;
   /**
-   * Creates a new activity client instance
+   * Creates a new posts client instance
    * 
    * @param client - The main X API client instance
    */
@@ -1110,16 +521,687 @@ var ActivityClient = class {
     return normalized;
   }
   // Implementation
-  async updateSubscription(subscriptionId, body) {
-    let path = "/2/activity/subscriptions/{subscription_id}";
-    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+  async getQuoted(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      exclude = [],
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}/quote_tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (exclude !== void 0 && exclude.length > 0) {
+      params.append("exclude", exclude.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getReposts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}/retweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getAnalytics(ids, startTime, endTime, options = {}) {
+    const paramMappings = {
+      "analytics.fields": "analyticsFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      granularity = void 0,
+      analyticsFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/analytics";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (analyticsFields !== void 0 && analyticsFields.length > 0) {
+      params.append("analytics.fields", normalizeFields(analyticsFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getCountsAll(query, options = {}) {
+    const paramMappings = {
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "search_count.fields": "searchCountFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      granularity = void 0,
+      searchCountFields = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/counts/all";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (searchCountFields !== void 0) {
+      params.append("search_count.fields", String(searchCountFields));
+    }
+    const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
           "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getCountsRecent(query, options = {}) {
+    const paramMappings = {
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "search_count.fields": "searchCountFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      granularity = void 0,
+      searchCountFields = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/counts/recent";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (granularity !== void 0) {
+      params.append("granularity", String(granularity));
+    }
+    if (searchCountFields !== void 0) {
+      params.append("search_count.fields", String(searchCountFields));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async searchAll(query, options = {}) {
+    const paramMappings = {
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "max_results": "maxResults",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "sort_order": "sortOrder",
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      maxResults = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      sortOrder = void 0,
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/search/all";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (sortOrder !== void 0) {
+      params.append("sort_order", String(sortOrder));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getLikingUsers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/{id}/liking_users";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "like.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getByIds(ids, options = {}) {
+    const paramMappings = {
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async create(body) {
+    let path = "/2/tweets";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async searchRecent(query, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
+      "sort_order": "sortOrder",
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      nextToken = void 0,
+      paginationToken = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
+      sortOrder = void 0,
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/search/recent";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
+    if (sortOrder !== void 0) {
+      params.append("sort_order", String(sortOrder));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async hideReply(tweetId, body) {
+    let path = "/2/tweets/{tweet_id}/hidden";
+    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read", "tweet.moderate.write"]
+        },
+        {
+          "UserToken": []
         }
       ]
       // No optional parameters, using empty request options
@@ -1131,38 +1213,24 @@ var ActivityClient = class {
     );
   }
   // Implementation
-  async deleteSubscription(subscriptionId) {
-    let path = "/2/activity/subscriptions/{subscription_id}";
-    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getSubscriptions(options = {}) {
+  async getRepostedBy(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
-      "pagination_token": "paginationToken"
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       maxResults = void 0,
       paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/activity/subscriptions";
+    let path = "/2/tweets/{id}/retweeted_by";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     if (maxResults !== void 0) {
       params.append("max_results", String(maxResults));
@@ -1170,122 +1238,14 @@ var ActivityClient = class {
     if (paginationToken !== void 0) {
       params.append("pagination_token", String(paginationToken));
     }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["like.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createSubscription(body) {
-    let path = "/2/activity/subscriptions";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": []
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async deleteSubscriptionsByIds(ids) {
-    let path = "/2/activity/subscriptions";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
     }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/activity/models.ts
-var models_exports5 = {};
-
-// src/trends/client.ts
-var TrendsClient = class {
-  client;
-  /**
-   * Creates a new trends client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
     }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getPersonalized(options = {}) {
-    const paramMappings = {
-      "personalized_trend.fields": "personalizedTrendFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      personalizedTrendFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/personalized_trends";
-    const params = new URLSearchParams();
-    if (personalizedTrendFields !== void 0 && personalizedTrendFields.length > 0) {
-      params.append("personalized_trend.fields", normalizeFields(personalizedTrendFields).join(","));
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
@@ -1295,6 +1255,9 @@ var TrendsClient = class {
         },
         {
           "UserToken": []
+        },
+        {
+          "BearerToken": []
         }
       ],
       ...requestOptions
@@ -1305,167 +1268,30 @@ var TrendsClient = class {
       finalRequestOptions
     );
   }
-};
-
-// src/trends/models.ts
-var models_exports6 = {};
-
-// src/direct_messages/client.ts
-var DirectMessagesClient = class {
-  client;
-  /**
-   * Creates a new direct messages client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
   // Implementation
-  async dmConversationsMediaDownload(dmId, mediaId, resourceId) {
-    let path = "/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}";
-    path = path.replace("{dm_id}", encodeURIComponent(String(dmId)));
-    path = path.replace("{media_id}", encodeURIComponent(String(mediaId)));
-    path = path.replace("{resource_id}", encodeURIComponent(String(resourceId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read"]
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      { ...finalRequestOptions, binary: true }
-    );
-  }
-  // Implementation
-  async blockUsersDms(id) {
-    let path = "/2/users/{id}/dm/block";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async unblockUsersDms(id) {
-    let path = "/2/users/{id}/dm/unblock";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "dm.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createConversation(body) {
-    let path = "/2/dm_conversations";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getEventsByConversationId(id, options = {}) {
+  async getById(id, options = {}) {
     const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "event_types": "eventTypes",
-      "dm_event.fields": "dmEventFields",
-      "user.fields": "userFields",
       "post.fields": "postFields",
-      "media.fields": "mediaFields"
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      eventTypes = [],
-      dmEventFields = [],
+      postFields = [],
       expansions = [],
       userFields = [],
-      postFields = [],
       mediaFields = [],
+      pollFields = [],
+      placeFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/dm_conversations/{id}/dm_events";
+    let path = "/2/tweets/{id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (eventTypes !== void 0 && eventTypes.length > 0) {
-      params.append("event_types", eventTypes.join(","));
-    }
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
@@ -1473,20 +1299,26 @@ var DirectMessagesClient = class {
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", normalizeFields(userFields).join(","));
     }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
     if (mediaFields !== void 0 && mediaFields.length > 0) {
       params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "dm.read", "tweet.read"]
+          "OAuth2UserToken": ["users.read", "tweet.read"]
         },
         {
           "UserToken": []
+        },
+        {
+          "BearerToken": []
         }
       ],
       ...requestOptions
@@ -1498,136 +1330,15 @@ var DirectMessagesClient = class {
     );
   }
   // Implementation
-  async getEventsByParticipantId(participantId, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "event_types": "eventTypes",
-      "dm_event.fields": "dmEventFields",
-      "user.fields": "userFields",
-      "post.fields": "postFields",
-      "media.fields": "mediaFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      eventTypes = [],
-      dmEventFields = [],
-      expansions = [],
-      userFields = [],
-      postFields = [],
-      mediaFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_conversations/with/{participant_id}/dm_events";
-    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (eventTypes !== void 0 && eventTypes.length > 0) {
-      params.append("event_types", eventTypes.join(","));
-    }
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getEventsById(eventId, options = {}) {
-    const paramMappings = {
-      "dm_event.fields": "dmEventFields",
-      "user.fields": "userFields",
-      "post.fields": "postFields",
-      "media.fields": "mediaFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      dmEventFields = [],
-      expansions = [],
-      userFields = [],
-      postFields = [],
-      mediaFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_events/{event_id}";
-    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
-    const params = new URLSearchParams();
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "dm.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async deleteEvents(eventId) {
-    let path = "/2/dm_events/{event_id}";
-    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
+  async delete(id) {
+    let path = "/2/tweets/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["dm.read", "dm.write"]
+          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
         },
         {
           "UserToken": []
@@ -1641,125 +1352,10 @@ var DirectMessagesClient = class {
       finalRequestOptions
     );
   }
-  // Implementation
-  async createByParticipantId(participantId, body) {
-    let path = "/2/dm_conversations/with/{participant_id}/messages";
-    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createByConversationId(dmConversationId, body) {
-    let path = "/2/dm_conversations/{dm_conversation_id}/messages";
-    path = path.replace("{dm_conversation_id}", encodeURIComponent(String(dmConversationId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getEvents(options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "event_types": "eventTypes",
-      "dm_event.fields": "dmEventFields",
-      "user.fields": "userFields",
-      "post.fields": "postFields",
-      "media.fields": "mediaFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      eventTypes = [],
-      dmEventFields = [],
-      expansions = [],
-      userFields = [],
-      postFields = [],
-      mediaFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/dm_events";
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (eventTypes !== void 0 && eventTypes.length > 0) {
-      params.append("event_types", eventTypes.join(","));
-    }
-    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
-      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "dm.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
 };
 
-// src/direct_messages/models.ts
-var models_exports7 = {};
+// src/posts/models.ts
+var models_exports2 = {};
 
 // src/stream/event_driven_stream.ts
 var StreamEvent = {
@@ -2043,279 +1639,6 @@ var StreamClient = class {
     return normalized;
   }
   /**
-       * Stream all Likes
-       * Streams all public Likes in real-time.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @param partition The partition number.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async likesFirehose(partition, options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "likesFirehose");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "like_with_tweet_author.fields": "likeWithTweetAuthorFields",
-      "media.fields": "mediaFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      likeWithTweetAuthorFields = [],
-      expansions = [],
-      mediaFields = [],
-      userFields = [],
-      tweetFields = [],
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/likes/firehose/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (likeWithTweetAuthorFields !== void 0 && likeWithTweetAuthorFields.length > 0) {
-      params.append("like_with_tweet_author.fields", likeWithTweetAuthorFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream Posts compliance data
-       * Streams all compliance data related to Posts.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @param partition The partition number.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async postsCompliance(partition, options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsCompliance");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/compliance/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream Users compliance data
-       * Streams all compliance data related to Users.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @param partition The partition number.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async usersCompliance(partition, options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "usersCompliance");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/compliance/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (partition !== void 0) {
-      params.append("partition", String(partition));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
        * Stream filtered Posts
        * Streams Posts in real-time matching the active rule set.
        * 
@@ -2421,8 +1744,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream all Posts
-       * Streams all public Posts in real-time.
+       * Stream sampled Posts
+       * Streams a 1% sample of public Posts in real-time.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -2430,25 +1753,19 @@ var StreamClient = class {
   
   
   
-       * @param partition The partition number.
-  
-  
-  
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async postsFirehose(partition, options = {}) {
+  async postsSample(options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsFirehose");
+    this.client.validateAuthentication(requiredAuthTypes, "postsSample");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
       "tweet.fields": "tweetFields",
       "media.fields": "mediaFields",
       "poll.fields": "pollFields",
       "user.fields": "userFields",
-      "place.fields": "placeFields",
-      "start_time": "startTime",
-      "end_time": "endTime"
+      "place.fields": "placeFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
@@ -2459,13 +1776,11 @@ var StreamClient = class {
       pollFields = [],
       userFields = [],
       placeFields = [],
-      startTime = void 0,
-      endTime = void 0,
       headers = {},
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/firehose/stream";
+    let path = "/2/tweets/sample/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
@@ -2488,8 +1803,182 @@ var StreamClient = class {
     if (placeFields !== void 0 && placeFields.length > 0) {
       params.append("place.fields", placeFields.join(","));
     }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream sampled Likes
+       * Streams a 10% sample of public Likes in real-time.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async likesSample10(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "likesSample10");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "like_with_tweet_author.fields": "likeWithTweetAuthorFields",
+      "media.fields": "mediaFields",
+      "user.fields": "userFields",
+      "tweet.fields": "tweetFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      likeWithTweetAuthorFields = [],
+      expansions = [],
+      mediaFields = [],
+      userFields = [],
+      tweetFields = [],
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/likes/sample10/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
     if (partition !== void 0) {
       params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (likeWithTweetAuthorFields !== void 0 && likeWithTweetAuthorFields.length > 0) {
+      params.append("like_with_tweet_author.fields", likeWithTweetAuthorFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream Likes compliance data
+       * Streams all compliance data related to Likes for Users.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async likesCompliance(options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "likesCompliance");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/likes/compliance/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
     }
     if (startTime !== void 0) {
       params.append("start_time", String(startTime));
@@ -2645,84 +2134,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream Post labels
-       * Streams all labeling events applied to Posts.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async labelsCompliance(options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "labelsCompliance");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/label/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream English Posts
-       * Streams all public English-language Posts in real-time.
+       * Stream Posts compliance data
+       * Streams all compliance data related to Posts.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -2736,57 +2149,28 @@ var StreamClient = class {
   
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async postsFirehoseEn(partition, options = {}) {
+  async postsCompliance(partition, options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsFirehoseEn");
+    this.client.validateAuthentication(requiredAuthTypes, "postsCompliance");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
-      "tweet.fields": "tweetFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "user.fields": "userFields",
-      "place.fields": "placeFields",
       "start_time": "startTime",
       "end_time": "endTime"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       backfillMinutes = void 0,
-      tweetFields = [],
-      expansions = [],
-      mediaFields = [],
-      pollFields = [],
-      userFields = [],
-      placeFields = [],
       startTime = void 0,
       endTime = void 0,
       headers = {},
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/firehose/stream/lang/en";
+    let path = "/2/tweets/compliance/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", mediaFields.join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", userFields.join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
     }
     if (partition !== void 0) {
       params.append("partition", String(partition));
@@ -2945,8 +2329,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream sampled Posts
-       * Streams a 1% sample of public Posts in real-time.
+       * Stream all Likes
+       * Streams all public Likes in real-time.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -2954,40 +2338,55 @@ var StreamClient = class {
   
   
   
+       * @param partition The partition number.
+  
+  
+  
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async postsSample(options = {}) {
+  async likesFirehose(partition, options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "postsSample");
+    this.client.validateAuthentication(requiredAuthTypes, "likesFirehose");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
-      "tweet.fields": "tweetFields",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "like_with_tweet_author.fields": "likeWithTweetAuthorFields",
       "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
       "user.fields": "userFields",
-      "place.fields": "placeFields"
+      "tweet.fields": "tweetFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       backfillMinutes = void 0,
-      tweetFields = [],
+      startTime = void 0,
+      endTime = void 0,
+      likeWithTweetAuthorFields = [],
       expansions = [],
       mediaFields = [],
-      pollFields = [],
       userFields = [],
-      placeFields = [],
+      tweetFields = [],
       headers = {},
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/sample/stream";
+    let path = "/2/likes/firehose/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
     }
-    if (tweetFields !== void 0 && tweetFields.length > 0) {
-      params.append("tweet.fields", tweetFields.join(","));
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (likeWithTweetAuthorFields !== void 0 && likeWithTweetAuthorFields.length > 0) {
+      params.append("like_with_tweet_author.fields", likeWithTweetAuthorFields.join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
@@ -2995,90 +2394,11 @@ var StreamClient = class {
     if (mediaFields !== void 0 && mediaFields.length > 0) {
       params.append("media.fields", mediaFields.join(","));
     }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", pollFields.join(","));
-    }
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", userFields.join(","));
     }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", placeFields.join(","));
-    }
-    const url = path + (params.toString() ? `?${params.toString()}` : "");
-    const response = await this.client.request(
-      "GET",
-      url,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...headers
-        },
-        // Pass security requirements for smart auth selection
-        security: [
-          {
-            "BearerToken": []
-          }
-        ],
-        signal,
-        raw: true,
-        // Get raw Response object for streaming
-        timeout: 0,
-        // Disable timeout for streaming requests
-        ...requestOptions
-      }
-    );
-    if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: ${response.statusText}`
-      );
-    }
-    if (!response.body) {
-      throw new Error("Response body is not available for streaming");
-    }
-    const eventStream = new EventDrivenStream();
-    await eventStream.connect(response.body);
-    return eventStream;
-  }
-  /**
-       * Stream Likes compliance data
-       * Streams all compliance data related to Likes for Users.
-       * 
-       * Returns an event-driven stream that's easy to use.
-       * Use .on() to listen for events like 'data', 'error', 'close'.
-       * Also supports async iteration with for await...of.
-  
-  
-  
-       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-       */
-  async likesCompliance(options = {}) {
-    const requiredAuthTypes = [];
-    requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "likesCompliance");
-    const paramMappings = {
-      "backfill_minutes": "backfillMinutes",
-      "start_time": "startTime",
-      "end_time": "endTime"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      backfillMinutes = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      headers = {},
-      signal,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/likes/compliance/stream";
-    const params = new URLSearchParams();
-    if (backfillMinutes !== void 0) {
-      params.append("backfill_minutes", String(backfillMinutes));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
     }
     const url = path + (params.toString() ? `?${params.toString()}` : "");
     const response = await this.client.request(
@@ -3228,8 +2548,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Activity Stream
-       * Stream of X Activities
+       * Stream Post labels
+       * Streams all labeling events applied to Posts.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -3239,10 +2559,10 @@ var StreamClient = class {
   
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async activity(options = {}) {
+  async labelsCompliance(options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "activity");
+    this.client.validateAuthentication(requiredAuthTypes, "labelsCompliance");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
       "start_time": "startTime",
@@ -3257,7 +2577,7 @@ var StreamClient = class {
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/activity/stream";
+    let path = "/2/tweets/label/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
@@ -3304,8 +2624,8 @@ var StreamClient = class {
     return eventStream;
   }
   /**
-       * Stream sampled Likes
-       * Streams a 10% sample of public Likes in real-time.
+       * Stream Users compliance data
+       * Streams all compliance data related to Users.
        * 
        * Returns an event-driven stream that's easy to use.
        * Use .on() to listen for events like 'data', 'error', 'close'.
@@ -3319,34 +2639,25 @@ var StreamClient = class {
   
        * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
        */
-  async likesSample10(partition, options = {}) {
+  async usersCompliance(partition, options = {}) {
     const requiredAuthTypes = [];
     requiredAuthTypes.push("BearerToken");
-    this.client.validateAuthentication(requiredAuthTypes, "likesSample10");
+    this.client.validateAuthentication(requiredAuthTypes, "usersCompliance");
     const paramMappings = {
       "backfill_minutes": "backfillMinutes",
       "start_time": "startTime",
-      "end_time": "endTime",
-      "like_with_tweet_author.fields": "likeWithTweetAuthorFields",
-      "media.fields": "mediaFields",
-      "user.fields": "userFields",
-      "tweet.fields": "tweetFields"
+      "end_time": "endTime"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       backfillMinutes = void 0,
       startTime = void 0,
       endTime = void 0,
-      likeWithTweetAuthorFields = [],
-      expansions = [],
-      mediaFields = [],
-      userFields = [],
-      tweetFields = [],
       headers = {},
       signal,
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/likes/sample10/stream";
+    let path = "/2/users/compliance/stream";
     const params = new URLSearchParams();
     if (backfillMinutes !== void 0) {
       params.append("backfill_minutes", String(backfillMinutes));
@@ -3360,8 +2671,93 @@ var StreamClient = class {
     if (endTime !== void 0) {
       params.append("end_time", String(endTime));
     }
-    if (likeWithTweetAuthorFields !== void 0 && likeWithTweetAuthorFields.length > 0) {
-      params.append("like_with_tweet_author.fields", likeWithTweetAuthorFields.join(","));
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream English Posts
+       * Streams all public English-language Posts in real-time.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async postsFirehoseEn(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "postsFirehoseEn");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields",
+      "start_time": "startTime",
+      "end_time": "endTime"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      startTime = void 0,
+      endTime = void 0,
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/firehose/stream/lang/en";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (tweetFields !== void 0 && tweetFields.length > 0) {
+      params.append("tweet.fields", tweetFields.join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
@@ -3369,11 +2765,135 @@ var StreamClient = class {
     if (mediaFields !== void 0 && mediaFields.length > 0) {
       params.append("media.fields", mediaFields.join(","));
     }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", userFields.join(","));
     }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+       * Stream all Posts
+       * Streams all public Posts in real-time.
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @param partition The partition number.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async postsFirehose(partition, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "postsFirehose");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "tweet.fields": "tweetFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "user.fields": "userFields",
+      "place.fields": "placeFields",
+      "start_time": "startTime",
+      "end_time": "endTime"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      tweetFields = [],
+      expansions = [],
+      mediaFields = [],
+      pollFields = [],
+      userFields = [],
+      placeFields = [],
+      startTime = void 0,
+      endTime = void 0,
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/firehose/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
     if (tweetFields !== void 0 && tweetFields.length > 0) {
       params.append("tweet.fields", tweetFields.join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", mediaFields.join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", pollFields.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", userFields.join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", placeFields.join(","));
+    }
+    if (partition !== void 0) {
+      params.append("partition", String(partition));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
     }
     const url = path + (params.toString() ? `?${params.toString()}` : "");
     const response = await this.client.request(
@@ -3523,6 +3043,175 @@ var StreamClient = class {
     return eventStream;
   }
   /**
+       * Activity Stream
+       * Stream of X Activities
+       * 
+       * Returns an event-driven stream that's easy to use.
+       * Use .on() to listen for events like 'data', 'error', 'close'.
+       * Also supports async iteration with for await...of.
+  
+  
+  
+       * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
+       */
+  async activity(options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "activity");
+    const paramMappings = {
+      "backfill_minutes": "backfillMinutes",
+      "start_time": "startTime",
+      "end_time": "endTime"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      backfillMinutes = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/activity/stream";
+    const params = new URLSearchParams();
+    if (backfillMinutes !== void 0) {
+      params.append("backfill_minutes", String(backfillMinutes));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    const url = path + (params.toString() ? `?${params.toString()}` : "");
+    const response = await this.client.request(
+      "GET",
+      url,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...headers
+        },
+        // Pass security requirements for smart auth selection
+        security: [
+          {
+            "BearerToken": []
+          }
+        ],
+        signal,
+        raw: true,
+        // Get raw Response object for streaming
+        timeout: 0,
+        // Disable timeout for streaming requests
+        ...requestOptions
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `HTTP ${response.status}: ${response.statusText}`
+      );
+    }
+    if (!response.body) {
+      throw new Error("Response body is not available for streaming");
+    }
+    const eventStream = new EventDrivenStream();
+    await eventStream.connect(response.body);
+    return eventStream;
+  }
+  /**
+   * Get filtered-stream rules
+   * Returns the active filtered-stream rules for the authenticated app. Provide `ids` to fetch specific rules; omit it to list all rules.
+   * 
+   * @returns Promise with the API response
+   */
+  async getRules(options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "getRules");
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      ids = [],
+      maxResults = void 0,
+      paginationToken = void 0,
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/search/stream/rules";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    const finalRequestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        ...headers
+      },
+      signal,
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
+   * Update stream rules
+   * Adds or deletes rules from the active rule set for the filtered stream. Exactly one of `add`, `delete`, or `?delete_all=true` must be specified. Use `?dry_run=true` to validate without committing.
+   * 
+   * @returns Promise with the API response
+   */
+  async updateRules(body, options = {}) {
+    const requiredAuthTypes = [];
+    requiredAuthTypes.push("BearerToken");
+    this.client.validateAuthentication(requiredAuthTypes, "updateRules");
+    const paramMappings = {
+      "dry_run": "dryRun",
+      "delete_all": "deleteAll"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      dryRun = void 0,
+      deleteAll = void 0,
+      headers = {},
+      signal,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/tweets/search/stream/rules";
+    const params = new URLSearchParams();
+    if (dryRun !== void 0) {
+      params.append("dry_run", String(dryRun));
+    }
+    if (deleteAll !== void 0) {
+      params.append("delete_all", String(deleteAll));
+    }
+    const finalRequestOptions = {
+      headers: {
+        "Content-Type": "application/json",
+        ...headers
+      },
+      signal,
+      body: JSON.stringify(body),
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  /**
    * Get Rule Counts
    * 
    * @returns Promise with the API response
@@ -3562,1204 +3251,6 @@ var StreamClient = class {
   }
 };
 
-// src/users/client.ts
-var UsersClient = class {
-  client;
-  /**
-   * Creates a new users client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getMuting(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/muting";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "mute.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async muteUser(id, body) {
-    let path = "/2/users/{id}/muting";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "mute.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getByUsername(username, options = {}) {
-    const paramMappings = {
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/by/username/{username}";
-    path = path.replace("{username}", encodeURIComponent(String(username)));
-    const params = new URLSearchParams();
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getBlocking(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/blocking";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["block.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getFollowers(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/followers";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "follows.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getFollowing(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/following";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "follows.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async followUser(id, body) {
-    let path = "/2/users/{id}/following";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "follows.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getPinnedLists(id, options = {}) {
-    const paramMappings = {
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/pinned_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", normalizeFields(listFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "list.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getMe(options = {}) {
-    const paramMappings = {
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/me";
-    const params = new URLSearchParams();
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getById(id, options = {}) {
-    const paramMappings = {
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getByIds(ids, options = {}) {
-    const paramMappings = {
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async unfollowUser(sourceUserId, targetUserId) {
-    let path = "/2/users/{source_user_id}/following/{target_user_id}";
-    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
-    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "follows.write", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getOwnedLists(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/owned_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", normalizeFields(listFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "list.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getAffiliates(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/affiliates";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getFollowedLists(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/followed_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", normalizeFields(listFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "list.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async followList(id, body) {
-    let path = "/2/users/{id}/followed_lists";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.write", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async search(query, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "next_token": "nextToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      nextToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/search";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getListMemberships(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "list.fields": "listFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      listFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/list_memberships";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (listFields !== void 0 && listFields.length > 0) {
-      params.append("list.fields", normalizeFields(listFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getByUsernames(usernames, options = {}) {
-    const paramMappings = {
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/by";
-    const params = new URLSearchParams();
-    if (usernames !== void 0 && usernames.length > 0) {
-      params.append("usernames", usernames.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getRepostsOfMe(options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "post.fields": "postFields",
-      "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      postFields = [],
-      expansions = [],
-      userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/reposts_of_me";
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "timeline.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/users/models.ts
-var models_exports8 = {};
-
-// src/broadcasts/client.ts
-var BroadcastsClient = class {
-  client;
-  /**
-   * Creates a new broadcasts client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async listScheduled(options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "oldest_start_time": "oldestStartTime",
-      "newest_start_time": "newestStartTime",
-      "pagination_token": "paginationToken"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      oldestStartTime = void 0,
-      newestStartTime = void 0,
-      paginationToken = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/broadcasts/scheduled";
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (oldestStartTime !== void 0) {
-      params.append("oldest_start_time", String(oldestStartTime));
-    }
-    if (newestStartTime !== void 0) {
-      params.append("newest_start_time", String(newestStartTime));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createScheduledBroadcast(body) {
-    let path = "/2/broadcasts/scheduled";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getScheduledBroadcast(id) {
-    let path = "/2/broadcasts/scheduled/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async updateScheduledBroadcast(id, body) {
-    let path = "/2/broadcasts/scheduled/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "PUT",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async deleteScheduledBroadcast(id, options = {}) {
-    const paramMappings = {
-      "roll_forward": "rollForward"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      rollForward = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/broadcasts/scheduled/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (rollForward !== void 0) {
-      params.append("roll_forward", String(rollForward));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async goLiveScheduledBroadcast(id) {
-    let path = "/2/broadcasts/scheduled/{id}/live";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async sendBroadcastChat(id, body) {
-    let path = "/2/broadcasts/{id}/chat";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/broadcasts/models.ts
-var models_exports9 = {};
-
 // src/connections/client.ts
 var ConnectionsClient = class {
   client;
@@ -4787,45 +3278,6 @@ var ConnectionsClient = class {
       }
     }
     return normalized;
-  }
-  // Implementation
-  async deleteAll() {
-    let path = "/2/connections/all";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async deleteByEndpoint(endpointId) {
-    let path = "/2/connections/{endpoint_id}";
-    path = path.replace("{endpoint_id}", encodeURIComponent(String(endpointId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
   }
   // Implementation
   async getConnectionHistory(options = {}) {
@@ -4880,7 +3332,46 @@ var ConnectionsClient = class {
     let path = "/2/connections";
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteByEndpoint(endpointId) {
+    let path = "/2/connections/{endpoint_id}";
+    path = path.replace("{endpoint_id}", encodeURIComponent(String(endpointId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteAll() {
+    let path = "/2/connections/all";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -4898,7 +3389,7 @@ var ConnectionsClient = class {
 };
 
 // src/connections/models.ts
-var models_exports10 = {};
+var models_exports3 = {};
 
 // src/webhooks/client.ts
 var WebhooksClient = class {
@@ -4927,118 +3418,6 @@ var WebhooksClient = class {
       }
     }
     return normalized;
-  }
-  // Implementation
-  async createStreamLink(webhookId) {
-    let path = "/2/tweets/search/webhooks/{webhook_id}";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async deleteStreamLink(webhookId) {
-    let path = "/2/tweets/search/webhooks/{webhook_id}";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getStreamLinks() {
-    let path = "/2/tweets/search/webhooks";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async get(options = {}) {
-    const paramMappings = {
-      "webhook_config.fields": "webhookConfigFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      webhookConfigFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/webhooks";
-    const params = new URLSearchParams();
-    if (webhookConfigFields !== void 0 && webhookConfigFields.length > 0) {
-      params.append("webhook_config.fields", normalizeFields(webhookConfigFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async create(body) {
-    let path = "/2/webhooks";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
   }
   // Implementation
   async validate(webhookId) {
@@ -5091,7 +3470,7 @@ var WebhooksClient = class {
     let path = "/2/webhooks/replay";
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -5106,16 +3485,128 @@ var WebhooksClient = class {
       finalRequestOptions
     );
   }
+  // Implementation
+  async get(options = {}) {
+    const paramMappings = {
+      "webhook_config.fields": "webhookConfigFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      webhookConfigFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/webhooks";
+    const params = new URLSearchParams();
+    if (webhookConfigFields !== void 0 && webhookConfigFields.length > 0) {
+      params.append("webhook_config.fields", normalizeFields(webhookConfigFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async create(body) {
+    let path = "/2/webhooks";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getStreamLinks() {
+    let path = "/2/tweets/search/webhooks";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createStreamLink(webhookId) {
+    let path = "/2/tweets/search/webhooks/{webhook_id}";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteStreamLink(webhookId) {
+    let path = "/2/tweets/search/webhooks/{webhook_id}";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
 };
 
 // src/webhooks/models.ts
-var models_exports11 = {};
+var models_exports4 = {};
 
-// src/spaces/client.ts
-var SpacesClient = class {
+// src/news/client.ts
+var NewsClient = class {
   client;
   /**
-   * Creates a new spaces client instance
+   * Creates a new news client instance
    * 
    * @param client - The main X API client instance
    */
@@ -5140,45 +3631,44 @@ var SpacesClient = class {
     return normalized;
   }
   // Implementation
-  async getBuyers(id, options = {}) {
+  async search(query, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
+      "max_age_hours": "maxAgeHours",
+      "news.fields": "newsFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
+      maxAgeHours = void 0,
+      newsFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/spaces/{id}/buyers";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+    let path = "/2/news/search";
     const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
     if (maxResults !== void 0) {
       params.append("max_results", String(maxResults));
     }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
+    if (maxAgeHours !== void 0) {
+      params.append("max_age_hours", String(maxAgeHours));
     }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
+    if (newsFields !== void 0 && newsFields.length > 0) {
+      params.append("news.fields", normalizeFields(newsFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "users.read", "space.read"]
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
         }
       ],
       ...requestOptions
@@ -5188,160 +3678,712 @@ var SpacesClient = class {
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
+  }
+  // Implementation
+  async get(id, options = {}) {
+    const paramMappings = {
+      "news.fields": "newsFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      newsFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/news/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (newsFields !== void 0 && newsFields.length > 0) {
+      params.append("news.fields", normalizeFields(newsFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/news/models.ts
+var models_exports5 = {};
+
+// src/compliance/client.ts
+var ComplianceClient = class {
+  client;
+  /**
+   * Creates a new compliance client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async getJobs(type, options = {}) {
+    const paramMappings = {
+      "compliance_job.fields": "complianceJobFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      status = void 0,
+      complianceJobFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/compliance/jobs";
+    const params = new URLSearchParams();
+    if (type !== void 0) {
+      params.append("type", String(type));
+    }
+    if (status !== void 0) {
+      params.append("status", String(status));
+    }
+    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
+      params.append("compliance_job.fields", normalizeFields(complianceJobFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createJobs(body, options = {}) {
+    const paramMappings = {
+      "compliance_job.fields": "complianceJobFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      complianceJobFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/compliance/jobs";
+    const params = new URLSearchParams();
+    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
+      params.append("compliance_job.fields", normalizeFields(complianceJobFields).join(","));
+    }
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getJobsById(id, options = {}) {
+    const paramMappings = {
+      "compliance_job.fields": "complianceJobFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      complianceJobFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/compliance/jobs/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
+      params.append("compliance_job.fields", normalizeFields(complianceJobFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/compliance/models.ts
+var models_exports6 = {};
+
+// src/chat/client.ts
+var ChatClient = class {
+  client;
+  /**
+   * Creates a new chat client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async mediaUploadAppend(id, body) {
+    let path = "/2/chat/media/upload/{id}/append";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async sendMessage(id, body) {
+    let path = "/2/chat/conversations/{id}/messages";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteMessages(id, body) {
+    let path = "/2/chat/conversations/{id}/messages/delete";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async sendTypingIndicator(id) {
+    let path = "/2/chat/conversations/{id}/typing";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read", "dm.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async addConversationKeys(id, body) {
+    let path = "/2/chat/conversations/{id}/keys";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async addUserPublicKey(id, body) {
+    let path = "/2/users/{id}/public_keys";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async mediaUploadInitialize(body) {
+    let path = "/2/chat/media/upload/initialize";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createConversation(body) {
+    let path = "/2/chat/conversations/group";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getConversationEvents(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "chat_message_event.fields": "chatMessageEventFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      chatMessageEventFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/chat/conversations/{id}/events";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (chatMessageEventFields !== void 0 && chatMessageEventFields.length > 0) {
+      params.append("chat_message_event.fields", normalizeFields(chatMessageEventFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "dm.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getConversation(id, options = {}) {
+    const paramMappings = {
+      "chat_conversation.fields": "chatConversationFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      chatConversationFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/chat/conversations/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (chatConversationFields !== void 0 && chatConversationFields.length > 0) {
+      params.append("chat_conversation.fields", normalizeFields(chatConversationFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "dm.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async mediaDownload(id, mediaHashKey) {
+    let path = "/2/chat/media/{id}/{media_hash_key}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{media_hash_key}", encodeURIComponent(String(mediaHashKey)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      { ...finalRequestOptions, binary: true }
+    );
+  }
+  // Implementation
+  async mediaUploadFinalize(id, body) {
+    let path = "/2/chat/media/upload/{id}/finalize";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["media.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async initializeGroup() {
+    let path = "/2/chat/conversations/group/initialize";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async markConversationRead(id, body) {
+    let path = "/2/chat/conversations/{id}/read";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async addGroupMembers(id, body) {
+    let path = "/2/chat/conversations/{id}/members";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getConversations(options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "chat_conversation.fields": "chatConversationFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      chatConversationFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/chat/conversations";
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (chatConversationFields !== void 0 && chatConversationFields.length > 0) {
+      params.append("chat_conversation.fields", normalizeFields(chatConversationFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "dm.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/chat/models.ts
+var models_exports7 = {};
+
+// src/communities/client.ts
+var CommunitiesClient = class {
+  client;
+  /**
+   * Creates a new communities client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
   }
   // Implementation
   async getById(id, options = {}) {
     const paramMappings = {
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
+      "community.fields": "communityFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
+      communityFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/spaces/{id}";
+    let path = "/2/communities/{id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", normalizeFields(spaceFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", normalizeFields(topicFields).join(","));
+    if (communityFields !== void 0 && communityFields.length > 0) {
+      params.append("community.fields", normalizeFields(communityFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+          "OAuth2UserToken": ["users.read", "list.read", "tweet.read"]
         },
         {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getPosts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "post.fields": "postFields",
-      "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      postFields = [],
-      expansions = [],
-      userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/{id}/tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "space.read"]
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getByIds(ids, options = {}) {
-    const paramMappings = {
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", normalizeFields(spaceFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", normalizeFields(topicFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "space.read"]
+          "UserToken": []
         },
         {
           "BearerToken": []
@@ -5359,101 +4401,43 @@ var SpacesClient = class {
   async search(query, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
+      "next_token": "nextToken",
+      "pagination_token": "paginationToken",
+      "community.fields": "communityFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      state = void 0,
       maxResults = void 0,
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
+      nextToken = void 0,
+      paginationToken = void 0,
+      communityFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/spaces/search";
+    let path = "/2/communities/search";
     const params = new URLSearchParams();
     if (query !== void 0) {
       params.append("query", String(query));
     }
-    if (state !== void 0) {
-      params.append("state", String(state));
-    }
     if (maxResults !== void 0) {
       params.append("max_results", String(maxResults));
     }
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", normalizeFields(spaceFields).join(","));
+    if (nextToken !== void 0) {
+      params.append("next_token", String(nextToken));
     }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
     }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", normalizeFields(topicFields).join(","));
+    if (communityFields !== void 0 && communityFields.length > 0) {
+      params.append("community.fields", normalizeFields(communityFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "space.read", "users.read"]
+          "OAuth2UserToken": ["users.read", "tweet.read"]
         },
         {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getByCreatorIds(userIds, options = {}) {
-    const paramMappings = {
-      "space.fields": "spaceFields",
-      "user.fields": "userFields",
-      "topic.fields": "topicFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      spaceFields = [],
-      expansions = [],
-      userFields = [],
-      topicFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/spaces/by/creator_ids";
-    const params = new URLSearchParams();
-    if (userIds !== void 0 && userIds.length > 0) {
-      params.append("user_ids", userIds.join(","));
-    }
-    if (spaceFields !== void 0 && spaceFields.length > 0) {
-      params.append("space.fields", normalizeFields(spaceFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (topicFields !== void 0 && topicFields.length > 0) {
-      params.append("topic.fields", normalizeFields(topicFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
-        },
-        {
-          "BearerToken": []
+          "UserToken": []
         }
       ],
       ...requestOptions
@@ -5466,205 +4450,8 @@ var SpacesClient = class {
   }
 };
 
-// src/spaces/models.ts
-var models_exports12 = {};
-
-// src/account_activity/client.ts
-var AccountActivityClient = class {
-  client;
-  /**
-   * Creates a new account activity client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async deleteSubscription(webhookId, userId) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async validateSubscription(webhookId) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "dm.read", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createSubscription(webhookId, body) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getSubscriptions(webhookId) {
-    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list";
-    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getSubscriptionCount() {
-    let path = "/2/account_activity/subscriptions/count";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/account_activity/models.ts
-var models_exports13 = {};
-
-// src/mutes/client.ts
-var MutesClient = class {
-  client;
-  /**
-   * Creates a new mutes client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async unmuteUser(sourceUserId, targetUserId) {
-    let path = "/2/users/{source_user_id}/muting/{target_user_id}";
-    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
-    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "mute.write", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/mutes/models.ts
-var models_exports14 = {};
+// src/communities/models.ts
+var models_exports8 = {};
 
 // src/community_notes/client.ts
 var CommunityNotesClient = class {
@@ -5693,121 +4480,6 @@ var CommunityNotesClient = class {
       }
     }
     return normalized;
-  }
-  // Implementation
-  async delete(id) {
-    let path = "/2/notes/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async searchWritten(testMode, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "note.fields": "noteFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      noteFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/notes/search/notes_written";
-    const params = new URLSearchParams();
-    if (testMode !== void 0) {
-      params.append("test_mode", String(testMode));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (noteFields !== void 0 && noteFields.length > 0) {
-      params.append("note.fields", normalizeFields(noteFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async create(body) {
-    let path = "/2/notes";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async evaluate(body) {
-    let path = "/2/notes/evaluate";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
   }
   // Implementation
   async searchEligiblePosts(testMode, options = {}) {
@@ -5884,45 +4556,12 @@ var CommunityNotesClient = class {
       finalRequestOptions
     );
   }
-};
-
-// src/community_notes/models.ts
-var models_exports15 = {};
-
-// src/articles/client.ts
-var ArticlesClient = class {
-  client;
-  /**
-   * Creates a new articles client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
   // Implementation
-  async articleCreateDraft(body) {
-    let path = "/2/articles/draft";
+  async create(body) {
+    let path = "/2/notes";
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
@@ -5941,67 +4580,44 @@ var ArticlesClient = class {
     );
   }
   // Implementation
-  async articlePublish(articleId) {
-    let path = "/2/articles/{article_id}/publish";
-    path = path.replace("{article_id}", encodeURIComponent(String(articleId)));
+  async searchWritten(testMode, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "note.fields": "noteFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      noteFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/notes/search/notes_written";
     const params = new URLSearchParams();
+    if (testMode !== void 0) {
+      params.append("test_mode", String(testMode));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (noteFields !== void 0 && noteFields.length > 0) {
+      params.append("note.fields", normalizeFields(noteFields).join(","));
+    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.write"]
+          "OAuth2UserToken": ["tweet.read"]
         },
         {
           "UserToken": []
         }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/articles/models.ts
-var models_exports16 = {};
-
-// src/general/client.ts
-var GeneralClient = class {
-  client;
-  /**
-   * Creates a new general client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getOpenApiSpec() {
-    let path = "/2/openapi.json";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // No optional parameters, using empty request options
+      ],
+      ...requestOptions
     };
     return this.client.request(
       "GET",
@@ -6009,74 +4625,16 @@ var GeneralClient = class {
       finalRequestOptions
     );
   }
-};
-
-// src/general/models.ts
-var models_exports17 = {};
-
-// src/likes/client.ts
-var LikesClient = class {
-  client;
-  /**
-   * Creates a new likes client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
   // Implementation
-  async likePost(id, body) {
-    let path = "/2/users/{id}/likes";
+  async delete(id) {
+    let path = "/2/notes/{id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "like.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async unlikePost(id, tweetId) {
-    let path = "/2/users/{id}/likes/{tweet_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "tweet.read", "like.write"]
+          "OAuth2UserToken": ["tweet.write"]
         },
         {
           "UserToken": []
@@ -6091,7 +4649,111 @@ var LikesClient = class {
     );
   }
   // Implementation
-  async getPostsLikingUsers(id, options = {}) {
+  async evaluate(body) {
+    let path = "/2/notes/evaluate";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/community_notes/models.ts
+var models_exports9 = {};
+
+// src/users/client.ts
+var UsersClient = class {
+  client;
+  /**
+   * Creates a new users client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async getByIds(ids, options = {}) {
+    const paramMappings = {
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getFollowers(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken",
@@ -6107,7 +4769,7 @@ var LikesClient = class {
       postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/{id}/liking_users";
+    let path = "/2/users/{id}/followers";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     if (maxResults !== void 0) {
@@ -6129,10 +4791,13 @@ var LikesClient = class {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "like.read", "tweet.read"]
+          "OAuth2UserToken": ["follows.read", "tweet.read", "users.read"]
         },
         {
           "UserToken": []
+        },
+        {
+          "BearerToken": []
         }
       ],
       ...requestOptions
@@ -6143,60 +4808,36 @@ var LikesClient = class {
       finalRequestOptions
     );
   }
-};
-
-// src/likes/models.ts
-var models_exports18 = {};
-
-// src/communities/client.ts
-var CommunitiesClient = class {
-  client;
-  /**
-   * Creates a new communities client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
   // Implementation
-  async getById(id, options = {}) {
+  async getByUsername(username, options = {}) {
     const paramMappings = {
-      "community.fields": "communityFields"
+      "user.fields": "userFields",
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      communityFields = [],
+      userFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/communities/{id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+    let path = "/2/users/by/username/{username}";
+    path = path.replace("{username}", encodeURIComponent(String(username)));
     const params = new URLSearchParams();
-    if (communityFields !== void 0 && communityFields.length > 0) {
-      params.append("community.fields", normalizeFields(communityFields).join(","));
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "list.read", "users.read"]
+          "OAuth2UserToken": ["tweet.read", "users.read"]
         },
         {
           "UserToken": []
@@ -6218,312 +4859,37 @@ var CommunitiesClient = class {
     const paramMappings = {
       "max_results": "maxResults",
       "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "community.fields": "communityFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      communityFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/communities/search";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (communityFields !== void 0 && communityFields.length > 0) {
-      params.append("community.fields", normalizeFields(communityFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/communities/models.ts
-var models_exports19 = {};
-
-// src/search/client.ts
-var SearchClient = class {
-  client;
-  /**
-   * Creates a new search client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async postsAll(query, options = {}) {
-    const paramMappings = {
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "max_results": "maxResults",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "sort_order": "sortOrder",
-      "post.fields": "postFields",
       "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
       maxResults = void 0,
       nextToken = void 0,
-      paginationToken = void 0,
-      sortOrder = void 0,
-      postFields = [],
-      expansions = [],
       userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/search/all";
+    let path = "/2/users/search";
     const params = new URLSearchParams();
     if (query !== void 0) {
       params.append("query", String(query));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
     }
     if (maxResults !== void 0) {
       params.append("max_results", String(maxResults));
     }
     if (nextToken !== void 0) {
       params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (sortOrder !== void 0) {
-      params.append("sort_order", String(sortOrder));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
     }
     if (userFields !== void 0 && userFields.length > 0) {
       params.append("user.fields", normalizeFields(userFields).join(","));
     }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async news(query, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "max_age_hours": "maxAgeHours",
-      "news.fields": "newsFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      maxAgeHours = void 0,
-      newsFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/news/search";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (maxAgeHours !== void 0) {
-      params.append("max_age_hours", String(maxAgeHours));
-    }
-    if (newsFields !== void 0 && newsFields.length > 0) {
-      params.append("news.fields", normalizeFields(newsFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async postsRecent(query, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "sort_order": "sortOrder",
-      "post.fields": "postFields",
-      "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      sortOrder = void 0,
-      postFields = [],
-      expansions = [],
-      userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/search/recent";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (sortOrder !== void 0) {
-      params.append("sort_order", String(sortOrder));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
     }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
@@ -6533,112 +4899,6 @@ var SearchClient = class {
         },
         {
           "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/search/models.ts
-var models_exports20 = {};
-
-// src/counts/client.ts
-var CountsClient = class {
-  client;
-  /**
-   * Creates a new counts client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getPostsRecent(query, options = {}) {
-    const paramMappings = {
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "search_count.fields": "searchCountFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      granularity = void 0,
-      searchCountFields = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/counts/recent";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (searchCountFields !== void 0) {
-      params.append("search_count.fields", String(searchCountFields));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": []
-        },
-        {
-          "BearerToken": []
         }
       ],
       ...requestOptions
@@ -6650,248 +4910,16 @@ var CountsClient = class {
     );
   }
   // Implementation
-  async getPostsAll(query, options = {}) {
-    const paramMappings = {
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "next_token": "nextToken",
-      "pagination_token": "paginationToken",
-      "search_count.fields": "searchCountFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      nextToken = void 0,
-      paginationToken = void 0,
-      granularity = void 0,
-      searchCountFields = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/counts/all";
-    const params = new URLSearchParams();
-    if (query !== void 0) {
-      params.append("query", String(query));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (nextToken !== void 0) {
-      params.append("next_token", String(nextToken));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (searchCountFields !== void 0) {
-      params.append("search_count.fields", String(searchCountFields));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/counts/models.ts
-var models_exports21 = {};
-
-// src/compliance/client.ts
-var ComplianceClient = class {
-  client;
-  /**
-   * Creates a new compliance client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getJobsById(id, options = {}) {
-    const paramMappings = {
-      "compliance_job.fields": "complianceJobFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      complianceJobFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/compliance/jobs/{id}";
+  async unfollowList(id, listId) {
+    let path = "/2/users/{id}/followed_lists/{list_id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
-      params.append("compliance_job.fields", normalizeFields(complianceJobFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getJobs(type, options = {}) {
-    const paramMappings = {
-      "compliance_job.fields": "complianceJobFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      status = void 0,
-      complianceJobFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/compliance/jobs";
-    const params = new URLSearchParams();
-    if (type !== void 0) {
-      params.append("type", String(type));
-    }
-    if (status !== void 0) {
-      params.append("status", String(status));
-    }
-    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
-      params.append("compliance_job.fields", normalizeFields(complianceJobFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createJobs(body, options = {}) {
-    const paramMappings = {
-      "compliance_job.fields": "complianceJobFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      complianceJobFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/compliance/jobs";
-    const params = new URLSearchParams();
-    if (complianceJobFields !== void 0 && complianceJobFields.length > 0) {
-      params.append("compliance_job.fields", normalizeFields(complianceJobFields).join(","));
-    }
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/compliance/models.ts
-var models_exports22 = {};
-
-// src/chats/client.ts
-var ChatsClient = class {
-  client;
-  /**
-   * Creates a new chats client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async chatMediaDownload(id, mediaHashKey) {
-    let path = "/2/chat/media/{id}/{media_hash_key}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{media_hash_key}", encodeURIComponent(String(mediaHashKey)));
+    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["media.write"]
+          "OAuth2UserToken": ["users.read", "list.write", "tweet.read"]
         },
         {
           "UserToken": []
@@ -6900,35 +4928,106 @@ var ChatsClient = class {
       // No optional parameters, using empty request options
     };
     return this.client.request(
-      "GET",
+      "DELETE",
       path + (params.toString() ? `?${params.toString()}` : ""),
-      { ...finalRequestOptions, binary: true }
+      finalRequestOptions
     );
   }
   // Implementation
-  async getChatConversation(id, options = {}) {
+  async getFollowing(id, options = {}) {
     const paramMappings = {
-      "chat_conversation.fields": "chatConversationFields",
-      "user.fields": "userFields"
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      chatConversationFields = [],
-      expansions = [],
+      maxResults = void 0,
+      paginationToken = void 0,
       userFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/chat/conversations/{id}";
+    let path = "/2/users/{id}/following";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
-    if (chatConversationFields !== void 0 && chatConversationFields.length > 0) {
-      params.append("chat_conversation.fields", normalizeFields(chatConversationFields).join(","));
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
     }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "follows.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async followUser(id, body) {
+    let path = "/2/users/{id}/following";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "follows.write", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getPublicKey(id, options = {}) {
+    const paramMappings = {
+      "public_key.fields": "publicKeyFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      publicKeyFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/public_keys";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (publicKeyFields !== void 0 && publicKeyFields.length > 0) {
+      params.append("public_key.fields", normalizeFields(publicKeyFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
@@ -6949,14 +5048,16 @@ var ChatsClient = class {
     );
   }
   // Implementation
-  async initializeChatGroup() {
-    let path = "/2/chat/conversations/group/initialize";
+  async unmuteUser(sourceUserId, targetUserId) {
+    let path = "/2/users/{source_user_id}/muting/{target_user_id}";
+    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
+    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["dm.write"]
+          "OAuth2UserToken": ["users.read", "tweet.read", "mute.write"]
         },
         {
           "UserToken": []
@@ -6965,639 +5066,13 @@ var ChatsClient = class {
       // No optional parameters, using empty request options
     };
     return this.client.request(
-      "POST",
+      "DELETE",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
   }
   // Implementation
-  async getUsersPublicKeys(ids, options = {}) {
-    const paramMappings = {
-      "public_key.fields": "publicKeyFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      publicKeyFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/public_keys";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (publicKeyFields !== void 0 && publicKeyFields.length > 0) {
-      params.append("public_key.fields", normalizeFields(publicKeyFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read", "dm.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async sendChatTypingIndicator(id) {
-    let path = "/2/chat/conversations/{id}/typing";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "dm.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async deleteChatMessages(id, body) {
-    let path = "/2/chat/conversations/{id}/messages/delete";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async createChatConversation(body) {
-    let path = "/2/chat/conversations/group";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getChatConversationEvents(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "chat_message_event.fields": "chatMessageEventFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      chatMessageEventFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/chat/conversations/{id}/events";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (chatMessageEventFields !== void 0 && chatMessageEventFields.length > 0) {
-      params.append("chat_message_event.fields", normalizeFields(chatMessageEventFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "dm.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async markChatConversationRead(id, body) {
-    let path = "/2/chat/conversations/{id}/read";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async addChatGroupMembers(id, body) {
-    let path = "/2/chat/conversations/{id}/members";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.write", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getChatConversations(options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "chat_conversation.fields": "chatConversationFields",
-      "user.fields": "userFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      chatConversationFields = [],
-      expansions = [],
-      userFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/chat/conversations";
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (chatConversationFields !== void 0 && chatConversationFields.length > 0) {
-      params.append("chat_conversation.fields", normalizeFields(chatConversationFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["dm.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async chatMediaUploadInitialize(body) {
-    let path = "/2/chat/media/upload/initialize";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async chatMediaUploadFinalize(id, body) {
-    let path = "/2/chat/media/upload/{id}/finalize";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getUsersPublicKey(id, options = {}) {
-    const paramMappings = {
-      "public_key.fields": "publicKeyFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      publicKeyFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/users/{id}/public_keys";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (publicKeyFields !== void 0 && publicKeyFields.length > 0) {
-      params.append("public_key.fields", normalizeFields(publicKeyFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "dm.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async addUserPublicKey(id, body) {
-    let path = "/2/users/{id}/public_keys";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async addConversationKeys(id, body) {
-    let path = "/2/chat/conversations/{id}/keys";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "dm.write", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async sendChatMessage(id, body) {
-    let path = "/2/chat/conversations/{id}/messages";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async chatMediaUploadAppend(id, body) {
-    let path = "/2/chat/media/upload/{id}/append";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["media.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-};
-
-// src/chats/models.ts
-var models_exports23 = {};
-
-// src/posts/client.ts
-var PostsClient = class {
-  client;
-  /**
-   * Creates a new posts client instance
-   * 
-   * @param client - The main X API client instance
-   */
-  constructor(client) {
-    this.client = client;
-  }
-  /**
-   * Normalize options object to handle both camelCase and original API parameter names
-   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
-   */
-  _normalizeOptions(options, paramMappings) {
-    if (!options || typeof options !== "object") {
-      return options;
-    }
-    const normalized = { ...options };
-    for (const [originalName, camelName] of Object.entries(paramMappings)) {
-      if (originalName in normalized && !(camelName in normalized)) {
-        normalized[camelName] = normalized[originalName];
-        delete normalized[originalName];
-      }
-    }
-    return normalized;
-  }
-  // Implementation
-  async getRepostedBy(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "user.fields": "userFields",
-      "post.fields": "postFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      userFields = [],
-      expansions = [],
-      postFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/{id}/retweeted_by";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getByIds(ids, options = {}) {
-    const paramMappings = {
-      "post.fields": "postFields",
-      "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      postFields = [],
-      expansions = [],
-      userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
-        },
-        {
-          "UserToken": []
-        },
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async create(body) {
-    let path = "/2/tweets";
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["users.read", "tweet.read", "tweet.write"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async hideReply(tweetId, body) {
-    let path = "/2/tweets/{tweet_id}/hidden";
-    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.read", "tweet.moderate.write", "users.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "PUT",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getUsersLiked(id, options = {}) {
+  async getLikedPosts(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken",
@@ -7650,7 +5125,7 @@ var PostsClient = class {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "tweet.read", "like.read"]
+          "OAuth2UserToken": ["like.read", "users.read", "tweet.read"]
         },
         {
           "UserToken": []
@@ -7665,153 +5140,29 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getRules(options = {}) {
+  async getById(id, options = {}) {
     const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      ids = [],
-      maxResults = void 0,
-      paginationToken = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/search/stream/rules";
-    const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
-    }
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "GET",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async updateRules(body, options = {}) {
-    const paramMappings = {
-      "dry_run": "dryRun",
-      "delete_all": "deleteAll"
-    };
-    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-    const {
-      dryRun = void 0,
-      deleteAll = void 0,
-      requestOptions = {}
-    } = normalizedOptions;
-    let path = "/2/tweets/search/stream/rules";
-    const params = new URLSearchParams();
-    if (dryRun !== void 0) {
-      params.append("dry_run", String(dryRun));
-    }
-    if (deleteAll !== void 0) {
-      params.append("delete_all", String(deleteAll));
-    }
-    const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "BearerToken": []
-        }
-      ],
-      ...requestOptions
-    };
-    return this.client.request(
-      "POST",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async unrepostPost(id, sourceTweetId) {
-    let path = "/2/users/{id}/retweets/{source_tweet_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{source_tweet_id}", encodeURIComponent(String(sourceTweetId)));
-    const params = new URLSearchParams();
-    const finalRequestOptions = {
-      // Pass security requirements for smart auth selection
-      security: [
-        {
-          "OAuth2UserToken": ["tweet.write", "users.read", "tweet.read"]
-        },
-        {
-          "UserToken": []
-        }
-      ]
-      // No optional parameters, using empty request options
-    };
-    return this.client.request(
-      "DELETE",
-      path + (params.toString() ? `?${params.toString()}` : ""),
-      finalRequestOptions
-    );
-  }
-  // Implementation
-  async getReposts(id, options = {}) {
-    const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "post.fields": "postFields",
       "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      postFields = [],
-      expansions = [],
       userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/{id}/retweets";
+    let path = "/2/users/{id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
-    }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
     }
     if (expansions !== void 0 && expansions.length > 0) {
       params.append("expansions", expansions.join(","));
     }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
@@ -7835,7 +5186,246 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getUsersBookmarkFolders(id, options = {}) {
+  async deleteBookmark(id, tweetId) {
+    let path = "/2/users/{id}/bookmarks/{tweet_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read", "bookmark.write"]
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async unblockDms(id) {
+    let path = "/2/users/{id}/dm/unblock";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "dm.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async unlikePost(id, tweetId) {
+    let path = "/2/users/{id}/likes/{tweet_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["like.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async repostPost(id, body) {
+    let path = "/2/users/{id}/retweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getAffiliates(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/affiliates";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getPinnedLists(id, options = {}) {
+    const paramMappings = {
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/pinned_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", normalizeFields(listFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async pinList(id, body) {
+    let path = "/2/users/{id}/pinned_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async unrepostPost(id, sourceTweetId) {
+    let path = "/2/users/{id}/retweets/{source_tweet_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{source_tweet_id}", encodeURIComponent(String(sourceTweetId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getBookmarkFolders(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken"
@@ -7859,7 +5449,7 @@ var PostsClient = class {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["bookmark.read", "users.read"]
+          "OAuth2UserToken": ["users.read", "bookmark.read"]
         },
         {
           "UserToken": []
@@ -7874,8 +5464,83 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getById(id, options = {}) {
+  async createBookmarkFolder(id, body) {
+    let path = "/2/users/{id}/bookmarks/folders";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "bookmark.write"]
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getByUsernames(usernames, options = {}) {
     const paramMappings = {
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/by";
+    const params = new URLSearchParams();
+    if (usernames !== void 0 && usernames.length > 0) {
+      params.append("usernames", usernames.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getMentions(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "start_time": "startTime",
+      "end_time": "endTime",
+      "since_id": "sinceId",
+      "until_id": "untilId",
       "post.fields": "postFields",
       "user.fields": "userFields",
       "media.fields": "mediaFields",
@@ -7884,6 +5549,12 @@ var PostsClient = class {
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      startTime = void 0,
+      endTime = void 0,
+      sinceId = void 0,
+      untilId = void 0,
       postFields = [],
       expansions = [],
       userFields = [],
@@ -7892,9 +5563,27 @@ var PostsClient = class {
       placeFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/{id}";
+    let path = "/2/users/{id}/mentions";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (startTime !== void 0) {
+      params.append("start_time", String(startTime));
+    }
+    if (endTime !== void 0) {
+      params.append("end_time", String(endTime));
+    }
+    if (sinceId !== void 0) {
+      params.append("since_id", String(sinceId));
+    }
+    if (untilId !== void 0) {
+      params.append("until_id", String(untilId));
+    }
     if (postFields !== void 0 && postFields.length > 0) {
       params.append("post.fields", normalizeFields(postFields).join(","));
     }
@@ -7935,54 +5624,88 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async delete(id) {
-    let path = "/2/tweets/{id}";
+  async getBookmarksByFolderId(id, folderId, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/bookmarks/folders/{folder_id}";
     path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{folder_id}", encodeURIComponent(String(folderId)));
     const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "tweet.read", "tweet.write"]
+          "OAuth2UserToken": ["users.read", "bookmark.read", "tweet.read"]
         },
         {
           "UserToken": []
         }
-      ]
-      // No optional parameters, using empty request options
+      ],
+      ...requestOptions
     };
     return this.client.request(
-      "DELETE",
+      "GET",
       path + (params.toString() ? `?${params.toString()}` : ""),
       finalRequestOptions
     );
   }
   // Implementation
-  async getTrendsByWoeid(woeid, options = {}) {
+  async getFollowedLists(id, options = {}) {
     const paramMappings = {
-      "max_trends": "maxTrends",
-      "trend.fields": "trendFields"
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "list.fields": "listFields",
+      "user.fields": "userFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      maxTrends = void 0,
-      trendFields = [],
+      maxResults = void 0,
+      paginationToken = void 0,
+      listFields = [],
+      expansions = [],
+      userFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/trends/by/woeid/{woeid}";
-    path = path.replace("{woeid}", encodeURIComponent(String(woeid)));
+    let path = "/2/users/{id}/followed_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
-    if (maxTrends !== void 0) {
-      params.append("max_trends", String(maxTrends));
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
     }
-    if (trendFields !== void 0 && trendFields.length > 0) {
-      params.append("trend.fields", normalizeFields(trendFields).join(","));
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", normalizeFields(listFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": []
+          "OAuth2UserToken": ["tweet.read", "users.read", "list.read"]
+        },
+        {
+          "UserToken": []
         },
         {
           "BearerToken": []
@@ -7997,7 +5720,111 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getUsers(id, options = {}) {
+  async followList(id, body) {
+    let path = "/2/users/{id}/followed_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "list.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async unfollowUser(sourceUserId, targetUserId) {
+    let path = "/2/users/{source_user_id}/following/{target_user_id}";
+    path = path.replace("{source_user_id}", encodeURIComponent(String(sourceUserId)));
+    path = path.replace("{target_user_id}", encodeURIComponent(String(targetUserId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "follows.write", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getOwnedLists(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/owned_lists";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", normalizeFields(listFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getPosts(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken",
@@ -8074,7 +5901,7 @@ var PostsClient = class {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
+          "OAuth2UserToken": ["tweet.read", "users.read"]
         },
         {
           "UserToken": []
@@ -8092,7 +5919,7 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getUsersBookmarks(id, options = {}) {
+  async getBookmarks(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken",
@@ -8145,7 +5972,7 @@ var PostsClient = class {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["bookmark.read", "users.read", "tweet.read"]
+          "OAuth2UserToken": ["bookmark.read", "tweet.read", "users.read"]
         },
         {
           "UserToken": []
@@ -8160,16 +5987,16 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async createUsersBookmark(id, body) {
+  async createBookmark(id, body) {
     let path = "/2/users/{id}/bookmarks";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "users.read", "bookmark.write"]
+          "OAuth2UserToken": ["tweet.read", "bookmark.write", "users.read"]
         }
       ]
       // No optional parameters, using empty request options
@@ -8181,7 +6008,84 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getUsersTimeline(id, options = {}) {
+  async getMuting(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/muting";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "mute.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async muteUser(id, body) {
+    let path = "/2/users/{id}/muting";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "mute.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getTimeline(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken",
@@ -8273,86 +6177,31 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getUsersMentions(id, options = {}) {
+  async getPublicKeys(ids, options = {}) {
     const paramMappings = {
-      "max_results": "maxResults",
-      "pagination_token": "paginationToken",
-      "start_time": "startTime",
-      "end_time": "endTime",
-      "since_id": "sinceId",
-      "until_id": "untilId",
-      "post.fields": "postFields",
-      "user.fields": "userFields",
-      "media.fields": "mediaFields",
-      "poll.fields": "pollFields",
-      "place.fields": "placeFields"
+      "public_key.fields": "publicKeyFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      maxResults = void 0,
-      paginationToken = void 0,
-      startTime = void 0,
-      endTime = void 0,
-      sinceId = void 0,
-      untilId = void 0,
-      postFields = [],
-      expansions = [],
-      userFields = [],
-      mediaFields = [],
-      pollFields = [],
-      placeFields = [],
+      publicKeyFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/users/{id}/mentions";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+    let path = "/2/users/public_keys";
     const params = new URLSearchParams();
-    if (maxResults !== void 0) {
-      params.append("max_results", String(maxResults));
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
     }
-    if (paginationToken !== void 0) {
-      params.append("pagination_token", String(paginationToken));
-    }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
-    }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (sinceId !== void 0) {
-      params.append("since_id", String(sinceId));
-    }
-    if (untilId !== void 0) {
-      params.append("until_id", String(untilId));
-    }
-    if (postFields !== void 0 && postFields.length > 0) {
-      params.append("post.fields", normalizeFields(postFields).join(","));
-    }
-    if (expansions !== void 0 && expansions.length > 0) {
-      params.append("expansions", expansions.join(","));
-    }
-    if (userFields !== void 0 && userFields.length > 0) {
-      params.append("user.fields", normalizeFields(userFields).join(","));
-    }
-    if (mediaFields !== void 0 && mediaFields.length > 0) {
-      params.append("media.fields", normalizeFields(mediaFields).join(","));
-    }
-    if (pollFields !== void 0 && pollFields.length > 0) {
-      params.append("poll.fields", normalizeFields(pollFields).join(","));
-    }
-    if (placeFields !== void 0 && placeFields.length > 0) {
-      params.append("place.fields", normalizeFields(placeFields).join(","));
+    if (publicKeyFields !== void 0 && publicKeyFields.length > 0) {
+      params.append("public_key.fields", normalizeFields(publicKeyFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
+          "OAuth2UserToken": ["tweet.read", "dm.read", "users.read"]
         },
         {
           "UserToken": []
-        },
-        {
-          "BearerToken": []
         }
       ],
       ...requestOptions
@@ -8364,16 +6213,16 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async repostPost(id, body) {
-    let path = "/2/users/{id}/retweets";
+  async likePost(id, body) {
+    let path = "/2/users/{id}/likes";
     path = path.replace("{id}", encodeURIComponent(String(id)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "tweet.write", "users.read"]
+          "OAuth2UserToken": ["users.read", "tweet.read", "like.write"]
         },
         {
           "UserToken": []
@@ -8388,38 +6237,34 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getAnalytics(ids, startTime, endTime, options = {}) {
+  async getMe(options = {}) {
     const paramMappings = {
-      "analytics.fields": "analyticsFields"
+      "user.fields": "userFields",
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
-      granularity = void 0,
-      analyticsFields = [],
+      userFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/analytics";
+    let path = "/2/users/me";
     const params = new URLSearchParams();
-    if (ids !== void 0 && ids.length > 0) {
-      params.append("ids", ids.join(","));
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
     }
-    if (startTime !== void 0) {
-      params.append("start_time", String(startTime));
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
     }
-    if (endTime !== void 0) {
-      params.append("end_time", String(endTime));
-    }
-    if (granularity !== void 0) {
-      params.append("granularity", String(granularity));
-    }
-    if (analyticsFields !== void 0 && analyticsFields.length > 0) {
-      params.append("analytics.fields", normalizeFields(analyticsFields).join(","));
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
     }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "users.read"]
+          "OAuth2UserToken": ["users.read", "tweet.read"]
         },
         {
           "UserToken": []
@@ -8434,7 +6279,7 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getQuoted(id, options = {}) {
+  async getRepostsOfMe(options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
       "pagination_token": "paginationToken",
@@ -8448,7 +6293,6 @@ var PostsClient = class {
     const {
       maxResults = void 0,
       paginationToken = void 0,
-      exclude = [],
       postFields = [],
       expansions = [],
       userFields = [],
@@ -8457,17 +6301,13 @@ var PostsClient = class {
       placeFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/tweets/{id}/quote_tweets";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+    let path = "/2/users/reposts_of_me";
     const params = new URLSearchParams();
     if (maxResults !== void 0) {
       params.append("max_results", String(maxResults));
     }
     if (paginationToken !== void 0) {
       params.append("pagination_token", String(paginationToken));
-    }
-    if (exclude !== void 0 && exclude.length > 0) {
-      params.append("exclude", exclude.join(","));
     }
     if (postFields !== void 0 && postFields.length > 0) {
       params.append("post.fields", normalizeFields(postFields).join(","));
@@ -8491,7 +6331,83 @@ var PostsClient = class {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "tweet.read"]
+          "OAuth2UserToken": ["tweet.read", "timeline.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async blockDms(id) {
+    let path = "/2/users/{id}/dm/block";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getListMemberships(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/{id}/list_memberships";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", normalizeFields(listFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
         },
         {
           "UserToken": []
@@ -8509,20 +6425,48 @@ var PostsClient = class {
     );
   }
   // Implementation
-  async getUsersBookmarksByFolderId(id, folderId, options = {}) {
+  async unpinList(id, listId) {
+    let path = "/2/users/{id}/pinned_lists/{list_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{list_id}", encodeURIComponent(String(listId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getBlocking(id, options = {}) {
     const paramMappings = {
       "max_results": "maxResults",
-      "pagination_token": "paginationToken"
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
     };
     const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
     const {
       maxResults = void 0,
       paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
       requestOptions = {}
     } = normalizedOptions;
-    let path = "/2/users/{id}/bookmarks/folders/{folder_id}";
+    let path = "/2/users/{id}/blocking";
     path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{folder_id}", encodeURIComponent(String(folderId)));
     const params = new URLSearchParams();
     if (maxResults !== void 0) {
       params.append("max_results", String(maxResults));
@@ -8530,11 +6474,20 @@ var PostsClient = class {
     if (paginationToken !== void 0) {
       params.append("pagination_token", String(paginationToken));
     }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "bookmark.read", "tweet.read"]
+          "OAuth2UserToken": ["users.read", "block.read", "tweet.read"]
         },
         {
           "UserToken": []
@@ -8550,14 +6503,14 @@ var PostsClient = class {
   }
 };
 
-// src/posts/models.ts
-var models_exports24 = {};
+// src/users/models.ts
+var models_exports10 = {};
 
-// src/bookmarks/client.ts
-var BookmarksClient = class {
+// src/direct_messages/client.ts
+var DirectMessagesClient = class {
   client;
   /**
-   * Creates a new bookmarks client instance
+   * Creates a new direct messages client instance
    * 
    * @param client - The main X API client instance
    */
@@ -8582,16 +6535,19 @@ var BookmarksClient = class {
     return normalized;
   }
   // Implementation
-  async createUsersBookmarkFolder(id, body) {
-    let path = "/2/users/{id}/bookmarks/folders";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
+  async createByConversationId(dmConversationId, body) {
+    let path = "/2/dm_conversations/{dm_conversation_id}/messages";
+    path = path.replace("{dm_conversation_id}", encodeURIComponent(String(dmConversationId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
-      body: JSON.stringify(transformKeysToSnake3(body || {})),
+      body: JSON.stringify(transformKeysToSnake(body || {})),
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["users.read", "bookmark.write"]
+          "OAuth2UserToken": ["tweet.read", "users.read", "dm.write"]
+        },
+        {
+          "UserToken": []
         }
       ]
       // No optional parameters, using empty request options
@@ -8603,16 +6559,1071 @@ var BookmarksClient = class {
     );
   }
   // Implementation
-  async deleteUsersBookmark(id, tweetId) {
-    let path = "/2/users/{id}/bookmarks/{tweet_id}";
-    path = path.replace("{id}", encodeURIComponent(String(id)));
-    path = path.replace("{tweet_id}", encodeURIComponent(String(tweetId)));
+  async getEventsById(eventId, options = {}) {
+    const paramMappings = {
+      "dm_event.fields": "dmEventFields",
+      "user.fields": "userFields",
+      "post.fields": "postFields",
+      "media.fields": "mediaFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      dmEventFields = [],
+      expansions = [],
+      userFields = [],
+      postFields = [],
+      mediaFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_events/{event_id}";
+    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
+    const params = new URLSearchParams();
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "dm.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteEvents(eventId) {
+    let path = "/2/dm_events/{event_id}";
+    path = path.replace("{event_id}", encodeURIComponent(String(eventId)));
     const params = new URLSearchParams();
     const finalRequestOptions = {
       // Pass security requirements for smart auth selection
       security: [
         {
-          "OAuth2UserToken": ["tweet.read", "bookmark.write", "users.read"]
+          "OAuth2UserToken": ["dm.write", "dm.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getEventsByParticipantId(participantId, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "event_types": "eventTypes",
+      "dm_event.fields": "dmEventFields",
+      "user.fields": "userFields",
+      "post.fields": "postFields",
+      "media.fields": "mediaFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      eventTypes = [],
+      dmEventFields = [],
+      expansions = [],
+      userFields = [],
+      postFields = [],
+      mediaFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations/with/{participant_id}/dm_events";
+    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (eventTypes !== void 0 && eventTypes.length > 0) {
+      params.append("event_types", eventTypes.join(","));
+    }
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createByParticipantId(participantId, body) {
+    let path = "/2/dm_conversations/with/{participant_id}/messages";
+    path = path.replace("{participant_id}", encodeURIComponent(String(participantId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getEvents(options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "event_types": "eventTypes",
+      "dm_event.fields": "dmEventFields",
+      "user.fields": "userFields",
+      "post.fields": "postFields",
+      "media.fields": "mediaFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      eventTypes = [],
+      dmEventFields = [],
+      expansions = [],
+      userFields = [],
+      postFields = [],
+      mediaFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_events";
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (eventTypes !== void 0 && eventTypes.length > 0) {
+      params.append("event_types", eventTypes.join(","));
+    }
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "dm.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createConversation(body) {
+    let path = "/2/dm_conversations";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getEventsByConversationId(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "event_types": "eventTypes",
+      "dm_event.fields": "dmEventFields",
+      "user.fields": "userFields",
+      "post.fields": "postFields",
+      "media.fields": "mediaFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      eventTypes = [],
+      dmEventFields = [],
+      expansions = [],
+      userFields = [],
+      postFields = [],
+      mediaFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/dm_conversations/{id}/dm_events";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (eventTypes !== void 0 && eventTypes.length > 0) {
+      params.append("event_types", eventTypes.join(","));
+    }
+    if (dmEventFields !== void 0 && dmEventFields.length > 0) {
+      params.append("dm_event.fields", normalizeFields(dmEventFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async dmConversationsMediaDownload(dmId, mediaId, resourceId) {
+    let path = "/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}";
+    path = path.replace("{dm_id}", encodeURIComponent(String(dmId)));
+    path = path.replace("{media_id}", encodeURIComponent(String(mediaId)));
+    path = path.replace("{resource_id}", encodeURIComponent(String(resourceId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read"]
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      { ...finalRequestOptions, binary: true }
+    );
+  }
+};
+
+// src/direct_messages/models.ts
+var models_exports11 = {};
+
+// src/usage/client.ts
+var UsageClient = class {
+  client;
+  /**
+   * Creates a new usage client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async get(options = {}) {
+    const paramMappings = {
+      "usage.fields": "usageFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      days = void 0,
+      usageFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/usage/tweets";
+    const params = new URLSearchParams();
+    if (days !== void 0) {
+      params.append("days", String(days));
+    }
+    if (usageFields !== void 0 && usageFields.length > 0) {
+      params.append("usage.fields", normalizeFields(usageFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/usage/models.ts
+var models_exports12 = {};
+
+// src/spaces/client.ts
+var SpacesClient = class {
+  client;
+  /**
+   * Creates a new spaces client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async getByIds(ids, options = {}) {
+    const paramMappings = {
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", normalizeFields(spaceFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", normalizeFields(topicFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getById(id, options = {}) {
+    const paramMappings = {
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", normalizeFields(spaceFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", normalizeFields(topicFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "space.read"]
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getBuyers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/{id}/buyers";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getByCreatorIds(userIds, options = {}) {
+    const paramMappings = {
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/by/creator_ids";
+    const params = new URLSearchParams();
+    if (userIds !== void 0 && userIds.length > 0) {
+      params.append("user_ids", userIds.join(","));
+    }
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", normalizeFields(spaceFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", normalizeFields(topicFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "space.read", "tweet.read"]
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async search(query, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "space.fields": "spaceFields",
+      "user.fields": "userFields",
+      "topic.fields": "topicFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      state = void 0,
+      maxResults = void 0,
+      spaceFields = [],
+      expansions = [],
+      userFields = [],
+      topicFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/search";
+    const params = new URLSearchParams();
+    if (query !== void 0) {
+      params.append("query", String(query));
+    }
+    if (state !== void 0) {
+      params.append("state", String(state));
+    }
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (spaceFields !== void 0 && spaceFields.length > 0) {
+      params.append("space.fields", normalizeFields(spaceFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (topicFields !== void 0 && topicFields.length > 0) {
+      params.append("topic.fields", normalizeFields(topicFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getPosts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/spaces/{id}/tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["space.read", "tweet.read", "users.read"]
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/spaces/models.ts
+var models_exports13 = {};
+
+// src/account_activity/client.ts
+var AccountActivityClient = class {
+  client;
+  /**
+   * Creates a new account activity client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async validateSubscription(webhookId) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "dm.write", "dm.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createSubscription(webhookId, body) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["dm.read", "dm.write", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteSubscription(webhookId, userId) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getSubscriptions(webhookId) {
+    let path = "/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list";
+    path = path.replace("{webhook_id}", encodeURIComponent(String(webhookId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getSubscriptionCount() {
+    let path = "/2/account_activity/subscriptions/count";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/account_activity/models.ts
+var models_exports14 = {};
+
+// src/activity/client.ts
+var ActivityClient = class {
+  client;
+  /**
+   * Creates a new activity client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async updateSubscription(subscriptionId, body) {
+    let path = "/2/activity/subscriptions/{subscription_id}";
+    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "PUT",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteSubscription(subscriptionId) {
+    let path = "/2/activity/subscriptions/{subscription_id}";
+    path = path.replace("{subscription_id}", encodeURIComponent(String(subscriptionId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getSubscriptions(options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/activity/subscriptions";
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["like.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createSubscription(body) {
+    let path = "/2/activity/subscriptions";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": []
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteSubscriptionsByIds(ids) {
+    let path = "/2/activity/subscriptions";
+    const params = new URLSearchParams();
+    if (ids !== void 0 && ids.length > 0) {
+      params.append("ids", ids.join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "BearerToken": []
         }
       ]
       // No optional parameters, using empty request options
@@ -8625,8 +7636,850 @@ var BookmarksClient = class {
   }
 };
 
-// src/bookmarks/models.ts
-var models_exports25 = {};
+// src/activity/models.ts
+var models_exports15 = {};
+
+// src/broadcasts/client.ts
+var BroadcastsClient = class {
+  client;
+  /**
+   * Creates a new broadcasts client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async listScheduled(options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "oldest_start_time": "oldestStartTime",
+      "newest_start_time": "newestStartTime",
+      "pagination_token": "paginationToken"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      oldestStartTime = void 0,
+      newestStartTime = void 0,
+      paginationToken = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/broadcasts/scheduled";
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (oldestStartTime !== void 0) {
+      params.append("oldest_start_time", String(oldestStartTime));
+    }
+    if (newestStartTime !== void 0) {
+      params.append("newest_start_time", String(newestStartTime));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async createScheduledBroadcast(body) {
+    let path = "/2/broadcasts/scheduled";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getScheduledBroadcast(id) {
+    let path = "/2/broadcasts/scheduled/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async updateScheduledBroadcast(id, body) {
+    let path = "/2/broadcasts/scheduled/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.write", "broadcast.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "PUT",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async deleteScheduledBroadcast(id, options = {}) {
+    const paramMappings = {
+      "roll_forward": "rollForward"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      rollForward = void 0,
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/broadcasts/scheduled/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (rollForward !== void 0) {
+      params.append("roll_forward", String(rollForward));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async sendBroadcastChat(id, body) {
+    let path = "/2/broadcasts/{id}/chat";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async goLiveScheduledBroadcast(id) {
+    let path = "/2/broadcasts/scheduled/{id}/live";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["broadcast.read", "broadcast.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/broadcasts/models.ts
+var models_exports16 = {};
+
+// src/lists/client.ts
+var ListsClient = class {
+  client;
+  /**
+   * Creates a new lists client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async getFollowers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/followers";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "users.read", "list.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async create(body) {
+    let path = "/2/lists";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "list.write", "tweet.read", "list.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getPosts(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "post.fields": "postFields",
+      "user.fields": "userFields",
+      "media.fields": "mediaFields",
+      "poll.fields": "pollFields",
+      "place.fields": "placeFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      postFields = [],
+      expansions = [],
+      userFields = [],
+      mediaFields = [],
+      pollFields = [],
+      placeFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/tweets";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (mediaFields !== void 0 && mediaFields.length > 0) {
+      params.append("media.fields", normalizeFields(mediaFields).join(","));
+    }
+    if (pollFields !== void 0 && pollFields.length > 0) {
+      params.append("poll.fields", normalizeFields(pollFields).join(","));
+    }
+    if (placeFields !== void 0 && placeFields.length > 0) {
+      params.append("place.fields", normalizeFields(placeFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "list.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getById(id, options = {}) {
+    const paramMappings = {
+      "list.fields": "listFields",
+      "user.fields": "userFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      listFields = [],
+      expansions = [],
+      userFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (listFields !== void 0 && listFields.length > 0) {
+      params.append("list.fields", normalizeFields(listFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.read", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async update(id, body) {
+    let path = "/2/lists/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "list.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "PUT",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async delete(id) {
+    let path = "/2/lists/{id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.write", "tweet.read", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async removeMemberByUserId(id, userId) {
+    let path = "/2/lists/{id}/members/{user_id}";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    path = path.replace("{user_id}", encodeURIComponent(String(userId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read", "list.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "DELETE",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getMembers(id, options = {}) {
+    const paramMappings = {
+      "max_results": "maxResults",
+      "pagination_token": "paginationToken",
+      "user.fields": "userFields",
+      "post.fields": "postFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxResults = void 0,
+      paginationToken = void 0,
+      userFields = [],
+      expansions = [],
+      postFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/lists/{id}/members";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    if (maxResults !== void 0) {
+      params.append("max_results", String(maxResults));
+    }
+    if (paginationToken !== void 0) {
+      params.append("pagination_token", String(paginationToken));
+    }
+    if (userFields !== void 0 && userFields.length > 0) {
+      params.append("user.fields", normalizeFields(userFields).join(","));
+    }
+    if (expansions !== void 0 && expansions.length > 0) {
+      params.append("expansions", expansions.join(","));
+    }
+    if (postFields !== void 0 && postFields.length > 0) {
+      params.append("post.fields", normalizeFields(postFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["list.read", "users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async addMember(id, body) {
+    let path = "/2/lists/{id}/members";
+    path = path.replace("{id}", encodeURIComponent(String(id)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.read", "list.write", "users.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/lists/models.ts
+var models_exports17 = {};
+
+// src/trends/client.ts
+var TrendsClient = class {
+  client;
+  /**
+   * Creates a new trends client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async getPersonalized(options = {}) {
+    const paramMappings = {
+      "personalized_trend.fields": "personalizedTrendFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      personalizedTrendFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/users/personalized_trends";
+    const params = new URLSearchParams();
+    if (personalizedTrendFields !== void 0 && personalizedTrendFields.length > 0) {
+      params.append("personalized_trend.fields", normalizeFields(personalizedTrendFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["users.read", "tweet.read"]
+        },
+        {
+          "UserToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async getByWoeid(woeid, options = {}) {
+    const paramMappings = {
+      "max_trends": "maxTrends",
+      "trend.fields": "trendFields"
+    };
+    const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+    const {
+      maxTrends = void 0,
+      trendFields = [],
+      requestOptions = {}
+    } = normalizedOptions;
+    let path = "/2/trends/by/woeid/{woeid}";
+    path = path.replace("{woeid}", encodeURIComponent(String(woeid)));
+    const params = new URLSearchParams();
+    if (maxTrends !== void 0) {
+      params.append("max_trends", String(maxTrends));
+    }
+    if (trendFields !== void 0 && trendFields.length > 0) {
+      params.append("trend.fields", normalizeFields(trendFields).join(","));
+    }
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": []
+        },
+        {
+          "BearerToken": []
+        }
+      ],
+      ...requestOptions
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/trends/models.ts
+var models_exports18 = {};
+
+// src/articles/client.ts
+var ArticlesClient = class {
+  client;
+  /**
+   * Creates a new articles client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async articlePublish(articleId) {
+    let path = "/2/articles/{article_id}/publish";
+    path = path.replace("{article_id}", encodeURIComponent(String(articleId)));
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+  // Implementation
+  async articleCreateDraft(body) {
+    let path = "/2/articles/draft";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      body: JSON.stringify(transformKeysToSnake(body || {})),
+      // Pass security requirements for smart auth selection
+      security: [
+        {
+          "OAuth2UserToken": ["tweet.write"]
+        },
+        {
+          "UserToken": []
+        }
+      ]
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "POST",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/articles/models.ts
+var models_exports19 = {};
+
+// src/general/client.ts
+var GeneralClient = class {
+  client;
+  /**
+   * Creates a new general client instance
+   * 
+   * @param client - The main X API client instance
+   */
+  constructor(client) {
+    this.client = client;
+  }
+  /**
+   * Normalize options object to handle both camelCase and original API parameter names
+   * Only accepts: proper camelCase (tweetFields) and original API format (tweet.fields)
+   */
+  _normalizeOptions(options, paramMappings) {
+    if (!options || typeof options !== "object") {
+      return options;
+    }
+    const normalized = { ...options };
+    for (const [originalName, camelName] of Object.entries(paramMappings)) {
+      if (originalName in normalized && !(camelName in normalized)) {
+        normalized[camelName] = normalized[originalName];
+        delete normalized[originalName];
+      }
+    }
+    return normalized;
+  }
+  // Implementation
+  async getOpenApiSpec() {
+    let path = "/2/openapi.json";
+    const params = new URLSearchParams();
+    const finalRequestOptions = {
+      // No optional parameters, using empty request options
+    };
+    return this.client.request(
+      "GET",
+      path + (params.toString() ? `?${params.toString()}` : ""),
+      finalRequestOptions
+    );
+  }
+};
+
+// src/general/models.ts
+var models_exports20 = {};
 
 // src/client.ts
 var ApiError = class extends Error {
@@ -8674,24 +8527,24 @@ function transformKeys(obj) {
   }
   return obj;
 }
-function transformKeysToSnake3(obj) {
+function transformKeysToSnake(obj) {
   if (obj === null || obj === void 0) {
     return obj;
   }
   if (Array.isArray(obj)) {
-    return obj.map((item) => transformKeysToSnake3(item));
+    return obj.map((item) => transformKeysToSnake(item));
   }
   if (typeof obj === "object") {
     const result = {};
     for (const [key, value] of Object.entries(obj)) {
       const snakeKey = camelToSnake(key);
-      result[snakeKey] = transformKeysToSnake3(value);
+      result[snakeKey] = transformKeysToSnake(value);
     }
     return result;
   }
   return obj;
 }
-var Client23 = class {
+var Client20 = class {
   /** Base URL for API requests */
   baseUrl;
   /** Bearer token for authentication */
@@ -8710,58 +8563,48 @@ var Client23 = class {
   maxRetries;
   /** HTTP client for making requests */
   httpClient = httpClient;
-  /** usage client */
-  usage;
-  /** news client */
-  news;
-  /** lists client */
-  lists;
   /** media client */
   media;
-  /** activity client */
-  activity;
-  /** trends client */
-  trends;
-  /** direct messages client */
-  directMessages;
+  /** posts client */
+  posts;
   /** stream client */
   stream;
-  /** users client */
-  users;
-  /** broadcasts client */
-  broadcasts;
   /** connections client */
   connections;
   /** webhooks client */
   webhooks;
+  /** news client */
+  news;
+  /** compliance client */
+  compliance;
+  /** chat client */
+  chat;
+  /** communities client */
+  communities;
+  /** community notes client */
+  communityNotes;
+  /** users client */
+  users;
+  /** direct messages client */
+  directMessages;
+  /** usage client */
+  usage;
   /** spaces client */
   spaces;
   /** account activity client */
   accountActivity;
-  /** mutes client */
-  mutes;
-  /** community notes client */
-  communityNotes;
+  /** activity client */
+  activity;
+  /** broadcasts client */
+  broadcasts;
+  /** lists client */
+  lists;
+  /** trends client */
+  trends;
   /** articles client */
   articles;
   /** general client */
   general;
-  /** likes client */
-  likes;
-  /** communities client */
-  communities;
-  /** search client */
-  search;
-  /** counts client */
-  counts;
-  /** compliance client */
-  compliance;
-  /** chats client */
-  chats;
-  /** posts client */
-  posts;
-  /** bookmarks client */
-  bookmarks;
   /**
    * Creates a new X API client instance
    * 
@@ -8800,38 +8643,33 @@ var Client23 = class {
     this.retry = config.retry ?? true;
     this.maxRetries = config.maxRetries || 3;
     const defaultHeaders = {
-      "User-Agent": "xdk-typescript/0.6.4",
+      "User-Agent": "xdk-typescript/0.6.5",
       "Content-Type": "application/json",
       "Accept": "application/json",
       ...config.headers || {}
     };
     this.headers = httpClient.createHeaders(defaultHeaders);
-    this.usage = new UsageClient(this);
-    this.news = new NewsClient(this);
-    this.lists = new ListsClient(this);
     this.media = new MediaClient(this);
-    this.activity = new ActivityClient(this);
-    this.trends = new TrendsClient(this);
-    this.directMessages = new DirectMessagesClient(this);
+    this.posts = new PostsClient(this);
     this.stream = new StreamClient(this);
-    this.users = new UsersClient(this);
-    this.broadcasts = new BroadcastsClient(this);
     this.connections = new ConnectionsClient(this);
     this.webhooks = new WebhooksClient(this);
+    this.news = new NewsClient(this);
+    this.compliance = new ComplianceClient(this);
+    this.chat = new ChatClient(this);
+    this.communities = new CommunitiesClient(this);
+    this.communityNotes = new CommunityNotesClient(this);
+    this.users = new UsersClient(this);
+    this.directMessages = new DirectMessagesClient(this);
+    this.usage = new UsageClient(this);
     this.spaces = new SpacesClient(this);
     this.accountActivity = new AccountActivityClient(this);
-    this.mutes = new MutesClient(this);
-    this.communityNotes = new CommunityNotesClient(this);
+    this.activity = new ActivityClient(this);
+    this.broadcasts = new BroadcastsClient(this);
+    this.lists = new ListsClient(this);
+    this.trends = new TrendsClient(this);
     this.articles = new ArticlesClient(this);
     this.general = new GeneralClient(this);
-    this.likes = new LikesClient(this);
-    this.communities = new CommunitiesClient(this);
-    this.search = new SearchClient(this);
-    this.counts = new CountsClient(this);
-    this.compliance = new ComplianceClient(this);
-    this.chats = new ChatsClient(this);
-    this.posts = new PostsClient(this);
-    this.bookmarks = new BookmarksClient(this);
   }
   /**
    * Make an authenticated request to the X API
@@ -9953,7 +9791,7 @@ var OAuth1 = class {
 var schemas_exports = {};
 
 // src/stream/models.ts
-var models_exports26 = {};
+var models_exports21 = {};
 
 // src/paginator.ts
 var Paginator = class _Paginator {
@@ -10210,68 +10048,58 @@ if (typeof process !== "undefined" && process.versions && process.versions.node)
   }
 }
 
-exports.AccountActivity = models_exports13;
+exports.AccountActivity = models_exports14;
 exports.AccountActivityClient = AccountActivityClient;
-exports.Activity = models_exports5;
+exports.Activity = models_exports15;
 exports.ActivityClient = ActivityClient;
 exports.ApiError = ApiError;
-exports.Articles = models_exports16;
+exports.Articles = models_exports19;
 exports.ArticlesClient = ArticlesClient;
-exports.Bookmarks = models_exports25;
-exports.BookmarksClient = BookmarksClient;
-exports.Broadcasts = models_exports9;
+exports.Broadcasts = models_exports16;
 exports.BroadcastsClient = BroadcastsClient;
-exports.Chats = models_exports23;
-exports.ChatsClient = ChatsClient;
-exports.Client = Client23;
-exports.Communities = models_exports19;
+exports.Chat = models_exports7;
+exports.ChatClient = ChatClient;
+exports.Client = Client20;
+exports.Communities = models_exports8;
 exports.CommunitiesClient = CommunitiesClient;
-exports.CommunityNotes = models_exports15;
+exports.CommunityNotes = models_exports9;
 exports.CommunityNotesClient = CommunityNotesClient;
-exports.Compliance = models_exports22;
+exports.Compliance = models_exports6;
 exports.ComplianceClient = ComplianceClient;
-exports.Connections = models_exports10;
+exports.Connections = models_exports3;
 exports.ConnectionsClient = ConnectionsClient;
-exports.Counts = models_exports21;
-exports.CountsClient = CountsClient;
 exports.CryptoUtils = CryptoUtils;
-exports.DirectMessages = models_exports7;
+exports.DirectMessages = models_exports11;
 exports.DirectMessagesClient = DirectMessagesClient;
 exports.EventPaginator = EventPaginator;
-exports.General = models_exports17;
+exports.General = models_exports20;
 exports.GeneralClient = GeneralClient;
 exports.HttpClient = HttpClient;
-exports.Likes = models_exports18;
-exports.LikesClient = LikesClient;
-exports.Lists = models_exports3;
+exports.Lists = models_exports17;
 exports.ListsClient = ListsClient;
-exports.Media = models_exports4;
+exports.Media = models_exports;
 exports.MediaClient = MediaClient;
-exports.Mutes = models_exports14;
-exports.MutesClient = MutesClient;
-exports.News = models_exports2;
+exports.News = models_exports5;
 exports.NewsClient = NewsClient;
 exports.OAuth1 = OAuth1;
 exports.OAuth2 = OAuth2;
 exports.Paginator = Paginator;
 exports.PostPaginator = PostPaginator;
-exports.Posts = models_exports24;
+exports.Posts = models_exports2;
 exports.PostsClient = PostsClient;
 exports.Schemas = schemas_exports;
-exports.Search = models_exports20;
-exports.SearchClient = SearchClient;
-exports.Spaces = models_exports12;
+exports.Spaces = models_exports13;
 exports.SpacesClient = SpacesClient;
-exports.Stream = models_exports26;
+exports.Stream = models_exports21;
 exports.StreamClient = StreamClient;
-exports.Trends = models_exports6;
+exports.Trends = models_exports18;
 exports.TrendsClient = TrendsClient;
-exports.Usage = models_exports;
+exports.Usage = models_exports12;
 exports.UsageClient = UsageClient;
 exports.UserPaginator = UserPaginator;
-exports.Users = models_exports8;
+exports.Users = models_exports10;
 exports.UsersClient = UsersClient;
-exports.Webhooks = models_exports11;
+exports.Webhooks = models_exports4;
 exports.WebhooksClient = WebhooksClient;
 exports.generateCodeChallenge = generateCodeChallenge;
 exports.generateCodeVerifier = generateCodeVerifier;

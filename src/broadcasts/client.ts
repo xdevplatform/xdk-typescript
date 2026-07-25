@@ -29,11 +29,11 @@ UpdateScheduledBroadcastRequest,
 UpdateScheduledBroadcastResponse,
 
 DeleteScheduledBroadcastResponse,
-
-GoLiveScheduledBroadcastResponse,
 SendBroadcastChatRequest,
 
 SendBroadcastChatResponse,
+
+GoLiveScheduledBroadcastResponse,
 } from './models.js';
 
 
@@ -395,7 +395,7 @@ export class BroadcastsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
                     
                 },
                 
@@ -613,7 +613,7 @@ export class BroadcastsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
                     
                 },
                 
@@ -752,7 +752,7 @@ export class BroadcastsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
                     
                 },
                 
@@ -771,6 +771,120 @@ export class BroadcastsClient {
 
         return this.client.request<DeleteScheduledBroadcastResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Send a chat message to a live broadcast
+   * Posts a chat message to a running broadcast, attributed to the authenticated user.
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<SendBroadcastChatResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    sendBroadcastChat(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: SendBroadcastChatRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    sendBroadcastChat(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: SendBroadcastChatRequest,
+        
+        
+    ): Promise<SendBroadcastChatResponse>;
+    // Implementation
+    async sendBroadcastChat(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: SendBroadcastChatRequest,
+        
+        
+        
+    ): Promise<SendBroadcastChatResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<SendBroadcastChatResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -874,120 +988,6 @@ export class BroadcastsClient {
         };
 
         return this.client.request<GoLiveScheduledBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Send a chat message to a live broadcast
-   * Posts a chat message to a running broadcast, attributed to the authenticated user.
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<SendBroadcastChatResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    sendBroadcastChat(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: SendBroadcastChatRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    sendBroadcastChat(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: SendBroadcastChatRequest,
-        
-        
-    ): Promise<SendBroadcastChatResponse>;
-    // Implementation
-    async sendBroadcastChat(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: SendBroadcastChatRequest,
-        
-        
-        
-    ): Promise<SendBroadcastChatResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<SendBroadcastChatResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

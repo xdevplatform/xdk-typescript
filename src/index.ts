@@ -68,45 +68,17 @@ export * as Schemas from './schemas.js';
 
 // Client modules (export client classes and types)
 
-export { UsageClient } from './usage/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Usage from './usage/models.js';
-
-export { NewsClient } from './news/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as News from './news/models.js';
-
-export { ListsClient } from './lists/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Lists from './lists/models.js';
-
 export { MediaClient } from './media/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
 export * as Media from './media/models.js';
 
-export { ActivityClient } from './activity/client.js';
+export { PostsClient } from './posts/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
-export * as Activity from './activity/models.js';
-
-export { TrendsClient } from './trends/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Trends from './trends/models.js';
-
-export { DirectMessagesClient } from './direct_messages/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as DirectMessages from './direct_messages/models.js';
+export * as Posts from './posts/models.js';
 
 export { StreamClient } from './stream/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
 export * as Stream from './stream/models.js';
-
-export { UsersClient } from './users/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Users from './users/models.js';
-
-export { BroadcastsClient } from './broadcasts/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Broadcasts from './broadcasts/models.js';
 
 export { ConnectionsClient } from './connections/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
@@ -116,6 +88,38 @@ export { WebhooksClient } from './webhooks/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
 export * as Webhooks from './webhooks/models.js';
 
+export { NewsClient } from './news/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as News from './news/models.js';
+
+export { ComplianceClient } from './compliance/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Compliance from './compliance/models.js';
+
+export { ChatClient } from './chat/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Chat from './chat/models.js';
+
+export { CommunitiesClient } from './communities/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Communities from './communities/models.js';
+
+export { CommunityNotesClient } from './community_notes/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as CommunityNotes from './community_notes/models.js';
+
+export { UsersClient } from './users/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Users from './users/models.js';
+
+export { DirectMessagesClient } from './direct_messages/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as DirectMessages from './direct_messages/models.js';
+
+export { UsageClient } from './usage/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Usage from './usage/models.js';
+
 export { SpacesClient } from './spaces/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
 export * as Spaces from './spaces/models.js';
@@ -124,13 +128,21 @@ export { AccountActivityClient } from './account_activity/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
 export * as AccountActivity from './account_activity/models.js';
 
-export { MutesClient } from './mutes/client.js';
+export { ActivityClient } from './activity/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
-export * as Mutes from './mutes/models.js';
+export * as Activity from './activity/models.js';
 
-export { CommunityNotesClient } from './community_notes/client.js';
+export { BroadcastsClient } from './broadcasts/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
-export * as CommunityNotes from './community_notes/models.js';
+export * as Broadcasts from './broadcasts/models.js';
+
+export { ListsClient } from './lists/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Lists from './lists/models.js';
+
+export { TrendsClient } from './trends/client.js';
+// Export all types (Request, Response, Options) from this module as a namespace
+export * as Trends from './trends/models.js';
 
 export { ArticlesClient } from './articles/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
@@ -139,38 +151,6 @@ export * as Articles from './articles/models.js';
 export { GeneralClient } from './general/client.js';
 // Export all types (Request, Response, Options) from this module as a namespace
 export * as General from './general/models.js';
-
-export { LikesClient } from './likes/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Likes from './likes/models.js';
-
-export { CommunitiesClient } from './communities/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Communities from './communities/models.js';
-
-export { SearchClient } from './search/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Search from './search/models.js';
-
-export { CountsClient } from './counts/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Counts from './counts/models.js';
-
-export { ComplianceClient } from './compliance/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Compliance from './compliance/models.js';
-
-export { ChatsClient } from './chats/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Chats from './chats/models.js';
-
-export { PostsClient } from './posts/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Posts from './posts/models.js';
-
-export { BookmarksClient } from './bookmarks/client.js';
-// Export all types (Request, Response, Options) from this module as a namespace
-export * as Bookmarks from './bookmarks/models.js';
 
 
 // Utilities

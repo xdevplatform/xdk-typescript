@@ -33,11 +33,11 @@ import {
 
 
 
-  GoLiveScheduledBroadcastResponse,
-
-
-
   SendBroadcastChatResponse,
+
+
+
+  GoLiveScheduledBroadcastResponse,
 
 } from './models.js';
 
@@ -157,11 +157,11 @@ export interface DeleteScheduledBroadcastStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for goLiveScheduledBroadcast method
+ * Options for sendBroadcastChat method
  * 
  * @public
  */
-export interface GoLiveScheduledBroadcastStreamingOptions {
+export interface SendBroadcastChatStreamingOptions {
     
     
     /** Additional request options */
@@ -174,11 +174,11 @@ export interface GoLiveScheduledBroadcastStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for sendBroadcastChat method
+ * Options for goLiveScheduledBroadcast method
  * 
  * @public
  */
-export interface SendBroadcastChatStreamingOptions {
+export interface GoLiveScheduledBroadcastStreamingOptions {
     
     
     /** Additional request options */
@@ -751,84 +751,6 @@ export class BroadcastsClient {
 
 
     /**
-     * Go live on a scheduled broadcast
-     * Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.
-     * 
-     * @returns Promise with the API response
-     */
-    async goLiveScheduledBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GoLiveScheduledBroadcastStreamingOptions = {}
-    ): Promise<GoLiveScheduledBroadcastResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'goLiveScheduledBroadcast');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled/{id}/live';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GoLiveScheduledBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
      * Send a chat message to a live broadcast
      * Posts a chat message to a running broadcast, attributed to the authenticated user.
      * 
@@ -902,6 +824,84 @@ export class BroadcastsClient {
 
         // Make the request
         return this.client.request<SendBroadcastChatResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Go live on a scheduled broadcast
+     * Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.
+     * 
+     * @returns Promise with the API response
+     */
+    async goLiveScheduledBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GoLiveScheduledBroadcastStreamingOptions = {}
+    ): Promise<GoLiveScheduledBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'goLiveScheduledBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled/{id}/live';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GoLiveScheduledBroadcastResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

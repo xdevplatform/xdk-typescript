@@ -9,11 +9,65 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getRepostedBy
+ * Response for getQuoted
  *
  * @public
  */
-export type GetRepostedByResponse = Schemas.GetPostsRepostedByResponse;
+export type GetQuotedResponse = Schemas.GetPostsQuotedPostsResponse;
+
+
+
+/**
+ * Response for getReposts
+ *
+ * @public
+ */
+export type GetRepostsResponse = Schemas.GetPostsRepostsResponse;
+
+
+
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+export type GetAnalyticsResponse = Schemas.GetPostsAnalyticsResponse;
+
+
+
+/**
+ * Response for getCountsAll
+ *
+ * @public
+ */
+export type GetCountsAllResponse = Schemas.GetPostsCountsAllResponse;
+
+
+
+/**
+ * Response for getCountsRecent
+ *
+ * @public
+ */
+export type GetCountsRecentResponse = Schemas.GetPostsCountsRecentResponse;
+
+
+
+/**
+ * Response for searchAll
+ *
+ * @public
+ */
+export type SearchAllResponse = Schemas.SearchPostsAllResponse;
+
+
+
+/**
+ * Response for getLikingUsers
+ *
+ * @public
+ */
+export type GetLikingUsersResponse = Schemas.GetPostsLikingUsersResponse;
 
 
 
@@ -41,6 +95,15 @@ export type CreateRequest = Schemas.CreatePostsRequest;
 export type CreateResponse = Schemas.CreatePostsResponse;
 
 
+
+/**
+ * Response for searchRecent
+ *
+ * @public
+ */
+export type SearchRecentResponse = Schemas.SearchPostsRecentResponse;
+
+
 /**
  * Request for hideReply
  *
@@ -59,63 +122,11 @@ export type HideReplyResponse = Schemas.HidePostsReplyResponse;
 
 
 /**
- * Response for getUsersLiked
+ * Response for getRepostedBy
  *
  * @public
  */
-export type GetUsersLikedResponse = Schemas.GetUsersLikedPostsResponse;
-
-
-
-/**
- * Response for getRules
- *
- * @public
- */
-export type GetRulesResponse = Schemas.GetRulesResponse;
-
-
-/**
- * Request for updateRules
- *
- * @public
- */
-export type UpdateRulesRequest = Schemas.UpdateRulesRequest;
-
-
-/**
- * Response for updateRules
- *
- * @public
- */
-export type UpdateRulesResponse = Schemas.UpdateRulesResponse;
-
-
-
-/**
- * Response for unrepostPost
- *
- * @public
- */
-export type UnrepostPostResponse = Schemas.UnrepostPostResponse;
-
-
-
-/**
- * Response for getReposts
- *
- * @public
- */
-export type GetRepostsResponse = Schemas.GetPostsRepostsResponse;
-
-
-
-/**
- * Response for getUsersBookmarkFolders
- *
- * @public
- */
-export type GetUsersBookmarkFoldersResponse = Schemas.GetUsersBookmarkFoldersResponse;
+export type GetRepostedByResponse = Schemas.GetPostsRepostedByResponse;
 
 
 
@@ -134,108 +145,4 @@ export type GetByIdResponse = Schemas.GetPostsByIdResponse;
  * @public
  */
 export type DeleteResponse = Schemas.DeletePostsResponse;
-
-
-
-/**
- * Response for getTrendsByWoeid
- *
- * @public
- */
-export type GetTrendsByWoeidResponse = Schemas.GetTrendsByWoeidResponse;
-
-
-
-/**
- * Response for getUsers
- *
- * @public
- */
-export type GetUsersResponse = Schemas.GetUsersPostsResponse;
-
-
-
-/**
- * Response for getUsersBookmarks
- *
- * @public
- */
-export type GetUsersBookmarksResponse = Schemas.GetUsersBookmarksResponse;
-
-
-/**
- * Request for createUsersBookmark
- *
- * @public
- */
-export type CreateUsersBookmarkRequest = Schemas.CreateUsersBookmarkRequest;
-
-
-/**
- * Response for createUsersBookmark
- *
- * @public
- */
-export type CreateUsersBookmarkResponse = Schemas.CreateUsersBookmarkResponse;
-
-
-
-/**
- * Response for getUsersTimeline
- *
- * @public
- */
-export type GetUsersTimelineResponse = Schemas.GetUsersTimelineResponse;
-
-
-
-/**
- * Response for getUsersMentions
- *
- * @public
- */
-export type GetUsersMentionsResponse = Schemas.GetUsersMentionsResponse;
-
-
-/**
- * Request for repostPost
- *
- * @public
- */
-export type RepostPostRequest = Schemas.RepostPostRequest;
-
-
-/**
- * Response for repostPost
- *
- * @public
- */
-export type RepostPostResponse = Schemas.RepostPostResponse;
-
-
-
-/**
- * Response for getAnalytics
- *
- * @public
- */
-export type GetAnalyticsResponse = Schemas.GetPostsAnalyticsResponse;
-
-
-
-/**
- * Response for getQuoted
- *
- * @public
- */
-export type GetQuotedResponse = Schemas.GetPostsQuotedPostsResponse;
-
-
-
-/**
- * Response for getUsersBookmarksByFolderId
- *
- * @public
- */
-export type GetUsersBookmarksByFolderIdResponse = Schemas.GetUsersBookmarksByFolderIdResponse;
 

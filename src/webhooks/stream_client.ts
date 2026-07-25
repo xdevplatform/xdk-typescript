@@ -13,15 +13,15 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  CreateStreamLinkResponse,
+  ValidateResponse,
 
 
 
-  DeleteStreamLinkResponse,
+  DeleteResponse,
 
 
 
-  GetStreamLinksResponse,
+  CreateWebhookReplayJobResponse,
 
 
 
@@ -33,24 +33,24 @@ import {
 
 
 
-  ValidateResponse,
+  GetStreamLinksResponse,
 
 
 
-  DeleteResponse,
+  CreateStreamLinkResponse,
 
 
 
-  CreateWebhookReplayJobResponse,
+  DeleteStreamLinkResponse,
 
 } from './models.js';
 
 /**
- * Options for createStreamLink method
+ * Options for validate method
  * 
  * @public
  */
-export interface CreateStreamLinkStreamingOptions {
+export interface ValidateStreamingOptions {
     
     
     /** Additional request options */
@@ -63,11 +63,11 @@ export interface CreateStreamLinkStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteStreamLink method
+ * Options for delete method
  * 
  * @public
  */
-export interface DeleteStreamLinkStreamingOptions {
+export interface DeleteStreamingOptions {
     
     
     /** Additional request options */
@@ -80,11 +80,11 @@ export interface DeleteStreamLinkStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getStreamLinks method
+ * Options for createWebhookReplayJob method
  * 
  * @public
  */
-export interface GetStreamLinksStreamingOptions {
+export interface CreateWebhookReplayJobStreamingOptions {
     
     
     /** Additional request options */
@@ -137,11 +137,11 @@ export interface CreateStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for validate method
+ * Options for getStreamLinks method
  * 
  * @public
  */
-export interface ValidateStreamingOptions {
+export interface GetStreamLinksStreamingOptions {
     
     
     /** Additional request options */
@@ -154,11 +154,11 @@ export interface ValidateStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for delete method
+ * Options for createStreamLink method
  * 
  * @public
  */
-export interface DeleteStreamingOptions {
+export interface CreateStreamLinkStreamingOptions {
     
     
     /** Additional request options */
@@ -171,11 +171,11 @@ export interface DeleteStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for createWebhookReplayJob method
+ * Options for deleteStreamLink method
  * 
  * @public
  */
-export interface CreateWebhookReplayJobStreamingOptions {
+export interface DeleteStreamLinkStreamingOptions {
     
     
     /** Additional request options */
@@ -247,389 +247,6 @@ export class WebhooksClient {
 
 
 
-
-
-
-    /**
-     * Create stream link
-     * Creates a link to deliver FilteredStream events to the given webhook.
-     * 
-     * @returns Promise with the API response
-     */
-    async createStreamLink(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: CreateStreamLinkStreamingOptions = {}
-    ): Promise<CreateStreamLinkResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createStreamLink');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/search/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateStreamLinkResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete stream link
-     * Deletes the link delivering FilteredStream events to the given webhook.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteStreamLink(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteStreamLinkStreamingOptions = {}
-    ): Promise<DeleteStreamLinkResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteStreamLink');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/search/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteStreamLinkResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get stream links
-     * Get a list of webhook links associated with a filtered stream ruleset.
-     * 
-     * @returns Promise with the API response
-     */
-    async getStreamLinks(
-        
-        
-        
-        
-        
-        
-        
-        options: GetStreamLinksStreamingOptions = {}
-    ): Promise<GetStreamLinksResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getStreamLinks');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/search/webhooks';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetStreamLinksResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get webhook
-     * Get a list of webhook configs associated with a client app.
-     * 
-     * @returns Promise with the API response
-     */
-    async get(
-        
-        
-        
-        
-        
-        
-        
-        options: GetStreamingOptions = {}
-    ): Promise<GetResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'get');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'webhook_config.fields': 'webhookConfigFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            webhookConfigFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/webhooks';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (webhookConfigFields !== undefined && webhookConfigFields.length > 0) {
-            
-            params.append('webhook_config.fields', webhookConfigFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create webhook
-     * Creates a new webhook configuration.
-     * 
-     * @returns Promise with the API response
-     */
-    async create(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateStreamingOptions = {}
-    ): Promise<CreateResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'create');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/webhooks';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
@@ -852,6 +469,389 @@ export class WebhooksClient {
         // Make the request
         return this.client.request<CreateWebhookReplayJobResponse>(
             'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get webhook
+     * Get a list of webhook configs associated with a client app.
+     * 
+     * @returns Promise with the API response
+     */
+    async get(
+        
+        
+        
+        
+        
+        
+        
+        options: GetStreamingOptions = {}
+    ): Promise<GetResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'get');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'webhook_config.fields': 'webhookConfigFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            webhookConfigFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/webhooks';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (webhookConfigFields !== undefined && webhookConfigFields.length > 0) {
+            
+            params.append('webhook_config.fields', webhookConfigFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create webhook
+     * Creates a new webhook configuration.
+     * 
+     * @returns Promise with the API response
+     */
+    async create(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateStreamingOptions = {}
+    ): Promise<CreateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'create');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/webhooks';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get stream links
+     * Get a list of webhook links associated with a filtered stream ruleset.
+     * 
+     * @returns Promise with the API response
+     */
+    async getStreamLinks(
+        
+        
+        
+        
+        
+        
+        
+        options: GetStreamLinksStreamingOptions = {}
+    ): Promise<GetStreamLinksResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getStreamLinks');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/search/webhooks';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetStreamLinksResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create stream link
+     * Creates a link to deliver FilteredStream events to the given webhook.
+     * 
+     * @returns Promise with the API response
+     */
+    async createStreamLink(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: CreateStreamLinkStreamingOptions = {}
+    ): Promise<CreateStreamLinkResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createStreamLink');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/search/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateStreamLinkResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete stream link
+     * Deletes the link delivering FilteredStream events to the given webhook.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteStreamLink(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteStreamLinkStreamingOptions = {}
+    ): Promise<DeleteStreamLinkResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteStreamLink');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/search/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteStreamLinkResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

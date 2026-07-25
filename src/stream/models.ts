@@ -9,92 +9,11 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for likesFirehose
- *
- * @public
- */
-export type LikesFirehoseResponse = Schemas.StreamLikesFirehoseResponse;
-
-
-
-/**
- * Response for postsCompliance
- *
- * @public
- */
-export type PostsComplianceResponse = Schemas.StreamPostsComplianceResponse;
-
-
-
-/**
- * Response for getRuleCounts
- *
- * @public
- */
-export type GetRuleCountsResponse = Schemas.GetRuleCountsResponse;
-
-
-
-/**
- * Response for usersCompliance
- *
- * @public
- */
-export type UsersComplianceResponse = Schemas.StreamUsersComplianceResponse;
-
-
-
-/**
  * Response for posts
  *
  * @public
  */
 export type PostsResponse = Schemas.StreamPostsResponse;
-
-
-
-/**
- * Response for postsFirehose
- *
- * @public
- */
-export type PostsFirehoseResponse = Schemas.StreamPostsFirehoseResponse;
-
-
-
-/**
- * Response for postsSample10
- *
- * @public
- */
-export type PostsSample10Response = Schemas.StreamPostsSample10Response;
-
-
-
-/**
- * Response for labelsCompliance
- *
- * @public
- */
-export type LabelsComplianceResponse = Schemas.StreamLabelsComplianceResponse;
-
-
-
-/**
- * Response for postsFirehoseEn
- *
- * @public
- */
-export type PostsFirehoseEnResponse = Schemas.StreamPostsFirehoseEnResponse;
-
-
-
-/**
- * Response for postsFirehoseKo
- *
- * @public
- */
-export type PostsFirehoseKoResponse = Schemas.StreamPostsFirehoseKoResponse;
 
 
 
@@ -108,29 +27,27 @@ export type PostsSampleResponse = Schemas.StreamPostsSampleResponse;
 
 
 /**
- * Response for likesCompliance
+ * Response for getRules
  *
  * @public
  */
-export type LikesComplianceResponse = Schemas.StreamLikesComplianceResponse;
-
+export type GetRulesResponse = Schemas.GetRulesResponse;
 
 
 /**
- * Response for postsFirehoseJa
+ * Request for updateRules
  *
  * @public
  */
-export type PostsFirehoseJaResponse = Schemas.StreamPostsFirehoseJaResponse;
-
+export type UpdateRulesRequest = Schemas.UpdateRulesRequest;
 
 
 /**
- * Response for activity
+ * Response for updateRules
  *
  * @public
  */
-export type ActivityResponse = Schemas.ActivityStreamResponse;
+export type UpdateRulesResponse = Schemas.UpdateRulesResponse;
 
 
 
@@ -144,9 +61,117 @@ export type LikesSample10Response = Schemas.StreamLikesSample10Response;
 
 
 /**
+ * Response for likesCompliance
+ *
+ * @public
+ */
+export type LikesComplianceResponse = Schemas.StreamLikesComplianceResponse;
+
+
+
+/**
+ * Response for postsSample10
+ *
+ * @public
+ */
+export type PostsSample10Response = Schemas.StreamPostsSample10Response;
+
+
+
+/**
+ * Response for postsCompliance
+ *
+ * @public
+ */
+export type PostsComplianceResponse = Schemas.StreamPostsComplianceResponse;
+
+
+
+/**
+ * Response for postsFirehoseKo
+ *
+ * @public
+ */
+export type PostsFirehoseKoResponse = Schemas.StreamPostsFirehoseKoResponse;
+
+
+
+/**
+ * Response for likesFirehose
+ *
+ * @public
+ */
+export type LikesFirehoseResponse = Schemas.StreamLikesFirehoseResponse;
+
+
+
+/**
+ * Response for postsFirehoseJa
+ *
+ * @public
+ */
+export type PostsFirehoseJaResponse = Schemas.StreamPostsFirehoseJaResponse;
+
+
+
+/**
+ * Response for labelsCompliance
+ *
+ * @public
+ */
+export type LabelsComplianceResponse = Schemas.StreamLabelsComplianceResponse;
+
+
+
+/**
+ * Response for usersCompliance
+ *
+ * @public
+ */
+export type UsersComplianceResponse = Schemas.StreamUsersComplianceResponse;
+
+
+
+/**
+ * Response for postsFirehoseEn
+ *
+ * @public
+ */
+export type PostsFirehoseEnResponse = Schemas.StreamPostsFirehoseEnResponse;
+
+
+
+/**
+ * Response for postsFirehose
+ *
+ * @public
+ */
+export type PostsFirehoseResponse = Schemas.StreamPostsFirehoseResponse;
+
+
+
+/**
  * Response for postsFirehosePt
  *
  * @public
  */
 export type PostsFirehosePtResponse = Schemas.StreamPostsFirehosePtResponse;
+
+
+
+/**
+ * Response for activity
+ *
+ * @public
+ */
+export type ActivityResponse = Schemas.ActivityStreamResponse;
+
+
+
+/**
+ * Response for getRuleCounts
+ *
+ * @public
+ */
+export type GetRuleCountsResponse = Schemas.GetRuleCountsResponse;
 
