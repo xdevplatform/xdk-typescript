@@ -7,21 +7,12 @@
 import type * as Schemas from '../schemas.js';
 
 
-
-/**
- * Response for articlePublish
- *
- * @public
- */
-export type ArticlePublishResponse = Schemas.ArticlePublishResponse;
-
-
 /**
  * Request for articleCreateDraft
  *
  * @public
  */
-export type ArticleCreateDraftRequest = Schemas.ArticleDraftCreateRequest;
+export type ArticleCreateDraftRequest = Schemas.ArticleCreateDraftRequest;
 
 
 /**
@@ -29,5 +20,14 @@ export type ArticleCreateDraftRequest = Schemas.ArticleDraftCreateRequest;
  *
  * @public
  */
-export type ArticleCreateDraftResponse = Schemas.ArticleDraftCreateResponse;
+export type ArticleCreateDraftResponse = Schemas.ArticleCreateDraftResponse;
+
+
+
+/**
+ * Response for articlePublish
+ *
+ * @public
+ */
+export type ArticlePublishResponse = Schemas.ArticlePublishResponse;
 

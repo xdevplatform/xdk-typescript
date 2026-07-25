@@ -29,27 +29,8 @@ CreateSubscriptionRequest,
 CreateSubscriptionResponse,
 
 DeleteSubscriptionsByIdsResponse,
-
-StreamResponse,
 } from './models.js';
 
-
-/**
- * Options for updateSubscription method
- * 
- * @public
- */
-export interface UpdateSubscriptionOptions {
-    
-    
-    /** Request body */
-    body?: UpdateSubscriptionRequest;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 
@@ -61,15 +42,15 @@ export interface UpdateSubscriptionOptions {
 export interface GetSubscriptionsOptions {
     
     
-    /** The maximum number of results to return per page. Defaults to 1000 when unspecified; use pagination_token (from response meta.next_token) to fetch additional pages. 
+    /** max_results 
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
     
     
-    /** This parameter is used to get the next 'page' of results. 
+    /** A base32hex-encoded pagination token. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: Schemas.PaginationToken32;
+    paginationToken?: string;
     
     
     
@@ -80,56 +61,6 @@ export interface GetSubscriptionsOptions {
 }
 
 
-/**
- * Options for createSubscription method
- * 
- * @public
- */
-export interface CreateSubscriptionOptions {
-    
-    
-    /** Request body */
-    body?: CreateSubscriptionRequest;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for stream method
- * 
- * @public
- */
-export interface StreamOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 
@@ -187,10 +118,12 @@ export class ActivityClient {
    * Updates a subscription for an X activity event
 
 
-   * @param subscriptionId The ID of the subscription to update.
+   * @param subscriptionId subscription_id
 
 
 
+
+   * @param body Request body
 
    * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
@@ -198,26 +131,28 @@ export class ActivityClient {
     updateSubscription(
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
         
+        body: UpdateSubscriptionRequest,
         
-        options: UpdateSubscriptionOptions & { requestOptions: { raw: true } }
+        
+        options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
     updateSubscription(
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
         
+        body: UpdateSubscriptionRequest,
         
-        options?: UpdateSubscriptionOptions
         
     ): Promise<UpdateSubscriptionResponse>;
     // Implementation
@@ -225,32 +160,21 @@ export class ActivityClient {
         
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
         
         
         
+        body: UpdateSubscriptionRequest,
         
         
-        options: UpdateSubscriptionOptions = {}
         
     ): Promise<UpdateSubscriptionResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        
-        const normalizedOptions = options || {};
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            body,
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
+        const requestOptions = {};
         
 
         // Build the path with path parameters
@@ -268,7 +192,7 @@ export class ActivityClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
-            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             
             // Pass security requirements for smart auth selection
@@ -283,7 +207,7 @@ export class ActivityClient {
             ],
             
             
-            ...requestOptions
+            // No optional parameters, using empty request options
             
         };
 
@@ -302,7 +226,7 @@ export class ActivityClient {
    * Deletes a subscription for an X activity event
 
 
-   * @param subscriptionId The ID of the subscription to delete.
+   * @param subscriptionId subscription_id
 
 
 
@@ -313,7 +237,7 @@ export class ActivityClient {
     deleteSubscription(
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
@@ -326,7 +250,7 @@ export class ActivityClient {
     deleteSubscription(
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
@@ -338,7 +262,7 @@ export class ActivityClient {
         
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
@@ -506,12 +430,6 @@ export class ActivityClient {
                 
                 {
                     
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
                     'OAuth2UserToken': ['like.read', 'tweet.read'],
                     
                 },
@@ -519,6 +437,12 @@ export class ActivityClient {
                 {
                     
                     'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
                     
                 }
                 
@@ -541,9 +465,11 @@ export class ActivityClient {
 
   /**
    * Create X activity subscription
-   * Creates a subscription for an X activity event
+   * Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported.
 
 
+
+   * @param body Request body
 
    * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
@@ -552,8 +478,10 @@ export class ActivityClient {
         
         
         
+        body: CreateSubscriptionRequest,
         
-        options: CreateSubscriptionOptions & { requestOptions: { raw: true } }
+        
+        options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
@@ -561,8 +489,8 @@ export class ActivityClient {
         
         
         
+        body: CreateSubscriptionRequest,
         
-        options?: CreateSubscriptionOptions
         
     ): Promise<CreateSubscriptionResponse>;
     // Implementation
@@ -573,25 +501,14 @@ export class ActivityClient {
         
         
         
+        body: CreateSubscriptionRequest,
         
         
-        options: CreateSubscriptionOptions = {}
         
     ): Promise<CreateSubscriptionResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        
-        const normalizedOptions = options || {};
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            body,
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
+        const requestOptions = {};
         
 
         // Build the path with path parameters
@@ -605,7 +522,7 @@ export class ActivityClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
-            body: body ? JSON.stringify(transformKeysToSnake(body)) : undefined,
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             
             // Pass security requirements for smart auth selection
@@ -613,13 +530,7 @@ export class ActivityClient {
                 
                 {
                     
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read', 'like.read', 'tweet.read'],
+                    'OAuth2UserToken': [],
                     
                 },
                 
@@ -627,12 +538,18 @@ export class ActivityClient {
                     
                     'UserToken': [],
                     
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
                 }
                 
             ],
             
             
-            ...requestOptions
+            // No optional parameters, using empty request options
             
         };
 
@@ -652,7 +569,7 @@ export class ActivityClient {
 
 
 
-   * @param ids Comma-separated list of subscription IDs to delete.
+   * @param ids ids
 
 
 
@@ -663,7 +580,7 @@ export class ActivityClient {
         
         
         
-        ids: Array<Schemas.ActivitySubscriptionId>,
+        ids: Array<string>,
         
         
         
@@ -676,7 +593,7 @@ export class ActivityClient {
         
         
         
-        ids: Array<Schemas.ActivitySubscriptionId>,
+        ids: Array<string>,
         
         
         
@@ -689,7 +606,7 @@ export class ActivityClient {
         
         
         
-        ids: Array<Schemas.ActivitySubscriptionId>,
+        ids: Array<string>,
         
         
         
@@ -749,159 +666,6 @@ export class ActivityClient {
             finalRequestOptions
         );
     }
-
-
-
-
-  /**
-   * Activity Stream
-   * Stream of X Activities
-
-
-
-   * @returns {Promise<StreamResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    stream(
-        
-        
-        
-        
-        options: StreamOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    stream(
-        
-        
-        
-        
-        options?: StreamOptions
-        
-    ): Promise<StreamResponse>;
-    // Implementation
-    async stream(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: StreamOptions = {}
-        
-    ): Promise<StreamResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'backfill_minutes': 'backfillMinutes',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            backfillMinutes = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/activity/stream';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (backfillMinutes !== undefined) {
-            
-            params.append('backfill_minutes', String(backfillMinutes));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<StreamResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
 
 
 

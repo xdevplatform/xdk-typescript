@@ -19,8 +19,6 @@ import {
 import {
 
 GetResponse,
-
-SearchResponse,
 } from './models.js';
 
 
@@ -34,40 +32,7 @@ export interface GetOptions {
     
     /** A comma separated list of News fields to display. 
      * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<"category" | "cluster_posts_results" | "contexts" | "disclaimer" | "hook" | "id" | "keywords" | "name" | "summary" | "updated_at">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for search method
- * 
- * @public
- */
-export interface SearchOptions {
-    
-    
-    /** The number of results to return. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** The maximum age of the News story to search for. 
-     * Also accepts: max_age_hours or proper camelCase (e.g., maxAgeHours) */
-    maxAgeHours?: number;
-    
-    
-    
-    /** A comma separated list of News fields to display. 
-     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<"category" | "cluster_posts_results" | "contexts" | "disclaimer" | "hook" | "id" | "keywords" | "name" | "summary" | "updated_at">;
+    newsFields?: Array<"category" | "cluster_posts_results" | "contexts" | "contexts" | "contexts" | "contexts" | "disclaimer" | "hook" | "id" | "keywords" | "name" | "summary" | "updated_at">;
     
     
     
@@ -133,7 +98,7 @@ export class NewsClient {
    * Retrieves news story by its ID.
 
 
-   * @param id The ID of the news story.
+   * @param id id
 
 
 
@@ -144,7 +109,7 @@ export class NewsClient {
     get(
         
         
-        id: Schemas.NewsId,
+        id: string,
         
         
         
@@ -157,7 +122,7 @@ export class NewsClient {
     get(
         
         
-        id: Schemas.NewsId,
+        id: string,
         
         
         
@@ -171,7 +136,7 @@ export class NewsClient {
         
         
         
-        id: Schemas.NewsId,
+        id: string,
         
         
         
@@ -242,19 +207,19 @@ export class NewsClient {
                 
                 {
                     
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
                     
                 },
                 
                 {
                     
                     'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
                     
                 }
                 
@@ -271,194 +236,6 @@ export class NewsClient {
             finalRequestOptions
         );
     }
-
-
-
-
-  /**
-   * Search News
-   * Retrieves a list of News stories matching the specified search query.
-
-
-
-   * @param query The search query.
-
-
-
-   * @returns {Promise<SearchResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    search(
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        options: SearchOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    search(
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        options?: SearchOptions
-        
-    ): Promise<SearchResponse>;
-    // Implementation
-    async search(
-        
-        
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        
-        
-        options: SearchOptions = {}
-        
-    ): Promise<SearchResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'max_age_hours': 'maxAgeHours',
-            
-            
-            
-            'news.fields': 'newsFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            maxAgeHours = undefined,
-            
-            
-            
-            newsFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/news/search';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (query !== undefined) {
-            
-            params.append('query', String(query));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (maxAgeHours !== undefined) {
-            
-            params.append('max_age_hours', String(maxAgeHours));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (newsFields !== undefined && newsFields.length > 0) {
-            
-            
-            params.append('news.fields', normalizeFields(newsFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<SearchResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
 
 
 

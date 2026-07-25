@@ -22,7 +22,7 @@ export type ActivityEventId = string;
  *
  * @public
  */
-export interface ActivityStreamingResponse {
+export interface ActivityStreamResponse {
   data?: { eventType?: string; eventUuid?: ActivityEventId; filter?: ActivitySubscriptionFilter; includes?: Expansions; payload?: ActivityStreamingResponsePayload; tag?: string; };
   errors?: Array<Problem>;
 }
@@ -33,65 +33,7 @@ export interface ActivityStreamingResponse {
  *
  * @public
  */
-export type ActivityStreamingResponsePayload = ProfileUpdateActivityResponsePayload | NewsActivityResponsePayload | FollowActivityResponsePayload | Tweet | PostDeleteActivityResponsePayload | LikeWithTweetAuthor;
-
-
-/**
- * An XActivity subscription.
- *
- * @public
- */
-export interface ActivitySubscription {
-  createdAt: string;
-  eventType: string;
-  /** An XAA subscription filter. */
-  filter: ActivitySubscriptionFilter;
-  /** The unique identifier of this subscription. */
-  subscriptionId: ActivitySubscriptionId;
-  tag?: string;
-  updatedAt: string;
-  /** The unique identifier of this webhook config. */
-  webhookId?: WebhookConfigId;
-}
-
-
-/**
- * Schema type for ActivitySubscriptionCreateRequest
- *
- * @public
- */
-export interface ActivitySubscriptionCreateRequest {
-  eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "news.new" | "follow.follow" | "follow.unfollow" | "spaces.start" | "spaces.end" | "chat.received" | "chat.sent" | "chat.conversation_join" | "dm.sent" | "dm.received" | "dm.indicate_typing" | "dm.read" | "post.create" | "post.delete" | "post.mention.create" | "like.create";
-  /** An XAA subscription filter. */
-  filter: ActivitySubscriptionFilter;
-  tag?: string;
-  /** The unique identifier of this webhook config. */
-  webhookId?: WebhookConfigId;
-}
-
-
-/**
- * Schema type for ActivitySubscriptionCreateResponse
- *
- * @public
- */
-export interface ActivitySubscriptionCreateResponse {
-  data?: { subscription?: ActivitySubscription; totalSubscriptionsForInstanceId?: number; };
-  errors?: Array<Problem>;
-  meta?: { totalSubscriptions?: number; };
-}
-
-
-/**
- * Schema type for ActivitySubscriptionDeleteResponse
- *
- * @public
- */
-export interface ActivitySubscriptionDeleteResponse {
-  data?: { deleted?: boolean; };
-  errors?: Array<Problem>;
-  meta?: { totalSubscriptions?: number; };
-}
+export type ActivityStreamingResponsePayload = ProfileUpdateActivityResponsePayload | NewsActivityResponsePayload | FollowActivityResponsePayload | Post | PostDeleteActivityResponsePayload | LikeWithPostAuthor;
 
 
 /**
@@ -104,299 +46,35 @@ export interface ActivitySubscriptionFilter {
   direction?: "inbound" | "outbound";
   /** A keyword to filter on. */
   keyword?: Keyword;
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
+  /** Unique identifier of a User */
   userId?: UserId;
 }
 
 
 /**
- * Schema type for ActivitySubscriptionGetResponse
+ * Schema type for AddChatGroupMembersActionSignatures
  *
  * @public
  */
-export interface ActivitySubscriptionGetResponse {
-  data?: Array<ActivitySubscription>;
-  errors?: Array<Problem>;
-  meta?: { nextToken?: string; resultCount?: number; };
+export interface AddChatGroupMembersActionSignatures {
+  /** Base64-encoded message event detail. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: AddChatGroupMembersActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
 }
 
 
 /**
- * The unique identifier of this subscription.
+ * Schema type for AddChatGroupMembersActionSignaturesMessageEventSignature
  *
  * @public
  */
-export type ActivitySubscriptionId = string;
-
-
-/**
- * Schema type for ActivitySubscriptionUpdateRequest
- *
- * @public
- */
-export interface ActivitySubscriptionUpdateRequest {
-  tag?: string;
-  /** The unique identifier of this webhook config. */
-  webhookId?: WebhookConfigId;
-}
-
-
-/**
- * Schema type for ActivitySubscriptionUpdateResponse
- *
- * @public
- */
-export interface ActivitySubscriptionUpdateResponse {
-  data?: { subscription?: ActivitySubscription; totalSubscriptions?: number; };
-}
-
-
-/**
- * Schema type for AddOrDeleteRulesRequest
- *
- * @public
- */
-export type AddOrDeleteRulesRequest = AddRulesRequest | DeleteRulesRequest;
-
-
-/**
- * A response from modifying user-specified stream filtering rules.
- *
- * @public
- */
-export interface AddOrDeleteRulesResponse {
-  /** All user-specified stream filtering rules that were created. */
-  data?: Array<Rule>;
-  errors?: Array<Problem>;
-  meta: RulesResponseMetadata;
-}
-
-
-/**
- * A request to add a user-specified stream filtering rule.
- *
- * @public
- */
-export interface AddRulesRequest {
-  add: Array<RuleNoId>;
-}
-
-
-/**
- * The sum of results returned in this response.
- *
- * @public
- */
-export type Aggregate = number;
-
-
-/**
- * Client App Rule Counts for all applications in the project
- *
- * @public
- */
-export type AllProjectClientApps = Array<AppRulesCount>;
-
-
-/**
- * Schema type for AllowDownloadStatus
- *
- * @public
- */
-export interface AllowDownloadStatus {
-  allowDownload?: boolean;
-}
-
-
-/**
- * Schema type for AltText
- *
- * @public
- */
-export interface AltText {
-  /** Description of media ( <= 1000 characters ) */
-  text: string;
-}
-
-
-/**
- * Schema type for Analytics
- *
- * @public
- */
-export interface Analytics {
-  data?: Array<{ id?: TweetId; timestampedMetrics?: Array<TimestampedMetrics>; }>;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for AnimatedGif
- *
- * @public
- */
-export type AnimatedGif = Media & { previewImageUrl?: string; variants?: Variants; };
-
-
-/**
- * A count of user-provided stream filtering rules at the client application level.
- *
- * @public
- */
-export interface AppRulesCount {
-  /** The ID of the client application */
-  clientAppId?: ClientAppId;
-  /** Number of rules for client application */
-  ruleCount?: number;
-}
-
-
-/**
- * Schema type for ArticleDraftCreateRequest
- *
- * @public
- */
-export interface ArticleDraftCreateRequest {
-  /** DraftJS content state representing the article body. */
-  contentState: { blocks: Array<{ data?: { cashtags?: Array<{ fromIndex: number; text: string; toIndex: number; }>; hashtags?: Array<{ fromIndex: number; text: string; toIndex: number; }>; mentions?: Array<{ fromIndex: number; text: string; toIndex: number; }>; urls?: Array<{ fromIndex: number; text: string; toIndex: number; }>; }; entityRanges?: Array<{ key: number; length: number; offset: number; }>; inlineStyleRanges?: Array<{ length: number; offset: number; style: "bold" | "italic" | "strikethrough"; }>; key?: string; text: string; type: "unstyled" | "header-one" | "header-two" | "header-three" | "unordered-list-item" | "ordered-list-item" | "blockquote" | "atomic"; }>; entities: Array<{ key: string; value: { data: { caption?: string; entityKey?: string; markdown?: string; mediaItems?: Array<{ mediaCategory: string; mediaId: string; }>; postId?: string; url?: string; }; mutability: "immutable" | "mutable" | "segmented"; type: "post" | "link" | "image"; }; }>; };
-  /** A reference to uploaded media, identified by category and ID. */
-  coverMedia?: { mediaCategory: string; mediaId: string; };
-  /** The title of the article. */
-  title: string;
-}
-
-
-/**
- * Schema type for ArticleDraftCreateResponse
- *
- * @public
- */
-export interface ArticleDraftCreateResponse {
-  /** The newly created draft Article. */
-  data?: { id: ArticleId; title: string; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * The unique identifier of this Article.
- *
- * @public
- */
-export type ArticleId = string;
-
-
-/**
- * Schema type for ArticlePublishResponse
- *
- * @public
- */
-export interface ArticlePublishResponse {
-  /** The published Article's seed post. */
-  data?: { postId: string; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for AudiencePolicy
- *
- * @public
- */
-export interface AudiencePolicy {
-  creatorSubscriptions?: Array<"Any">;
-  xSubscriptions?: Array<"Any">;
-}
-
-
-/**
- * Raw binary data bytes.
- *
- * @public
- */
-export type BinaryPayload = string;
-
-
-/**
- * Schema type for BookmarkAddRequest
- *
- * @public
- */
-export interface BookmarkAddRequest {
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  tweetId: TweetId;
-}
-
-
-/**
- * The unique identifier of this Bookmark folder.
- *
- * @public
- */
-export type BookmarkFolderId = string;
-
-
-/**
- * Schema type for BookmarkFolderPostsResponse
- *
- * @public
- */
-export interface BookmarkFolderPostsResponse {
-  data?: Array<{ id?: TweetId; }>;
-  errors?: Array<Problem>;
-  meta?: { nextToken?: NextToken; };
-}
-
-
-/**
- * Schema type for BookmarkFoldersResponse
- *
- * @public
- */
-export interface BookmarkFoldersResponse {
-  data?: Array<{ id?: BookmarkFolderId; name?: string; }>;
-  errors?: Array<Problem>;
-  meta?: { nextToken?: NextToken; };
-}
-
-
-/**
- * Schema type for BookmarkMutationResponse
- *
- * @public
- */
-export interface BookmarkMutationResponse {
-  data?: { bookmarked?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for CashtagEntity
- *
- * @public
- */
-export type CashtagEntity = EntityIndicesInclusiveExclusive & CashtagFields;
-
-
-/**
- * Represent the portion of text recognized as a Cashtag, and its start and end position within the text.
- *
- * @public
- */
-export interface CashtagFields {
-  tag: string;
-}
-
-
-/**
- * Message event signature supplied with an action signature.
- *
- * @public
- */
-export interface ChatActionMessageEventSignature {
+export interface AddChatGroupMembersActionSignaturesMessageEventSignature {
   /** List of signing key information for message verification. */
-  messageSigningKeyInfoList?: Array<ChatMessageSigningKeyInfo>;
+  messageSigningKeyInfoList?: Array<AddChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
   /** The version of the public key used for signing. */
   publicKeyVersion: string;
   /** The signature of the message event. */
@@ -409,132 +87,26 @@ export interface ChatActionMessageEventSignature {
 
 
 /**
- * Cryptographic signature for a chat action.
+ * Schema type for AddChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
  *
  * @public
  */
-export interface ChatActionSignature {
-  /** Base64-encoded message event detail. */
-  encodedMessageEventDetail: string;
-  /** Message event signature supplied with an action signature. */
-  messageEventSignature: ChatActionMessageEventSignature;
-  /** Client-generated ID of the message being signed. */
-  messageId: string;
-  /** Payload string the client signed; used only in server-side failure logs. */
-  signaturePayload?: string;
+export interface AddChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
 }
 
 
 /**
- * Schema type for ChatAddGroupMembersRequest
+ * Schema type for AddChatGroupMembersConversationParticipantKeys
  *
  * @public
  */
-export interface ChatAddGroupMembersRequest {
-  /** Cryptographic signatures for the add-members action. */
-  actionSignatures?: Array<ChatActionSignature>;
-  /** Version of the new rotated conversation key. */
-  conversationKeyVersion?: string;
-  /** Encrypted conversation keys for each new participant after key rotation. */
-  conversationParticipantKeys?: Array<ChatConversationParticipantKey>;
-  /** Re-encrypted group avatar URL with new conversation key. */
-  encryptedAvatarUrl?: string;
-  /** Re-encrypted group title with new conversation key. */
-  encryptedTitle?: string;
-  /** List of user IDs to add to the group conversation. */
-  userIds: Array<string>;
-}
-
-
-/**
- * Schema type for ChatAddGroupMembersResponse
- *
- * @public
- */
-export interface ChatAddGroupMembersResponse {
-  /** Sequence ID of the conversation key change event. */
-  conversationKeyChangeSequenceId?: string;
-  /** List of all current member IDs in the conversation. */
-  currentMemberIds?: Array<string>;
-}
-
-
-/**
- * Schema type for ChatAddPublicKeyRequest
- *
- * @public
- */
-export interface ChatAddPublicKeyRequest {
-  /** When true, the server generates a new version. */
-  generateVersion?: boolean;
-  /** Public key registration payload. */
-  publicKey: { identityPublicKeySignature?: string; publicKey?: string; publicKeyFingerprint?: string; registrationMethod?: string; signingPublicKey?: string; signingPublicKeySignature?: string; };
-  /** Public key version. */
-  version: string;
-}
-
-
-/**
- * Schema type for ChatAddPublicKeyResponse
- *
- * @public
- */
-export interface ChatAddPublicKeyResponse {
-  /** A user's public key with associated key recovery configuration. */
-  data?: PublicKey;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * A Chat conversation resource representing either a direct or group conversation.
- *
- * @public
- */
-export interface ChatConversation {
-  /** User IDs of group admins. Only present for group conversations. */
-  adminIds?: Array<string>;
-  /** ISO 8601 timestamp when the group was created. Only present for group conversations. */
-  createdAt?: string;
-  /** URL for the group avatar. Only present for group conversations. */
-  groupAvatarUrl?: string;
-  /** Encrypted group name. Only present for group conversations. */
-  groupName?: string;
-  /** The unique identifier for this conversation: the hyphen-separated participant pair for a 1:1 conversation (e.g. '123-456'), or a 'g'-prefixed ID for a group. */
-  id: string;
-  /** Whether notifications are muted for this conversation. */
-  isMuted?: boolean;
-  /** User IDs of group members. Only present for group conversations. */
-  memberIds?: Array<string>;
-  /** Message time-to-live in milliseconds. */
-  messageTtlMsec?: string;
-  /** Array of user IDs who are participants in this conversation. */
-  participantIds?: Array<string>;
-  /** Whether screen capture blocking is enabled for this conversation. */
-  screenCaptureBlockingEnabled?: boolean;
-  /** Whether screen capture detection is enabled for this conversation. */
-  screenCaptureDetectionEnabled?: boolean;
-  /** The type of conversation: 'direct' or 'group'. */
-  type?: "direct" | "group";
-  /** ISO 8601 timestamp when the group was last updated. Only present for group conversations. */
-  updatedAt?: string;
-}
-
-
-/**
- * Identifies the conversation target. Accepts three formats: (1) a recipient user ID for 1:1 conversations (e.g., '1215441834412953600'), (2) a legacy 1:1 conversation ID with two user IDs separated by a dash (e.g., '1215441834412953600-1603419180975409153'), or (3) a group conversation ID prefixed with 'g' (e.g., 'g1234567890123456789'). The server constructs the canonical conversation ID from the authenticated user and recipient when a single user ID is provided.
- *
- * @public
- */
-export type ChatConversationOrRecipientId = string;
-
-
-/**
- * A participant's encrypted conversation key.
- *
- * @public
- */
-export interface ChatConversationParticipantKey {
+export interface AddChatGroupMembersConversationParticipantKeys {
   /** Conversation key encrypted with this participant's public key. */
   encryptedConversationKey?: string;
   /** Version of the participant's public key used for encryption. */
@@ -545,13 +117,1027 @@ export interface ChatConversationParticipantKey {
 
 
 /**
- * Schema type for ChatCreateConversationRequest
+ * Schema type for AddChatGroupMembersRequest
  *
  * @public
  */
-export interface ChatCreateConversationRequest {
-  /** Cryptographic signatures for the create action. */
-  actionSignatures?: Array<ChatActionSignature>;
+export interface AddChatGroupMembersRequest {
+  /** Cryptographic signatures for the action. */
+  actionSignatures?: Array<AddChatGroupMembersActionSignatures>;
+  /** Version of the new rotated conversation key. */
+  conversationKeyVersion?: string;
+  /** Encrypted conversation keys for each participant. */
+  conversationParticipantKeys?: Array<AddChatGroupMembersConversationParticipantKeys>;
+  /** Re-encrypted group avatar URL with new conversation key. */
+  encryptedAvatarUrl?: string;
+  /** Re-encrypted group title with new conversation key. */
+  encryptedTitle?: string;
+  /** List of user IDs to add to the group conversation. */
+  userIds: Array<string>;
+}
+
+
+/**
+ * Schema type for AddChatGroupMembersResponse
+ *
+ * @public
+ */
+export interface AddChatGroupMembersResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddConversationKeysActionSignatures
+ *
+ * @public
+ */
+export interface AddConversationKeysActionSignatures {
+  /** Base64-encoded message event detail. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: AddConversationKeysActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for AddConversationKeysActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface AddConversationKeysActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<AddConversationKeysActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for AddConversationKeysActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface AddConversationKeysActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for AddConversationKeysConversationParticipantKeys
+ *
+ * @public
+ */
+export interface AddConversationKeysConversationParticipantKeys {
+  /** Conversation key encrypted with this participant's public key. */
+  encryptedConversationKey?: string;
+  /** Version of the participant's public key used for encryption. */
+  publicKeyVersion?: string;
+  /** Participant user ID. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for AddConversationKeysRequest
+ *
+ * @public
+ */
+export interface AddConversationKeysRequest {
+  /** Cryptographic signatures for the action. */
+  actionSignatures?: Array<AddConversationKeysActionSignatures>;
+  /** Base64-encoded key rotation payload for ratchet tree key management. */
+  base64EncodedKeyRotation?: string;
+  /** Version of the conversation encryption key (typically a timestamp in milliseconds). */
+  conversationKeyVersion: string;
+  /** Encrypted conversation keys for each participant. */
+  conversationParticipantKeys: Array<AddConversationKeysConversationParticipantKeys>;
+}
+
+
+/**
+ * Schema type for AddConversationKeysResponse
+ *
+ * @public
+ */
+export interface AddConversationKeysResponse {
+  data?: AddConversationKeysResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddConversationKeysResponseData
+ *
+ * @public
+ */
+export interface AddConversationKeysResponseData {
+  /** Canonical ID of the conversation. */
+  conversationId?: string;
+  /** Sequence ID of the key change. */
+  sequenceId?: string;
+}
+
+
+/**
+ * Schema type for AddListsMemberRequest
+ *
+ * @public
+ */
+export interface AddListsMemberRequest {
+  userId: string;
+}
+
+
+/**
+ * Schema type for AddListsMemberResponse
+ *
+ * @public
+ */
+export interface AddListsMemberResponse {
+  data?: AddListsMemberResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddListsMemberResponseData
+ *
+ * @public
+ */
+export interface AddListsMemberResponseData {
+  /** Indicates whether the user is a member of the List. */
+  isMember: boolean;
+}
+
+
+/**
+ * Schema type for AddUserPublicKeyPublicKey
+ *
+ * @public
+ */
+export interface AddUserPublicKeyPublicKey {
+  /** Signature over the identity public key. */
+  identityPublicKeySignature?: string;
+  /** Identity public key (base64 encoded). */
+  publicKey?: string;
+  /** Fingerprint of the identity public key. */
+  publicKeyFingerprint?: string;
+  /** Registration method for the public key. */
+  registrationMethod?: string;
+  /** Signing public key (base64 encoded). */
+  signingPublicKey?: string;
+  /** Signature over the signing public key. */
+  signingPublicKeySignature?: string;
+}
+
+
+/**
+ * Schema type for AddUserPublicKeyRequest
+ *
+ * @public
+ */
+export interface AddUserPublicKeyRequest {
+  /** When true, the server generates a new version. */
+  generateVersion?: boolean;
+  publicKey: AddUserPublicKeyPublicKey;
+  /** Public key version. */
+  version: string;
+}
+
+
+/**
+ * Schema type for AddUserPublicKeyResponse
+ *
+ * @public
+ */
+export interface AddUserPublicKeyResponse {
+  data?: AddUserPublicKeyResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddUserPublicKeyResponseData
+ *
+ * @public
+ */
+export interface AddUserPublicKeyResponseData {
+  /** Juicebox recovery-service configuration for this key. */
+  juiceboxConfig?: Record<string, any>;
+  /** Version assigned to the registered public key. */
+  publicKeyVersion?: string;
+}
+
+
+/**
+ * Schema type for Analytics
+ *
+ * @public
+ */
+export interface Analytics {
+  appInstallAttempts?: number;
+  appOpens?: number;
+  bookmarks?: number;
+  detailExpands?: number;
+  emailTweet?: number;
+  engagements?: number;
+  follows?: number;
+  hashtagClicks?: number;
+  id?: string;
+  impressions?: number;
+  likes?: number;
+  mediaViews?: number;
+  permalinkClicks?: number;
+  quoteTweets?: number;
+  replies?: number;
+  retweets?: number;
+  shares?: number;
+  timestamp?: string;
+  /** Time-bucketed engagement metrics for the Post, one entry per granularity bucket. */
+  timestampedMetrics?: AnalyticsTimestampedMetrics;
+  unfollows?: number;
+  unlikes?: number;
+  urlClicks?: number;
+  userProfileClicks?: number;
+}
+
+
+/**
+ * Unique identifier of a Analytics
+ *
+ * @public
+ */
+export type AnalyticsId = string;
+
+
+/**
+ * Time-bucketed engagement metrics for the Post, one entry per granularity bucket.
+ *
+ * @public
+ */
+export type AnalyticsTimestampedMetrics = Array<{ metrics?: { appInstallAttempts?: number | null; appOpens?: number | null; bookmarks?: number | null; detailExpands?: number | null; emailTweet?: number | null; engagements?: number | null; follows?: number | null; hashtagClicks?: number | null; impressions?: number | null; likes?: number | null; mediaViews?: number | null; permalinkClicks?: number | null; quoteTweets?: number | null; replies?: number | null; retweets?: number | null; shares?: number | null; unfollows?: number | null; unlikes?: number | null; urlClicks?: number | null; userProfileClicks?: number | null; } | null; timestamp?: string | null; }>;
+
+
+/**
+ * Schema type for AppendMediaUploadRequest
+ *
+ * @public
+ */
+export interface AppendMediaUploadRequest {
+  /** The media chunk to upload. */
+  media: string;
+  /** The index of this segment in the upload sequence. */
+  segmentIndex: number;
+}
+
+
+/**
+ * Schema type for AppendMediaUploadResponse
+ *
+ * @public
+ */
+export interface AppendMediaUploadResponse {
+  data?: AppendMediaUploadResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AppendMediaUploadResponseData
+ *
+ * @public
+ */
+export interface AppendMediaUploadResponseData {
+  /** Epoch seconds when the upload session expires. */
+  expiresAt?: number;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentState
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentState {
+  /** The text blocks that make up the article body. */
+  blocks: Array<ArticleCreateDraftContentStateBlocks>;
+  /** Non-text entities referenced by blocks (links, embedded posts, images, emoji,          markdown/code/tables, dividers, LaTeX). Full set matches article storage. */
+  entities: Array<ArticleCreateDraftContentStateEntities>;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocks
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocks {
+  data?: ArticleCreateDraftContentStateBlocksData;
+  /** References to entries in entities. */
+  entityRanges?: Array<ArticleCreateDraftContentStateBlocksEntityRanges>;
+  /** Inline formatting ranges. */
+  inlineStyleRanges?: Array<ArticleCreateDraftContentStateBlocksInlineStyleRanges>;
+  /** Optional block key. */
+  key?: string;
+  /** The text content of this block. For latex entities, this holds the LaTeX source;          for divider/markdown/image/post atomic placeholders, typically a single space. */
+  text: string;
+  /** The block type. Use atomic for non-text embeds (image, post, markdown, divider, latex). */
+  type: "unstyled" | "header-one" | "header-two" | "header-three" | "unordered-list-item" | "ordered-list-item" | "blockquote" | "atomic";
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksData
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksData {
+  /** Cashtag spans in this block. */
+  cashtags?: Array<ArticleCreateDraftContentStateBlocksDataCashtags>;
+  /** Hashtag spans in this block. */
+  hashtags?: Array<ArticleCreateDraftContentStateBlocksDataHashtags>;
+  /** Mention spans in this block. */
+  mentions?: Array<ArticleCreateDraftContentStateBlocksDataMentions>;
+  /** URL spans in this block. */
+  urls?: Array<ArticleCreateDraftContentStateBlocksDataUrls>;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksDataCashtags
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksDataCashtags {
+  /** Start index of the tagged span. */
+  fromIndex: number;
+  /** The tagged text. */
+  text: string;
+  /** End index of the tagged span. */
+  toIndex: number;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksDataHashtags
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksDataHashtags {
+  /** Start index of the tagged span. */
+  fromIndex: number;
+  /** The tagged text. */
+  text: string;
+  /** End index of the tagged span. */
+  toIndex: number;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksDataMentions
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksDataMentions {
+  /** Start index of the tagged span. */
+  fromIndex: number;
+  /** The tagged text. */
+  text: string;
+  /** End index of the tagged span. */
+  toIndex: number;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksDataUrls
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksDataUrls {
+  /** Start index of the tagged span. */
+  fromIndex: number;
+  /** The tagged text. */
+  text: string;
+  /** End index of the tagged span. */
+  toIndex: number;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksEntityRanges
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksEntityRanges {
+  /** Index into the entities array. */
+  key: number;
+  /** Length of the entity range. */
+  length: number;
+  /** Start offset in the text. */
+  offset: number;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateBlocksInlineStyleRanges
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateBlocksInlineStyleRanges {
+  /** Length of the styled range. */
+  length: number;
+  /** Start offset in the text. */
+  offset: number;
+  /** The inline style. */
+  style: "bold" | "italic" | "strikethrough";
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateEntities
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateEntities {
+  /** The entity key referenced by entity_ranges. */
+  key: string;
+  value: ArticleCreateDraftContentStateEntitiesValue;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateEntitiesValue
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateEntitiesValue {
+  data: ArticleCreateDraftContentStateEntitiesValueData;
+  /** Whether the entity can be edited. Recommended: immutable for post, image, divider, latex; mutable for link and markdown (matches the in-app Articles composer). */
+  mutability: "immutable" | "mutable" | "segmented";
+  /** The entity type. markdown carries code blocks, GFM tables, and other Markdown;          emoji maps to backend TWEMOJI (Twemoji is internal); divider is a horizontal rule;          latex renders TeX from the block text. Tables are not a separate enum value — use          type markdown with a pipe table in data.markdown. */
+  type: "post" | "link" | "image" | "emoji" | "markdown" | "divider" | "latex";
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateEntitiesValueData
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateEntitiesValueData {
+  /** Caption text. */
+  caption?: string;
+  /** Opaque entity key. Used with type emoji (and reserved for other keyed embeds) to match in-app Articles composer payloads. */
+  entityKey?: string;
+  /** Markdown body for type markdown. Use fenced code blocks (```lang ... ```) for code. Max weighted length is enforced by the Articles backend (10,000 per article). */
+  markdown?: string;
+  /** Media keys. Used with type image. */
+  mediaItems?: Array<ArticleCreateDraftContentStateEntitiesValueDataMediaItems>;
+  /** The ID of the post to embed. Used with type post. */
+  postId?: string;
+  /** The URL. Used with type link. */
+  url?: string;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftContentStateEntitiesValueDataMediaItems
+ *
+ * @public
+ */
+export interface ArticleCreateDraftContentStateEntitiesValueDataMediaItems {
+  mediaCategory: string;
+  mediaId: string;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftCoverMedia
+ *
+ * @public
+ */
+export interface ArticleCreateDraftCoverMedia {
+  /** The media category (e.g. tweet_image). */
+  mediaCategory: string;
+  /** The media ID from the media upload endpoint. */
+  mediaId: string;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftRequest
+ *
+ * @public
+ */
+export interface ArticleCreateDraftRequest {
+  contentState: ArticleCreateDraftContentState;
+  coverMedia?: ArticleCreateDraftCoverMedia;
+  /** The title of the Article. */
+  title: string;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftResponse
+ *
+ * @public
+ */
+export interface ArticleCreateDraftResponse {
+  data?: ArticleCreateDraftResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ArticleCreateDraftResponseData
+ *
+ * @public
+ */
+export interface ArticleCreateDraftResponseData {
+  /** Unique identifier of the created draft Article. */
+  id: string;
+  /** The title of the draft Article. */
+  title: string;
+}
+
+
+/**
+ * Schema type for ArticlePublishResponse
+ *
+ * @public
+ */
+export interface ArticlePublishResponse {
+  data?: ArticlePublishResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ArticlePublishResponseData
+ *
+ * @public
+ */
+export interface ArticlePublishResponseData {
+  /** The ID of the post created for the published Article. */
+  postId: string;
+}
+
+
+/**
+ * Schema type for BlockUsersDmsResponse
+ *
+ * @public
+ */
+export interface BlockUsersDmsResponse {
+  data?: BlockUsersDmsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for BlockUsersDmsResponseData
+ *
+ * @public
+ */
+export interface BlockUsersDmsResponseData {
+  /** Indicates whether the target user is DM-blocked. */
+  blocked: boolean;
+}
+
+
+/**
+ * Schema type for ChatConversation
+ *
+ * @public
+ */
+export interface ChatConversation {
+  adminIds?: Array<string>;
+  createdAt?: string;
+  groupAvatarUrl?: string;
+  groupName?: string;
+  id?: string;
+  isMuted?: boolean;
+  memberIds?: Array<string>;
+  messageTtlMs?: number;
+  participantIds?: Array<string>;
+  screenCaptureBlockingEnabled?: boolean;
+  screenCaptureDetectionEnabled?: boolean;
+  type?: string;
+  updatedAt?: string;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadAppendRequest
+ *
+ * @public
+ */
+export interface ChatMediaUploadAppendRequest {
+  /** The XChat conversation the upload belongs to. */
+  conversationId: string;
+  /** The media segment bytes: base64-encoded in JSON bodies, raw bytes in multipart bodies. */
+  media: string;
+  /** The media hash key returned by the initialize step. */
+  mediaHashKey: string;
+  /** The index of this segment in the upload sequence. */
+  segmentIndex: number;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadAppendResponse
+ *
+ * @public
+ */
+export interface ChatMediaUploadAppendResponse {
+  data?: ChatMediaUploadAppendResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadAppendResponseData
+ *
+ * @public
+ */
+export interface ChatMediaUploadAppendResponseData {
+  /** Epoch seconds when the upload session expires. */
+  expiresAt?: number;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadFinalizeRequest
+ *
+ * @public
+ */
+export interface ChatMediaUploadFinalizeRequest {
+  /** The XChat conversation the upload belongs to. */
+  conversationId: string;
+  /** The media hash key returned by the initialize step. */
+  mediaHashKey: string;
+  /** Optional message identifier associated with the upload. */
+  messageId?: string;
+  /** Total number of uploaded parts, as a numeric string. */
+  numParts: string;
+  /** Optional TTL for the media in milliseconds, as a numeric string. */
+  ttlMsec?: string;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadFinalizeResponse
+ *
+ * @public
+ */
+export interface ChatMediaUploadFinalizeResponse {
+  data?: ChatMediaUploadFinalizeResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadFinalizeResponseData
+ *
+ * @public
+ */
+export interface ChatMediaUploadFinalizeResponseData {
+  /** Whether the upload was finalized. */
+  success: boolean;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadInitializeRequest
+ *
+ * @public
+ */
+export interface ChatMediaUploadInitializeRequest {
+  /** The XChat conversation the upload belongs to. */
+  conversationId: string;
+  /** Total size of the media upload in bytes. */
+  totalBytes: number;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadInitializeResponse
+ *
+ * @public
+ */
+export interface ChatMediaUploadInitializeResponse {
+  data?: ChatMediaUploadInitializeResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ChatMediaUploadInitializeResponseData
+ *
+ * @public
+ */
+export interface ChatMediaUploadInitializeResponseData {
+  /** Canonical ID of the conversation. */
+  conversationId: string;
+  /** Hash key addressing the uploaded media. */
+  mediaHashKey: string;
+  /** Upload session ID. */
+  sessionId: string;
+}
+
+
+/**
+ * Schema type for ChatMessageEvent
+ *
+ * @public
+ */
+export interface ChatMessageEvent {
+  conversationId?: string;
+  conversationToken?: string;
+  createdAt?: string;
+  encodedEvent?: string;
+  id?: string;
+  isTrusted?: boolean;
+  messageEventSignature?: Record<string, any>;
+  previousId?: string;
+  senderId?: string;
+}
+
+
+/**
+ * Schema type for Community
+ *
+ * @public
+ */
+export interface Community {
+  access?: string;
+  createdAt?: string;
+  description?: string;
+  id?: string;
+  joinPolicy?: string;
+  memberCount?: number;
+  name?: string;
+}
+
+
+/**
+ * Unique identifier of a Community
+ *
+ * @public
+ */
+export type CommunityId = string;
+
+
+/**
+ * Schema type for ComplianceJob
+ *
+ * @public
+ */
+export interface ComplianceJob {
+  createdAt?: string;
+  downloadExpiresAt?: string;
+  downloadUrl?: string;
+  id?: string;
+  name?: string;
+  resumable?: boolean;
+  status?: string;
+  type?: string;
+  uploadExpiresAt?: string;
+  uploadUrl?: string;
+}
+
+
+/**
+ * Schema type for Connection
+ *
+ * @public
+ */
+export interface Connection {
+  clientIp?: string;
+  connectedAt?: string;
+  disconnectReason?: string;
+  disconnectedAt?: string;
+  endpointName?: string;
+  id?: string;
+}
+
+
+/**
+ * A two-letter ISO 3166-1 alpha-2 country code.
+ *
+ * @public
+ */
+export type CountryCode = string;
+
+
+/**
+ * Schema type for CreateAccountActivitySubscriptionRequest
+ *
+ * @public
+ */
+export type CreateAccountActivitySubscriptionRequest = Record<string, any>;
+
+
+/**
+ * Schema type for CreateAccountActivitySubscriptionResponse
+ *
+ * @public
+ */
+export interface CreateAccountActivitySubscriptionResponse {
+  data?: CreateAccountActivitySubscriptionResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateAccountActivitySubscriptionResponseData
+ *
+ * @public
+ */
+export interface CreateAccountActivitySubscriptionResponseData {
+  /** Whether the subscription is active. */
+  subscribed: boolean;
+}
+
+
+/**
+ * Schema type for CreateActivitySubscriptionFilter
+ *
+ * @public
+ */
+export interface CreateActivitySubscriptionFilter {
+  /** Optional direction filter for directional events. Not supported for mute.* or block.* events. */
+  direction?: "inbound" | "outbound";
+  /** Optional keyword filter. */
+  keyword?: string;
+  /** User the subscription is scoped to. For mute.* and block.* events, this must be the authenticated source user. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for CreateActivitySubscriptionRequest
+ *
+ * @public
+ */
+export interface CreateActivitySubscriptionRequest {
+  /** Activity event type in dot notation. */
+  eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "news.new" | "follow.follow" | "follow.unfollow" | "spaces.start" | "spaces.end" | "chat.received" | "chat.sent" | "chat.conversation_join" | "dm.sent" | "dm.received" | "dm.indicate_typing" | "dm.read" | "post.create" | "post.delete" | "post.mention.create" | "like.create" | "mute.mute" | "mute.unmute" | "block.block" | "block.unblock";
+  filter: CreateActivitySubscriptionFilter;
+  /** Optional caller-defined tag. */
+  tag?: string;
+  /** Webhook to deliver the subscription events to. */
+  webhookId?: string;
+}
+
+
+/**
+ * Schema type for CreateActivitySubscriptionResponse
+ *
+ * @public
+ */
+export interface CreateActivitySubscriptionResponse {
+  data?: CreateActivitySubscriptionResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateActivitySubscriptionResponseData
+ *
+ * @public
+ */
+export interface CreateActivitySubscriptionResponseData {
+  subscription?: CreateActivitySubscriptionResponseDataSubscription;
+}
+
+
+/**
+ * Schema type for CreateActivitySubscriptionResponseDataSubscription
+ *
+ * @public
+ */
+export interface CreateActivitySubscriptionResponseDataSubscription {
+  /** Subscription creation time. */
+  createdAt?: string;
+  /** Activity event type in dot notation. */
+  eventType?: string;
+  filter?: CreateActivitySubscriptionResponseDataSubscriptionFilter;
+  /** Unique identifier of the subscription. */
+  subscriptionId?: string;
+  /** Optional caller-defined tag. */
+  tag?: string;
+  /** Subscription last-update time. */
+  updatedAt?: string;
+  /** Webhook receiving the subscription events. */
+  webhookId?: string;
+}
+
+
+/**
+ * Schema type for CreateActivitySubscriptionResponseDataSubscriptionFilter
+ *
+ * @public
+ */
+export interface CreateActivitySubscriptionResponseDataSubscriptionFilter {
+  /** Optional direction filter for directional events. Not present for mute.* or block.* events. */
+  direction?: string;
+  /** Optional keyword filter. */
+  keyword?: string;
+  /** User the subscription is scoped to. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for CreateChatConversationActionSignatures
+ *
+ * @public
+ */
+export interface CreateChatConversationActionSignatures {
+  /** Base64-encoded message event detail. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: CreateChatConversationActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for CreateChatConversationActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface CreateChatConversationActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<CreateChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for CreateChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface CreateChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for CreateChatConversationConversationParticipantKeys
+ *
+ * @public
+ */
+export interface CreateChatConversationConversationParticipantKeys {
+  /** Conversation key encrypted with this participant's public key. */
+  encryptedConversationKey?: string;
+  /** Version of the participant's public key used for encryption. */
+  publicKeyVersion?: string;
+  /** Participant user ID. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for CreateChatConversationRequest
+ *
+ * @public
+ */
+export interface CreateChatConversationRequest {
+  /** Cryptographic signatures for the action. */
+  actionSignatures?: Array<CreateChatConversationActionSignatures>;
   /** Base64-encoded key rotation payload. */
   base64EncodedKeyRotation?: string;
   /** Client-generated conversation ID. */
@@ -559,7 +1145,7 @@ export interface ChatCreateConversationRequest {
   /** Version of the conversation encryption key. */
   conversationKeyVersion: string;
   /** Encrypted conversation keys for each participant. */
-  conversationParticipantKeys: Array<ChatConversationParticipantKey>;
+  conversationParticipantKeys: Array<CreateChatConversationConversationParticipantKeys>;
   /** User IDs of group admins. Defaults to the creator if omitted. */
   groupAdmins?: Array<string>;
   /** URL of the avatar image for the group conversation. */
@@ -576,239 +1162,1116 @@ export interface ChatCreateConversationRequest {
 
 
 /**
- * Schema type for ChatCreateConversationResponse
+ * Schema type for CreateChatConversationResponse
  *
  * @public
  */
-export interface ChatCreateConversationResponse {
-  data?: { conversationId?: string; conversationKeyChangeSequenceId?: string; };
+export interface CreateChatConversationResponse {
+  data?: CreateChatConversationResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for ChatGetConversationResponse
+ * Schema type for CreateChatConversationResponseData
  *
  * @public
  */
-export interface ChatGetConversationResponse {
-  /** List of message events in the conversation. */
-  data?: Array<ChatMessageEvent>;
-  errors?: Array<Problem>;
-  meta?: { conversationKeyEvents?: Array<string>; hasMore?: boolean; nextToken?: string; resultCount?: number; };
+export interface CreateChatConversationResponseData {
+  /** Canonical ID of the created conversation. */
+  conversationId: string;
+  /** Sequence ID of the conversation key change. */
+  conversationKeyChangeSequenceId?: string;
 }
 
 
 /**
- * Schema type for ChatGetConversationsResponse
+ * Schema type for CreateCommunityNotesInfo
  *
  * @public
  */
-export interface ChatGetConversationsResponse {
-  /** List of conversations in the user's inbox. */
-  data?: Array<ChatConversation>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { hasMessageRequests?: boolean; hasMore?: boolean; nextToken?: string; resultCount?: number; };
+export interface CreateCommunityNotesInfo {
+  /** Community Note classification. */
+  classification: "misinformed_or_potentially_misleading" | "not_misleading";
+  /** Whether the note is a media note. */
+  isMediaNote?: boolean;
+  /** Tags describing why the Post is misleading. */
+  misleadingTags: Array<"disputed_claim_as_fact" | "factual_error" | "manipulated_media" | "misinterpreted_satire" | "missing_important_context" | "other" | "outdated_information">;
+  /** The text summary of the Community Note (must contain a URL). */
+  text: string;
+  /** Whether the note cites trustworthy sources. */
+  trustworthySources: boolean;
 }
 
 
 /**
- * Schema type for ChatInitializeConversationKeysRequest
+ * Schema type for CreateCommunityNotesRequest
  *
  * @public
  */
-export interface ChatInitializeConversationKeysRequest {
-  /** Cryptographic signatures for the key initialization action. */
-  actionSignatures?: Array<ChatActionSignature>;
-  /** Base64-encoded key rotation payload for ratchet tree key management. */
-  base64EncodedKeyRotation?: string;
-  /** Version of the conversation encryption key (typically a timestamp in milliseconds). */
-  conversationKeyVersion: string;
-  /** The conversation key encrypted for each participant using their public key. */
-  conversationParticipantKeys: Array<ChatConversationParticipantKey>;
+export interface CreateCommunityNotesRequest {
+  info: CreateCommunityNotesInfo;
+  /** ID of the Post the note is about. */
+  postId: string;
+  /** If true, the note is only for testing and is not publicly visible. */
+  testMode: boolean;
 }
 
 
 /**
- * Schema type for ChatInitializeConversationKeysResponse
+ * Schema type for CreateCommunityNotesResponse
  *
  * @public
  */
-export interface ChatInitializeConversationKeysResponse {
-  data?: { conversationId?: string; sequenceId?: string; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for ChatInitializeGroupResponse
- *
- * @public
- */
-export interface ChatInitializeGroupResponse {
-  data?: { conversationId?: string; };
+export interface CreateCommunityNotesResponse {
+  data?: CreateCommunityNotesResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Key recovery configuration for Juicebox-based key storage.
+ * Schema type for CreateCommunityNotesResponseData
  *
  * @public
  */
-export interface ChatJuiceboxConfig {
-  /** Raw JSON for key recovery configuration. */
-  keyStoreTokenMapJson?: string;
-  /** Maximum guess count for key recovery. */
-  maxGuessCount?: number;
-  /** Serialized realm state for key recovery. Only returned when registering a key. */
-  realmStateString?: string;
-  /** Threshold required to recover the key. Only returned when registering a key. */
-  recoverThreshold?: number;
-  /** Threshold required to register the key. Only returned when registering a key. */
-  registerThreshold?: number;
-  /** Per-realm auth tokens for key recovery. */
-  tokenMap?: Array<{ key?: string; value?: { address?: string; publicKey?: string; token?: string; }; }>;
+export interface CreateCommunityNotesResponseData {
+  /** Unique identifier of the created Community Note. */
+  id: string;
 }
 
 
 /**
- * Schema type for ChatMarkConversationReadRequest
+ * Schema type for CreateComplianceJobsRequest
  *
  * @public
  */
-export interface ChatMarkConversationReadRequest {
-  /** The sequence ID of the last message to mark as read up to. */
-  seenUntilSequenceId: string;
+export interface CreateComplianceJobsRequest {
+  /** A user-provided name for this job. */
+  name?: string;
+  /** Whether to enable the upload URL with support for resumable uploads. */
+  resumable?: boolean;
+  /** Type of compliance job to list. */
+  type: "tweets" | "users";
 }
 
 
 /**
- * Schema type for ChatMarkConversationReadResponse
+ * Schema type for CreateComplianceJobsResponse
  *
  * @public
  */
-export interface ChatMarkConversationReadResponse {
-  data?: { success?: boolean; };
+export interface CreateComplianceJobsResponse {
+  data?: ComplianceJob;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for ChatMediaUploadAppendRequest
+ * Schema type for CreateDirectMessagesByConversationIdAttachments
  *
  * @public
  */
-export type ChatMediaUploadAppendRequest = { conversationId: string; media: MediaPayloadBinary; mediaHashKey: string; segmentIndex: MediaSegments; } | { conversationId: string; media: MediaPayloadByte; mediaHashKey: string; segmentIndex: MediaSegments; };
-
-
-/**
- * Request body for finalizing a Chat media upload.
- *
- * @public
- */
-export interface ChatMediaUploadFinalizeRequest {
-  /** XChat conversation identifier for the upload. */
-  conversationId?: string;
-  /** Media hash key returned from initialize. */
-  mediaHashKey?: string;
-  /** Optional message identifier associated with the upload. */
-  messageId?: string;
-  /** Total number of uploaded parts as a numeric string. */
-  numParts?: string;
-  /** Optional TTL for the media in milliseconds. */
-  ttlMsec?: string;
+export interface CreateDirectMessagesByConversationIdAttachments {
+  /** A media id to attach to the message. */
+  mediaId: string;
 }
 
 
 /**
- * Response from finalizing a Chat media upload.
+ * At least one of `text`, `attachments` is required.
  *
  * @public
  */
-export interface ChatMediaUploadFinalizeResponse {
-  data?: { success: boolean; };
+export interface CreateDirectMessagesByConversationIdRequest {
+  /** Attachments to include with the message. */
+  attachments?: Array<CreateDirectMessagesByConversationIdAttachments>;
+  /** Text of the Direct Message. */
+  text?: string;
 }
 
 
 /**
- * Request body for initializing a Chat media upload.
+ * Schema type for CreateDirectMessagesByConversationIdResponse
  *
  * @public
  */
-export interface ChatMediaUploadInitializeRequest {
-  /** XChat conversation identifier for the upload. */
-  conversationId?: string;
-  /** Total size of the media upload in bytes. */
-  totalBytes?: number;
+export interface CreateDirectMessagesByConversationIdResponse {
+  data?: CreateDirectMessagesByConversationIdResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * Response from initializing a Chat media upload.
+ * Schema type for CreateDirectMessagesByConversationIdResponseData
  *
  * @public
  */
-export interface ChatMediaUploadInitializeResponse {
-  data?: { conversationId: string; mediaHashKey: string; sessionId: string; };
+export interface CreateDirectMessagesByConversationIdResponseData {
+  /** The conversation the message was sent to. */
+  dmConversationId: string;
+  /** The id of the created DM event. */
+  dmEventId: string;
 }
 
 
 /**
- * An Chat message event with extracted envelope fields and the original encoded event.
+ * Schema type for CreateDirectMessagesByParticipantIdAttachments
  *
  * @public
  */
-export interface ChatMessageEvent {
-  /** The conversation ID this message belongs to, in the form embedded in events: the colon-separated participant pair for a 1:1 conversation (e.g. '123:456'), or a 'g'-prefixed ID for a group. */
-  conversationId?: string;
-  /** The conversation token for this message. */
-  conversationToken?: string;
-  /** The creation timestamp in milliseconds. */
-  createdAtMsec?: string;
-  /** Base64-encoded MessageEvent for client decoding. */
-  encodedEvent: string;
-  /** The unique identifier for this message event (message_id). */
+export interface CreateDirectMessagesByParticipantIdAttachments {
+  /** A media id to attach to the message. */
+  mediaId: string;
+}
+
+
+/**
+ * At least one of `text`, `attachments` is required.
+ *
+ * @public
+ */
+export interface CreateDirectMessagesByParticipantIdRequest {
+  /** Attachments to include with the message. */
+  attachments?: Array<CreateDirectMessagesByParticipantIdAttachments>;
+  /** Text of the Direct Message. */
+  text?: string;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesByParticipantIdResponse
+ *
+ * @public
+ */
+export interface CreateDirectMessagesByParticipantIdResponse {
+  data?: CreateDirectMessagesByParticipantIdResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesByParticipantIdResponseData
+ *
+ * @public
+ */
+export interface CreateDirectMessagesByParticipantIdResponseData {
+  /** The conversation the message was sent to. */
+  dmConversationId: string;
+  /** The id of the created DM event. */
+  dmEventId: string;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesConversationMessage
+ *
+ * @public
+ */
+export interface CreateDirectMessagesConversationMessage {
+  /** Attachments to include with the message. */
+  attachments?: Array<CreateDirectMessagesConversationMessageAttachments>;
+  /** Text of the Direct Message. */
+  text?: string;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesConversationMessageAttachments
+ *
+ * @public
+ */
+export interface CreateDirectMessagesConversationMessageAttachments {
+  /** A media id to attach to the message. */
+  mediaId: string;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesConversationRequest
+ *
+ * @public
+ */
+export interface CreateDirectMessagesConversationRequest {
+  /** The conversation type to create. Supports `Group` only. */
+  conversationType: "Group";
+  message: CreateDirectMessagesConversationMessage;
+  /** Participants for the conversation. */
+  participantIds: Array<string>;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesConversationResponse
+ *
+ * @public
+ */
+export interface CreateDirectMessagesConversationResponse {
+  data?: CreateDirectMessagesConversationResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateDirectMessagesConversationResponseData
+ *
+ * @public
+ */
+export interface CreateDirectMessagesConversationResponseData {
+  /** The id of the created conversation. */
+  dmConversationId: string;
+  /** The id of the created DM event. */
+  dmEventId: string;
+}
+
+
+/**
+ * Schema type for CreateListsRequest
+ *
+ * @public
+ */
+export interface CreateListsRequest {
+  /** Description of the List (up to 100 characters). */
+  description?: string;
+  /** Name of the List (1-25 characters). */
+  name: string;
+  /** Whether the List is private. */
+  private?: boolean;
+}
+
+
+/**
+ * Schema type for CreateListsResponse
+ *
+ * @public
+ */
+export interface CreateListsResponse {
+  data?: CreateListsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateListsResponseData
+ *
+ * @public
+ */
+export interface CreateListsResponseData {
+  /** Unique identifier of the created List. */
+  id: string;
+  /** The name of the created List. */
+  name: string;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadata
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadata {
+  allowDownloadStatus?: CreateMediaMetadataMetadataAllowDownloadStatus;
+  altText?: CreateMediaMetadataMetadataAltText;
+  audiencePolicy?: Record<string, any>;
+  contentExpiration?: CreateMediaMetadataMetadataContentExpiration;
+  domainRestrictions?: CreateMediaMetadataMetadataDomainRestrictions;
+  foundMediaOrigin?: CreateMediaMetadataMetadataFoundMediaOrigin;
+  geoRestrictions?: Record<string, any>;
+  managementInfo?: CreateMediaMetadataMetadataManagementInfo;
+  previewImage?: CreateMediaMetadataMetadataPreviewImage;
+  sensitiveMediaWarning?: Record<string, any>;
+  sharedInfo?: CreateMediaMetadataMetadataSharedInfo;
+  stickerInfo?: CreateMediaMetadataMetadataStickerInfo;
+  uploadSource?: CreateMediaMetadataMetadataUploadSource;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataAllowDownloadStatus
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataAllowDownloadStatus {
+  allowDownload?: boolean;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataAltText
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataAltText {
+  text: string;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataContentExpiration
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataContentExpiration {
+  timestampSec: number;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataDomainRestrictions
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataDomainRestrictions {
+  whitelist: Array<string>;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataFoundMediaOrigin
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataFoundMediaOrigin {
+  id: string;
+  provider: string;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataManagementInfo
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataManagementInfo {
+  managed: boolean;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataPreviewImage
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataPreviewImage {
+  mediaKey: Record<string, any>;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataSharedInfo
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataSharedInfo {
+  shared: boolean;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataStickerInfo
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataStickerInfo {
+  stickers: Array<CreateMediaMetadataMetadataStickerInfoStickers>;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataStickerInfoStickers
+ *
+ * @public
+ */
+export type CreateMediaMetadataMetadataStickerInfoStickers = Record<string, any>;
+
+
+/**
+ * Schema type for CreateMediaMetadataMetadataUploadSource
+ *
+ * @public
+ */
+export interface CreateMediaMetadataMetadataUploadSource {
+  uploadSource: string;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataRequest
+ *
+ * @public
+ */
+export interface CreateMediaMetadataRequest {
+  /** The media id the metadata is attached to. */
+  id: string;
+  metadata?: CreateMediaMetadataMetadata;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataResponse
+ *
+ * @public
+ */
+export interface CreateMediaMetadataResponse {
+  data?: CreateMediaMetadataResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateMediaMetadataResponseData
+ *
+ * @public
+ */
+export interface CreateMediaMetadataResponseData {
+  /** The metadata now associated with the media. */
+  associatedMetadata?: Record<string, any>;
+  /** The media id the metadata was attached to. */
+  id: string;
+}
+
+
+/**
+ * Schema type for CreateMediaSubtitlesRequest
+ *
+ * @public
+ */
+export interface CreateMediaSubtitlesRequest {
+  /** The media id of the video the subtitles belong to. */
   id?: string;
-  /** Whether the message is from a trusted source. */
-  isTrusted?: boolean;
-  /** Message event signature for verification. */
-  messageEventSignature?: ChatMessageEventSignature;
-  /** The sequence ID of the previous message. */
-  previousSequenceId?: string;
-  /** The user ID of the message sender. */
-  senderId?: string;
-  /** The sequence identifier for ordering messages. */
-  sequenceId?: string;
+  /** The media category of the target media. */
+  mediaCategory?: "AmplifyVideo" | "TweetVideo";
+  subtitles?: CreateMediaSubtitlesSubtitles;
 }
 
 
 /**
- * Message event signature for verification.
+ * Schema type for CreateMediaSubtitlesResponse
  *
  * @public
  */
-export interface ChatMessageEventSignature {
+export interface CreateMediaSubtitlesResponse {
+  data?: CreateMediaSubtitlesResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateMediaSubtitlesResponseData
+ *
+ * @public
+ */
+export interface CreateMediaSubtitlesResponseData {
+  /** The subtitles now associated with the media. */
+  associatedSubtitles?: Record<string, any>;
+  /** The media id. */
+  id?: string;
+  /** The media category. */
+  mediaCategory?: string;
+}
+
+
+/**
+ * Schema type for CreateMediaSubtitlesSubtitles
+ *
+ * @public
+ */
+export interface CreateMediaSubtitlesSubtitles {
+  /** Language name in a human readable form. */
+  displayName?: string;
+  /** The media id of the subtitle track. */
+  id?: string;
+  /** BCP47 language code of the subtitle track. */
+  languageCode?: string;
+}
+
+
+/**
+ * Schema type for CreatePostsEditOptions
+ *
+ * @public
+ */
+export interface CreatePostsEditOptions {
+  /** The ID of the Post being edited. */
+  previousPostId: string;
+}
+
+
+/**
+ * Schema type for CreatePostsGeo
+ *
+ * @public
+ */
+export interface CreatePostsGeo {
+  /** Place ID for geo tagging. */
+  placeId: string;
+}
+
+
+/**
+ * Schema type for CreatePostsMedia
+ *
+ * @public
+ */
+export interface CreatePostsMedia {
+  callToActions?: CreatePostsMediaCallToActions;
+  /** Description for the media, rendered on the Post card for video and Amplify content. */
+  description?: string;
+  /** When true, the media's asset URLs do not expire and external syndicated playback is allowed. */
+  embeddable?: boolean;
+  /** Media IDs to attach to the tweet. */
+  mediaIds: Array<string>;
+  /** Media id whose asset is used as the preview image. */
+  previewMediaId?: string;
+  /** User IDs tagged in the media. */
+  taggedUserIds?: Array<string>;
+  /** Title for the media, rendered on the Post card for video and Amplify content. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for CreatePostsMediaCallToActions
+ *
+ * @public
+ */
+export interface CreatePostsMediaCallToActions {
+  appInstall?: CreatePostsMediaCallToActionsAppInstall;
+  visitSite?: CreatePostsMediaCallToActionsVisitSite;
+  watchNow?: CreatePostsMediaCallToActionsWatchNow;
+}
+
+
+/**
+ * Schema type for CreatePostsMediaCallToActionsAppInstall
+ *
+ * @public
+ */
+export interface CreatePostsMediaCallToActionsAppInstall {
+  /** Apple App Store iPhone app id. */
+  appStoreId?: string;
+  /** Apple App Store iPad app id. */
+  ipadAppStoreId?: string;
+  /** Google Play Store app id. */
+  playStoreId?: string;
+}
+
+
+/**
+ * Schema type for CreatePostsMediaCallToActionsVisitSite
+ *
+ * @public
+ */
+export interface CreatePostsMediaCallToActionsVisitSite {
+  /** HTTPS URL the CTA links to. */
+  url: string;
+}
+
+
+/**
+ * Schema type for CreatePostsMediaCallToActionsWatchNow
+ *
+ * @public
+ */
+export interface CreatePostsMediaCallToActionsWatchNow {
+  /** HTTPS URL the CTA links to. */
+  url: string;
+}
+
+
+/**
+ * Schema type for CreatePostsPoll
+ *
+ * @public
+ */
+export interface CreatePostsPoll {
+  /** Duration of the poll in minutes. */
+  durationMinutes: number;
+  /** Poll options (2-4 choices, 1-25 characters each). */
+  options: Array<string>;
+  /** Who can reply to the poll Tweet. Accepted for compatibility; it carries no backend argument and is dropped before the mutation is issued (see `translate_body`). */
+  replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified";
+}
+
+
+/**
+ * Schema type for CreatePostsReply
+ *
+ * @public
+ */
+export interface CreatePostsReply {
+  /** If true, reply metadata is automatically populated. Accepted for compatibility; it carries no backend argument and is dropped before the mutation is issued (see `translate_body`). */
+  autoPopulateReplyMetadata?: boolean;
+  /** User IDs to exclude from the reply thread. */
+  excludeReplyUserIds?: Array<string>;
+  /** The ID of the tweet being replied to. */
+  inReplyToTweetId: string;
+}
+
+
+/**
+ * Schema type for CreatePostsRequest
+ *
+ * @public
+ */
+export interface CreatePostsRequest {
+  /** Card URI parameter. */
+  cardUri?: string;
+  /** Community to post the tweet to. */
+  communityId?: string;
+  /** Direct message deep link. */
+  directMessageDeepLink?: string;
+  editOptions?: CreatePostsEditOptions;
+  /** Restrict tweet to super followers. */
+  forSuperFollowersOnly?: boolean;
+  geo?: CreatePostsGeo;
+  /** Disclose that the tweet contains AI-generated media. */
+  madeWithAi?: boolean;
+  media?: CreatePostsMedia;
+  /** If true, the tweet is not shown in the public timeline. */
+  nullcast?: boolean;
+  /** Disclose that the tweet is a paid partnership. */
+  paidPartnership?: boolean;
+  poll?: CreatePostsPoll;
+  /** Tweet ID to quote. */
+  quoteTweetId?: string;
+  reply?: CreatePostsReply;
+  /** Who can reply to this tweet. */
+  replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified";
+  /** Share an exclusive (super-follower) tweet with all followers. */
+  shareWithFollowers?: boolean;
+  /** Text of the tweet. Required unless media is provided.  Defaulted to an empty string so it is always sent: the backend's `tweet_text` variable is non-null and rejects an absent value. */
+  text?: string;
+}
+
+
+/**
+ * Schema type for CreatePostsResponse
+ *
+ * @public
+ */
+export interface CreatePostsResponse {
+  data?: CreatePostsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreatePostsResponseData
+ *
+ * @public
+ */
+export interface CreatePostsResponseData {
+  /** Post IDs in this Post's edit history chain. */
+  editHistoryPostIds?: Array<string>;
+  /** Unique identifier of the created Post. */
+  id: string;
+  /** The content of the created Post. */
+  text: string;
+}
+
+
+/**
+ * Schema type for CreateScheduledBroadcastRecurrence
+ *
+ * @public
+ */
+export interface CreateScheduledBroadcastRecurrence {
+  /** Recurrence frequency. */
+  frequency: "Daily" | "Weekly";
+  /** Number of repeats (numeric string). */
+  repeats: string;
+}
+
+
+/**
+ * Schema type for CreateScheduledBroadcastRequest
+ *
+ * @public
+ */
+export interface CreateScheduledBroadcastRequest {
+  /** Enable replay. */
+  availableForReplay?: boolean;
+  /** Chat permission option (numeric string). */
+  chatOption?: string;
+  /** Description. */
+  description?: string;
+  /** Lock the broadcast. */
+  isLocked?: boolean;
+  /** Locale. */
+  locale?: string;
+  /** If true, do not auto-publish at start; call POST .../live when ready. */
+  manualPublish?: boolean;
+  recurrence?: CreateScheduledBroadcastRecurrence;
+  /** End time, ms since Unix epoch (decimal string). */
+  scheduledEndMs: string;
+  /** Start time, ms since Unix epoch (decimal string). */
+  scheduledStartMs: string;
+  /** Ingest / source id to bind (same as sources `rtmp_stream_key`). */
+  sourceId: string;
+  /** Optional telecast id (numeric string). */
+  telecastId?: string;
+  /** Pre-live slate media id (numeric string). */
+  thumbnailMediaId?: string;
+  /** Title / status text. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for CreateScheduledBroadcastResponse
+ *
+ * @public
+ */
+export interface CreateScheduledBroadcastResponse {
+  data?: CreateScheduledBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateScheduledBroadcastResponseData
+ *
+ * @public
+ */
+export interface CreateScheduledBroadcastResponseData {
+  /** Whether replay is enabled. */
+  availableForReplay?: boolean;
+  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  broadcastId?: string;
+  /** Optional chat permission option. */
+  chatOption?: string;
+  /** Optional description. */
+  description?: string;
+  /** Optional locale. */
+  locale?: string;
+  /** When true, coordinator will not auto-publish; call POST .../live when ready. */
+  manualPublish?: boolean;
+  /** Set when this occurrence belongs to a recurrence. */
+  recurringScheduleId?: string;
+  /** Numeric scheduler id. Required in the update request body. */
+  scheduledBroadcastId?: string;
+  /** Scheduled end, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Bound ingest / source id (`rtmp_stream_key`). */
+  sourceId?: string;
+  /** Scheduler state (Created, Scheduled, Running, …). */
+  state?: string;
+  /** Optional telecast association. */
+  telecastId?: string;
+  /** Optional pre-live slate media id. */
+  thumbnailMediaId?: string;
+  /** Broadcast title / status text. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for CreateUsersBookmarkFolderRequest
+ *
+ * @public
+ */
+export interface CreateUsersBookmarkFolderRequest {
+  /** Name of the Bookmark folder (1-25 characters). */
+  name: string;
+}
+
+
+/**
+ * Schema type for CreateUsersBookmarkFolderResponse
+ *
+ * @public
+ */
+export interface CreateUsersBookmarkFolderResponse {
+  data?: CreateUsersBookmarkFolderResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateUsersBookmarkFolderResponseData
+ *
+ * @public
+ */
+export interface CreateUsersBookmarkFolderResponseData {
+  /** Unique identifier of the created Bookmark folder. */
+  id: string;
+  /** The name of the created Bookmark folder. */
+  name: string;
+}
+
+
+/**
+ * Schema type for CreateUsersBookmarkRequest
+ *
+ * @public
+ */
+export interface CreateUsersBookmarkRequest {
+  /** Optional ID of the Bookmark folder to add the Post to. When omitted, the Post is added to the user's top-level Bookmarks only. */
+  folderId?: string;
+  /** The ID of the Post to add to the user's Bookmarks. */
+  tweetId: string;
+}
+
+
+/**
+ * Schema type for CreateUsersBookmarkResponse
+ *
+ * @public
+ */
+export interface CreateUsersBookmarkResponse {
+  data?: CreateUsersBookmarkResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateUsersBookmarkResponseData
+ *
+ * @public
+ */
+export interface CreateUsersBookmarkResponseData {
+  /** Indicates whether the Post is bookmarked by the user. */
+  bookmarked: boolean;
+}
+
+
+/**
+ * Schema type for CreateWebhookReplayJobRequest
+ *
+ * @public
+ */
+export interface CreateWebhookReplayJobRequest {
+  /** The oldest (inclusive) UTC timestamp from which events are replayed, in yyyymmddhhmm format. */
+  fromDate: string;
+  /** The newest (inclusive) UTC timestamp up to which events are replayed, in yyyymmddhhmm format. */
+  toDate: string;
+  /** The ID of the webhook to replay events to. */
+  webhookId: string;
+}
+
+
+/**
+ * Schema type for CreateWebhookReplayJobResponse
+ *
+ * @public
+ */
+export interface CreateWebhookReplayJobResponse {
+  data?: CreateWebhookReplayJobResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateWebhookReplayJobResponseData
+ *
+ * @public
+ */
+export interface CreateWebhookReplayJobResponseData {
+  /** The UTC timestamp when the replay job was created. */
+  createdAt: string;
+  /** The unique identifier for the initiated replay job. */
+  jobId: string;
+}
+
+
+/**
+ * Schema type for CreateWebhooksRequest
+ *
+ * @public
+ */
+export interface CreateWebhooksRequest {
+  /** The URL the webhook delivers events to. */
+  url: string;
+}
+
+
+/**
+ * Schema type for CreateWebhooksResponse
+ *
+ * @public
+ */
+export interface CreateWebhooksResponse {
+  data?: CreateWebhooksResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateWebhooksResponseData
+ *
+ * @public
+ */
+export interface CreateWebhooksResponseData {
+  /** Creation time of the webhook configuration. */
+  createdAt: string;
+  /** Unique identifier of the webhook configuration. */
+  id: string;
+  /** The URL the webhook delivers events to. */
+  url: string;
+  /** Indicates whether the webhook URL passed validation. */
+  valid: boolean;
+}
+
+
+/**
+ * Schema type for CreateWebhooksStreamLinkResponse
+ *
+ * @public
+ */
+export interface CreateWebhooksStreamLinkResponse {
+  data?: CreateWebhooksStreamLinkResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateWebhooksStreamLinkResponseData
+ *
+ * @public
+ */
+export interface CreateWebhooksStreamLinkResponseData {
+  /** Indicates whether the stream link was provisioned. */
+  provisioned: boolean;
+}
+
+
+/**
+ * Schema type for DeleteAccountActivitySubscriptionResponse
+ *
+ * @public
+ */
+export interface DeleteAccountActivitySubscriptionResponse {
+  data?: DeleteAccountActivitySubscriptionResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteAccountActivitySubscriptionResponseData
+ *
+ * @public
+ */
+export interface DeleteAccountActivitySubscriptionResponseData {
+  /** Whether the user has an active subscription. */
+  subscribed: boolean;
+}
+
+
+/**
+ * Schema type for DeleteActivitySubscriptionResponse
+ *
+ * @public
+ */
+export interface DeleteActivitySubscriptionResponse {
+  data?: DeleteActivitySubscriptionResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteActivitySubscriptionResponseData
+ *
+ * @public
+ */
+export interface DeleteActivitySubscriptionResponseData {
+  /** Whether the subscription was deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteActivitySubscriptionsByIdsResponse
+ *
+ * @public
+ */
+export interface DeleteActivitySubscriptionsByIdsResponse {
+  data?: Array<{ deleted?: boolean; subscriptionId?: string; }>;
+  /** Per-id failures; deletion continues for the remaining ids. */
+  errors?: Array<{ message?: string; reason?: string; subscriptionId?: string; }>;
+  meta?: { totalSubscriptions?: number; };
+}
+
+
+/**
+ * Schema type for DeleteAllConnectionsResponse
+ *
+ * @public
+ */
+export interface DeleteAllConnectionsResponse {
+  data?: DeleteAllConnectionsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteAllConnectionsResponseData
+ *
+ * @public
+ */
+export interface DeleteAllConnectionsResponseData {
+  /** Number of connections that could not be terminated. */
+  failedKills: number;
+  results?: Array<DeleteAllConnectionsResponseDataResults>;
+  /** Number of connections successfully terminated. */
+  successfulKills: number;
+}
+
+
+/**
+ * Schema type for DeleteAllConnectionsResponseDataResults
+ *
+ * @public
+ */
+export interface DeleteAllConnectionsResponseDataResults {
+  errorMessage?: string;
+  success: boolean;
+  uuid: string;
+}
+
+
+/**
+ * Schema type for DeleteChatMessagesActionSignatures
+ *
+ * @public
+ */
+export interface DeleteChatMessagesActionSignatures {
+  /** Base64-encoded message event detail. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: DeleteChatMessagesActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatMessagesActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface DeleteChatMessagesActionSignaturesMessageEventSignature {
   /** List of signing key information for message verification. */
-  messageSigningKeyInfoList?: Array<ChatMessageSigningKeyInfo>;
+  messageSigningKeyInfoList?: Array<DeleteChatMessagesActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
   /** The version of the public key used for signing. */
-  publicKeyVersion?: string;
+  publicKeyVersion: string;
   /** The signature of the message event. */
-  signature?: string;
+  signature: string;
   /** The version of the signature algorithm. */
-  signatureVersion?: string;
+  signatureVersion: string;
   /** The public key used for signing. */
   signingPublicKey?: string;
 }
 
 
 /**
- * Signing key information for message verification.
+ * Schema type for DeleteChatMessagesActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
  *
  * @public
  */
-export interface ChatMessageSigningKeyInfo {
+export interface DeleteChatMessagesActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
   /** The member ID associated with this signing key. */
   memberId?: string;
   /** The version of the public key. */
@@ -819,435 +2282,356 @@ export interface ChatMessageSigningKeyInfo {
 
 
 /**
- * Schema type for ChatSendMessageRequest
+ * Schema type for DeleteChatMessagesRequest
  *
  * @public
  */
-export interface ChatSendMessageRequest {
-  /** Optional conversation token. */
-  conversationToken?: string;
-  /** Base64-encoded Thrift MessageCreateEvent containing encrypted message contents. */
-  encodedMessageCreateEvent: string;
-  /** Base64-encoded Thrift MessageEventSignature for message verification. */
-  encodedMessageEventSignature?: string;
-  /** Unique identifier for this message. */
-  messageId: string;
+export interface DeleteChatMessagesRequest {
+  /** Cryptographic signatures for the action. */
+  actionSignatures: Array<DeleteChatMessagesActionSignatures>;
+  /** delete_for_all removes the messages for every participant; delete_for_self removes them only from the authenticated user's view. */
+  deleteMessageAction: "delete_for_all" | "delete_for_self";
+  /** Hash keys of encrypted media blobs to delete alongside the messages (delete_for_all only). */
+  mediaHashKeys?: Array<string>;
+  /** Sequence IDs of the messages to delete. */
+  sequenceIds: Array<string>;
 }
 
 
 /**
- * Schema type for ChatSendMessageResponse
+ * Schema type for DeleteChatMessagesResponse
  *
  * @public
  */
-export interface ChatSendMessageResponse {
-  data?: { encodedMessageEvent?: string; };
+export interface DeleteChatMessagesResponse {
+  data?: DeleteChatMessagesResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for ChatSendTypingIndicatorResponse
+ * Schema type for DeleteChatMessagesResponseData
  *
  * @public
  */
-export interface ChatSendTypingIndicatorResponse {
-  data?: { success?: boolean; };
+export interface DeleteChatMessagesResponseData {
+  /** Whether the messages were deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteCommunityNotesResponse
+ *
+ * @public
+ */
+export interface DeleteCommunityNotesResponse {
+  data?: DeleteCommunityNotesResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * The ID of the client application
+ * Schema type for DeleteCommunityNotesResponseData
  *
  * @public
  */
-export type ClientAppId = string;
-
-
-/**
- * Usage per client app
- *
- * @public
- */
-export interface ClientAppUsage {
-  /** The unique identifier for this project */
-  clientAppId?: string;
-  /** The usage value */
-  usage?: Array<UsageFields>;
-  /** The number of results returned */
-  usageResultCount?: number;
+export interface DeleteCommunityNotesResponseData {
+  /** Indicates whether the Community Note was deleted. */
+  deleted: boolean;
 }
 
 
 /**
- * Your client has gone away.
+ * Schema type for DeleteConnectionsByEndpointResponse
  *
  * @public
  */
-export type ClientDisconnectedProblem = Problem;
-
-
-/**
- * A problem that indicates your client is forbidden from making this request.
- *
- * @public
- */
-export type ClientForbiddenProblem = Problem & ({ reason?: "official-client-forbidden" | "client-not-enrolled"; registrationUrl?: string; });
-
-
-/**
- * A X Community is a curated group of Posts.
- *
- * @public
- */
-export interface Community {
-  createdAt?: string;
-  /** The unique identifier of this Community. */
-  id: CommunityId;
-  /** The name of this Community. */
-  name: string;
+export interface DeleteConnectionsByEndpointResponse {
+  data?: DeleteConnectionsByEndpointResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * The unique identifier of this Community.
+ * Schema type for DeleteConnectionsByEndpointResponseData
  *
  * @public
  */
-export type CommunityId = string;
-
-
-/**
- * Schema type for ComplianceJob
- *
- * @public
- */
-export interface ComplianceJob {
-  /** Creation time of the compliance job. */
-  createdAt: CreatedAt;
-  /** Expiration time of the download URL. */
-  downloadExpiresAt: DownloadExpiration;
-  /** URL from which the user will retrieve their compliance results. */
-  downloadUrl: DownloadUrl;
-  /** Compliance Job ID. */
-  id: JobId;
-  /** User-provided name for a compliance job. */
-  name?: ComplianceJobName;
-  /** Status of a compliance job. */
-  status: ComplianceJobStatus;
-  /** Type of compliance job to list. */
-  type: ComplianceJobType;
-  /** Expiration time of the upload URL. */
-  uploadExpiresAt: UploadExpiration;
-  /** URL to which the user will upload their Tweet or user IDs. */
-  uploadUrl: UploadUrl;
+export interface DeleteConnectionsByEndpointResponseData {
+  /** Number of connections that could not be terminated. */
+  failedKills: number;
+  results?: Array<DeleteConnectionsByEndpointResponseDataResults>;
+  /** Number of connections successfully terminated. */
+  successfulKills: number;
 }
 
 
 /**
- * User-provided name for a compliance job.
+ * Schema type for DeleteConnectionsByEndpointResponseDataResults
  *
  * @public
  */
-export type ComplianceJobName = string;
-
-
-/**
- * Status of a compliance job.
- *
- * @public
- */
-export type ComplianceJobStatus = "created" | "in_progress" | "failed" | "complete" | "expired";
-
-
-/**
- * Type of compliance job to list.
- *
- * @public
- */
-export type ComplianceJobType = "tweets" | "users";
-
-
-/**
- * You cannot create a new job if one is already in progress.
- *
- * @public
- */
-export type ConflictProblem = Problem;
-
-
-/**
- * Schema type for Connection
- *
- * @public
- */
-export interface Connection {
-  /** The IP address of the connected client. */
-  clientIp?: string;
-  /** The timestamp when the connection was established. */
-  connectedAt: string;
-  /** The reason for disconnection, if the connection is inactive. */
-  disconnectReason?: string;
-  /** The timestamp when the connection was disconnected, if applicable. */
-  disconnectedAt?: string;
-  /** The name of the streaming endpoint. */
-  endpointName: string;
+export interface DeleteConnectionsByEndpointResponseDataResults {
+  errorMessage?: string;
+  success: boolean;
+  uuid: string;
 }
 
 
 /**
- * A problem that indicates something is wrong with the connection.
+ * Schema type for DeleteConnectionsByUuidsRequest
  *
  * @public
  */
-export type ConnectionExceptionProblem = Problem & ({ connectionIssue?: "TooManyConnections" | "ProvisioningSubscription" | "RuleConfigurationIssue" | "RulesInvalidIssue"; });
-
-
-/**
- * Schema type for ContentExpiration
- *
- * @public
- */
-export interface ContentExpiration {
-  /** Expiration time for content as a Unix timestamp in seconds */
-  timestampSec: number;
+export interface DeleteConnectionsByUuidsRequest {
+  /** Connection UUIDs to terminate (1-100). */
+  uuids: Array<string>;
 }
 
 
 /**
- * Annotation inferred from the Tweet text.
+ * Schema type for DeleteConnectionsByUuidsResponse
  *
  * @public
  */
-export interface ContextAnnotation {
-  /** Represents the data for the context annotation domain. */
-  domain: ContextAnnotationDomainFields;
-  /** Represents the data for the context annotation entity. */
-  entity: ContextAnnotationEntityFields;
+export interface DeleteConnectionsByUuidsResponse {
+  data?: DeleteConnectionsByUuidsResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * Represents the data for the context annotation domain.
+ * Schema type for DeleteConnectionsByUuidsResponseData
  *
  * @public
  */
-export interface ContextAnnotationDomainFields {
-  /** Description of the context annotation domain. */
-  description?: string;
-  /** The unique id for a context annotation domain. */
+export interface DeleteConnectionsByUuidsResponseData {
+  /** Number of connections that could not be terminated. */
+  failedKills: number;
+  results?: Array<DeleteConnectionsByUuidsResponseDataResults>;
+  /** Number of connections successfully terminated. */
+  successfulKills: number;
+}
+
+
+/**
+ * Schema type for DeleteConnectionsByUuidsResponseDataResults
+ *
+ * @public
+ */
+export interface DeleteConnectionsByUuidsResponseDataResults {
+  errorMessage?: string;
+  success: boolean;
+  uuid: string;
+}
+
+
+/**
+ * Schema type for DeleteDirectMessagesEventsResponse
+ *
+ * @public
+ */
+export interface DeleteDirectMessagesEventsResponse {
+  data?: DeleteDirectMessagesEventsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteDirectMessagesEventsResponseData
+ *
+ * @public
+ */
+export interface DeleteDirectMessagesEventsResponseData {
+  /** Whether the event was deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteListsResponse
+ *
+ * @public
+ */
+export interface DeleteListsResponse {
+  data?: DeleteListsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteListsResponseData
+ *
+ * @public
+ */
+export interface DeleteListsResponseData {
+  /** Indicates whether the List was deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteMediaSubtitlesRequest
+ *
+ * @public
+ */
+export interface DeleteMediaSubtitlesRequest {
+  /** The media id of the video the subtitles belong to. */
   id: string;
-  /** Name of the context annotation domain. */
-  name?: string;
+  /** The language code of the subtitles to delete. */
+  languageCode: string;
+  /** The media category of the target media. */
+  mediaCategory: string;
 }
 
 
 /**
- * Represents the data for the context annotation entity.
+ * Schema type for DeleteMediaSubtitlesResponse
  *
  * @public
  */
-export interface ContextAnnotationEntityFields {
-  /** Description of the context annotation entity. */
-  description?: string;
-  /** The unique id for a context annotation entity. */
-  id: string;
-  /** Name of the context annotation entity. */
-  name?: string;
-}
-
-
-/**
- * A two-letter ISO 3166-1 alpha-2 country code.
- *
- * @public
- */
-export type CountryCode = string;
-
-
-/**
- * Schema type for CreateAttachmentsMessageRequest
- *
- * @public
- */
-export interface CreateAttachmentsMessageRequest {
-  /** Attachments to a DM Event. */
-  attachments: DmAttachments;
-  /** Text of the message. */
-  text?: string;
-}
-
-
-/**
- * A request to create a new batch compliance job.
- *
- * @public
- */
-export interface CreateComplianceJobRequest {
-  /** User-provided name for a compliance job. */
-  name?: ComplianceJobName;
-  /** If true, this endpoint will return a pre-signed URL with resumable uploads enabled. */
-  resumable?: boolean;
-  /** Type of compliance job to list. */
-  type: "tweets" | "users";
-}
-
-
-/**
- * Schema type for CreateComplianceJobResponse
- *
- * @public
- */
-export interface CreateComplianceJobResponse {
-  data?: ComplianceJob;
+export interface DeleteMediaSubtitlesResponse {
+  data?: DeleteMediaSubtitlesResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for CreateDmConversationRequest
+ * Schema type for DeleteMediaSubtitlesResponseData
  *
  * @public
  */
-export interface CreateDmConversationRequest {
-  /** The conversation type that is being created. */
-  conversationType: "Group";
-  message: CreateMessageRequest;
-  /** Participants for the DM Conversation. */
-  participantIds: DmParticipants;
+export interface DeleteMediaSubtitlesResponseData {
+  /** Indicates whether the subtitles were deleted. */
+  deleted: boolean;
 }
 
 
 /**
- * Schema type for CreateDmEventResponse
+ * Schema type for DeletePostsResponse
  *
  * @public
  */
-export interface CreateDmEventResponse {
-  data?: { dmConversationId: DmConversationId; dmEventId: DmEventId; };
+export interface DeletePostsResponse {
+  data?: DeletePostsResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for CreateMessageRequest
+ * Schema type for DeletePostsResponseData
  *
  * @public
  */
-export type CreateMessageRequest = CreateTextMessageRequest | CreateAttachmentsMessageRequest;
-
-
-/**
- * Schema type for CreateNoteRequest
- *
- * @public
- */
-export interface CreateNoteRequest {
-  /** A X Community Note is a note on a Post. */
-  info: NoteInfo;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  postId: TweetId;
-  /** If true, the note being submitted is only for testing the capability of the bot, and won't be publicly visible. If false, the note being submitted will be a new proposed note on the product. */
-  testMode: boolean;
+export interface DeletePostsResponseData {
+  /** Whether the Post was deleted. */
+  deleted: boolean;
 }
 
 
 /**
- * Schema type for CreateNoteResponse
+ * Schema type for DeleteScheduledBroadcastResponse
  *
  * @public
  */
-export interface CreateNoteResponse {
-  data?: { id?: NoteId; };
+export interface DeleteScheduledBroadcastResponse {
+  data?: DeleteScheduledBroadcastResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for CreateTextMessageRequest
+ * Schema type for DeleteScheduledBroadcastResponseData
  *
  * @public
  */
-export interface CreateTextMessageRequest {
-  /** Attachments to a DM Event. */
-  attachments?: DmAttachments;
-  /** Text of the message. */
-  text: string;
+export interface DeleteScheduledBroadcastResponseData {
+  /** Whether the scheduled broadcast was deleted. */
+  deleted: boolean;
 }
 
 
 /**
- * Creation time of the compliance job.
+ * Schema type for DeleteUsersBookmarkResponse
  *
  * @public
  */
-export type CreatedAt = string;
-
-
-/**
- * Schema type for DeleteDmResponse
- *
- * @public
- */
-export interface DeleteDmResponse {
-  data?: { deleted?: boolean; };
+export interface DeleteUsersBookmarkResponse {
+  data?: DeleteUsersBookmarkResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for DeleteNoteResponse
+ * Schema type for DeleteUsersBookmarkResponseData
  *
  * @public
  */
-export interface DeleteNoteResponse {
-  data?: { deleted: boolean; };
+export interface DeleteUsersBookmarkResponseData {
+  /** Whether the Post is bookmarked. */
+  bookmarked: boolean;
+}
+
+
+/**
+ * Schema type for DeleteWebhooksResponse
+ *
+ * @public
+ */
+export interface DeleteWebhooksResponse {
+  data?: DeleteWebhooksResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * A response from deleting user-specified stream filtering rules.
+ * Schema type for DeleteWebhooksResponseData
  *
  * @public
  */
-export interface DeleteRulesRequest {
-  /** IDs and values of all deleted user-specified stream filtering rules. */
-  delete: { ids?: Array<RuleId>; values?: Array<RuleValue>; };
+export interface DeleteWebhooksResponseData {
+  /** Indicates whether the webhook configuration was deleted. */
+  deleted: boolean;
 }
 
 
 /**
- * A problem that indicates that the resource requested violates the precepts of this API.
+ * Schema type for DeleteWebhooksStreamLinkResponse
  *
  * @public
  */
-export type DisallowedResourceProblem = Problem & ({ resourceId: string; resourceType: "user" | "tweet" | "media" | "list" | "space"; section: "data" | "includes"; });
+export interface DeleteWebhooksStreamLinkResponse {
+  data?: DeleteWebhooksStreamLinkResponseData;
+  errors?: Array<Problem>;
+}
 
 
 /**
- * Represent a boundary range (start and end zero-based indices) for the portion of text that is displayed for a post. `start` must be smaller than `end`. The start index is inclusive, the end index is exclusive.
+ * Schema type for DeleteWebhooksStreamLinkResponseData
  *
  * @public
  */
-export type DisplayTextRange = Array<number>;
+export interface DeleteWebhooksStreamLinkResponseData {
+  /** Indicates whether the stream link was deleted. */
+  deleted: boolean;
+}
 
 
 /**
- * Attachments to a DM Event.
+ * Schema type for DisallowedResourceProblem
  *
  * @public
  */
-export type DmAttachments = Array<DmMediaAttachment>;
-
-
-/**
- * Unique identifier of a DM conversation. This can either be a numeric string, or a pair of numeric strings separated by a '-' character in the case of one-on-one DM Conversations.
- *
- * @public
- */
-export type DmConversationId = string;
+export interface DisallowedResourceProblem {
+  detail: string;
+  resourceId?: string;
+  resourceType?: string;
+  section?: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/disallowed-resource";
+}
 
 
 /**
@@ -1256,141 +2640,53 @@ export type DmConversationId = string;
  * @public
  */
 export interface DmEvent {
-  /** Specifies the type of attachments (if any) present in this DM. */
-  attachments?: { cardIds?: Array<string>; mediaKeys?: Array<MediaKey>; };
-  cashtags?: Array<CashtagEntity>;
+  /** Media and card attachments present in this Direct Message event. */
+  attachments?: DmEventAttachments;
   createdAt?: string;
-  /** Unique identifier of a DM conversation. This can either be a numeric string, or a pair of numeric strings separated by a '-' character in the case of one-on-one DM Conversations. */
-  dmConversationId?: DmConversationId;
-  eventType: string;
-  hashtags?: Array<HashtagEntity>;
-  /** Unique identifier of a DM Event. */
-  id: DmEventId;
-  mentions?: Array<MentionEntity>;
-  /** A list of participants for a ParticipantsJoin or ParticipantsLeave event_type. */
-  participantIds?: Array<UserId>;
-  /** A list of Posts this DM refers to. */
-  referencedTweets?: Array<{ id: TweetId; }>;
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  senderId?: UserId;
+  dmConversationId?: string;
+  /** A list of metadata entities (hashtags, cashtags, mentions, URLs) found in the Direct Message text. */
+  entities?: DmEventEntities;
+  eventType?: string;
+  id?: string;
+  participantIds?: Array<string>;
+  referencedPosts?: DmEventReferencedPosts;
+  senderId?: string;
   text?: string;
-  urls?: Array<UrlEntityDm>;
 }
 
 
 /**
- * Unique identifier of a DM Event.
+ * Media and card attachments present in this Direct Message event.
  *
  * @public
  */
-export type DmEventId = string;
-
-
-/**
- * Schema type for DmMediaAttachment
- *
- * @public
- */
-export interface DmMediaAttachment {
-  /** The unique identifier of this Media. */
-  mediaId: MediaId;
+export interface DmEventAttachments {
+  /** IDs of cards attached to this Direct Message. */
+  cardIds?: Array<string> | null;
+  /** Media keys of media (including audio) attached to this Direct Message. */
+  mediaKeys?: Array<string> | null;
 }
 
 
 /**
- * Participants for the DM Conversation.
+ * A list of metadata entities (hashtags, cashtags, mentions, URLs) found in the Direct Message text.
  *
  * @public
  */
-export type DmParticipants = Array<UserId>;
-
-
-/**
- * The resource identifier of the media file, including file extension.
- *
- * @public
- */
-export type DmResourceId = string;
-
-
-/**
- * Schema type for DomainRestrictions
- *
- * @public
- */
-export interface DomainRestrictions {
-  /** List of whitelisted domains */
-  whitelist: Array<string>;
+export interface DmEventEntities {
+  cashtags?: Array<{ end: number; start: number; tag: string; }> | null;
+  hashtags?: Array<{ end: number; start: number; tag: string; }> | null;
+  mentions?: Array<{ end: number; id?: string | null; start: number; username: string; }> | null;
+  urls?: Array<{ displayUrl?: string | null; end: number; expandedUrl?: string | null; start: number; url: string; }> | null;
 }
 
 
 /**
- * Expiration time of the download URL.
+ * Schema type for DmEventReferencedPosts
  *
  * @public
  */
-export type DownloadExpiration = string;
-
-
-/**
- * URL from which the user will retrieve their compliance results.
- *
- * @public
- */
-export type DownloadUrl = string;
-
-
-/**
- * The rule you have submitted is a duplicate.
- *
- * @public
- */
-export type DuplicateRuleProblem = Problem & { id?: string; value?: string; };
-
-
-/**
- * The end time of the bucket.
- *
- * @public
- */
-export type End = string;
-
-
-/**
- * An Engagement Api Response.
- *
- * @public
- */
-export interface Engagement {
-  errors?: Array<{ error?: string; tweets?: Array<string>; }>;
-  measurement?: { metricsTimeSeries?: Array<{ tweetId?: TweetId; value?: { metricValues?: Array<{ metricType?: string; metricValue?: number; }>; timestamp?: { iso8601Time?: string; }; }; }>; metricsTotal?: Array<{ tweetId?: TweetId; value?: Array<{ metricType?: string; metricValue?: number; }>; }>; };
-}
-
-
-/**
- * Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is exclusive.
- *
- * @public
- */
-export interface EntityIndicesInclusiveExclusive {
-  /** Index (zero-based) at which position this entity ends.  The index is exclusive. */
-  end: number;
-  /** Index (zero-based) at which position this entity starts.  The index is inclusive. */
-  start: number;
-}
-
-
-/**
- * Represent a boundary range (start and end index) for a recognized entity (for example a hashtag or a mention). `start` must be smaller than `end`.  The start index is inclusive, the end index is inclusive.
- *
- * @public
- */
-export interface EntityIndicesInclusiveInclusive {
-  /** Index (zero-based) at which position this entity ends.  The index is inclusive. */
-  end: number;
-  /** Index (zero-based) at which position this entity starts.  The index is inclusive. */
-  start: number;
-}
+export type DmEventReferencedPosts = Array<{ id: string; }>;
 
 
 /**
@@ -1405,26 +2701,37 @@ export interface Error {
 
 
 /**
- * Schema type for EvaluateNoteRequest
+ * Schema type for EvaluateCommunityNotesRequest
  *
  * @public
  */
-export interface EvaluateNoteRequest {
-  /** Text for the community note. */
+export interface EvaluateCommunityNotesRequest {
+  /** Text of the community note to evaluate. */
   noteText: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  postId: TweetId;
+  /** ID of the Post the note evaluates. */
+  postId: string;
 }
 
 
 /**
- * Schema type for EvaluateNoteResponse
+ * Schema type for EvaluateCommunityNotesResponse
  *
  * @public
  */
-export interface EvaluateNoteResponse {
-  data?: { claimOpinionScore?: number; };
+export interface EvaluateCommunityNotesResponse {
+  data?: EvaluateCommunityNotesResponseData;
   errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for EvaluateCommunityNotesResponseData
+ *
+ * @public
+ */
+export interface EvaluateCommunityNotesResponseData {
+  /** The evaluated claim-opinion score for the note. */
+  claimOpinionScore?: number;
 }
 
 
@@ -1437,31 +2744,113 @@ export interface Expansions {
   media?: Array<Media>;
   places?: Array<Place>;
   polls?: Array<Poll>;
+  posts?: Array<Post>;
   topics?: Array<Topic>;
-  tweets?: Array<Tweet>;
   users?: Array<User>;
 }
 
 
 /**
- * A problem that indicates that you are not allowed to see a particular field on a Tweet, User, etc.
+ * Schema type for FieldHydrationFailureProblem
  *
  * @public
  */
-export type FieldUnauthorizedProblem = Problem & ({ field: string; resourceType: "user" | "tweet" | "media" | "list" | "space"; section: "data" | "includes"; });
+export interface FieldHydrationFailureProblem {
+  detail: string;
+  field: string;
+  resourceType?: string;
+  section?: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/field-hydration-failure";
+}
 
 
 /**
- * A Tweet or error that can be returned by the streaming Tweet API. The values returned with a successful streamed Tweet includes the user provided rules that the Tweet matched.
+ * Schema type for FieldUnauthorizedProblem
  *
  * @public
  */
-export interface FilteredStreamingTweetResponse {
-  data?: Tweet;
+export interface FieldUnauthorizedProblem {
+  detail: string;
+  field: string;
+  resourceType?: string;
+  section?: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/field-unauthorized";
+}
+
+
+/**
+ * Schema type for FinalizeMediaUploadResponse
+ *
+ * @public
+ */
+export interface FinalizeMediaUploadResponse {
+  data?: FinalizeMediaUploadResponseData;
   errors?: Array<Problem>;
-  includes?: Expansions;
-  /** The list of rules which matched the Tweet */
-  matchingRules?: Array<{ id: RuleId; tag?: RuleTag; }>;
+}
+
+
+/**
+ * Schema type for FinalizeMediaUploadResponseData
+ *
+ * @public
+ */
+export interface FinalizeMediaUploadResponseData {
+  /** Seconds until the upload session expires. */
+  expiresAfterSecs?: number;
+  /** Unique identifier of the media. */
+  id: string;
+  image?: FinalizeMediaUploadResponseDataImage;
+  /** The media key for the uploaded media. */
+  mediaKey?: string;
+  processingInfo?: FinalizeMediaUploadResponseDataProcessingInfo;
+  /** Total size of the media in bytes. */
+  size?: number;
+  video?: FinalizeMediaUploadResponseDataVideo;
+}
+
+
+/**
+ * Schema type for FinalizeMediaUploadResponseDataImage
+ *
+ * @public
+ */
+export interface FinalizeMediaUploadResponseDataImage {
+  /** Height in pixels. */
+  h?: number;
+  /** MIME type of the uploaded image. */
+  imageType?: string;
+  /** Width in pixels. */
+  w?: number;
+}
+
+
+/**
+ * Schema type for FinalizeMediaUploadResponseDataProcessingInfo
+ *
+ * @public
+ */
+export interface FinalizeMediaUploadResponseDataProcessingInfo {
+  /** Seconds to wait before polling status again. */
+  checkAfterSecs?: number;
+  /** Processing completion percentage. */
+  progressPercent?: number;
+  /** Processing state (pending, in_progress, failed, succeeded). */
+  state?: string;
+}
+
+
+/**
+ * Schema type for FinalizeMediaUploadResponseDataVideo
+ *
+ * @public
+ */
+export interface FinalizeMediaUploadResponseDataVideo {
+  /** MIME type of the processed video. */
+  videoType?: string;
 }
 
 
@@ -1471,89 +2860,209 @@ export interface FilteredStreamingTweetResponse {
  * @public
  */
 export interface FollowActivityResponsePayload {
-  /** The X User object. */
   source?: User;
-  /** The X User object. */
   target?: User;
 }
 
 
 /**
- * Schema type for FoundMediaOrigin
+ * Schema type for FollowListRequest
  *
  * @public
  */
-export interface FoundMediaOrigin {
-  /** Unique Identifier of media within provider ( <= 24 characters )) */
-  id: string;
-  /** The media provider (e.g., 'giphy') that sourced the media ( <= 8 Characters ) */
-  provider: string;
+export interface FollowListRequest {
+  listId: string;
 }
 
 
 /**
- * Schema type for FullTextEntities
+ * Schema type for FollowListResponse
  *
  * @public
  */
-export interface FullTextEntities {
-  annotations?: Array<EntityIndicesInclusiveInclusive & { normalizedText?: string; probability?: number; type?: string; }>;
-  cashtags?: Array<CashtagEntity>;
-  hashtags?: Array<HashtagEntity>;
-  mentions?: Array<MentionEntity>;
-  urls?: Array<UrlEntity>;
+export interface FollowListResponse {
+  data?: FollowListResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * A generic problem with no additional information beyond that provided by the HTTP status code.
+ * Schema type for FollowListResponseData
  *
  * @public
  */
-export type GenericProblem = Problem;
-
-
-/**
- * Schema type for Geo
- *
- * @public
- */
-export interface Geo {
-  bbox: Array<number>;
-  /** A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object. */
-  geometry?: Point;
-  properties: Record<string, any>;
-  type: "Feature";
+export interface FollowListResponseData {
+  /** Whether the user is following the List. */
+  following: boolean;
 }
 
 
 /**
- * Schema type for GeoRestrictions
+ * Schema type for FollowUserRequest
  *
  * @public
  */
-export type GeoRestrictions = { blacklistedCountryCodes: Array<string>; whitelistedCountryCodes: Array<string>; };
+export interface FollowUserRequest {
+  targetUserId: string;
+}
 
 
 /**
- * Schema type for Get2ChatConversationsIdEventsResponse
+ * Schema type for FollowUserResponse
  *
  * @public
  */
-export interface Get2ChatConversationsIdEventsResponse {
+export interface FollowUserResponse {
+  data?: FollowUserResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for FollowUserResponseData
+ *
+ * @public
+ */
+export interface FollowUserResponseData {
+  /** Whether the source User is following the target User. */
+  following: boolean;
+  /** Whether the follow request is pending the target User's approval. */
+  pendingFollow: boolean;
+}
+
+
+/**
+ * Schema type for GetAccountActivitySubscriptionCountResponse
+ *
+ * @public
+ */
+export interface GetAccountActivitySubscriptionCountResponse {
+  data?: GetAccountActivitySubscriptionCountResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetAccountActivitySubscriptionCountResponseData
+ *
+ * @public
+ */
+export interface GetAccountActivitySubscriptionCountResponseData {
+  /** Name of the subscribing account. */
+  accountName?: string;
+  /** Number of subscriptions provisioned for the app. */
+  provisionedCount?: string;
+  /** Number of active subscriptions across all event types. */
+  subscriptionsCountAll?: string;
+  /** Number of active Direct Message subscriptions. */
+  subscriptionsCountDirectMessages?: string;
+}
+
+
+/**
+ * Schema type for GetAccountActivitySubscriptionsResponse
+ *
+ * @public
+ */
+export interface GetAccountActivitySubscriptionsResponse {
+  data?: GetAccountActivitySubscriptionsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetAccountActivitySubscriptionsResponseData
+ *
+ * @public
+ */
+export interface GetAccountActivitySubscriptionsResponseData {
+  /** App the subscriptions belong to. */
+  applicationId?: string;
+  subscriptions?: Array<GetAccountActivitySubscriptionsResponseDataSubscriptions>;
+  /** Webhook receiving the subscription events. */
+  webhookId?: string;
+  /** URL the webhook delivers events to. */
+  webhookUrl?: string;
+}
+
+
+/**
+ * Schema type for GetAccountActivitySubscriptionsResponseDataSubscriptions
+ *
+ * @public
+ */
+export interface GetAccountActivitySubscriptionsResponseDataSubscriptions {
+  /** Subscribed user. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for GetActivitySubscriptionsResponse
+ *
+ * @public
+ */
+export interface GetActivitySubscriptionsResponse {
+  data?: Array<GetActivitySubscriptionsResponseData>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetActivitySubscriptionsResponseData
+ *
+ * @public
+ */
+export interface GetActivitySubscriptionsResponseData {
+  /** Subscription creation time. */
+  createdAt?: string;
+  /** Activity event type in dot notation. */
+  eventType?: string;
+  filter?: GetActivitySubscriptionsResponseDataFilter;
+  /** Unique identifier of the subscription. */
+  subscriptionId?: string;
+  /** Optional caller-defined tag. */
+  tag?: string;
+  /** Subscription last-update time. */
+  updatedAt?: string;
+  /** Webhook receiving the subscription events. */
+  webhookId?: string;
+}
+
+
+/**
+ * Schema type for GetActivitySubscriptionsResponseDataFilter
+ *
+ * @public
+ */
+export interface GetActivitySubscriptionsResponseDataFilter {
+  /** Optional direction filter for directional events. Not present for mute.* or block.* events. */
+  direction?: string;
+  /** Optional keyword filter. */
+  keyword?: string;
+  /** User the subscription is scoped to. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for GetChatConversationEventsResponse
+ *
+ * @public
+ */
+export interface GetChatConversationEventsResponse {
   data?: Array<ChatMessageEvent>;
   errors?: Array<Problem>;
-  meta?: { nextToken?: NextToken; resultCount?: ResultCount; };
+  meta?: { conversationKeyEvents?: Array<string>; hasMore?: boolean; nextToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2ChatConversationsIdResponse
+ * Schema type for GetChatConversationResponse
  *
  * @public
  */
-export interface Get2ChatConversationsIdResponse {
-  /** A Chat conversation resource representing either a direct or group conversation. */
+export interface GetChatConversationResponse {
   data?: ChatConversation;
   errors?: Array<Problem>;
   includes?: Expansions;
@@ -1561,109 +3070,83 @@ export interface Get2ChatConversationsIdResponse {
 
 
 /**
- * Schema type for Get2ChatConversationsResponse
+ * Schema type for GetChatConversationsResponse
  *
  * @public
  */
-export interface Get2ChatConversationsResponse {
+export interface GetChatConversationsResponse {
   data?: Array<ChatConversation>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; resultCount?: ResultCount; };
+  meta?: { hasMessageRequests?: boolean; hasMore?: boolean; nextToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2CommunitiesIdResponse
+ * Schema type for GetCommunitiesByIdResponse
  *
  * @public
  */
-export interface Get2CommunitiesIdResponse {
-  /** A X Community is a curated group of Posts. */
+export interface GetCommunitiesByIdResponse {
   data?: Community;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2CommunitiesSearchResponse
+ * Schema type for GetComplianceJobsByIdResponse
  *
  * @public
  */
-export interface Get2CommunitiesSearchResponse {
-  data?: Array<Community>;
-  errors?: Array<Problem>;
-  meta?: { nextToken?: NextToken; };
-}
-
-
-/**
- * Schema type for Get2ComplianceJobsIdResponse
- *
- * @public
- */
-export interface Get2ComplianceJobsIdResponse {
+export interface GetComplianceJobsByIdResponse {
   data?: ComplianceJob;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2ComplianceJobsResponse
+ * Schema type for GetComplianceJobsResponse
  *
  * @public
  */
-export interface Get2ComplianceJobsResponse {
+export interface GetComplianceJobsResponse {
   data?: Array<ComplianceJob>;
   errors?: Array<Problem>;
-  meta?: { resultCount?: ResultCount; };
+  meta?: { resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2ConnectionsResponse
+ * Schema type for GetConnectionHistoryResponse
  *
  * @public
  */
-export interface Get2ConnectionsResponse {
+export interface GetConnectionHistoryResponse {
   data?: Array<Connection>;
   errors?: Array<Problem>;
-  meta?: { nextToken?: NextToken; resultCount?: ResultCount; };
+  meta?: { nextToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2DmConversationsIdDmEventsResponse
+ * Schema type for GetDirectMessagesEventsByConversationIdResponse
  *
  * @public
  */
-export interface Get2DmConversationsIdDmEventsResponse {
+export interface GetDirectMessagesEventsByConversationIdResponse {
   data?: Array<DmEvent>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2DmConversationsWithParticipantIdDmEventsResponse
+ * Schema type for GetDirectMessagesEventsByIdResponse
  *
  * @public
  */
-export interface Get2DmConversationsWithParticipantIdDmEventsResponse {
-  data?: Array<DmEvent>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2DmEventsEventIdResponse
- *
- * @public
- */
-export interface Get2DmEventsEventIdResponse {
+export interface GetDirectMessagesEventsByIdResponse {
   data?: DmEvent;
   errors?: Array<Problem>;
   includes?: Expansions;
@@ -1671,157 +3154,37 @@ export interface Get2DmEventsEventIdResponse {
 
 
 /**
- * Schema type for Get2DmEventsResponse
+ * Schema type for GetDirectMessagesEventsByParticipantIdResponse
  *
  * @public
  */
-export interface Get2DmEventsResponse {
+export interface GetDirectMessagesEventsByParticipantIdResponse {
   data?: Array<DmEvent>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2FdxAccountsAccountidContactResponse
+ * Schema type for GetDirectMessagesEventsResponse
  *
  * @public
  */
-export interface Get2FdxAccountsAccountidContactResponse {
-  /** Contact information associated with a Plaid account. */
-  data?: PlaidAccountContact;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2FdxAccountsAccountidPayment-networksResponse
- *
- * @public
- */
-export interface Get2FdxAccountsAccountidPayment_networksResponse {
-  data?: Array<PlaidAccountPaymentNetwork>;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2FdxAccountsAccountidResponse
- *
- * @public
- */
-export interface Get2FdxAccountsAccountidResponse {
-  /** Descriptor for a Plaid account. */
-  data?: PlaidAccount;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2FdxAccountsAccountidTransactionsResponse
- *
- * @public
- */
-export interface Get2FdxAccountsAccountidTransactionsResponse {
-  data?: Array<PlaidAccountTransaction>;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2FdxCustomersCurrentResponse
- *
- * @public
- */
-export interface Get2FdxCustomersCurrentResponse {
-  /** A user id for the plaid customer */
-  data?: PlaidCustomer;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2Insights28hrResponse
- *
- * @public
- */
-export interface Get2Insights28hrResponse {
-  data?: Array<Engagement>;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2InsightsHistoricalResponse
- *
- * @public
- */
-export interface Get2InsightsHistoricalResponse {
-  data?: Array<Engagement>;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2LikesFirehoseStreamResponse
- *
- * @public
- */
-export interface Get2LikesFirehoseStreamResponse {
-  /** A Like event, with the tweet author user and the tweet being liked */
-  data?: LikeWithTweetAuthor;
+export interface GetDirectMessagesEventsResponse {
+  data?: Array<DmEvent>;
   errors?: Array<Problem>;
   includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2LikesSample10StreamResponse
+ * Schema type for GetListsByIdResponse
  *
  * @public
  */
-export interface Get2LikesSample10StreamResponse {
-  /** A Like event, with the tweet author user and the tweet being liked */
-  data?: LikeWithTweetAuthor;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2ListsIdFollowersResponse
- *
- * @public
- */
-export interface Get2ListsIdFollowersResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2ListsIdMembersResponse
- *
- * @public
- */
-export interface Get2ListsIdMembersResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2ListsIdResponse
- *
- * @public
- */
-export interface Get2ListsIdResponse {
-  /** A X List is a curated group of accounts. */
+export interface GetListsByIdResponse {
   data?: List;
   errors?: Array<Problem>;
   includes?: Expansions;
@@ -1829,144 +3192,466 @@ export interface Get2ListsIdResponse {
 
 
 /**
- * Schema type for Get2ListsIdTweetsResponse
+ * Schema type for GetListsFollowersResponse
  *
  * @public
  */
-export interface Get2ListsIdTweetsResponse {
-  data?: Array<Tweet>;
+export interface GetListsFollowersResponse {
+  data?: Array<User>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2MarketplaceHandlesHandleAvailabilityResponse
+ * Schema type for GetListsMembersResponse
  *
  * @public
  */
-export interface Get2MarketplaceHandlesHandleAvailabilityResponse {
-  data?: MarketplaceHandleAvailability;
+export interface GetListsMembersResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetListsPostsResponse
+ *
+ * @public
+ */
+export interface GetListsPostsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetMediaAnalyticsResponse
+ *
+ * @public
+ */
+export interface GetMediaAnalyticsResponse {
+  data?: Array<MediaAnalytics>;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2MediaAnalyticsResponse
+ * Schema type for GetMediaByMediaKeyResponse
  *
  * @public
  */
-export interface Get2MediaAnalyticsResponse {
-  data?: MediaAnalytics;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2MediaMediaKeyResponse
- *
- * @public
- */
-export interface Get2MediaMediaKeyResponse {
+export interface GetMediaByMediaKeyResponse {
   data?: Media;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2MediaResponse
+ * Schema type for GetMediaByMediaKeysResponse
  *
  * @public
  */
-export interface Get2MediaResponse {
+export interface GetMediaByMediaKeysResponse {
   data?: Array<Media>;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2NewsIdResponse
+ * Schema type for GetMediaUploadStatusResponse
  *
  * @public
  */
-export interface Get2NewsIdResponse {
-  /** An AI generated news story. */
+export interface GetMediaUploadStatusResponse {
+  data?: GetMediaUploadStatusResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetMediaUploadStatusResponseData
+ *
+ * @public
+ */
+export interface GetMediaUploadStatusResponseData {
+  /** Seconds until the upload session expires. */
+  expiresAfterSecs?: number;
+  /** Unique identifier of the media. */
+  id: string;
+  image?: GetMediaUploadStatusResponseDataImage;
+  /** The media key for the uploaded media. */
+  mediaKey?: string;
+  processingInfo?: GetMediaUploadStatusResponseDataProcessingInfo;
+  /** Total size of the media in bytes. */
+  size?: number;
+  video?: GetMediaUploadStatusResponseDataVideo;
+}
+
+
+/**
+ * Schema type for GetMediaUploadStatusResponseDataImage
+ *
+ * @public
+ */
+export interface GetMediaUploadStatusResponseDataImage {
+  /** Height in pixels. */
+  h?: number;
+  /** MIME type of the uploaded image. */
+  imageType?: string;
+  /** Width in pixels. */
+  w?: number;
+}
+
+
+/**
+ * Schema type for GetMediaUploadStatusResponseDataProcessingInfo
+ *
+ * @public
+ */
+export interface GetMediaUploadStatusResponseDataProcessingInfo {
+  /** Seconds to wait before polling status again. */
+  checkAfterSecs?: number;
+  /** Processing completion percentage. */
+  progressPercent?: number;
+  /** Processing state (pending, in_progress, failed, succeeded). */
+  state?: string;
+}
+
+
+/**
+ * Schema type for GetMediaUploadStatusResponseDataVideo
+ *
+ * @public
+ */
+export interface GetMediaUploadStatusResponseDataVideo {
+  /** MIME type of the processed video. */
+  videoType?: string;
+}
+
+
+/**
+ * Schema type for GetNewsResponse
+ *
+ * @public
+ */
+export interface GetNewsResponse {
   data?: News;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2NewsSearchResponse
+ * Schema type for GetPostsAnalyticsResponse
  *
  * @public
  */
-export interface Get2NewsSearchResponse {
-  data?: Array<News>;
+export interface GetPostsAnalyticsResponse {
+  data?: Array<Analytics>;
   errors?: Array<Problem>;
-  meta?: { resultCount?: ResultCount; };
 }
 
 
 /**
- * Schema type for Get2NotesSearchNotesWrittenResponse
+ * Schema type for GetPostsByIdResponse
  *
  * @public
  */
-export interface Get2NotesSearchNotesWrittenResponse {
-  data?: Array<Note>;
-  errors?: Array<Problem>;
-  meta?: { nextToken?: NextToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2NotesSearchPostsEligibleForNotesResponse
- *
- * @public
- */
-export interface Get2NotesSearchPostsEligibleForNotesResponse {
-  data?: Array<Tweet>;
+export interface GetPostsByIdResponse {
+  data?: Post;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; resultCount?: ResultCount; };
 }
 
 
 /**
- * Schema type for Get2SpacesByCreatorIdsResponse
+ * Schema type for GetPostsByIdsResponse
  *
  * @public
  */
-export interface Get2SpacesByCreatorIdsResponse {
-  data?: Array<Space>;
+export interface GetPostsByIdsResponse {
+  data?: Array<Post>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { resultCount?: ResultCount; };
+  meta?: { resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2SpacesIdBuyersResponse
+ * Schema type for GetPostsCountsAllResponse
  *
  * @public
  */
-export interface Get2SpacesIdBuyersResponse {
+export interface GetPostsCountsAllResponse {
+  data?: Array<GetPostsCountsAllResponseData>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; totalPostCount?: number; };
+}
+
+
+/**
+ * Schema type for GetPostsCountsAllResponseData
+ *
+ * @public
+ */
+export interface GetPostsCountsAllResponseData {
+  /** End of the count bucket (exclusive), RFC 3339. */
+  end: string;
+  /** Number of Posts in the bucket. */
+  postCount: number;
+  /** Start of the count bucket (inclusive), RFC 3339. */
+  start: string;
+}
+
+
+/**
+ * Schema type for GetPostsCountsRecentResponse
+ *
+ * @public
+ */
+export interface GetPostsCountsRecentResponse {
+  data?: Array<GetPostsCountsRecentResponseData>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; totalPostCount?: number; };
+}
+
+
+/**
+ * Schema type for GetPostsCountsRecentResponseData
+ *
+ * @public
+ */
+export interface GetPostsCountsRecentResponseData {
+  /** End of the count bucket (exclusive), RFC 3339. */
+  end: string;
+  /** Number of Posts in the bucket. */
+  postCount: number;
+  /** Start of the count bucket (inclusive), RFC 3339. */
+  start: string;
+}
+
+
+/**
+ * Schema type for GetPostsLikingUsersResponse
+ *
+ * @public
+ */
+export interface GetPostsLikingUsersResponse {
   data?: Array<User>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2SpacesIdResponse
+ * Schema type for GetPostsQuotedPostsResponse
  *
  * @public
  */
-export interface Get2SpacesIdResponse {
-  /**  */
+export interface GetPostsQuotedPostsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetPostsRepostedByResponse
+ *
+ * @public
+ */
+export interface GetPostsRepostedByResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetPostsRepostsResponse
+ *
+ * @public
+ */
+export interface GetPostsRepostsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetRuleCountsResponse
+ *
+ * @public
+ */
+export interface GetRuleCountsResponse {
+  data?: GetRuleCountsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetRuleCountsResponseData
+ *
+ * @public
+ */
+export interface GetRuleCountsResponseData {
+  /** Per-client-app rule counts across the project. */
+  allProjectClientApps?: Array<GetRuleCountsResponseDataAllProjectClientApps>;
+  /** Maximum number of rules allowed per client application. */
+  capPerClientApp: string;
+  /** Maximum number of rules allowed across the project. */
+  capPerProject: string;
+  clientAppRulesCount: GetRuleCountsResponseDataClientAppRulesCount;
+  /** Number of rules across every client application in the project. */
+  projectRulesCount: string;
+}
+
+
+/**
+ * Schema type for GetRuleCountsResponseDataAllProjectClientApps
+ *
+ * @public
+ */
+export interface GetRuleCountsResponseDataAllProjectClientApps {
+  /** Unique identifier of the client application. */
+  clientAppId?: string;
+  /** Number of rules configured for the client application. */
+  ruleCount: number;
+}
+
+
+/**
+ * Schema type for GetRuleCountsResponseDataClientAppRulesCount
+ *
+ * @public
+ */
+export interface GetRuleCountsResponseDataClientAppRulesCount {
+  /** Unique identifier of the client application. */
+  clientAppId?: string;
+  /** Number of rules configured for the client application. */
+  ruleCount: number;
+}
+
+
+/**
+ * Schema type for GetRulesResponse
+ *
+ * @public
+ */
+export interface GetRulesResponse {
+  data?: Array<GetRulesResponseData>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetRulesResponseData
+ *
+ * @public
+ */
+export interface GetRulesResponseData {
+  /** Unique identifier of the rule. */
+  id?: string;
+  /** Optional caller-defined label for the rule. */
+  tag?: string;
+  /** The rule's filter expression. */
+  value?: string;
+}
+
+
+/**
+ * Schema type for GetScheduledBroadcastResponse
+ *
+ * @public
+ */
+export interface GetScheduledBroadcastResponse {
+  data?: GetScheduledBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetScheduledBroadcastResponseData
+ *
+ * @public
+ */
+export interface GetScheduledBroadcastResponseData {
+  /** Whether replay is enabled. */
+  availableForReplay?: boolean;
+  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  broadcastId?: string;
+  /** Optional chat permission option. */
+  chatOption?: string;
+  /** Optional description. */
+  description?: string;
+  /** Optional locale. */
+  locale?: string;
+  /** When true, coordinator will not auto-publish; call POST .../live when ready. */
+  manualPublish?: boolean;
+  /** Set when this occurrence belongs to a recurrence. */
+  recurringScheduleId?: string;
+  /** Numeric scheduler id. Required in the update request body. */
+  scheduledBroadcastId?: string;
+  /** Scheduled end, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Bound ingest / source id (`rtmp_stream_key`). */
+  sourceId?: string;
+  /** Scheduler state (Created, Scheduled, Running, …). */
+  state?: string;
+  /** Optional telecast association. */
+  telecastId?: string;
+  /** Optional pre-live slate media id. */
+  thumbnailMediaId?: string;
+  /** Broadcast title / status text. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for GetSpacesBuyersResponse
+ *
+ * @public
+ */
+export interface GetSpacesBuyersResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetSpacesByCreatorIdsResponse
+ *
+ * @public
+ */
+export interface GetSpacesByCreatorIdsResponse {
+  data?: Array<Space>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetSpacesByIdResponse
+ *
+ * @public
+ */
+export interface GetSpacesByIdResponse {
   data?: Space;
   errors?: Array<Problem>;
   includes?: Expansions;
@@ -1974,24 +3659,11 @@ export interface Get2SpacesIdResponse {
 
 
 /**
- * Schema type for Get2SpacesIdTweetsResponse
+ * Schema type for GetSpacesByIdsResponse
  *
  * @public
  */
-export interface Get2SpacesIdTweetsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2SpacesResponse
- *
- * @public
- */
-export interface Get2SpacesResponse {
+export interface GetSpacesByIdsResponse {
   data?: Array<Space>;
   errors?: Array<Problem>;
   includes?: Expansions;
@@ -1999,572 +3671,144 @@ export interface Get2SpacesResponse {
 
 
 /**
- * Schema type for Get2SpacesSearchResponse
+ * Schema type for GetSpacesPostsResponse
  *
  * @public
  */
-export interface Get2SpacesSearchResponse {
-  data?: Array<Space>;
+export interface GetSpacesPostsResponse {
+  data?: Array<Post>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { resultCount?: ResultCount; };
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2TrendsByWoeidWoeidResponse
+ * Schema type for GetTrendsByWoeidResponse
  *
  * @public
  */
-export interface Get2TrendsByWoeidWoeidResponse {
+export interface GetTrendsByWoeidResponse {
   data?: Array<Trend>;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2TweetsAnalyticsResponse
+ * Schema type for GetTrendsPersonalizedTrendsResponse
  *
  * @public
  */
-export interface Get2TweetsAnalyticsResponse {
-  data?: Analytics;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2TweetsCountsAllResponse
- *
- * @public
- */
-export interface Get2TweetsCountsAllResponse {
-  data?: Array<SearchCount>;
-  errors?: Array<Problem>;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; totalTweetCount?: Aggregate; };
-}
-
-
-/**
- * Schema type for Get2TweetsCountsRecentResponse
- *
- * @public
- */
-export interface Get2TweetsCountsRecentResponse {
-  data?: Array<SearchCount>;
-  errors?: Array<Problem>;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; totalTweetCount?: Aggregate; };
-}
-
-
-/**
- * Schema type for Get2TweetsFirehoseStreamLangEnResponse
- *
- * @public
- */
-export interface Get2TweetsFirehoseStreamLangEnResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsFirehoseStreamLangJaResponse
- *
- * @public
- */
-export interface Get2TweetsFirehoseStreamLangJaResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsFirehoseStreamLangKoResponse
- *
- * @public
- */
-export interface Get2TweetsFirehoseStreamLangKoResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsFirehoseStreamLangPtResponse
- *
- * @public
- */
-export interface Get2TweetsFirehoseStreamLangPtResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsFirehoseStreamResponse
- *
- * @public
- */
-export interface Get2TweetsFirehoseStreamResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsIdLikingUsersResponse
- *
- * @public
- */
-export interface Get2TweetsIdLikingUsersResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2TweetsIdQuoteTweetsResponse
- *
- * @public
- */
-export interface Get2TweetsIdQuoteTweetsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2TweetsIdResponse
- *
- * @public
- */
-export interface Get2TweetsIdResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsIdRetweetedByResponse
- *
- * @public
- */
-export interface Get2TweetsIdRetweetedByResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2TweetsIdRetweetsResponse
- *
- * @public
- */
-export interface Get2TweetsIdRetweetsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2TweetsResponse
- *
- * @public
- */
-export interface Get2TweetsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsSample10StreamResponse
- *
- * @public
- */
-export interface Get2TweetsSample10StreamResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsSampleStreamResponse
- *
- * @public
- */
-export interface Get2TweetsSampleStreamResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsSearchAllResponse
- *
- * @public
- */
-export interface Get2TweetsSearchAllResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2TweetsSearchRecentResponse
- *
- * @public
- */
-export interface Get2TweetsSearchRecentResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2TweetsSearchStreamResponse
- *
- * @public
- */
-export interface Get2TweetsSearchStreamResponse {
-  data?: Tweet;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2TweetsSearchStreamRulesCountsResponse
- *
- * @public
- */
-export interface Get2TweetsSearchStreamRulesCountsResponse {
-  /** A count of user-provided stream filtering rules at the application and project levels. */
-  data?: RulesCount;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2UsageTweetsResponse
- *
- * @public
- */
-export interface Get2UsageTweetsResponse {
-  /** Usage per client app */
-  data?: Usage;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2UsersByResponse
- *
- * @public
- */
-export interface Get2UsersByResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2UsersByUsernameUsernameResponse
- *
- * @public
- */
-export interface Get2UsersByUsernameUsernameResponse {
-  /** The X User object. */
-  data?: User;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2UsersIdAffiliatesResponse
- *
- * @public
- */
-export interface Get2UsersIdAffiliatesResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdBlockingResponse
- *
- * @public
- */
-export interface Get2UsersIdBlockingResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdBookmarksResponse
- *
- * @public
- */
-export interface Get2UsersIdBookmarksResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdFollowedListsResponse
- *
- * @public
- */
-export interface Get2UsersIdFollowedListsResponse {
-  data?: Array<List>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdFollowersResponse
- *
- * @public
- */
-export interface Get2UsersIdFollowersResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdFollowingResponse
- *
- * @public
- */
-export interface Get2UsersIdFollowingResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdLikedTweetsResponse
- *
- * @public
- */
-export interface Get2UsersIdLikedTweetsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdListMembershipsResponse
- *
- * @public
- */
-export interface Get2UsersIdListMembershipsResponse {
-  data?: Array<List>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdMentionsResponse
- *
- * @public
- */
-export interface Get2UsersIdMentionsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdMutingResponse
- *
- * @public
- */
-export interface Get2UsersIdMutingResponse {
-  data?: Array<User>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdOwnedListsResponse
- *
- * @public
- */
-export interface Get2UsersIdOwnedListsResponse {
-  data?: Array<List>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdPinnedListsResponse
- *
- * @public
- */
-export interface Get2UsersIdPinnedListsResponse {
-  data?: Array<List>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdPublicKeysResponse
- *
- * @public
- */
-export interface Get2UsersIdPublicKeysResponse {
-  data?: Array<PublicKey>;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Get2UsersIdResponse
- *
- * @public
- */
-export interface Get2UsersIdResponse {
-  /** The X User object. */
-  data?: User;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2UsersIdTimelinesReverseChronologicalResponse
- *
- * @public
- */
-export interface Get2UsersIdTimelinesReverseChronologicalResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersIdTweetsResponse
- *
- * @public
- */
-export interface Get2UsersIdTweetsResponse {
-  data?: Array<Tweet>;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-  meta?: { newestId?: NewestId; nextToken?: NextToken; oldestId?: OldestId; previousToken?: PreviousToken; resultCount?: ResultCount; };
-}
-
-
-/**
- * Schema type for Get2UsersMeResponse
- *
- * @public
- */
-export interface Get2UsersMeResponse {
-  /** The X User object. */
-  data?: User;
-  errors?: Array<Problem>;
-  includes?: Expansions;
-}
-
-
-/**
- * Schema type for Get2UsersPersonalizedTrendsResponse
- *
- * @public
- */
-export interface Get2UsersPersonalizedTrendsResponse {
+export interface GetTrendsPersonalizedTrendsResponse {
   data?: Array<PersonalizedTrend>;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2UsersPublicKeysResponse
+ * Schema type for GetUsageResponse
  *
  * @public
  */
-export interface Get2UsersPublicKeysResponse {
-  /** A user's public key with associated key recovery configuration. */
-  data?: PublicKey;
+export interface GetUsageResponse {
+  data?: Usage;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for Get2UsersRepostsOfMeResponse
+ * Schema type for GetUsersAffiliatesResponse
  *
  * @public
  */
-export interface Get2UsersRepostsOfMeResponse {
-  data?: Array<Tweet>;
+export interface GetUsersAffiliatesResponse {
+  data?: Array<User>;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; resultCount?: ResultCount; };
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for Get2UsersResponse
+ * Schema type for GetUsersBlockingResponse
  *
  * @public
  */
-export interface Get2UsersResponse {
+export interface GetUsersBlockingResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersBookmarkFoldersResponse
+ *
+ * @public
+ */
+export interface GetUsersBookmarkFoldersResponse {
+  data?: Array<GetUsersBookmarkFoldersResponseData>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUsersBookmarkFoldersResponseData
+ *
+ * @public
+ */
+export interface GetUsersBookmarkFoldersResponseData {
+  /** Unique identifier of the bookmark folder. */
+  id: string;
+  /** Display name of the bookmark folder. */
+  name: string;
+}
+
+
+/**
+ * Schema type for GetUsersBookmarksByFolderIdResponse
+ *
+ * @public
+ */
+export interface GetUsersBookmarksByFolderIdResponse {
+  /** The Posts in this bookmark folder, by ID. */
+  data?: Array<{ id: PostId; }>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUsersBookmarksResponse
+ *
+ * @public
+ */
+export interface GetUsersBookmarksResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersByIdResponse
+ *
+ * @public
+ */
+export interface GetUsersByIdResponse {
+  data?: User;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for GetUsersByIdsResponse
+ *
+ * @public
+ */
+export interface GetUsersByIdsResponse {
   data?: Array<User>;
   errors?: Array<Problem>;
   includes?: Expansions;
@@ -2572,79 +3816,439 @@ export interface Get2UsersResponse {
 
 
 /**
- * Schema type for Get2UsersSearchResponse
+ * Schema type for GetUsersByUsernameResponse
  *
  * @public
  */
-export interface Get2UsersSearchResponse {
-  data?: Array<User>;
+export interface GetUsersByUsernameResponse {
+  data?: User;
   errors?: Array<Problem>;
   includes?: Expansions;
-  meta?: { nextToken?: NextToken; previousToken?: PreviousToken; };
 }
 
 
 /**
- * Schema type for Get2WebhooksResponse
+ * Schema type for GetUsersByUsernamesResponse
  *
  * @public
  */
-export interface Get2WebhooksResponse {
+export interface GetUsersByUsernamesResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for GetUsersFollowedListsResponse
+ *
+ * @public
+ */
+export interface GetUsersFollowedListsResponse {
+  data?: Array<List>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersFollowersResponse
+ *
+ * @public
+ */
+export interface GetUsersFollowersResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersFollowingResponse
+ *
+ * @public
+ */
+export interface GetUsersFollowingResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersLikedPostsResponse
+ *
+ * @public
+ */
+export interface GetUsersLikedPostsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersListMembershipsResponse
+ *
+ * @public
+ */
+export interface GetUsersListMembershipsResponse {
+  data?: Array<List>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersMeResponse
+ *
+ * @public
+ */
+export interface GetUsersMeResponse {
+  data?: User;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for GetUsersMentionsResponse
+ *
+ * @public
+ */
+export interface GetUsersMentionsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { newestId?: string; nextToken?: string; oldestId?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersMutingResponse
+ *
+ * @public
+ */
+export interface GetUsersMutingResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersOwnedListsResponse
+ *
+ * @public
+ */
+export interface GetUsersOwnedListsResponse {
+  data?: Array<List>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersPinnedListsResponse
+ *
+ * @public
+ */
+export interface GetUsersPinnedListsResponse {
+  data?: Array<List>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersPostsResponse
+ *
+ * @public
+ */
+export interface GetUsersPostsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { newestId?: string; nextToken?: string; oldestId?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersPublicKeyResponse
+ *
+ * @public
+ */
+export interface GetUsersPublicKeyResponse {
+  data?: Array<PublicKey>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUsersPublicKeysResponse
+ *
+ * @public
+ */
+export interface GetUsersPublicKeysResponse {
+  data?: Array<PublicKey>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUsersRepostsOfMeResponse
+ *
+ * @public
+ */
+export interface GetUsersRepostsOfMeResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersTimelineResponse
+ *
+ * @public
+ */
+export interface GetUsersTimelineResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { newestId?: string; nextToken?: string; oldestId?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetWebhooksResponse
+ *
+ * @public
+ */
+export interface GetWebhooksResponse {
   data?: Array<WebhookConfig>;
   errors?: Array<Problem>;
-  meta?: { resultCount?: ResultCount; };
+  meta?: { resultCount?: number; };
 }
 
 
 /**
- * Schema type for HashtagEntity
+ * Schema type for GetWebhooksStreamLinksResponse
  *
  * @public
  */
-export type HashtagEntity = EntityIndicesInclusiveExclusive & HashtagFields;
-
-
-/**
- * Represent the portion of text recognized as a Hashtag, and its start and end position within the text.
- *
- * @public
- */
-export interface HashtagFields {
-  /** The text of the Hashtag. */
-  tag: string;
+export interface GetWebhooksStreamLinksResponse {
+  data?: Array<GetWebhooksStreamLinksResponseData>;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * HTTP Status Code.
+ * Schema type for GetWebhooksStreamLinksResponseData
  *
  * @public
  */
-export type HttpStatusCode = number;
+export interface GetWebhooksStreamLinksResponseData {
+  /** The application ID */
+  applicationId?: string;
+  /** The user ID */
+  businessUserId?: string;
+  /** The datetime the webhook was linked to the stream */
+  createdAt?: string;
+  /** Requested fields to be rendered */
+  fields?: Array<string>;
+  /** The stream ID associated with the FilteredStream instance */
+  instanceId?: string;
+  /** The unique identifier for the webhook */
+  webhookId?: string;
+}
 
 
 /**
- * A problem that indicates this request is invalid.
+ * Schema type for GoLiveScheduledBroadcastResponse
  *
  * @public
  */
-export type InvalidRequestProblem = Problem & { errors?: Array<{ message?: string; parameters?: Record<string, Array<string>>; }>; };
+export interface GoLiveScheduledBroadcastResponse {
+  data?: GoLiveScheduledBroadcastResponseData;
+  errors?: Array<Problem>;
+}
 
 
 /**
- * The rule you have submitted is invalid.
+ * Schema type for GoLiveScheduledBroadcastResponseData
  *
  * @public
  */
-export type InvalidRuleProblem = Problem;
+export interface GoLiveScheduledBroadcastResponseData {
+  /** Whether replay is enabled. */
+  availableForReplay?: boolean;
+  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  broadcastId?: string;
+  /** Optional chat permission option. */
+  chatOption?: string;
+  /** Optional description. */
+  description?: string;
+  /** Optional locale. */
+  locale?: string;
+  /** When true, coordinator will not auto-publish; call POST .../live when ready. */
+  manualPublish?: boolean;
+  /** Set when this occurrence belongs to a recurrence. */
+  recurringScheduleId?: string;
+  /** Numeric scheduler id. Required in the update request body. */
+  scheduledBroadcastId?: string;
+  /** Scheduled end, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Bound ingest / source id (`rtmp_stream_key`). */
+  sourceId?: string;
+  /** Scheduler state (Created, Scheduled, Running, …). */
+  state?: string;
+  /** Optional telecast association. */
+  telecastId?: string;
+  /** Optional pre-live slate media id. */
+  thumbnailMediaId?: string;
+  /** Broadcast title / status text. */
+  title?: string;
+}
 
 
 /**
- * Compliance Job ID.
+ * Schema type for HidePostsReplyRequest
  *
  * @public
  */
-export type JobId = string;
+export interface HidePostsReplyRequest {
+  /** Whether the reply should be hidden. */
+  hidden: boolean;
+}
+
+
+/**
+ * Schema type for HidePostsReplyResponse
+ *
+ * @public
+ */
+export interface HidePostsReplyResponse {
+  data?: HidePostsReplyResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for HidePostsReplyResponseData
+ *
+ * @public
+ */
+export interface HidePostsReplyResponseData {
+  /** Whether the reply is hidden. */
+  hidden?: boolean;
+}
+
+
+/**
+ * Schema type for InitializeChatGroupResponse
+ *
+ * @public
+ */
+export interface InitializeChatGroupResponse {
+  data?: InitializeChatGroupResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for InitializeChatGroupResponseData
+ *
+ * @public
+ */
+export interface InitializeChatGroupResponseData {
+  /** Unique ID for the new group conversation. */
+  conversationId: string;
+}
+
+
+/**
+ * Schema type for InitializeMediaUploadRequest
+ *
+ * @public
+ */
+export interface InitializeMediaUploadRequest {
+  /** User ids granted access to the uploaded media. */
+  additionalOwners?: Array<string>;
+  /** The media category of the upload. */
+  mediaCategory?: "amplify_video" | "tweet_gif" | "tweet_image" | "tweet_video" | "dm_gif" | "dm_image" | "dm_video" | "subtitles";
+  /** The type of media. */
+  mediaType?: "video/mp4" | "video/webm" | "video/mp2t" | "video/quicktime" | "text/srt" | "text/vtt" | "image/jpeg" | "image/gif" | "image/bmp" | "image/png" | "image/webp" | "image/pjpeg" | "image/tiff" | "model/gltf-binary" | "model/vnd.usdz+zip";
+  /** Whether this media is shared or not. */
+  shared?: boolean;
+  /** The total size of the media upload in bytes. */
+  totalBytes?: number;
+}
+
+
+/**
+ * Schema type for InitializeMediaUploadResponse
+ *
+ * @public
+ */
+export interface InitializeMediaUploadResponse {
+  data?: InitializeMediaUploadResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for InitializeMediaUploadResponseData
+ *
+ * @public
+ */
+export interface InitializeMediaUploadResponseData {
+  /** Seconds until the upload session expires. */
+  expiresAfterSecs?: number;
+  /** Unique identifier of the upload session. */
+  id: string;
+  /** The media key for the uploaded media. */
+  mediaKey?: string;
+}
+
+
+/**
+ * Schema type for InternalErrorProblem
+ *
+ * @public
+ */
+export interface InternalErrorProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/internal-error";
+}
+
+
+/**
+ * Schema type for InvalidRequestProblem
+ *
+ * @public
+ */
+export interface InvalidRequestProblem {
+  detail: string;
+  parameter?: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/invalid-request";
+  value?: string;
+}
 
 
 /**
@@ -2653,50 +4257,6 @@ export type JobId = string;
  * @public
  */
 export type Keyword = string;
-
-
-/**
- * Schema type for KillAllConnectionsResponse
- *
- * @public
- */
-export interface KillAllConnectionsResponse {
-  data?: { failedKills?: number; results?: Array<{ errorMessage?: string; success?: boolean; uuid?: string; }>; successfulKills?: number; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for KillConnectionsByEndpointResponse
- *
- * @public
- */
-export interface KillConnectionsByEndpointResponse {
-  data?: { failedKills?: number; results?: Array<{ errorMessage?: string; success?: boolean; uuid?: string; }>; successfulKills?: number; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for KillConnectionsByUuidsRequest
- *
- * @public
- */
-export interface KillConnectionsByUuidsRequest {
-  /** Array of connection UUIDs to terminate */
-  uuids: Array<string>;
-}
-
-
-/**
- * Schema type for KillConnectionsByUuidsResponse
- *
- * @public
- */
-export interface KillConnectionsByUuidsResponse {
-  data?: { failedKills?: number; results?: Array<{ errorMessage?: string; success?: boolean; uuid?: string; }>; successfulKills?: number; };
-  errors?: Array<Problem>;
-}
 
 
 /**
@@ -2718,122 +4278,85 @@ export type LikeId = string;
 
 
 /**
+ * Schema type for LikePostRequest
+ *
+ * @public
+ */
+export interface LikePostRequest {
+  tweetId: string;
+}
+
+
+/**
+ * Schema type for LikePostResponse
+ *
+ * @public
+ */
+export interface LikePostResponse {
+  data?: LikePostResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for LikePostResponseData
+ *
+ * @public
+ */
+export interface LikePostResponseData {
+  /** Whether the User likes the Post. */
+  liked: boolean;
+}
+
+
+/**
  * A Like event, with the tweet author user and the tweet being liked
  *
  * @public
  */
-export interface LikeWithTweetAuthor {
+export interface LikeWithPostAuthor {
   /** Creation time of the Tweet. */
   createdAt?: string;
   /** The unique identifier of this Like. */
   id?: LikeId;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  likedTweetId?: TweetId;
+  /** Unique identifier of a Post */
+  likedTweetId?: PostId;
   /** Timestamp in milliseconds of creation. */
   timestampMs?: number;
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
+  /** Unique identifier of a User */
   tweetAuthorId?: UserId;
 }
 
 
 /**
- * Likes compliance stream events.
- *
- * @public
- */
-export type LikesComplianceStreamResponse = { data: LikeComplianceSchema; } | { errors: Array<Problem>; };
-
-
-/**
- * A X List is a curated group of accounts.
+ * Schema type for List
  *
  * @public
  */
 export interface List {
   createdAt?: string;
   description?: string;
-  followerCount?: number;
-  /** The unique identifier of this List. */
-  id: ListId;
-  memberCount?: number;
-  /** The name of this List. */
-  name: string;
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  ownerId?: UserId;
+  /** The number of users who follow this List. */
+  followerCount?: ListFollowerCount;
+  id?: string;
+  /** The number of members in this List. */
+  memberCount?: ListMemberCount;
+  name?: string;
+  ownerId?: string;
   private?: boolean;
 }
 
 
 /**
- * Schema type for ListAddUserRequest
+ * The number of users who follow this List.
  *
  * @public
  */
-export interface ListAddUserRequest {
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  userId: UserId;
-}
+export type ListFollowerCount = number;
 
 
 /**
- * Schema type for ListCreateRequest
- *
- * @public
- */
-export interface ListCreateRequest {
-  description?: string;
-  name: string;
-  private?: boolean;
-}
-
-
-/**
- * Schema type for ListCreateResponse
- *
- * @public
- */
-export interface ListCreateResponse {
-  /** A X List is a curated group of accounts. */
-  data?: { id: ListId; name: string; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for ListDeleteResponse
- *
- * @public
- */
-export interface ListDeleteResponse {
-  data?: { deleted?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for ListFollowedRequest
- *
- * @public
- */
-export interface ListFollowedRequest {
-  /** The unique identifier of this List. */
-  listId: ListId;
-}
-
-
-/**
- * Schema type for ListFollowedResponse
- *
- * @public
- */
-export interface ListFollowedResponse {
-  data?: { following?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * The unique identifier of this List.
+ * Unique identifier of a List
  *
  * @public
  */
@@ -2841,95 +4364,93 @@ export type ListId = string;
 
 
 /**
- * Schema type for ListMutateResponse
+ * The number of members in this List.
  *
  * @public
  */
-export interface ListMutateResponse {
-  data?: { isMember?: boolean; };
+export type ListMemberCount = number;
+
+
+/**
+ * Schema type for ListScheduledBroadcastsResponse
+ *
+ * @public
+ */
+export interface ListScheduledBroadcastsResponse {
+  data?: Array<ListScheduledBroadcastsResponseData>;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for ListPinnedRequest
+ * Schema type for ListScheduledBroadcastsResponseData
  *
  * @public
  */
-export interface ListPinnedRequest {
-  /** The unique identifier of this List. */
-  listId: ListId;
-}
-
-
-/**
- * Schema type for ListPinnedResponse
- *
- * @public
- */
-export interface ListPinnedResponse {
-  data?: { pinned?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for ListUnpinResponse
- *
- * @public
- */
-export interface ListUnpinResponse {
-  data?: { pinned?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for ListUpdateRequest
- *
- * @public
- */
-export interface ListUpdateRequest {
+export interface ListScheduledBroadcastsResponseData {
+  /** Whether replay is enabled. */
+  availableForReplay?: boolean;
+  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  broadcastId?: string;
+  /** Optional chat permission option. */
+  chatOption?: string;
+  /** Optional description. */
   description?: string;
-  name?: string;
-  private?: boolean;
+  /** Optional locale. */
+  locale?: string;
+  /** When true, coordinator will not auto-publish; call POST .../live when ready. */
+  manualPublish?: boolean;
+  /** Set when this occurrence belongs to a recurrence. */
+  recurringScheduleId?: string;
+  /** Numeric scheduler id. Required in the update request body. */
+  scheduledBroadcastId?: string;
+  /** Scheduled end, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Bound ingest / source id (`rtmp_stream_key`). */
+  sourceId?: string;
+  /** Scheduler state (Created, Scheduled, Running, …). */
+  state?: string;
+  /** Optional telecast association. */
+  telecastId?: string;
+  /** Optional pre-live slate media id. */
+  thumbnailMediaId?: string;
+  /** Broadcast title / status text. */
+  title?: string;
 }
 
 
 /**
- * Schema type for ListUpdateResponse
+ * Schema type for MarkChatConversationReadRequest
  *
  * @public
  */
-export interface ListUpdateResponse {
-  data?: { updated?: boolean; };
+export interface MarkChatConversationReadRequest {
+  /** The sequence ID of the last message to mark as read up to. */
+  seenUntilSequenceId: string;
+}
+
+
+/**
+ * Schema type for MarkChatConversationReadResponse
+ *
+ * @public
+ */
+export interface MarkChatConversationReadResponse {
+  data?: MarkChatConversationReadResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for ManagementInfo
+ * Schema type for MarkChatConversationReadResponseData
  *
  * @public
  */
-export interface ManagementInfo {
-  /** Indicates if the media is managed by Media Studio */
-  managed: boolean;
-}
-
-
-/**
- * Schema type for MarketplaceHandleAvailability
- *
- * @public
- */
-export interface MarketplaceHandleAvailability {
-  /** Availability state of the handle. */
-  availabilityState: string;
-  /** Product tier of the handle. */
-  productTier?: string;
-  /** Redirect URL for marketplace handle search. */
-  redirectUrl?: string;
+export interface MarkChatConversationReadResponseData {
+  /** Whether the conversation was marked read. */
+  success: boolean;
 }
 
 
@@ -2939,13 +4460,24 @@ export interface MarketplaceHandleAvailability {
  * @public
  */
 export interface Media {
-  /** The height of the media in pixels. */
-  height?: MediaHeight;
-  /** The Media Key identifier for this attachment. */
-  mediaKey?: MediaKey;
-  type: string;
-  /** The width of the media in pixels. */
-  width?: MediaWidth;
+  altText?: string;
+  durationMs?: number;
+  height?: number;
+  mediaKey?: string;
+  /** Nonpublic engagement metrics for the media at the time of the request. */
+  nonPublicMetrics?: MediaNonPublicMetrics;
+  /** Organic nonpublic engagement metrics for the media at the time of the request. */
+  organicMetrics?: MediaOrganicMetrics;
+  previewImageUrl?: string;
+  /** Promoted nonpublic engagement metrics for the media at the time of the request. */
+  promotedMetrics?: MediaPromotedMetrics;
+  /** Public engagement metrics for the media at the time of the request. */
+  publicMetrics?: MediaPublicMetrics;
+  type?: string;
+  url?: string;
+  /** Each media object may have multiple display or playback variants, with different resolutions or formats. */
+  variants?: MediaVariants;
+  width?: number;
 }
 
 
@@ -2955,53 +4487,33 @@ export interface Media {
  * @public
  */
 export interface MediaAnalytics {
-  data?: Array<{ mediaKey?: MediaKey; timestampedMetrics?: Array<MediaTimestampedMetrics>; }>;
-  errors?: Array<Problem>;
+  ctaUrlClicks?: number;
+  ctaWatchClicks?: number;
+  mediaKey?: string;
+  playFromTap?: number;
+  playback25?: number;
+  playback50?: number;
+  playback75?: number;
+  playbackComplete?: number;
+  playbackStart?: number;
+  timestamp?: string;
+  /** Time-bucketed video metrics for the media, one entry per granularity bucket. */
+  timestampedMetrics?: MediaAnalyticsTimestampedMetrics;
+  videoViews?: number;
+  watchTimeMs?: number;
 }
 
 
 /**
- * A string enum value which identifies a media use-case. This identifier is used to enforce use-case specific constraints (e.g. file size, video duration) and enable advanced features.
+ * Time-bucketed video metrics for the media, one entry per granularity bucket.
  *
  * @public
  */
-export type MediaCategory = "amplify_video" | "tweet_gif" | "tweet_image" | "tweet_video" | "dm_gif" | "dm_image" | "dm_video" | "subtitles";
+export type MediaAnalyticsTimestampedMetrics = Array<{ metrics?: { ctaUrlClicks?: number | string | null; ctaWatchClicks?: number | string | null; playFromTap?: number | string | null; playback25?: number | string | null; playback50?: number | string | null; playback75?: number | string | null; playbackComplete?: number | string | null; playbackStart?: number | string | null; videoViews?: number | string | null; watchTimeMs?: number | string | null; } | null; timestamp?: string | null; }>;
 
 
 /**
- * A string enum value which identifies a media use-case. This identifier is used to enforce use-case specific constraints (e.g. file size) and enable advanced features.
- *
- * @public
- */
-export type MediaCategoryOneShot = "tweet_image" | "dm_image" | "subtitles";
-
-
-/**
- * The media category of uploaded media to which subtitles should be added/deleted
- *
- * @public
- */
-export type MediaCategorySubtitles = "AmplifyVideo" | "TweetVideo";
-
-
-/**
- * The media hash key returned from the upload initialize step. Alphanumeric characters only.
- *
- * @public
- */
-export type MediaHashKey = string;
-
-
-/**
- * The height of the media in pixels.
- *
- * @public
- */
-export type MediaHeight = number;
-
-
-/**
- * The unique identifier of this Media.
+ * Unique identifier of a Media
  *
  * @public
  */
@@ -3009,259 +4521,170 @@ export type MediaId = string;
 
 
 /**
- * The Media Key identifier for this attachment.
+ * Nonpublic engagement metrics for the media at the time of the request.
  *
  * @public
  */
-export type MediaKey = string;
-
-
-/**
- * Schema type for MediaMetrics
- *
- * @public
- */
-export interface MediaMetrics {
-  /** Tracks the number of clicks on a call-to-action URL */
-  ctaUrlClicks?: number;
-  /** Tracks the number of clicks to watch a video or media content */
-  ctaWatchClicks?: number;
-  /** Tracks the number of times a video or media is played from a user tap */
-  playFromTap?: number;
-  /** Tracks the number of times a video reaches 25% of its duration */
-  playback25?: number;
-  /** Tracks the number of times a video reaches 50% of its duration */
-  playback50?: number;
-  /** Tracks the number of times a video reaches 75% of its duration */
-  playback75?: number;
-  /** Tracks the number of times a video is played to completion */
-  playbackComplete?: number;
-  /** Tracks the number of times a video playback is initiated */
-  playbackStart?: number;
-  /** Tracks the number of times a video is viewed */
-  videoViews?: number;
-  /** Tracks the total time spent watching a video, measured in milliseconds */
-  watchTimeMs?: number;
+export interface MediaNonPublicMetrics {
+  /** Number of users who started playback (0% quartile) of this video. */
+  playback_0Count?: number | null;
+  /** Number of users who completed playback (100% quartile) of this video. */
+  playback_100Count?: number | null;
+  /** Number of users who watched at least 25% of this video. */
+  playback_25Count?: number | null;
+  /** Number of users who watched at least 50% of this video. */
+  playback_50Count?: number | null;
+  /** Number of users who watched at least 75% of this video. */
+  playback_75Count?: number | null;
 }
 
 
 /**
- * The file to upload.
+ * Organic nonpublic engagement metrics for the media at the time of the request.
  *
  * @public
  */
-export type MediaPayloadBinary = string;
-
-
-/**
- * The file to upload.
- *
- * @public
- */
-export type MediaPayloadByte = string;
-
-
-/**
- * Schema type for MediaSegments
- *
- * @public
- */
-export type MediaSegments = number | string;
-
-
-/**
- * Schema type for MediaTimestampedMetrics
- *
- * @public
- */
-export interface MediaTimestampedMetrics {
-  metrics?: MediaMetrics;
-  /** ISO8601 Time */
-  timestamp?: string;
+export interface MediaOrganicMetrics {
+  /** Number of users who started playback (0% quartile) of this video. */
+  playback_0Count?: number | null;
+  /** Number of users who completed playback (100% quartile) of this video. */
+  playback_100Count?: number | null;
+  /** Number of users who watched at least 25% of this video. */
+  playback_25Count?: number | null;
+  /** Number of users who watched at least 50% of this video. */
+  playback_50Count?: number | null;
+  /** Number of users who watched at least 75% of this video. */
+  playback_75Count?: number | null;
+  /** The number of organic views of this video. Null when the backend returns quartile data without a view count. */
+  viewCount?: number | null;
 }
 
 
 /**
- * Schema type for MediaUploadAppendRequest
+ * Promoted nonpublic engagement metrics for the media at the time of the request.
  *
  * @public
  */
-export type MediaUploadAppendRequest = { media: MediaPayloadBinary; segmentIndex: MediaSegments; } | { media: MediaPayloadByte; segmentIndex: MediaSegments; };
-
-
-/**
- * A response from getting a media upload request status.
- *
- * @public
- */
-export interface MediaUploadAppendResponse {
-  data?: { expiresAt?: number; };
-  errors?: Array<Problem>;
+export interface MediaPromotedMetrics {
+  /** Number of users who started playback (0% quartile) of this video. */
+  playback_0Count?: number | null;
+  /** Number of users who completed playback (100% quartile) of this video. */
+  playback_100Count?: number | null;
+  /** Number of users who watched at least 25% of this video. */
+  playback_25Count?: number | null;
+  /** Number of users who watched at least 50% of this video. */
+  playback_50Count?: number | null;
+  /** Number of users who watched at least 75% of this video. */
+  playback_75Count?: number | null;
+  /** The number of promoted views of this video. Null when the backend returns quartile data without a view count. */
+  viewCount?: number | null;
 }
 
 
 /**
- * Schema type for MediaUploadConfigRequest
+ * Public engagement metrics for the media at the time of the request.
  *
  * @public
  */
-export interface MediaUploadConfigRequest {
-  additionalOwners?: Array<UserId>;
-  /** A string enum value which identifies a media use-case. This identifier is used to enforce use-case specific constraints (e.g. file size, video duration) and enable advanced features. */
-  mediaCategory?: MediaCategory;
-  /** The type of media. */
-  mediaType?: "video/mp4" | "video/webm" | "video/mp2t" | "video/quicktime" | "text/srt" | "text/vtt" | "image/jpeg" | "image/gif" | "image/bmp" | "image/png" | "image/webp" | "image/pjpeg" | "image/tiff" | "model/gltf-binary" | "model/vnd.usdz+zip";
-  /** Whether this media is shared or not. */
-  shared?: boolean;
-  /** The total size of the media upload in bytes. */
-  totalBytes?: number;
+export interface MediaPublicMetrics {
+  /** The number of times this video has been viewed. */
+  viewCount: number;
 }
 
 
 /**
- * Schema type for MediaUploadRequestOneShot
+ * Schema type for MediaUploadRequest
  *
  * @public
  */
-export interface MediaUploadRequestOneShot {
-  additionalOwners?: Array<UserId>;
-  media: MediaPayloadBinary | MediaPayloadByte;
-  /** A string enum value which identifies a media use-case. This identifier is used to enforce use-case specific constraints (e.g. file size) and enable advanced features. */
-  mediaCategory: MediaCategoryOneShot;
-  /** The type of image or subtitle. */
-  mediaType?: "text/srt" | "text/vtt" | "image/jpeg" | "image/bmp" | "image/png" | "image/webp" | "image/pjpeg" | "image/tiff";
-  /** Whether this media is shared or not. */
-  shared?: boolean;
+export interface MediaUploadRequest {
+  /** Comma-separated list of user IDs who can use this media. */
+  additionalOwners?: string;
+  /** The media file to upload: base64-encoded in JSON bodies, raw bytes in multipart bodies. */
+  media: string;
+  /** The category of the media being uploaded. */
+  mediaCategory: "tweet_image" | "tweet_video" | "tweet_gif" | "dm_image" | "dm_video" | "dm_gif" | "subtitles";
 }
 
 
 /**
- * A response from getting a media upload request status.
+ * Schema type for MediaUploadResponse
  *
  * @public
  */
 export interface MediaUploadResponse {
-  data?: { expiresAfterSecs?: number; id?: MediaId; mediaKey?: MediaKey; processingInfo?: ProcessingInfo; size?: number; };
+  data?: MediaUploadResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * The width of the media in pixels.
+ * Schema type for MediaUploadResponseData
  *
  * @public
  */
-export type MediaWidth = number;
-
-
-/**
- * Schema type for MentionEntity
- *
- * @public
- */
-export type MentionEntity = EntityIndicesInclusiveExclusive & MentionFields;
-
-
-/**
- * Represent the portion of text recognized as a User mention, and its start and end position within the text.
- *
- * @public
- */
-export interface MentionFields {
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  id?: UserId;
-  /** The X handle (screen name) of this user. */
-  username: UserName;
+export interface MediaUploadResponseData {
+  /** Seconds until the upload session expires. */
+  expiresAfterSecs?: number;
+  /** Unique identifier of the media. */
+  id: string;
+  image?: MediaUploadResponseDataImage;
+  /** The media key for the uploaded media. */
+  mediaKey?: string;
+  processingInfo?: MediaUploadResponseDataProcessingInfo;
+  /** Total size of the media in bytes. */
+  size?: number;
+  video?: MediaUploadResponseDataVideo;
 }
 
 
 /**
- * Schema type for MetadataCreateRequest
+ * Schema type for MediaUploadResponseDataImage
  *
  * @public
  */
-export interface MetadataCreateRequest {
-  /** The unique identifier of this Media. */
-  id: MediaId;
-  metadata?: { allowDownloadStatus?: AllowDownloadStatus; altText?: AltText; audiencePolicy?: AudiencePolicy; contentExpiration?: ContentExpiration; domainRestrictions?: DomainRestrictions; foundMediaOrigin?: FoundMediaOrigin; geoRestrictions?: GeoRestrictions; managementInfo?: ManagementInfo; previewImage?: PreviewImage; sensitiveMediaWarning?: SensitiveMediaWarning; sharedInfo?: SharedInfo; stickerInfo?: StickerInfo; uploadSource?: UploadSource; };
+export interface MediaUploadResponseDataImage {
+  /** Height in pixels. */
+  h?: number;
+  /** MIME type of the uploaded image. */
+  imageType?: string;
+  /** Width in pixels. */
+  w?: number;
 }
 
 
 /**
- * Schema type for MetadataCreateResponse
+ * Schema type for MediaUploadResponseDataProcessingInfo
  *
  * @public
  */
-export interface MetadataCreateResponse {
-  data?: { associatedMetadata?: { allowDownloadStatus?: AllowDownloadStatus; altText?: AltText; audiencePolicy?: AudiencePolicy; contentExpiration?: ContentExpiration; domainRestrictions?: DomainRestrictions; foundMediaOrigin?: FoundMediaOrigin; geoRestrictions?: GeoRestrictions; managementInfo?: ManagementInfo; previewImage?: PreviewImage; sensitiveMediaWarning?: SensitiveMediaWarning; sharedInfo?: SharedInfo; stickerInfo?: StickerInfo; uploadSource?: UploadSource; }; id?: MediaId; };
-  errors?: Array<Problem>;
+export interface MediaUploadResponseDataProcessingInfo {
+  /** Seconds to wait before polling status again. */
+  checkAfterSecs?: number;
+  /** Processing completion percentage. */
+  progressPercent?: number;
+  /** Processing state (pending, in_progress, failed, succeeded). */
+  state?: string;
 }
 
 
 /**
- * Schema type for Metrics
+ * Schema type for MediaUploadResponseDataVideo
  *
  * @public
  */
-export interface Metrics {
-  /** Tracks number of App Install Attempts */
-  appInstallAttempts?: number;
-  /** Tracks number of App opens */
-  appOpens?: number;
-  /** Tracks number of Detail expands */
-  detailExpands?: number;
-  /** Tracks number of Email Tweet actions */
-  emailTweet?: number;
-  /** Tracks total Engagements */
-  engagements?: number;
-  /** Tracks number of Follows */
-  follows?: number;
-  /** Tracks number of Hashtag clicks */
-  hashtagClicks?: number;
-  /** Tracks number of Impressions */
-  impressions?: number;
-  /** Tracks number of Likes */
-  likes?: number;
-  /** Tracks number of Link clicks */
-  linkClicks?: number;
-  /** Tracks number of Media engagements */
-  mediaEngagements?: number;
-  /** Tracks number of Media views */
-  mediaViews?: number;
-  /** Tracks number of Permalink clicks */
-  permalinkClicks?: number;
-  /** Tracks number of Profile visits */
-  profileVisits?: number;
-  /** Tracks number of Quote Tweets */
-  quoteTweets?: number;
-  /** Tracks number of Replies */
-  replies?: number;
-  /** Tracks number of Retweets */
-  retweets?: number;
-  /** Tracks number of URL clicks */
-  urlClicks?: number;
-  /** Tracks number of User Profile clicks */
-  userProfileClicks?: number;
+export interface MediaUploadResponseDataVideo {
+  /** MIME type of the processed video. */
+  videoType?: string;
 }
 
 
 /**
- * Community Note misleading tags type.
+ * Each media object may have multiple display or playback variants, with different resolutions or formats.
  *
  * @public
  */
-export type MisleadingTags = "disputed_claim_as_fact" | "factual_error" | "manipulated_media" | "misinterpreted_satire" | "missing_important_context" | "other" | "outdated_information";
-
-
-/**
- * Schema type for MuteUserMutationResponse
- *
- * @public
- */
-export interface MuteUserMutationResponse {
-  data?: { muting?: boolean; };
-  errors?: Array<Problem>;
-}
+export type MediaVariants = Array<{ bitRate?: number | null; contentType?: string | null; url?: string | null; }>;
 
 
 /**
@@ -3270,40 +4693,48 @@ export interface MuteUserMutationResponse {
  * @public
  */
 export interface MuteUserRequest {
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  targetUserId: UserId;
+  targetUserId: string;
 }
 
 
 /**
- * The newest id in this response.
+ * Schema type for MuteUserResponse
  *
  * @public
  */
-export type NewestId = string;
+export interface MuteUserResponse {
+  data?: MuteUserResponseData;
+  errors?: Array<Problem>;
+}
 
 
 /**
- * An AI generated news story.
+ * Schema type for MuteUserResponseData
+ *
+ * @public
+ */
+export interface MuteUserResponseData {
+  /** Whether the source User is muting the target User. */
+  muting: boolean;
+}
+
+
+/**
+ * Schema type for News
  *
  * @public
  */
 export interface News {
-  /** The news category. */
   category?: string;
-  clusterPostsResults?: Array<{ postId?: TweetId; }>;
-  contexts?: { entities?: { events?: Array<string>; organizations?: Array<string>; people?: Array<string>; places?: Array<string>; products?: Array<string>; }; finance?: { tickers?: Array<string>; }; sports?: { teams?: Array<string>; }; topics?: Array<string>; };
+  clusterPostsResults?: NewsClusterPostsResults;
+  contexts?: Record<string, any>;
   disclaimer?: string;
-  /** The news hook. */
   hook?: string;
-  keywords?: Array<string>;
-  lastUpdatedAtMs?: string;
-  /** The headline. */
+  id?: string;
+  keywords?: Record<string, any>;
   name?: string;
-  /** Unique identifier of news story. */
-  restId: NewsId;
-  /** The news summary. */
   summary?: string;
+  updatedAt?: string;
 }
 
 
@@ -3321,79 +4752,69 @@ export interface NewsActivityResponsePayload {
 
 
 /**
- * Unique identifier of news story.
+ * Schema type for NewsClusterPostsResults
  *
  * @public
  */
-export type NewsId = string;
+export type NewsClusterPostsResults = Array<{ postId: string; }>;
 
 
 /**
- * The next token.
+ * Schema type for NotAuthorizedForFieldProblem
  *
  * @public
  */
-export type NextToken = string;
+export interface NotAuthorizedForFieldProblem {
+  detail: string;
+  field: string;
+  parameter?: string;
+  resourceId?: string;
+  resourceType?: string;
+  section?: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/not-authorized-for-field";
+  value?: string;
+}
 
 
 /**
- * A problem that indicates the user's rule set is not compliant.
+ * Schema type for NotAuthorizedForResourceProblem
  *
  * @public
  */
-export type NonCompliantRulesProblem = Problem;
+export interface NotAuthorizedForResourceProblem {
+  detail: string;
+  parameter?: string;
+  resourceId?: string;
+  resourceType: string;
+  section?: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/not-authorized-for-resource";
+  value?: string;
+}
 
 
 /**
- * A X Community Note is a note on a Post.
+ * Schema type for Note
  *
  * @public
  */
 export interface Note {
-  /** The unique identifier of this Community Note. */
-  id: NoteId;
-  /** A X Community Note is a note on a Post. */
+  id?: string;
+  /** Details about the Community Note's content, classification and source. */
   info?: NoteInfo;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  postId: TweetId;
-  /** The scoring status of a Community Note. */
+  /** Per-model scoring breakdown for the Community Note. */
   scoringStatus?: NoteScoringStatus;
-  /** Community Note rating status */
-  status?: NoteRatingStatus;
-  /** The evaluation result of a community note. */
+  status?: string;
+  /** AI evaluation results for the Community Note (returned in test mode). */
   testResult?: NoteTestResult;
 }
 
 
 /**
- * Community Note classification type.
- *
- * @public
- */
-export type NoteClassification = "misinformed_or_potentially_misleading" | "not_misleading";
-
-
-/**
- * Rating counts for a rater factor bucket.
- *
- * @public
- */
-export interface NoteFactorBucketCounts {
-  /** The count of helpful ratings. */
-  helpfulCount?: number;
-  /** Helpful tag counts. */
-  helpfulTagCounts?: { tagCount?: number; tagName?: string; };
-  /** The count of not helpful ratings. */
-  notHelpfulCount?: number;
-  /** Not helpful tag counts. */
-  notHelpfulTagCounts?: { tagCount?: number; tagName?: string; };
-  /** The count of somewhat helpful ratings. */
-  somewhatHelpfulCount?: number;
-}
-
-
-/**
- * The unique identifier of this Community Note.
+ * Unique identifier of a Note
  *
  * @public
  */
@@ -3401,151 +4822,93 @@ export type NoteId = string;
 
 
 /**
- * A X Community Note is a note on a Post.
+ * Details about the Community Note's content, classification and source.
  *
  * @public
  */
 export interface NoteInfo {
-  /** Community Note classification type. */
-  classification: NoteClassification;
-  /** Whether the note is a media note. */
-  isMediaNote?: boolean;
-  misleadingTags: Array<MisleadingTags>;
-  /** The text summary in the Community Note. */
-  text: string;
-  /** Whether the note provided trustworthy links. */
-  trustworthySources: boolean;
+  /** How the noted Post was classified (snake_case). */
+  classification?: string | null;
+  /** Reasons the noted Post may be misleading (snake_case). */
+  misleadingTags?: Array<string> | null;
+  /** Unique identifier of the Post this note is about. */
+  postId?: string | null;
+  /** Current rating status of the note. */
+  ratingStatus?: string | null;
+  /** The text of the Community Note. */
+  text?: string | null;
+  /** Whether the note cites trustworthy sources. */
+  trustworthySources?: boolean | null;
 }
 
 
 /**
- * The rating counts of a Community Note per model.
- *
- * @public
- */
-export interface NoteRatingCountsPerModel {
-  /** Rating counts for a rater factor bucket. */
-  negativeFactorBucketCounts?: NoteFactorBucketCounts;
-  /** Rating counts for a rater factor bucket. */
-  neutralFactorBucketCounts?: NoteFactorBucketCounts;
-  /** Rating counts for a rater factor bucket. */
-  positiveFactorBucketCounts?: NoteFactorBucketCounts;
-}
-
-
-/**
- * Community Note rating status
- *
- * @public
- */
-export type NoteRatingStatus = "currently_rated_helpful" | "currently_rated_not_helpful" | "firm_reject" | "insufficient_consensus" | "minimum_ratings_not_met" | "needs_more_ratings" | "needs_your_help";
-
-
-/**
- * The scoring status of a Community Note.
+ * Per-model scoring breakdown for the Community Note.
  *
  * @public
  */
 export interface NoteScoringStatus {
-  /** Whether the user has access to the scoring status of the Community Note. */
-  hasAccess?: boolean;
-  /** Rating count stats per model. */
-  ratingCountsPerModel?: { modelName?: string; value?: NoteRatingCountsPerModel; };
+  /** Whether the caller has access to the scoring details. */
+  hasAccess?: boolean | null;
+  /** Rating counts broken down per scoring model. */
+  ratingCountsPerModel?: Array<{ modelName?: string | null; value?: { negativeFactorBucketCounts?: { helpfulCount?: number | null; helpfulTagCounts?: Array<{ tagCount?: number | null; tagName?: string | null; }> | null; notHelpfulCount?: number | null; notHelpfulTagCounts?: Array<{ tagCount?: number | null; tagName?: string | null; }> | null; somewhatHelpfulCount?: number | null; } | null; neutralFactorBucketCounts?: { helpfulCount?: number | null; helpfulTagCounts?: Array<{ tagCount?: number | null; tagName?: string | null; }> | null; notHelpfulCount?: number | null; notHelpfulTagCounts?: Array<{ tagCount?: number | null; tagName?: string | null; }> | null; somewhatHelpfulCount?: number | null; } | null; positiveFactorBucketCounts?: { helpfulCount?: number | null; helpfulTagCounts?: Array<{ tagCount?: number | null; tagName?: string | null; }> | null; notHelpfulCount?: number | null; notHelpfulTagCounts?: Array<{ tagCount?: number | null; tagName?: string | null; }> | null; somewhatHelpfulCount?: number | null; } | null; } | null; }> | null;
 }
 
 
 /**
- * The evaluation result of a community note.
+ * AI evaluation results for the Community Note (returned in test mode).
  *
  * @public
  */
 export interface NoteTestResult {
-  /** Score bucket from the evaluator result. */
-  evaluatorScoreBucket?: string;
-  /** The type of the evaluator. */
-  evaluatorType?: string;
+  /** Per-evaluator outcomes for the note. */
+  evaluationOutcome?: Array<{ evaluatorScoreBucket: string; evaluatorType: string; }> | null;
 }
 
 
 /**
- * The note content of the Tweet.
- *
- * @public
- */
-export type NoteTweetText = string;
-
-
-/**
- * A problem that indicates your client application does not have the required OAuth1 permissions for the requested endpoint.
- *
- * @public
- */
-export type Oauth1PermissionsProblem = Problem;
-
-
-/**
- * The oldest id in this response.
- *
- * @public
- */
-export type OldestId = string;
-
-
-/**
- * You have been disconnected for operational reasons.
- *
- * @public
- */
-export type OperationalDisconnectProblem = Problem & ({ disconnectType?: "OperationalDisconnect" | "UpstreamOperationalDisconnect" | "ForceDisconnect" | "UpstreamUncleanDisconnect" | "SlowReader" | "InternalError" | "ClientApplicationStateDegraded" | "InvalidRules"; });
-
-
-/**
- * A base32 pagination token.
- *
- * @public
- */
-export type PaginationToken32 = string;
-
-
-/**
- * A base36 pagination token.
- *
- * @public
- */
-export type PaginationToken36 = string;
-
-
-/**
- * A 'long' pagination token.
- *
- * @public
- */
-export type PaginationTokenLong = string;
-
-
-/**
- * A trend.
+ * Schema type for PersonalizedTrend
  *
  * @public
  */
 export interface PersonalizedTrend {
-  /** Category of this trend. */
   category?: string;
-  /** Number of posts pertaining to this trend. */
-  postCount?: number;
-  /** Name of the trend. */
+  postCount?: string;
   trendName?: string;
-  /** Time since this is trending. */
   trendingSince?: string;
 }
 
 
 /**
- * Schema type for Photo
+ * Schema type for PinListRequest
  *
  * @public
  */
-export type Photo = Media & { altText?: string; url?: string; };
+export interface PinListRequest {
+  listId: string;
+}
+
+
+/**
+ * Schema type for PinListResponse
+ *
+ * @public
+ */
+export interface PinListResponse {
+  data?: PinListResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for PinListResponseData
+ *
+ * @public
+ */
+export interface PinListResponseData {
+  /** Indicates whether the List is pinned by the authenticated user. */
+  pinned: boolean;
+}
 
 
 /**
@@ -3554,265 +4917,186 @@ export type Photo = Media & { altText?: string; url?: string; };
  * @public
  */
 export interface Place {
-  containedWithin?: Array<PlaceId>;
-  /** The full name of the county in which this place exists. */
+  /** A list of unique identifiers of the Places that contain this place. */
+  containedWithin?: PlaceContainedWithin;
   country?: string;
-  /** A two-letter ISO 3166-1 alpha-2 country code. */
-  countryCode?: CountryCode;
-  /** The full name of this place. */
-  fullName: string;
-  geo?: Geo;
-  /** The identifier for this place. */
-  id: PlaceId;
-  /** The human readable name of this place. */
+  countryCode?: string;
+  fullName?: string;
+  /** The geographic location of this place, expressed as a GeoJSON Feature. */
+  geo?: PlaceGeo;
+  id?: string;
   name?: string;
-  placeType?: PlaceType;
+  placeType?: string;
 }
 
 
 /**
- * The identifier for this place.
+ * A list of unique identifiers of the Places that contain this place.
  *
  * @public
  */
-export type PlaceId = string;
+export type PlaceContainedWithin = Array<string>;
 
 
 /**
- * Schema type for PlaceType
+ * The geographic location of this place, expressed as a GeoJSON Feature.
  *
  * @public
  */
-export type PlaceType = "poi" | "neighborhood" | "city" | "admin" | "country" | "unknown";
-
-
-/**
- * Descriptor for a Plaid account.
- *
- * @public
- */
-export interface PlaidAccount {
-  /** The category of the account (e.g., personal, business). */
-  accountCategory: string;
-  /** The Plaid account ID. */
-  accountId: string;
-  /** The last 2-4 digits of the account number. */
-  accountNumberDisplay: string;
-  /** The type of the account (e.g., checking, savings). */
-  accountType: string;
-  /** The available balance of the account. */
-  availableBalance?: number;
-  /** Currency information. */
-  currency: PlaidCurrency;
-  /** The current balance of the account. */
-  currentBalance?: number;
-  /** The nickname of the account. */
-  nickname?: string;
-  /** The name of the product associated with the account. */
-  productName: string;
-  /** The status of the account. */
-  status: string;
+export interface PlaceGeo {
+  /** The bounding box as [southwest_longitude, southwest_latitude, northeast_longitude, northeast_latitude]. */
+  bbox: Array<number>;
+  /** Additional GeoJSON feature properties. */
+  properties: Record<string, any>;
+  /** The GeoJSON feature type. */
+  type: "Feature";
 }
 
 
 /**
- * Contact information associated with a Plaid account.
- *
- * @public
- */
-export interface PlaidAccountContact {
-  /** List of addresses associated with the account holder. */
-  addresses: Array<PlaidAddress>;
-  /** List of email addresses associated with the account holder. */
-  emails: Array<string>;
-  /** Name information for the account holder. */
-  name: PlaidName;
-  /** Relationship of the contact to the account. */
-  relationship?: string;
-  /** List of telephone numbers associated with the account holder. */
-  telephones: Array<PlaidTelephone>;
-}
-
-
-/**
- * Payment network details associated with the account.
- *
- * @public
- */
-export interface PlaidAccountPaymentNetwork {
-  /** The bank ID associated with the account. */
-  bankId: string;
-  /** The payment network identifier. */
-  identifier: string;
-  /** Indicates if transfers into the account are supported. */
-  transferIn: boolean;
-  /** Indicates if transfers out of the account are supported. */
-  transferOut: boolean;
-  /** The type of payment network (e.g., ACH, SEPA). */
-  type: string;
-}
-
-
-/**
- * Descriptor for a Plaid account.
- *
- * @public
- */
-export interface PlaidAccountTransaction {
-  /** The category of the account (e.g., personal, business). */
-  accountCategory: string;
-  /** The amount transacted. */
-  amount: number;
-  /** Memo for transaction (e.g. CREDIT) */
-  debitCreditMemo: string;
-  /** The transaction description */
-  description: string;
-  /** The timestamp when the transaction was posted. */
-  postedTimestamp?: string;
-  /** The status of the transaction. */
-  status: string;
-  /** The identifier for the transaction. */
-  transactionId: string;
-  /** The timestamp when the transaction occurred. */
-  transactionTimestamp: string;
-}
-
-
-/**
- * Address information for the account holder.
- *
- * @public
- */
-export interface PlaidAddress {
-  /** The city of the address. */
-  city: string;
-  /** The country of the address (ISO 3166-1 alpha-2 code). */
-  country: string;
-  /** The first line of the address. */
-  line1: string;
-  /** The second line of the address. */
-  line2?: string;
-  /** The postal code of the address. */
-  postalCode?: string;
-  /** The region or state of the address. */
-  region?: string;
-}
-
-
-/**
- * Currency information.
- *
- * @public
- */
-export interface PlaidCurrency {
-  /** The ISO 4217 currency code. */
-  currencyCode: string;
-}
-
-
-/**
- * A user id for the plaid customer
- *
- * @public
- */
-export interface PlaidCustomer {
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  customerId?: UserId;
-}
-
-
-/**
- * Name information for the account holder.
- *
- * @public
- */
-export interface PlaidName {
-  /** The first name of the account holder. */
-  first: string;
-  /** The last name of the account holder. */
-  last: string;
-}
-
-
-/**
- * Telephone information for the account holder.
- *
- * @public
- */
-export interface PlaidTelephone {
-  /** The country code for the phone number (e.g., '+1'). */
-  country: string;
-  /** The phone number. */
-  number: string;
-  /** The type of phone number (e.g., 'mobile'). */
-  type: string;
-}
-
-
-/**
- * A [GeoJson Point](https://tools.ietf.org/html/rfc7946#section-3.1.2) geometry object.
- *
- * @public
- */
-export interface Point {
-  /** A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`. */
-  coordinates: Position;
-  type: "Point";
-}
-
-
-/**
- * Represent a Poll attached to a Tweet.
+ * Schema type for Poll
  *
  * @public
  */
 export interface Poll {
   durationMinutes?: number;
   endDatetime?: string;
-  /** Unique identifier of this poll. */
-  id: PollId;
-  options: Array<PollOption>;
-  votingStatus?: "open" | "closed";
+  id?: string;
+  /** The list of options (choices) available in this poll. */
+  options?: PollOptions;
+  votingStatus?: string;
 }
 
 
 /**
- * Unique identifier of this poll.
+ * The list of options (choices) available in this poll.
  *
  * @public
  */
-export type PollId = string;
+export type PollOptions = Array<{ label: string; position: number; votes: number; }>;
 
 
 /**
- * Describes a choice in a Poll object.
+ * Schema type for Post
  *
  * @public
  */
-export interface PollOption {
-  /** The text of a poll choice. */
-  label: PollOptionLabel;
-  /** Position of this choice in the poll. */
-  position: number;
-  /** Number of users who voted for this choice. */
-  votes: number;
+export interface Post {
+  article?: Record<string, any>;
+  /** Metadata about the long-form Article attached to this Post, if any. */
+  articleTitle?: Record<string, any>;
+  /** Specifies the type of attachments (if any) present in this Post. */
+  attachments?: PostAttachments;
+  /** Unique identifier of the author of this Post. */
+  authorId?: string;
+  cardUri?: string;
+  /** The unique identifier of the Community this Post belongs to, if any. */
+  communityId?: string;
+  /** Annotations inferred about the Post (domain and entity context). */
+  contextAnnotations?: PostContextAnnotations;
+  /** The ID of the conversation this Post belongs to (matches the root Post's ID). */
+  conversationId?: string;
+  /** Creation time of the Post. */
+  createdAt?: string;
+  /** The inclusive start and exclusive end indices of the displayable content of the Post. */
+  displayTextRange?: PostDisplayTextRange;
+  /** Indicates how much longer (if at all) this Post can be edited. */
+  editControls?: PostEditControls;
+  /** A list of Post IDs in this Post's edit history chain. */
+  editHistoryPostIds?: Array<string>;
+  /** A list of metadata entities (hashtags, mentions, URLs) found in the Post text. */
+  entities?: PostEntities;
+  /** The location tagged on the Post, if the user provided one. */
+  geo?: PostGeo;
+  /** Unique identifier of this Post. */
+  id?: string;
+  /** Unique identifier of the User this Post is replying to. */
+  inReplyToUserId?: string;
+  /** Language of the Post, if detected by X. Returned as a BCP47 language tag. */
+  lang?: string;
+  /** Community-Notes media matches for this Post. */
+  matchedMediaNotes?: PostMatchedMediaNotes;
+  /** Metadata for media attached to this Post. */
+  mediaMetadata?: PostMediaMetadata;
+  /** Nonpublic engagement metrics for the Post at the time of the request. */
+  nonPublicMetrics?: Record<string, any>;
+  /** The full content of the Post, including text beyond 280 characters. */
+  notePost?: PostNotePost;
+  /** Community-Notes request suggestions for this Post. */
+  noteRequestSuggestions?: PostNoteRequestSuggestions;
+  /** Organic nonpublic engagement metrics for the Post at the time of the request. */
+  organicMetrics?: Record<string, any>;
+  /** Indicates if this Post is a paid partnership, i.e. it has been disclosed by the author as containing paid promotion. */
+  paidPartnership?: boolean;
+  /** Indicates if this Post contains URLs marked as sensitive, for example content suitable for mature audiences. */
+  possiblySensitive?: boolean;
+  /** Promoted nonpublic engagement metrics for the Post at the time of the request. */
+  promotedMetrics?: Record<string, any>;
+  /** Engagement metrics for the Post at the time of the request. */
+  publicMetrics?: PostPublicMetrics;
+  /** A list of Posts this Post refers to. If the Post is a Retweet, Quote or Reply, it includes the referenced Post's type and ID. */
+  referencedPosts?: PostReferencedPosts;
+  /** Shows who can reply to this Post. */
+  replySettings?: string;
+  /** The scopes for this Post. */
+  scopes?: PostScopes;
+  /** The name of the app the user posted from. This is deprecated. */
+  source?: string;
+  /** URLs suggested as sources for this Post. */
+  suggestedSourceLinks?: PostSuggestedSourceLinks;
+  /** Suggested source URLs for this Post, each with the number of times it was suggested. */
+  suggestedSourceLinksWithCounts?: PostSuggestedSourceLinksWithCounts;
+  /** The content of the Post. */
+  text?: string;
+  username?: string;
+  /** Withholding details for withheld content. */
+  withheld?: PostWithheld;
 }
 
 
 /**
- * The text of a poll choice.
+ * Specifies the type of attachments (if any) present in this Post.
  *
  * @public
  */
-export type PollOptionLabel = string;
+export interface PostAttachments {
+  /** Media keys of media attached to this Post. */
+  mediaKeys?: Array<string> | null;
+  /** IDs of the source Posts the attached media originated from. */
+  mediaSourceTweetId?: Array<string> | null;
+  /** IDs of polls attached to this Post. */
+  pollIds?: Array<string> | null;
+}
 
 
 /**
- * A [GeoJson Position](https://tools.ietf.org/html/rfc7946#section-3.1.1) in the format `[longitude,latitude]`.
+ * Tweet compliance data.
  *
  * @public
  */
-export type Position = Array<number>;
+export type PostComplianceData = PostDeleteComplianceSchema | PostWithheldComplianceSchema | PostDropComplianceSchema | PostUndropComplianceSchema | PostEditComplianceSchema;
+
+
+/**
+ * Schema type for PostComplianceSchema
+ *
+ * @public
+ */
+export interface PostComplianceSchema {
+  /** Event time. */
+  eventAt: string;
+  /** Unique identifier of a Post */
+  quoteTweetId?: PostId;
+  tweet: { authorId: UserId; id: PostId; };
+}
+
+
+/**
+ * Annotations inferred about the Post (domain and entity context).
+ *
+ * @public
+ */
+export type PostContextAnnotations = Array<{ domain: ({ description?: string | null; id?: string | null; name?: string | null; }); entity: ({ description?: string | null; id?: string | null; name?: string | null; }); }>;
 
 
 /**
@@ -3821,57 +5105,328 @@ export type Position = Array<number>;
  * @public
  */
 export interface PostDeleteActivityResponsePayload {
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
+  /** Unique identifier of a User */
   authorId: UserId;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  id: TweetId;
+  /** Unique identifier of a Post */
+  id: PostId;
 }
 
 
 /**
- * Schema type for PreviewImage
+ * Schema type for PostDeleteComplianceSchema
  *
  * @public
  */
-export interface PreviewImage {
-  mediaKey: { media?: MediaId; mediaCategory?: "TweetImage"; };
+export interface PostDeleteComplianceSchema {
+  delete: PostComplianceSchema;
 }
 
 
 /**
- * The previous token.
+ * The inclusive start and exclusive end indices of the displayable content of the Post.
  *
  * @public
  */
-export type PreviousToken = string;
+export type PostDisplayTextRange = Array<number>;
 
 
 /**
- * An HTTP Problem Details object, as defined in IETF RFC 7807 (https://tools.ietf.org/html/rfc7807).
+ * Schema type for PostDropComplianceSchema
  *
  * @public
  */
-export interface Problem {
-  detail?: string;
-  status?: number;
-  title: string;
-  type: string;
+export interface PostDropComplianceSchema {
+  drop: PostComplianceSchema;
 }
 
 
 /**
- * Schema type for ProcessingInfo
+ * Schema type for PostEditComplianceObjectSchema
  *
  * @public
  */
-export interface ProcessingInfo {
-  /** Number of seconds to check again for status */
-  checkAfterSecs?: number;
-  /** Percent of upload progress */
-  progressPercent?: number;
-  /** State of upload */
-  state?: "succeeded" | "in_progress" | "pending" | "failed";
+export interface PostEditComplianceObjectSchema {
+  editTweetIds: Array<PostId>;
+  /** Event time. */
+  eventAt: string;
+  /** Unique identifier of a Post */
+  initialTweetId: PostId;
+  tweet: { id: PostId; };
 }
+
+
+/**
+ * Schema type for PostEditComplianceSchema
+ *
+ * @public
+ */
+export interface PostEditComplianceSchema {
+  tweetEdit: PostEditComplianceObjectSchema;
+}
+
+
+/**
+ * Indicates how much longer (if at all) this Post can be edited.
+ *
+ * @public
+ */
+export interface PostEditControls {
+  /** The time until which this Post can be edited. */
+  editableUntil?: string | null;
+  /** Number of edits still allowed for this Post. */
+  editsRemaining?: number | null;
+  /** Indicates whether this Post is eligible to be edited. */
+  isEditEligible?: boolean | null;
+}
+
+
+/**
+ * A list of metadata entities (hashtags, mentions, URLs) found in the Post text.
+ *
+ * @public
+ */
+export interface PostEntities {
+  cashtags?: Array<{ end: number; start: number; tag: string; }> | null;
+  hashtags?: Array<{ end: number; start: number; tag: string; }> | null;
+  mentions?: Array<{ end: number; id?: string | null; start: number; username?: string | null; }> | null;
+  urls?: Array<{ description?: string | null; displayUrl?: string | null; end: number; expandedUrl?: string | null; images?: Array<{ height?: number | null; url?: string | null; width?: number | null; }> | null; mediaKey?: string | null; start: number; status?: number | null; title?: string | null; unwoundUrl?: string | null; url?: string | null; }> | null;
+}
+
+
+/**
+ * The location tagged on the Post, if the user provided one.
+ *
+ * @public
+ */
+export interface PostGeo {
+  /** A GeoJSON Point geometry. */
+  coordinates?: { coordinates: Array<number>; type: "Point"; } | null;
+  /** The unique identifier of the tagged place. */
+  placeId?: string | null;
+}
+
+
+/**
+ * Unique identifier of a Post
+ *
+ * @public
+ */
+export type PostId = string;
+
+
+/**
+ * Tweet label data.
+ *
+ * @public
+ */
+export type PostLabelData = PostNoticeSchema | PostUnviewableSchema;
+
+
+/**
+ * Community-Notes media matches for this Post.
+ *
+ * @public
+ */
+export type PostMatchedMediaNotes = Array<{ matchStatus?: string | null; noteId?: string | null; }>;
+
+
+/**
+ * Metadata for media attached to this Post.
+ *
+ * @public
+ */
+export type PostMediaMetadata = Array<{ altText?: string | null; description?: string | null; mediaKey?: string | null; title?: string | null; }>;
+
+
+/**
+ * The full content of the Post, including text beyond 280 characters.
+ *
+ * @public
+ */
+export interface PostNotePost {
+  /** Metadata entities (hashtags, cashtags, mentions, URLs) found in the note Post text. */
+  entities?: { cashtags?: Array<{ end: number; start: number; tag: string; }> | null; hashtags?: Array<{ end: number; start: number; tag: string; }> | null; mentions?: Array<{ end: number; id?: string | null; start: number; username?: string | null; }> | null; urls?: Array<{ displayUrl?: string | null; end: number; expandedUrl?: string | null; start: number; url?: string | null; }> | null; } | null;
+  /** The full note text of the Post. */
+  text: string;
+}
+
+
+/**
+ * Community-Notes request suggestions for this Post.
+ *
+ * @public
+ */
+export type PostNoteRequestSuggestions = Array<{ sourceLink?: string | null; suggestion?: string | null; suggestionId?: string | null; }>;
+
+
+/**
+ * Schema type for PostNotice
+ *
+ * @public
+ */
+export interface PostNotice {
+  /** If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’. */
+  application: string;
+  /** Information shown on the Tweet label */
+  details?: string;
+  /** Event time. */
+  eventAt: string;
+  /** The type of label on the Tweet */
+  eventType: string;
+  /** Link to more information about this kind of label */
+  extendedDetailsUrl?: string;
+  /** Title/header of the Tweet label */
+  labelTitle?: string;
+  tweet: { authorId: UserId; id: PostId; };
+}
+
+
+/**
+ * Schema type for PostNoticeSchema
+ *
+ * @public
+ */
+export interface PostNoticeSchema {
+  publicTweetNotice: PostNotice;
+}
+
+
+/**
+ * Engagement metrics for the Post at the time of the request.
+ *
+ * @public
+ */
+export interface PostPublicMetrics {
+  /** Number of times this Post has been bookmarked. */
+  bookmarkCount: number;
+  /** Number of times this Post has been viewed. */
+  impressionCount: number;
+  /** Number of likes on this Post. */
+  likeCount: number;
+  /** Number of quote Posts of this Post. */
+  quoteCount: number;
+  /** Number of replies to this Post. */
+  replyCount: number;
+  /** Number of times this Post has been reposted. */
+  repostCount: number;
+}
+
+
+/**
+ * A list of Posts this Post refers to. If the Post is a Retweet, Quote or Reply, it includes the referenced Post's type and ID.
+ *
+ * @public
+ */
+export type PostReferencedPosts = Array<{ id: string; type: ("retweeted" | "quoted" | "replied_to"); }>;
+
+
+/**
+ * The scopes for this Post.
+ *
+ * @public
+ */
+export interface PostScopes {
+  /** Indicates whether visibility of this Post is limited to the author's followers. */
+  followers: boolean;
+}
+
+
+/**
+ * URLs suggested as sources for this Post.
+ *
+ * @public
+ */
+export type PostSuggestedSourceLinks = Array<string>;
+
+
+/**
+ * Suggested source URLs for this Post, each with the number of times it was suggested.
+ *
+ * @public
+ */
+export type PostSuggestedSourceLinksWithCounts = Array<{ count?: number | null; url?: string | null; }>;
+
+
+/**
+ * Schema type for PostTakedownComplianceSchema
+ *
+ * @public
+ */
+export interface PostTakedownComplianceSchema {
+  /** Event time. */
+  eventAt: string;
+  /** Unique identifier of a Post */
+  quoteTweetId?: PostId;
+  tweet: { authorId: UserId; id: PostId; };
+  withheldInCountries: Array<CountryCode>;
+}
+
+
+/**
+ * Schema type for PostUndropComplianceSchema
+ *
+ * @public
+ */
+export interface PostUndropComplianceSchema {
+  undrop: PostComplianceSchema;
+}
+
+
+/**
+ * Schema type for PostUnviewable
+ *
+ * @public
+ */
+export interface PostUnviewable {
+  /** If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’. */
+  application: string;
+  /** Event time. */
+  eventAt: string;
+  tweet: { authorId: UserId; id: PostId; };
+}
+
+
+/**
+ * Schema type for PostUnviewableSchema
+ *
+ * @public
+ */
+export interface PostUnviewableSchema {
+  publicTweetUnviewable: PostUnviewable;
+}
+
+
+/**
+ * Withholding details for withheld content.
+ *
+ * @public
+ */
+export interface PostWithheld {
+  /** Indicates whether this content is withheld due to a copyright claim. */
+  copyright: boolean;
+  /** Uppercase ISO 3166-1 alpha-2 country codes where this content is withheld. */
+  countryCodes: Array<string>;
+  /** Whether the withholding applies to a Post or a User. */
+  scope?: "post" | "user" | null;
+}
+
+
+/**
+ * Schema type for PostWithheldComplianceSchema
+ *
+ * @public
+ */
+export interface PostWithheldComplianceSchema {
+  withheld: PostTakedownComplianceSchema;
+}
+
+
+/**
+ * Schema type for Problem
+ *
+ * @public
+ */
+export type Problem = ResourceNotFoundProblem | InvalidRequestProblem | NotAuthorizedForResourceProblem | NotAuthorizedForFieldProblem | FieldUnauthorizedProblem | FieldHydrationFailureProblem | ResourceUnavailableProblem | DisallowedResourceProblem | InternalErrorProblem;
 
 
 /**
@@ -3886,97 +5441,112 @@ export interface ProfileUpdateActivityResponsePayload {
 
 
 /**
- * A user's public key with associated key recovery configuration.
+ * Schema type for PublicKey
  *
  * @public
  */
 export interface PublicKey {
-  /** DER-encoded signature proving the signing key is bound to the identity key (base64 encoded). */
   identityPublicKeySignature?: string;
-  /** Key recovery configuration for Juicebox-based key storage. */
-  juiceboxConfig?: ChatJuiceboxConfig;
-  /** Identity public key (base64 encoded). */
+  juiceboxConfig?: Record<string, any>;
   publicKey?: string;
-  /** Public key version. */
   publicKeyVersion?: string;
-  /** Signing public key (base64 encoded). */
   signingPublicKey?: string;
 }
 
 
 /**
- * Confirmation that the replay job request was accepted.
+ * Unique identifier of a PublicKey
  *
  * @public
  */
-export interface ReplayJobCreateResponse {
-  /** The UTC timestamp indicating when the replay job was created. */
-  createdAt: string;
-  /** The unique identifier for the initiated replay job. */
-  jobId: string;
+export type PublicKeyId = string;
+
+
+/**
+ * Schema type for RemoveListsMemberByUserIdResponse
+ *
+ * @public
+ */
+export interface RemoveListsMemberByUserIdResponse {
+  data?: RemoveListsMemberByUserIdResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, and following.
+ * Schema type for RemoveListsMemberByUserIdResponseData
  *
  * @public
  */
-export type ReplySettings = "everyone" | "mentionedUsers" | "following" | "other";
+export interface RemoveListsMemberByUserIdResponseData {
+  /** Indicates whether the user is a member of the List. */
+  isMember: boolean;
+}
 
 
 /**
- * Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, subscribers, verified and following.
+ * Schema type for RepostPostRequest
  *
  * @public
  */
-export type ReplySettingsWithVerifiedUsers = "everyone" | "mentionedUsers" | "following" | "other" | "subscribers" | "verified";
+export interface RepostPostRequest {
+  tweetId: string;
+}
 
 
 /**
- * A problem that indicates that a given Tweet, User, etc. does not exist.
+ * Schema type for RepostPostResponse
  *
  * @public
  */
-export type ResourceNotFoundProblem = Problem & ({ parameter: string; resourceId: string; resourceType: "user" | "tweet" | "media" | "list" | "space" | "place" | "poll"; value: string; });
+export interface RepostPostResponse {
+  data?: RepostPostResponseData;
+  errors?: Array<Problem>;
+}
 
 
 /**
- * A problem that indicates you are not allowed to see a particular Tweet, User, etc.
+ * Schema type for RepostPostResponseData
  *
  * @public
  */
-export type ResourceUnauthorizedProblem = Problem & ({ parameter: string; resourceId: string; resourceType: "user" | "tweet" | "media" | "list" | "space"; section: "data" | "includes"; value: string; });
+export interface RepostPostResponseData {
+  /** The ID of the reposted Post. */
+  restId: string;
+  /** Indicates whether the user reposted the Post. */
+  retweeted: boolean;
+}
 
 
 /**
- * A problem that indicates a particular Tweet, User, etc. is not available to you.
+ * Schema type for ResourceNotFoundProblem
  *
  * @public
  */
-export type ResourceUnavailableProblem = Problem & ({ parameter: string; resourceId: string; resourceType: "user" | "tweet" | "media" | "list" | "space"; });
+export interface ResourceNotFoundProblem {
+  detail: string;
+  parameter?: string;
+  resourceId?: string;
+  resourceType: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/resource-not-found";
+  value?: string;
+}
 
 
 /**
- * The number of results returned in this response.
+ * Schema type for ResourceUnavailableProblem
  *
  * @public
  */
-export type ResultCount = number;
-
-
-/**
- * A user-provided stream filtering rule.
- *
- * @public
- */
-export interface Rule {
-  /** Unique identifier of this rule. */
-  id?: RuleId;
-  /** A tag meant for the labeling of user provided rules. */
-  tag?: RuleTag;
-  /** The filterlang value of the rule. */
-  value: RuleValue;
+export interface ResourceUnavailableProblem {
+  detail: string;
+  resourceId?: string;
+  resourceType: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/resource-unavailable";
 }
 
 
@@ -3989,19 +5559,6 @@ export type RuleId = string;
 
 
 /**
- * A user-provided stream filtering rule.
- *
- * @public
- */
-export interface RuleNoId {
-  /** A tag meant for the labeling of user provided rules. */
-  tag?: RuleTag;
-  /** The filterlang value of the rule. */
-  value: RuleValue;
-}
-
-
-/**
  * A tag meant for the labeling of user provided rules.
  *
  * @public
@@ -4010,514 +5567,339 @@ export type RuleTag = string;
 
 
 /**
- * The filterlang value of the rule.
- *
- * @public
- */
-export type RuleValue = string;
-
-
-/**
- * You have exceeded the maximum number of rules.
- *
- * @public
- */
-export type RulesCapProblem = Problem;
-
-
-/**
- * A count of user-provided stream filtering rules at the application and project levels.
+ * Schema type for RulesCount
  *
  * @public
  */
 export interface RulesCount {
-  /** Client App Rule Counts for all applications in the project */
-  allProjectClientApps?: AllProjectClientApps;
-  /** Cap of number of rules allowed per client application */
-  capPerClientApp?: number;
-  /** Cap of number of rules allowed per project */
-  capPerProject?: number;
-  /** A count of user-provided stream filtering rules at the client application level. */
-  clientAppRulesCount?: AppRulesCount;
-  /** Number of rules for project */
-  projectRulesCount?: number;
+  allProjectClientApps?: RulesCountAllProjectClientApps;
+  capPerClientApp?: string;
+  capPerProject?: string;
+  /** A count of filtered-stream rules for a single client application. */
+  clientAppRulesCount?: RulesCountClientAppRulesCount;
+  projectRulesCount?: string;
 }
 
 
 /**
- * Schema type for RulesLookupResponse
+ * Schema type for RulesCountAllProjectClientApps
  *
  * @public
  */
-export interface RulesLookupResponse {
-  data?: Array<Rule>;
-  meta: RulesResponseMetadata;
+export type RulesCountAllProjectClientApps = Array<{ clientAppId?: string | null; ruleCount: number; }>;
+
+
+/**
+ * A count of filtered-stream rules for a single client application.
+ *
+ * @public
+ */
+export interface RulesCountClientAppRulesCount {
+  /** Unique identifier of the client application. */
+  clientAppId?: string | null;
+  /** Number of rules configured for the client application. */
+  ruleCount: number;
 }
 
 
 /**
- * Schema type for RulesRequestSummary
+ * Schema type for SearchCommunitiesResponse
  *
  * @public
  */
-export type RulesRequestSummary = { created: number; invalid: number; notCreated: number; valid: number; } | { deleted: number; notDeleted: number; };
-
-
-/**
- * Schema type for RulesResponseMetadata
- *
- * @public
- */
-export interface RulesResponseMetadata {
-  /** The next token. */
-  nextToken?: NextToken;
-  /** Number of Rules in result set. */
-  resultCount?: number;
-  sent: string;
-  summary?: RulesRequestSummary;
+export interface SearchCommunitiesResponse {
+  data?: Array<Community>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; };
 }
 
 
 /**
- * Represent a Search Count Result.
+ * Schema type for SearchCommunityNotesWrittenResponse
  *
  * @public
  */
-export interface SearchCount {
-  /** The end time of the bucket. */
-  end: End;
-  /** The start time of the bucket. */
-  start: Start;
-  /** The count for the bucket. */
-  tweetCount: TweetCount;
+export interface SearchCommunityNotesWrittenResponse {
+  data?: Array<Note>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for SensitiveMediaWarning
+ * Schema type for SearchEligiblePostsResponse
  *
  * @public
  */
-export interface SensitiveMediaWarning {
-  /** Indicates if the content contains adult material */
-  adultContent?: boolean;
-  /** Indicates if the content depicts graphic violence */
-  graphicViolence?: boolean;
-  /** Indicates if the content has other sensitive characteristics */
-  other?: boolean;
+export interface SearchEligiblePostsResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; resultCount?: number; };
 }
 
 
 /**
- * Schema type for SharedInfo
+ * Schema type for SearchNewsResponse
  *
  * @public
  */
-export interface SharedInfo {
-  /** Indicates if the media is shared in direct messages */
-  shared: boolean;
+export interface SearchNewsResponse {
+  data?: Array<News>;
+  errors?: Array<Problem>;
+  meta?: { resultCount?: number; };
 }
 
 
 /**
- * 
+ * Schema type for SearchPostsAllResponse
+ *
+ * @public
+ */
+export interface SearchPostsAllResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { newestId?: string; nextToken?: string; oldestId?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for SearchPostsRecentResponse
+ *
+ * @public
+ */
+export interface SearchPostsRecentResponse {
+  data?: Array<Post>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { newestId?: string; nextToken?: string; oldestId?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for SearchSpacesResponse
+ *
+ * @public
+ */
+export interface SearchSpacesResponse {
+  data?: Array<Space>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for SearchUsersResponse
+ *
+ * @public
+ */
+export interface SearchUsersResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; };
+}
+
+
+/**
+ * Schema type for SendBroadcastChatRequest
+ *
+ * @public
+ */
+export interface SendBroadcastChatRequest {
+  /** The chat message text. */
+  text: string;
+}
+
+
+/**
+ * Schema type for SendBroadcastChatResponse
+ *
+ * @public
+ */
+export interface SendBroadcastChatResponse {
+  data?: SendBroadcastChatResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for SendBroadcastChatResponseData
+ *
+ * @public
+ */
+export interface SendBroadcastChatResponseData {
+  /** Whether the chat message was sent. */
+  success: boolean;
+  /** Server timestamp of the message, in nanoseconds. */
+  timestamp: string;
+}
+
+
+/**
+ * Schema type for SendChatMessageRequest
+ *
+ * @public
+ */
+export interface SendChatMessageRequest {
+  /** Optional conversation token. */
+  conversationToken?: string;
+  /** Base64-encoded Thrift MessageCreateEvent containing encrypted message contents. */
+  encodedMessageCreateEvent: string;
+  /** Base64-encoded Thrift MessageEventSignature for message verification. */
+  encodedMessageEventSignature?: string;
+  /** Unique identifier for this message. */
+  messageId: string;
+}
+
+
+/**
+ * Schema type for SendChatMessageResponse
+ *
+ * @public
+ */
+export interface SendChatMessageResponse {
+  data?: SendChatMessageResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for SendChatMessageResponseData
+ *
+ * @public
+ */
+export interface SendChatMessageResponseData {
+  /** Base64-encoded Thrift message event for the sent message. */
+  encodedMessageEvent: string;
+}
+
+
+/**
+ * Schema type for SendChatTypingIndicatorResponse
+ *
+ * @public
+ */
+export interface SendChatTypingIndicatorResponse {
+  data?: SendChatTypingIndicatorResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for SendChatTypingIndicatorResponseData
+ *
+ * @public
+ */
+export interface SendChatTypingIndicatorResponseData {
+  /** Whether the typing indicator was sent. */
+  success: boolean;
+}
+
+
+/**
+ * Schema type for Space
  *
  * @public
  */
 export interface Space {
-  /** Creation time of the Space. */
   createdAt?: string;
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  creatorId?: UserId;
-  /** End time of the Space. */
+  creatorId?: string;
   endedAt?: string;
-  /** The user ids for the hosts of the Space. */
-  hostIds?: Array<UserId>;
-  /** The unique identifier of this Space. */
-  id: SpaceId;
-  /** An array of user ids for people who were invited to a Space. */
-  invitedUserIds?: Array<UserId>;
-  /** Denotes if the Space is a ticketed Space. */
+  /** A list of unique identifiers of the Users who host this Space. */
+  hostIds?: SpaceHostIds;
+  id?: string;
+  /** A list of unique identifiers of the Users invited to this Space. */
+  invitedUserIds?: SpaceInvitedUserIds;
   isTicketed?: boolean;
-  /** The language of the Space. */
   lang?: string;
-  /** The number of participants in a Space. */
   participantCount?: number;
-  /** A date time stamp for when a Space is scheduled to begin. */
   scheduledStart?: string;
-  /** An array of user ids for people who were speakers in a Space. */
-  speakerIds?: Array<UserId>;
-  /** When the Space was started as a date string. */
+  /** A list of unique identifiers of the Users who are speakers in this Space. */
+  speakerIds?: SpaceSpeakerIds;
   startedAt?: string;
-  /** The current state of the Space. */
-  state: "live" | "scheduled" | "ended";
-  /** The number of people who have either purchased a ticket or set a reminder for this Space. */
+  state?: string;
   subscriberCount?: number;
-  /** The title of the Space. */
   title?: string;
-  /** The topics of a Space, as selected by its creator. */
-  topics?: Array<{ description?: string; id: string; name: string; }>;
-  /** When the Space was last updated. */
+  /** A list of unique identifiers of the Topics associated with this Space. */
+  topicIds?: SpaceTopicIds;
   updatedAt?: string;
 }
 
 
 /**
- * The unique identifier of this Space.
+ * A list of unique identifiers of the Users who host this Space.
  *
  * @public
  */
-export type SpaceId = string;
+export type SpaceHostIds = Array<string>;
 
 
 /**
- * The start time of the bucket.
+ * A list of unique identifiers of the Users invited to this Space.
  *
  * @public
  */
-export type Start = string;
+export type SpaceInvitedUserIds = Array<string>;
 
 
 /**
- * Schema type for Sticker
+ * A list of unique identifiers of the Users who are speakers in this Space.
  *
  * @public
  */
-export interface Sticker {
-  /** width-to-height ratio of the media */
-  aspectRatio?: number;
-  /** A unique identifier for the group of annotations associated with the media */
-  groupAnnotationId?: number;
-  /** Unique identifier for sticker */
-  id?: string;
-  /** A unique identifier for the sticker set associated with the media */
-  stickerSetAnnotationId?: number;
-  /** Scale or rotate the media on the x-axis */
-  transformA?: number;
-  /** Skew the media on the x-axis */
-  transformB?: number;
-  /** Skew the media on the y-axis */
-  transformC?: number;
-  /** Scale or rotate the media on the y-axis */
-  transformD?: number;
-  /** Scale or rotate the media on the x-axis */
-  transformTx?: number;
-  /** The vertical translation (shift) value for the media */
-  transformTy?: number;
-}
+export type SpaceSpeakerIds = Array<string>;
 
 
 /**
- * Schema type for StickerInfo
+ * A list of unique identifiers of the Topics associated with this Space.
  *
  * @public
  */
-export interface StickerInfo {
-  /** Stickers list must not be empty and should not exceed 25 */
-  stickers: Array<Sticker>;
-}
+export type SpaceTopicIds = Array<string>;
 
 
 /**
- * Schema type for StreamingLikeResponseV2
+ * Tweet label stream events.
  *
  * @public
  */
-export interface StreamingLikeResponseV2 {
+export type StreamLabelsComplianceResponse = { data: PostLabelData; } | { errors: Array<Problem>; };
+
+
+/**
+ * Likes compliance stream events.
+ *
+ * @public
+ */
+export type StreamLikesComplianceResponse = { data: LikeComplianceSchema; } | { errors: Array<Problem>; };
+
+
+/**
+ * Schema type for StreamLikesFirehoseResponse
+ *
+ * @public
+ */
+export interface StreamLikesFirehoseResponse {
   /** A Like event, with the tweet author user and the tweet being liked */
-  data?: LikeWithTweetAuthor;
+  data?: LikeWithPostAuthor;
   errors?: Array<Problem>;
   includes?: Expansions;
 }
 
 
 /**
- * Schema type for StreamingTweetResponse
+ * Schema type for StreamLikesSample10Response
  *
  * @public
  */
-export interface StreamingTweetResponse {
-  data?: Tweet;
+export interface StreamLikesSample10Response {
+  /** A Like event, with the tweet author user and the tweet being liked */
+  data?: LikeWithPostAuthor;
   errors?: Array<Problem>;
   includes?: Expansions;
-}
-
-
-/**
- * Schema type for SubscriptionsCountGetResponse
- *
- * @public
- */
-export interface SubscriptionsCountGetResponse {
-  /** The count of active subscriptions across all webhooks */
-  data?: { accountName: string; provisionedCount: string; subscriptionsCountAll: string; subscriptionsCountDirectMessages: string; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for SubscriptionsCreateRequest
- *
- * @public
- */
-export type SubscriptionsCreateRequest = Record<string, any>;
-
-
-/**
- * Schema type for SubscriptionsCreateResponse
- *
- * @public
- */
-export interface SubscriptionsCreateResponse {
-  data?: { subscribed?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for SubscriptionsDeleteResponse
- *
- * @public
- */
-export interface SubscriptionsDeleteResponse {
-  data?: { subscribed?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for SubscriptionsGetResponse
- *
- * @public
- */
-export interface SubscriptionsGetResponse {
-  data?: { subscribed?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for SubscriptionsListGetResponse
- *
- * @public
- */
-export interface SubscriptionsListGetResponse {
-  /** The list of active subscriptions for a specified webhook */
-  data?: { applicationId: string; subscriptions: Array<{ userId?: string; }>; webhookId: string; webhookUrl: string; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * The language code should be a BCP47 code (e.g. 'EN", "SP")
- *
- * @public
- */
-export type SubtitleLanguageCode = string;
-
-
-/**
- * Schema type for Subtitles
- *
- * @public
- */
-export interface Subtitles {
-  /** Language name in a human readable form */
-  displayName?: string;
-  /** The unique identifier of this Media. */
-  id?: MediaId;
-  /** The language code should be a BCP47 code (e.g. 'EN", "SP") */
-  languageCode?: SubtitleLanguageCode;
-}
-
-
-/**
- * Schema type for SubtitlesCreateRequest
- *
- * @public
- */
-export interface SubtitlesCreateRequest {
-  /** The unique identifier of this Media. */
-  id?: MediaId;
-  /** The media category of uploaded media to which subtitles should be added/deleted */
-  mediaCategory?: MediaCategorySubtitles;
-  subtitles?: Subtitles;
-}
-
-
-/**
- * Schema type for SubtitlesCreateResponse
- *
- * @public
- */
-export interface SubtitlesCreateResponse {
-  data?: { associatedSubtitles: Array<Subtitles>; id: MediaId; mediaCategory: MediaCategorySubtitles; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for SubtitlesDeleteRequest
- *
- * @public
- */
-export interface SubtitlesDeleteRequest {
-  /** The unique identifier of this Media. */
-  id?: MediaId;
-  /** The language code should be a BCP47 code (e.g. 'EN", "SP") */
-  languageCode?: SubtitleLanguageCode;
-  /** The media category of uploaded media to which subtitles should be added/deleted */
-  mediaCategory?: MediaCategorySubtitles;
-}
-
-
-/**
- * Schema type for SubtitlesDeleteResponse
- *
- * @public
- */
-export interface SubtitlesDeleteResponse {
-  data?: { deleted: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for TimestampedMetrics
- *
- * @public
- */
-export interface TimestampedMetrics {
-  metrics?: Metrics;
-  /** ISO8601 Time */
-  timestamp?: string;
-}
-
-
-/**
- * The topic of a Space, as selected by its creator.
- *
- * @public
- */
-export interface Topic {
-  /** The description of the given topic. */
-  description?: string;
-  /** Unique identifier of this Topic. */
-  id: TopicId;
-  /** The name of the given topic. */
-  name: string;
-}
-
-
-/**
- * Unique identifier of this Topic.
- *
- * @public
- */
-export type TopicId = string;
-
-
-/**
- * A trend.
- *
- * @public
- */
-export interface Trend {
-  /** Name of the trend. */
-  trendName?: string;
-  /** Number of Posts in this trend. */
-  tweetCount?: number;
-}
-
-
-/**
- * Schema type for Tweet
- *
- * @public
- */
-export interface Tweet {
-  /** Specifies the type of attachments (if any) present in this Tweet. */
-  attachments?: { mediaKeys?: Array<MediaKey>; mediaSourceTweetId?: Array<TweetId>; pollIds?: Array<PollId>; };
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  authorId?: UserId;
-  /** The unique identifier of this Community. */
-  communityId?: CommunityId;
-  contextAnnotations?: Array<ContextAnnotation>;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  conversationId?: TweetId;
-  /** Creation time of the Tweet. */
-  createdAt?: string;
-  /** Represent a boundary range (start and end zero-based indices) for the portion of text that is displayed for a post. `start` must be smaller than `end`. The start index is inclusive, the end index is exclusive. */
-  displayTextRange?: DisplayTextRange;
-  editControls?: { editableUntil: string; editsRemaining: number; isEditEligible: boolean; };
-  /** A list of Tweet Ids in this Tweet chain. */
-  editHistoryTweetIds?: Array<TweetId>;
-  entities?: FullTextEntities;
-  /** The location tagged on the Tweet, if the user provided one. */
-  geo?: { coordinates?: Point; placeId?: PlaceId; };
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  id?: TweetId;
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  inReplyToUserId?: UserId;
-  /** Language of the Tweet, if detected by X. Returned as a BCP47 language tag. */
-  lang?: string;
-  /** The matched media notes for the post. */
-  matchedMediaNotes?: { matchStatus?: string; noteId?: NoteId; };
-  /** Nonpublic engagement metrics for the Tweet at the time of the request. */
-  nonPublicMetrics?: { impressionCount?: number; };
-  /** The note request suggestions for the post. */
-  noteRequestSuggestions?: { sourceLink?: UrlEntity; suggestion?: string; suggestionId?: string; };
-  /** The full-content of the Tweet, including text beyond 280 characters. */
-  noteTweet?: { entities?: { cashtags?: Array<CashtagEntity>; hashtags?: Array<HashtagEntity>; mentions?: Array<MentionEntity>; urls?: Array<UrlEntity>; }; text?: NoteTweetText; };
-  /** Organic nonpublic engagement metrics for the Tweet at the time of the request. */
-  organicMetrics?: { impressionCount: number; likeCount: number; replyCount: number; retweetCount: number; };
-  /** Indicates if this Post is a paid partnership, i.e. it has been disclosed by the author as containing paid promotion. */
-  paidPartnership?: boolean;
-  /** Indicates if this Tweet contains URLs marked as sensitive, for example content suitable for mature audiences. */
-  possiblySensitive?: boolean;
-  /** Promoted nonpublic engagement metrics for the Tweet at the time of the request. */
-  promotedMetrics?: { impressionCount?: number; likeCount?: number; replyCount?: number; retweetCount?: number; };
-  /** Engagement metrics for the Tweet at the time of the request. */
-  publicMetrics?: { bookmarkCount: number; impressionCount: number; likeCount: number; quoteCount?: number; replyCount: number; retweetCount: number; };
-  /** A list of Posts this Tweet refers to. For example, if the parent Tweet is a Retweet, a Quoted Tweet or a Reply, it will include the related Tweet referenced to by its parent. */
-  referencedTweets?: Array<{ id: TweetId; type: "retweeted" | "quoted" | "replied_to"; }>;
-  /** Shows who can reply a Tweet. Fields returned are everyone, mentioned_users, subscribers, verified and following. */
-  replySettings?: ReplySettingsWithVerifiedUsers;
-  /** The scopes for this tweet */
-  scopes?: { followers?: boolean; };
-  /** This is deprecated. */
-  source?: string;
-  suggestedSourceLinks?: Array<UrlEntity>;
-  /** Suggested source links and the number of requests that included each link. */
-  suggestedSourceLinksWithCounts?: { count?: number; url?: UrlEntity; };
-  /** The content of the Tweet. */
-  text?: TweetText;
-  /** The X handle (screen name) of this user. */
-  username?: UserName;
-  /** Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country). */
-  withheld?: TweetWithheld;
-}
-
-
-/**
- * Tweet compliance data.
- *
- * @public
- */
-export type TweetComplianceData = TweetDeleteComplianceSchema | TweetWithheldComplianceSchema | TweetDropComplianceSchema | TweetUndropComplianceSchema | TweetEditComplianceSchema;
-
-
-/**
- * Schema type for TweetComplianceSchema
- *
- * @public
- */
-export interface TweetComplianceSchema {
-  /** Event time. */
-  eventAt: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  quoteTweetId?: TweetId;
-  tweet: { authorId: UserId; id: TweetId; };
 }
 
 
@@ -4526,280 +5908,201 @@ export interface TweetComplianceSchema {
  *
  * @public
  */
-export type TweetComplianceStreamResponse = { data: TweetComplianceData; } | { errors: Array<Problem>; };
+export type StreamPostsComplianceResponse = { data: PostComplianceData; } | { errors: Array<Problem>; };
 
 
 /**
- * The count for the bucket.
+ * Schema type for StreamPostsFirehoseEnResponse
  *
  * @public
  */
-export type TweetCount = number;
-
-
-/**
- * Schema type for TweetCreateRequest
- *
- * @public
- */
-export interface TweetCreateRequest {
-  /** Card Uri Parameter. This is mutually exclusive from Quote Tweet Id, Poll, Media, and Direct Message Deep Link. */
-  cardUri?: string;
-  /** The unique identifier of this Community. */
-  communityId?: CommunityId;
-  /** Link to take the conversation from the public timeline to a private Direct Message. */
-  directMessageDeepLink?: string;
-  /** Options for editing an existing Post. When provided, this request will edit the specified Post instead of creating a new one. */
-  editOptions?: { previousPostId: TweetId; };
-  /** Exclusive Tweet for super followers. */
-  forSuperFollowersOnly?: boolean;
-  /** Place ID being attached to the Tweet for geo location. */
-  geo?: { placeId?: string; };
-  /** Whether this Post contains AI-generated media. When true, the Post will be labeled accordingly. */
-  madeWithAi?: boolean;
-  /** Media information being attached to created Tweet. This is mutually exclusive from Quote Tweet Id, Poll, and Card URI. */
-  media?: { callToActions?: { appInstall?: { appStoreId?: string; ipadAppStoreId?: string; playStoreId?: string; }; visitSite?: { url: string; }; watchNow?: { url: string; }; }; description?: string; embeddable?: boolean; mediaIds: Array<MediaId>; previewMediaId?: MediaId; taggedUserIds?: Array<UserId>; title?: string; };
-  /** Nullcasted (promoted-only) Posts do not appear in the public timeline and are not served to followers. */
-  nullcast?: boolean;
-  /** Whether this Post is a paid partnership. When true, the Post will be labeled as a paid promotion. */
-  paidPartnership?: boolean;
-  /** Poll options for a Tweet with a poll. This is mutually exclusive from Media, Quote Tweet Id, and Card URI. */
-  poll?: { durationMinutes: number; options: Array<string>; replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified"; };
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  quoteTweetId?: TweetId;
-  /** Tweet information of the Tweet being replied to. */
-  reply?: { autoPopulateReplyMetadata?: boolean; excludeReplyUserIds?: Array<UserId>; inReplyToTweetId: TweetId; };
-  /** Settings to indicate who can reply to the Tweet. */
-  replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified";
-  /** Share community post with followers too. */
-  shareWithFollowers?: boolean;
-  /** The content of the Tweet. */
-  text?: TweetText;
+export interface StreamPostsFirehoseEnResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
 }
 
 
 /**
- * Schema type for TweetCreateResponse
+ * Schema type for StreamPostsFirehoseJaResponse
  *
  * @public
  */
-export interface TweetCreateResponse {
-  data?: { id: TweetId; text: TweetText; };
+export interface StreamPostsFirehoseJaResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for StreamPostsFirehoseKoResponse
+ *
+ * @public
+ */
+export interface StreamPostsFirehoseKoResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for StreamPostsFirehosePtResponse
+ *
+ * @public
+ */
+export interface StreamPostsFirehosePtResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for StreamPostsFirehoseResponse
+ *
+ * @public
+ */
+export interface StreamPostsFirehoseResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * A Tweet or error that can be returned by the streaming Tweet API. The values returned with a successful streamed Tweet includes the user provided rules that the Tweet matched.
+ *
+ * @public
+ */
+export interface StreamPostsResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  /** The list of rules which matched the Tweet */
+  matchingRules?: Array<{ id: RuleId; tag?: RuleTag; }>;
+}
+
+
+/**
+ * Schema type for StreamPostsSample10Response
+ *
+ * @public
+ */
+export interface StreamPostsSample10Response {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for StreamPostsSampleResponse
+ *
+ * @public
+ */
+export interface StreamPostsSampleResponse {
+  data?: Post;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * User compliance stream events.
+ *
+ * @public
+ */
+export type StreamUsersComplianceResponse = { data: UserComplianceData; } | { errors: Array<Problem>; };
+
+
+/**
+ * Schema type for Topic
+ *
+ * @public
+ */
+export interface Topic {
+  description?: string;
+  id?: string;
+  name?: string;
+}
+
+
+/**
+ * Schema type for Trend
+ *
+ * @public
+ */
+export interface Trend {
+  trendName?: string;
+  tweetCount?: number;
+}
+
+
+/**
+ * Schema type for UnblockUsersDmsResponse
+ *
+ * @public
+ */
+export interface UnblockUsersDmsResponse {
+  data?: UnblockUsersDmsResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for TweetDeleteComplianceSchema
+ * Schema type for UnblockUsersDmsResponseData
  *
  * @public
  */
-export interface TweetDeleteComplianceSchema {
-  delete: TweetComplianceSchema;
+export interface UnblockUsersDmsResponseData {
+  /** Indicates whether the target user is DM-blocked. */
+  blocked: boolean;
 }
 
 
 /**
- * Schema type for TweetDeleteResponse
+ * Schema type for UnfollowListResponse
  *
  * @public
  */
-export interface TweetDeleteResponse {
-  data?: { deleted: boolean; };
+export interface UnfollowListResponse {
+  data?: UnfollowListResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for TweetDropComplianceSchema
+ * Schema type for UnfollowListResponseData
  *
  * @public
  */
-export interface TweetDropComplianceSchema {
-  drop: TweetComplianceSchema;
+export interface UnfollowListResponseData {
+  /** Indicates whether the user is following the List. */
+  following: boolean;
 }
 
 
 /**
- * Schema type for TweetEditComplianceObjectSchema
+ * Schema type for UnfollowUserResponse
  *
  * @public
  */
-export interface TweetEditComplianceObjectSchema {
-  editTweetIds: Array<TweetId>;
-  /** Event time. */
-  eventAt: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  initialTweetId: TweetId;
-  tweet: { id: TweetId; };
+export interface UnfollowUserResponse {
+  data?: UnfollowUserResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for TweetEditComplianceSchema
+ * Schema type for UnfollowUserResponseData
  *
  * @public
  */
-export interface TweetEditComplianceSchema {
-  tweetEdit: TweetEditComplianceObjectSchema;
-}
-
-
-/**
- * Schema type for TweetHideRequest
- *
- * @public
- */
-export interface TweetHideRequest {
-  hidden: boolean;
-}
-
-
-/**
- * Schema type for TweetHideResponse
- *
- * @public
- */
-export interface TweetHideResponse {
-  data?: { hidden?: boolean; };
-}
-
-
-/**
- * Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.
- *
- * @public
- */
-export type TweetId = string;
-
-
-/**
- * Tweet label data.
- *
- * @public
- */
-export type TweetLabelData = TweetNoticeSchema | TweetUnviewableSchema;
-
-
-/**
- * Tweet label stream events.
- *
- * @public
- */
-export type TweetLabelStreamResponse = { data: TweetLabelData; } | { errors: Array<Problem>; };
-
-
-/**
- * Schema type for TweetNotice
- *
- * @public
- */
-export interface TweetNotice {
-  /** If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’. */
-  application: string;
-  /** Information shown on the Tweet label */
-  details?: string;
-  /** Event time. */
-  eventAt: string;
-  /** The type of label on the Tweet */
-  eventType: string;
-  /** Link to more information about this kind of label */
-  extendedDetailsUrl?: string;
-  /** Title/header of the Tweet label */
-  labelTitle?: string;
-  tweet: { authorId: UserId; id: TweetId; };
-}
-
-
-/**
- * Schema type for TweetNoticeSchema
- *
- * @public
- */
-export interface TweetNoticeSchema {
-  publicTweetNotice: TweetNotice;
-}
-
-
-/**
- * Schema type for TweetTakedownComplianceSchema
- *
- * @public
- */
-export interface TweetTakedownComplianceSchema {
-  /** Event time. */
-  eventAt: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  quoteTweetId?: TweetId;
-  tweet: { authorId: UserId; id: TweetId; };
-  withheldInCountries: Array<CountryCode>;
-}
-
-
-/**
- * The content of the Tweet.
- *
- * @public
- */
-export type TweetText = string;
-
-
-/**
- * Schema type for TweetUndropComplianceSchema
- *
- * @public
- */
-export interface TweetUndropComplianceSchema {
-  undrop: TweetComplianceSchema;
-}
-
-
-/**
- * Schema type for TweetUnviewable
- *
- * @public
- */
-export interface TweetUnviewable {
-  /** If the label is being applied or removed. Possible values are ‘apply’ or ‘remove’. */
-  application: string;
-  /** Event time. */
-  eventAt: string;
-  tweet: { authorId: UserId; id: TweetId; };
-}
-
-
-/**
- * Schema type for TweetUnviewableSchema
- *
- * @public
- */
-export interface TweetUnviewableSchema {
-  publicTweetUnviewable: TweetUnviewable;
-}
-
-
-/**
- * Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
- *
- * @public
- */
-export interface TweetWithheld {
-  /** Indicates if the content is being withheld for on the basis of copyright infringement. */
-  copyright: boolean;
-  /** Provides a list of countries where this content is not available. */
-  countryCodes: Array<CountryCode>;
-  /** Indicates whether the content being withheld is the `tweet` or a `user`. */
-  scope?: "tweet" | "user";
-}
-
-
-/**
- * Schema type for TweetWithheldComplianceSchema
- *
- * @public
- */
-export interface TweetWithheldComplianceSchema {
-  withheld: TweetTakedownComplianceSchema;
+export interface UnfollowUserResponseData {
+  /** Whether the user is followed. */
+  following: boolean;
 }
 
 
@@ -4811,178 +6114,427 @@ export interface TweetWithheldComplianceSchema {
 export interface UnlikeComplianceSchema {
   /** Event time. */
   eventAt: string;
-  favorite: { id: TweetId; userId: UserId; };
+  favorite: { id: PostId; userId: UserId; };
 }
 
 
 /**
- * A problem that indicates that the authentication used is not supported.
+ * Schema type for UnlikePostResponse
  *
  * @public
  */
-export type UnsupportedAuthenticationProblem = Problem;
-
-
-/**
- * Expiration time of the upload URL.
- *
- * @public
- */
-export type UploadExpiration = string;
-
-
-/**
- * Schema type for UploadSource
- *
- * @public
- */
-export interface UploadSource {
-  /** Records the source (e.g., app, device) from which the media was uploaded */
-  uploadSource: string;
+export interface UnlikePostResponse {
+  data?: UnlikePostResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * URL to which the user will upload their Tweet or user IDs.
+ * Schema type for UnlikePostResponseData
  *
  * @public
  */
-export type UploadUrl = string;
+export interface UnlikePostResponseData {
+  /** Whether the Post is liked. */
+  liked: boolean;
+}
 
 
 /**
- * A validly formatted URL.
+ * Schema type for UnmuteUserResponse
  *
  * @public
  */
-export type Url = string;
+export interface UnmuteUserResponse {
+  data?: UnmuteUserResponseData;
+  errors?: Array<Problem>;
+}
 
 
 /**
- * Represent the portion of text recognized as a URL, and its start and end position within the text.
+ * Schema type for UnmuteUserResponseData
  *
  * @public
  */
-export type UrlEntity = EntityIndicesInclusiveExclusive & UrlFields;
+export interface UnmuteUserResponseData {
+  /** Whether the user is muted. */
+  muting: boolean;
+}
 
 
 /**
- * Represent the portion of text recognized as a URL, and its start and end position within the text.
+ * Schema type for UnpinListResponse
  *
  * @public
  */
-export type UrlEntityDm = EntityIndicesInclusiveExclusive & UrlFields;
+export interface UnpinListResponse {
+  data?: UnpinListResponseData;
+  errors?: Array<Problem>;
+}
 
 
 /**
- * Represent the portion of text recognized as a URL.
+ * Schema type for UnpinListResponseData
  *
  * @public
  */
-export interface UrlFields {
-  /** Description of the URL landing page. */
+export interface UnpinListResponseData {
+  /** Indicates whether the List is pinned by the authenticated user. */
+  pinned: boolean;
+}
+
+
+/**
+ * Schema type for UnrepostPostResponse
+ *
+ * @public
+ */
+export interface UnrepostPostResponse {
+  data?: UnrepostPostResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UnrepostPostResponseData
+ *
+ * @public
+ */
+export interface UnrepostPostResponseData {
+  /** Whether the Post is reposted. */
+  retweeted: boolean;
+}
+
+
+/**
+ * Schema type for UpdateActivitySubscriptionRequest
+ *
+ * @public
+ */
+export interface UpdateActivitySubscriptionRequest {
+  /** Optional caller-defined tag. */
+  tag?: string;
+  /** Webhook to deliver the subscription events to. */
+  webhookId?: string;
+}
+
+
+/**
+ * Schema type for UpdateActivitySubscriptionResponse
+ *
+ * @public
+ */
+export interface UpdateActivitySubscriptionResponse {
+  data?: UpdateActivitySubscriptionResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateActivitySubscriptionResponseData
+ *
+ * @public
+ */
+export interface UpdateActivitySubscriptionResponseData {
+  subscription?: UpdateActivitySubscriptionResponseDataSubscription;
+  /** Total active subscriptions for the instance. */
+  totalSubscriptions?: number;
+}
+
+
+/**
+ * Schema type for UpdateActivitySubscriptionResponseDataSubscription
+ *
+ * @public
+ */
+export interface UpdateActivitySubscriptionResponseDataSubscription {
+  /** Subscription creation time. */
+  createdAt?: string;
+  /** Activity event type in dot notation. */
+  eventType?: string;
+  filter?: UpdateActivitySubscriptionResponseDataSubscriptionFilter;
+  /** Unique identifier of the subscription. */
+  subscriptionId?: string;
+  /** Optional caller-defined tag. */
+  tag?: string;
+  /** Subscription last-update time. */
+  updatedAt?: string;
+  /** Webhook receiving the subscription events. */
+  webhookId?: string;
+}
+
+
+/**
+ * Schema type for UpdateActivitySubscriptionResponseDataSubscriptionFilter
+ *
+ * @public
+ */
+export interface UpdateActivitySubscriptionResponseDataSubscriptionFilter {
+  /** Optional direction filter for directional events. Not present for mute.* or block.* events. */
+  direction?: string;
+  /** Optional keyword filter. */
+  keyword?: string;
+  /** User the subscription is scoped to. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for UpdateListsRequest
+ *
+ * @public
+ */
+export interface UpdateListsRequest {
+  /** New description for the List (up to 100 characters). */
   description?: string;
-  /** The URL as displayed in the X client. */
-  displayUrl?: string;
-  /** A validly formatted URL. */
-  expandedUrl?: Url;
-  images?: Array<UrlImage>;
-  /** The Media Key identifier for this attachment. */
-  mediaKey?: MediaKey;
-  /** HTTP Status Code. */
-  status?: HttpStatusCode;
-  /** Title of the page the URL points to. */
-  title?: string;
-  /** Fully resolved url. */
-  unwoundUrl?: string;
-  /** A validly formatted URL. */
-  url: Url;
+  /** New name for the List (1-25 characters). */
+  name?: string;
+  /** Whether the List is private. */
+  private?: boolean;
 }
 
 
 /**
- * Represent the information for the URL image.
+ * Schema type for UpdateListsResponse
  *
  * @public
  */
-export interface UrlImage {
-  /** The height of the media in pixels. */
-  height?: MediaHeight;
-  /** A validly formatted URL. */
-  url?: Url;
-  /** The width of the media in pixels. */
-  width?: MediaWidth;
+export interface UpdateListsResponse {
+  data?: UpdateListsResponseData;
+  errors?: Array<Problem>;
 }
 
 
 /**
- * Usage per client app
+ * Schema type for UpdateListsResponseData
+ *
+ * @public
+ */
+export interface UpdateListsResponseData {
+  /** Indicates whether the List was updated. */
+  updated: boolean;
+}
+
+
+/**
+ * Schema type for UpdateRulesAdd
+ *
+ * @public
+ */
+export interface UpdateRulesAdd {
+  /** Optional caller-defined label for the rule. */
+  tag?: string;
+  /** Rule filter expression. */
+  value: string;
+}
+
+
+/**
+ * Schema type for UpdateRulesDelete
+ *
+ * @public
+ */
+export interface UpdateRulesDelete {
+  /** Rule ids (Snowflake external ids) to delete. */
+  ids?: Array<string>;
+  /** Rule values to delete. */
+  values?: Array<string>;
+}
+
+
+/**
+ * Schema type for UpdateRulesRequest
+ *
+ * @public
+ */
+export interface UpdateRulesRequest {
+  /** Rules to add. */
+  add?: Array<UpdateRulesAdd>;
+  delete?: UpdateRulesDelete;
+}
+
+
+/**
+ * Schema type for UpdateRulesResponse
+ *
+ * @public
+ */
+export interface UpdateRulesResponse {
+  data?: Array<UpdateRulesResponseData>;
+  errors?: Array<Problem>;
+  meta?: { sent?: string; summary?: Record<string, any>; };
+}
+
+
+/**
+ * Schema type for UpdateRulesResponseData
+ *
+ * @public
+ */
+export interface UpdateRulesResponseData {
+  /** Unique identifier of the rule. */
+  id?: string;
+  /** Optional caller-defined label for the rule. */
+  tag?: string;
+  /** The rule's filter expression. */
+  value?: string;
+}
+
+
+/**
+ * Schema type for UpdateScheduledBroadcastRequest
+ *
+ * @public
+ */
+export interface UpdateScheduledBroadcastRequest {
+  /** Enable replay. */
+  availableForReplay?: boolean;
+  /** Chat permission option (numeric string). */
+  chatOption?: string;
+  /** Description. */
+  description?: string;
+  /** Lock the broadcast. */
+  isLocked?: boolean;
+  /** Locale. */
+  locale?: string;
+  /** If true, do not auto-publish at start; call POST .../live when ready. */
+  manualPublish?: boolean;
+  /** When true, shift the head of a recurring series. */
+  rollForward?: boolean;
+  /** Numeric scheduler id from create/list/get. */
+  scheduledBroadcastId: string;
+  /** End time, ms since Unix epoch (decimal string). */
+  scheduledEndMs: string;
+  /** Start time, ms since Unix epoch (decimal string). */
+  scheduledStartMs: string;
+  /** Ingest / source id. */
+  sourceId?: string;
+  /** Pre-live slate media id (numeric string). */
+  thumbnailMediaId?: string;
+  /** Title / status text. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for UpdateScheduledBroadcastResponse
+ *
+ * @public
+ */
+export interface UpdateScheduledBroadcastResponse {
+  data?: UpdateScheduledBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateScheduledBroadcastResponseData
+ *
+ * @public
+ */
+export interface UpdateScheduledBroadcastResponseData {
+  /** Whether replay is enabled. */
+  availableForReplay?: boolean;
+  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  broadcastId?: string;
+  /** Optional chat permission option. */
+  chatOption?: string;
+  /** Optional description. */
+  description?: string;
+  /** Optional locale. */
+  locale?: string;
+  /** When true, coordinator will not auto-publish; call POST .../live when ready. */
+  manualPublish?: boolean;
+  /** Set when this occurrence belongs to a recurrence. */
+  recurringScheduleId?: string;
+  /** Numeric scheduler id. Required in the update request body. */
+  scheduledBroadcastId?: string;
+  /** Scheduled end, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Bound ingest / source id (`rtmp_stream_key`). */
+  sourceId?: string;
+  /** Scheduler state (Created, Scheduled, Running, …). */
+  state?: string;
+  /** Optional telecast association. */
+  telecastId?: string;
+  /** Optional pre-live slate media id. */
+  thumbnailMediaId?: string;
+  /** Broadcast title / status text. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for Usage
  *
  * @public
  */
 export interface Usage {
-  /** Number of days left for the Tweet cap to reset */
   capResetDay?: number;
-  /** The daily usage breakdown for each Client Application a project */
-  dailyClientAppUsage?: Array<ClientAppUsage>;
-  /** The daily usage breakdown for a project */
-  dailyProjectUsage?: { projectId?: number; usage?: Array<UsageFields>; };
-  /** Total number of Posts that can be read in this project per month */
-  projectCap?: number;
-  /** The unique identifier for this project */
+  /** Per-client-app daily Post usage for the caller's project. */
+  dailyClientAppUsage?: UsageDailyClientAppUsage;
+  /** Project-level daily Post usage for the caller's project. */
+  dailyProjectUsage?: UsageDailyProjectUsage;
+  projectCap?: string;
   projectId?: string;
-  /** The number of Posts read in this project */
-  projectUsage?: number;
+  projectUsage?: string;
 }
 
 
 /**
- * A problem that indicates that a usage cap has been exceeded.
+ * Per-client-app daily Post usage for the caller's project.
  *
  * @public
  */
-export type UsageCapExceededProblem = Problem & ({ period?: "Daily" | "Monthly"; scope?: "Account" | "Product"; });
+export type UsageDailyClientAppUsage = Array<{ clientAppId?: string | null; usage?: Array<{ date: string; usage?: string | null; }>; usageResultCount: number; }>;
 
 
 /**
- * Represents the data for Usage
+ * Project-level daily Post usage for the caller's project.
  *
  * @public
  */
-export interface UsageFields {
-  /** The time period for the usage */
-  date?: string;
-  /** The usage value */
-  usage?: number;
+export interface UsageDailyProjectUsage {
+  /** Unique identifier of the project. */
+  projectId?: string | null;
+  /** Daily usage entries for the project. */
+  usage?: Array<{ date: string; usage?: string | null; }> | null;
 }
 
 
 /**
- * The X User object.
+ * Schema type for User
  *
  * @public
  */
 export interface User {
   /** Metadata about a user's affiliation. */
-  affiliation?: { badgeUrl?: string; description?: string; url?: string; userId?: Array<UserId>; };
+  affiliation?: UserAffiliation;
+  confirmedEmail?: string;
   /** Returns detailed information about the relationship between two users. */
-  connectionStatus?: Array<"follow_request_received" | "follow_request_sent" | "blocking" | "followed_by" | "following" | "muting">;
+  connectionStatus?: UserConnectionStatus;
   /** Creation time of this User. */
   createdAt?: string;
   /** The text of this User's profile description (also known as bio), if the User provided one. */
   description?: string;
   /** A list of metadata found in the User's profile description. */
-  entities?: { description?: FullTextEntities; url?: { urls?: Array<UrlEntity>; }; };
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  id: UserId;
-  /** The location specified in the User's profile, if the User provided one. As this is a freeform value, it may not indicate a valid location, but it may be fuzzily evaluated when performing searches with location queries. */
+  entities?: UserEntities;
+  /** Unique identifier of this User. */
+  id?: string;
+  /** Indicates if this User has completed identity verification. */
+  isIdentityVerified?: boolean;
+  /** The location specified in the User's profile, if the User provided one. As this is a freeform value, it may not indicate a valid location. */
   location?: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  mostRecentTweetId?: TweetId;
+  /** Unique identifier of this User's most recent Post. */
+  mostRecentPostId?: string;
   /** The friendly name of this User, as shown on their profile. */
-  name: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  pinnedTweetId?: TweetId;
+  name?: string;
+  /** Indicates if this User is a parody account. */
+  parody?: boolean;
+  /** Unique identifier of this User's pinned Post. */
+  pinnedPostId?: string;
   /** The URL to the profile banner for this User. */
   profileBannerUrl?: string;
   /** The URL to the profile image for this User. */
@@ -4990,21 +6542,44 @@ export interface User {
   /** Indicates if this User has chosen to protect their Posts (in other words, if this User's Posts are private). */
   protected?: boolean;
   /** A list of metrics for this User. */
-  publicMetrics?: { followersCount: number; followingCount: number; likeCount?: number; listedCount: number; tweetCount: number; };
-  /** Indicates if you can send a DM to this User */
+  publicMetrics?: UserPublicMetrics;
+  /** Indicates if you can send a DM to this User. */
   receivesYourDm?: boolean;
-  /** The X Blue subscription type of the user, eg: Basic, Premium, PremiumPlus or None. */
-  subscriptionType?: "Basic" | "Premium" | "PremiumPlus" | "None";
+  /** Indicates if this User subscribes to you. */
+  subscribesToYou?: boolean;
+  /** The subscription relationship between this User and you. */
+  subscription?: UserSubscription;
+  /** The X Blue subscription type of the user, e.g.: Basic, Premium, PremiumPlus or None. */
+  subscriptionType?: string;
   /** The URL specified in the User's profile. */
   url?: string;
-  /** The X handle (screen name) of this user. */
-  username: UserName;
-  /** Indicate if this User is a verified X User. */
+  /** The X handle (screen name) of this User. */
+  username?: string;
+  /** Indicates if this User is a verified X User. */
   verified?: boolean;
-  /** The X Blue verified type of the user, eg: blue, government, business or none. */
-  verifiedType?: "blue" | "government" | "business" | "none";
-  /** Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country). */
+  /** The number of verified followers of this User. */
+  verifiedFollowersCount?: number;
+  /** The X Blue verified type of the user, e.g.: blue, government, business or none. */
+  verifiedType?: string;
+  /** Withholding details for withheld content. */
   withheld?: UserWithheld;
+}
+
+
+/**
+ * Metadata about a user's affiliation.
+ *
+ * @public
+ */
+export interface UserAffiliation {
+  /** URL of the affiliation badge image shown on the User's profile. */
+  badgeUrl?: string | null;
+  /** Description of the affiliation. */
+  description?: string | null;
+  /** URL associated with the affiliation. */
+  url?: string | null;
+  /** A list of unique identifiers of the accounts this User is affiliated with. */
+  userId?: Array<string> | null;
 }
 
 
@@ -5029,11 +6604,11 @@ export interface UserComplianceSchema {
 
 
 /**
- * User compliance stream events.
+ * Returns detailed information about the relationship between two users.
  *
  * @public
  */
-export type UserComplianceStreamResponse = { data: UserComplianceData; } | { errors: Array<Problem>; };
+export type UserConnectionStatus = Array<"blocking" | "follow_request_received" | "follow_request_sent" | "followed_by" | "following" | "muting">;
 
 
 /**
@@ -5047,27 +6622,24 @@ export interface UserDeleteComplianceSchema {
 
 
 /**
- * Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers.
+ * A list of metadata found in the User's profile description.
+ *
+ * @public
+ */
+export interface UserEntities {
+  /** Entities found in the User's bio. */
+  description?: { cashtags?: Array<{ end: number; start: number; tag: string; }> | null; hashtags?: Array<{ end: number; start: number; tag: string; }> | null; mentions?: Array<{ end: number; id?: string | null; start: number; username: string; }> | null; urls?: Array<{ description?: string | null; displayUrl?: string | null; end: number; expandedUrl?: string | null; images?: Array<{ height?: number | null; url?: string | null; width?: number | null; }> | null; mediaKey?: string | null; start: number; status?: number | null; title?: string | null; unwoundUrl?: string | null; url: string; }> | null; } | null;
+  /** Entities for the User's profile website URL. */
+  url?: { urls?: Array<{ description?: string | null; displayUrl?: string | null; end: number; expandedUrl?: string | null; images?: Array<{ height?: number | null; url?: string | null; width?: number | null; }> | null; mediaKey?: string | null; start: number; status?: number | null; title?: string | null; unwoundUrl?: string | null; url: string; }> | null; } | null;
+}
+
+
+/**
+ * Unique identifier of a User
  *
  * @public
  */
 export type UserId = string;
-
-
-/**
- * Unique identifier of this User. The value must be the same as the authenticated user.
- *
- * @public
- */
-export type UserIdMatchesAuthenticatedUser = string;
-
-
-/**
- * The X handle (screen name) of this user.
- *
- * @public
- */
-export type UserName = string;
 
 
 /**
@@ -5105,6 +6677,27 @@ export interface UserProtectComplianceSchema {
 
 
 /**
+ * A list of metrics for this User.
+ *
+ * @public
+ */
+export interface UserPublicMetrics {
+  /** Number of Users who follow this User. */
+  followersCount: number;
+  /** Number of Users this User follows. */
+  followingCount: number;
+  /** Number of Posts this User has liked. */
+  likeCount?: number | null;
+  /** Number of Lists that include this User. */
+  listedCount: number;
+  /** Number of media items posted by this User. */
+  mediaCount?: number | null;
+  /** Number of Posts (including Reposts) created by this User. */
+  postCount: number;
+}
+
+
+/**
  * Schema type for UserScrubGeoObjectSchema
  *
  * @public
@@ -5112,8 +6705,8 @@ export interface UserProtectComplianceSchema {
 export interface UserScrubGeoObjectSchema {
   /** Event time. */
   eventAt: string;
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  upToTweetId: TweetId;
+  /** Unique identifier of a Post */
+  upToTweetId: PostId;
   user: { id: UserId; };
 }
 
@@ -5129,11 +6722,14 @@ export interface UserScrubGeoSchema {
 
 
 /**
- * The the search string by which to query for users.
+ * The subscription relationship between this User and you.
  *
  * @public
  */
-export type UserSearchQueryVnext = string;
+export interface UserSubscription {
+  /** Indicates if this User subscribes to you. */
+  subscribesToYou: boolean;
+}
 
 
 /**
@@ -5190,15 +6786,15 @@ export interface UserUnsuspendComplianceSchema {
 
 
 /**
- * Indicates withholding details for [withheld content](https://help.twitter.com/en/rules-and-policies/tweet-withheld-by-country).
+ * Withholding details for withheld content.
  *
  * @public
  */
 export interface UserWithheld {
-  /** Provides a list of countries where this content is not available. */
-  countryCodes: Array<CountryCode>;
-  /** Indicates that the content being withheld is a `user`. */
-  scope?: "user";
+  /** A list of countries (as ISO 3166-1 alpha-2 codes) where this content is withheld. */
+  countryCodes?: Array<string> | null;
+  /** The scope of the withholding. Only present, with the value "user", when the entire User is withheld. */
+  scope?: "user" | null;
 }
 
 
@@ -5213,272 +6809,66 @@ export interface UserWithheldComplianceSchema {
 
 
 /**
- * Schema type for UsersDMBlockCreateResponse
+ * Schema type for ValidateAccountActivitySubscriptionResponse
  *
  * @public
  */
-export interface UsersDMBlockCreateResponse {
-  data?: { blocked?: boolean; };
+export interface ValidateAccountActivitySubscriptionResponse {
+  data?: ValidateAccountActivitySubscriptionResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for UsersDMUnBlockCreateResponse
+ * Schema type for ValidateAccountActivitySubscriptionResponseData
  *
  * @public
  */
-export interface UsersDMUnBlockCreateResponse {
-  data?: { blocked?: boolean; };
+export interface ValidateAccountActivitySubscriptionResponseData {
+  /** Whether the user has an active subscription. */
+  subscribed: boolean;
+}
+
+
+/**
+ * Schema type for ValidateWebhooksResponse
+ *
+ * @public
+ */
+export interface ValidateWebhooksResponse {
+  data?: ValidateWebhooksResponseData;
   errors?: Array<Problem>;
 }
 
 
 /**
- * Schema type for UsersFollowingCreateRequest
+ * Schema type for ValidateWebhooksResponseData
  *
  * @public
  */
-export interface UsersFollowingCreateRequest {
-  /** Unique identifier of this User. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  targetUserId: UserId;
+export interface ValidateWebhooksResponseData {
+  /** Indicates whether the CRC validation check was triggered. */
+  valid: boolean;
 }
 
 
 /**
- * Schema type for UsersFollowingCreateResponse
- *
- * @public
- */
-export interface UsersFollowingCreateResponse {
-  data?: { following?: boolean; pendingFollow?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for UsersFollowingDeleteResponse
- *
- * @public
- */
-export interface UsersFollowingDeleteResponse {
-  data?: { following?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for UsersLikesCreateRequest
- *
- * @public
- */
-export interface UsersLikesCreateRequest {
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  tweetId: TweetId;
-}
-
-
-/**
- * Schema type for UsersLikesCreateResponse
- *
- * @public
- */
-export interface UsersLikesCreateResponse {
-  data?: { liked?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for UsersLikesDeleteResponse
- *
- * @public
- */
-export interface UsersLikesDeleteResponse {
-  data?: { liked?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for UsersRetweetsCreateRequest
- *
- * @public
- */
-export interface UsersRetweetsCreateRequest {
-  /** Unique identifier of this Tweet. This is returned as a string in order to avoid complications with languages and tools that cannot handle large integers. */
-  tweetId: TweetId;
-}
-
-
-/**
- * Schema type for UsersRetweetsCreateResponse
- *
- * @public
- */
-export interface UsersRetweetsCreateResponse {
-  data?: { id?: TweetId; retweeted?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for UsersRetweetsDeleteResponse
- *
- * @public
- */
-export interface UsersRetweetsDeleteResponse {
-  data?: { retweeted?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for Variant
- *
- * @public
- */
-export interface Variant {
-  /** The bit rate of the media. */
-  bitRate?: number;
-  /** The content type of the media. */
-  contentType?: string;
-  /** The url to the media. */
-  url?: string;
-}
-
-
-/**
- * An array of all available variants of the media.
- *
- * @public
- */
-export type Variants = Array<Variant>;
-
-
-/**
- * Schema type for Video
- *
- * @public
- */
-export type Video = Media & { durationMs?: number; nonPublicMetrics?: { playback_0Count?: number; playback_100Count?: number; playback_25Count?: number; playback_50Count?: number; playback_75Count?: number; }; organicMetrics?: { playback_0Count?: number; playback_100Count?: number; playback_25Count?: number; playback_50Count?: number; playback_75Count?: number; viewCount?: number; }; previewImageUrl?: string; promotedMetrics?: { playback_0Count?: number; playback_100Count?: number; playback_25Count?: number; playback_50Count?: number; playback_75Count?: number; viewCount?: number; }; publicMetrics?: { viewCount?: number; }; variants?: Variants; };
-
-
-/**
- * A Webhook Configuration
+ * Schema type for WebhookConfig
  *
  * @public
  */
 export interface WebhookConfig {
-  createdAt: string;
-  /** The unique identifier of this webhook config. */
-  id: WebhookConfigId;
-  /** The callback URL of the webhook. */
-  url: string;
-  valid: boolean;
+  createdAt?: string;
+  id?: string;
+  url?: string;
+  valid?: boolean;
 }
 
 
 /**
- * Schema type for WebhookConfigCreateRequest
- *
- * @public
- */
-export interface WebhookConfigCreateRequest {
-  url: string;
-}
-
-
-/**
- * A Webhook Configuration
- *
- * @public
- */
-export interface WebhookConfigCreateResponse {
-  createdAt: string;
-  /** The unique identifier of this webhook config. */
-  id: WebhookConfigId;
-  /** The callback URL of the webhook. */
-  url: string;
-  valid: boolean;
-}
-
-
-/**
- * Schema type for WebhookConfigDeleteResponse
- *
- * @public
- */
-export interface WebhookConfigDeleteResponse {
-  data?: { deleted?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * The unique identifier of this webhook config.
+ * Unique identifier of a WebhookConfig
  *
  * @public
  */
 export type WebhookConfigId = string;
-
-
-/**
- * Schema type for WebhookConfigPutResponse
- *
- * @public
- */
-export interface WebhookConfigPutResponse {
-  data?: { attempted?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for WebhookLinksCreateResponse
- *
- * @public
- */
-export interface WebhookLinksCreateResponse {
-  data?: { provisioned?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for WebhookLinksDeleteResponse
- *
- * @public
- */
-export interface WebhookLinksDeleteResponse {
-  data?: { deleted?: boolean; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for WebhookLinksGetResponse
- *
- * @public
- */
-export interface WebhookLinksGetResponse {
-  /** The list of active webhook links for a given stream */
-  data?: { links: Array<{ applicationId?: string; businessUserId?: string; createdAt?: string; fields?: Array<string>; instanceId?: string; webhookId?: string; }>; };
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for WebhookReplayCreateRequest
- *
- * @public
- */
-export interface WebhookReplayCreateRequest {
-  /** The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in yyyymmddhhmm format. */
-  fromDate: string;
-  /** The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in yyyymmddhhmm format. */
-  toDate: string;
-  /** The unique identifier of this webhook config. */
-  webhookId: WebhookConfigId;
-}
 

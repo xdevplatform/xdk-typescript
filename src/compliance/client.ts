@@ -18,13 +18,34 @@ import {
 } from '../paginator.js';
 import {
 
+GetJobsByIdResponse,
+
 GetJobsResponse,
 CreateJobsRequest,
 
 CreateJobsResponse,
-
-GetJobsByIdResponse,
 } from './models.js';
+
+
+/**
+ * Options for getJobsById method
+ * 
+ * @public
+ */
+export interface GetJobsByIdOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 /**
@@ -35,7 +56,7 @@ GetJobsByIdResponse,
 export interface GetJobsOptions {
     
     
-    /** Status of Compliance Job to list. 
+    /** status 
      * Also accepts: status or proper camelCase (e.g., status) */
     status?: "created" | "in_progress" | "failed" | "complete";
     
@@ -54,13 +75,12 @@ export interface GetJobsOptions {
 }
 
 
-
 /**
- * Options for getJobsById method
+ * Options for createJobs method
  * 
  * @public
  */
-export interface GetJobsByIdOptions {
+export interface CreateJobsOptions {
     
     
     /** A comma separated list of ComplianceJob fields to display. 
@@ -127,12 +147,147 @@ export class ComplianceClient {
 
 
   /**
+   * Get Compliance Job by ID
+   * Retrieves details of a specific Compliance Job by its ID.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getJobsById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetJobsByIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getJobsById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetJobsByIdOptions
+        
+    ): Promise<GetJobsByIdResponse>;
+    // Implementation
+    async getJobsById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetJobsByIdOptions = {}
+        
+    ): Promise<GetJobsByIdResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            
+            params.append('compliance_job.fields', normalizeFields(complianceJobFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetJobsByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
    * Get Compliance Jobs
    * Retrieves a list of Compliance Jobs filtered by job type and optional status.
 
 
 
-   * @param type Type of Compliance Job to list.
+   * @param type type
 
 
 
@@ -291,7 +446,7 @@ export class ComplianceClient {
 
 
 
-   * @param body A request to create a new batch compliance job.
+   * @param body Request body
 
    * @returns {Promise<CreateJobsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
@@ -303,7 +458,7 @@ export class ComplianceClient {
         body: CreateJobsRequest,
         
         
-        options: { requestOptions: { raw: true } }
+        options: CreateJobsOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
@@ -313,6 +468,8 @@ export class ComplianceClient {
         
         body: CreateJobsRequest,
         
+        
+        options?: CreateJobsOptions
         
     ): Promise<CreateJobsResponse>;
     // Implementation
@@ -327,107 +484,9 @@ export class ComplianceClient {
         
         
         
+        options: CreateJobsOptions = {}
+        
     ): Promise<CreateJobsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/compliance/jobs';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateJobsResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Compliance Job by ID
-   * Retrieves details of a specific Compliance Job by its ID.
-
-
-   * @param id The ID of the Compliance Job to retrieve.
-
-
-
-
-   * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getJobsById(
-        
-        
-        id: Schemas.JobId,
-        
-        
-        
-        
-        
-        options: GetJobsByIdOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getJobsById(
-        
-        
-        id: Schemas.JobId,
-        
-        
-        
-        
-        
-        options?: GetJobsByIdOptions
-        
-    ): Promise<GetJobsByIdResponse>;
-    // Implementation
-    async getJobsById(
-        
-        
-        
-        id: Schemas.JobId,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetJobsByIdOptions = {}
-        
-    ): Promise<GetJobsByIdResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -454,11 +513,7 @@ export class ComplianceClient {
         
 
         // Build the path with path parameters
-        let path = '/2/compliance/jobs/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
+        let path = '/2/compliance/jobs';
         
 
         // Build query parameters
@@ -481,6 +536,8 @@ export class ComplianceClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
             
             // Pass security requirements for smart auth selection
             security: [
@@ -498,8 +555,8 @@ export class ComplianceClient {
             
         };
 
-        return this.client.request<GetJobsByIdResponse>(
-            'GET',
+        return this.client.request<CreateJobsResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

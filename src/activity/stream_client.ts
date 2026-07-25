@@ -31,10 +31,6 @@ import {
 
   DeleteSubscriptionsByIdsResponse,
 
-
-
-  StreamResponse,
-
 } from './models.js';
 
 /**
@@ -44,9 +40,6 @@ import {
  */
 export interface UpdateSubscriptionStreamingOptions {
     
-    
-    /** Request body */
-    body?: any;
     
     /** Additional request options */
     requestOptions?: RequestOptions;
@@ -82,15 +75,15 @@ export interface DeleteSubscriptionStreamingOptions {
 export interface GetSubscriptionsStreamingOptions {
     
     
-    /** The maximum number of results to return per page. Defaults to 1000 when unspecified; use pagination_token (from response meta.next_token) to fetch additional pages. 
+    /** max_results 
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
     
     
-    /** This parameter is used to get the next 'page' of results. 
+    /** A base32hex-encoded pagination token. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: Schemas.PaginationToken32;
+    paginationToken?: string;
     
     
     
@@ -111,9 +104,6 @@ export interface GetSubscriptionsStreamingOptions {
 export interface CreateSubscriptionStreamingOptions {
     
     
-    /** Request body */
-    body?: any;
-    
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Additional headers */
@@ -129,41 +119,6 @@ export interface CreateSubscriptionStreamingOptions {
  * @public
  */
 export interface DeleteSubscriptionsByIdsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for stream method
- * 
- * @public
- */
-export interface StreamStreamingOptions {
-    
-    
-    /** The number of minutes of backfill requested. 
-     * Also accepts: backfill_minutes or proper camelCase (e.g., backfillMinutes) */
-    backfillMinutes?: number;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp from which the Post labels will be provided. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
     
     
     /** Additional request options */
@@ -227,182 +182,6 @@ export class ActivityClient {
 
 
 
-    /**
-     * Activity Stream
-     * Stream of X Activities
-     * 
-     * Returns an event-driven stream that's easy to use.
-     * Use .on() to listen for events like 'data', 'error', 'close'.
-     * Also supports async iteration with for await...of.
-
-
-
-     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
-     */
-    async stream(
-        
-        
-        
-        
-        
-        
-        
-        options: StreamStreamingOptions = {}
-    ): Promise<EventDrivenStream> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'stream');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'backfill_minutes': 'backfillMinutes',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            backfillMinutes = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/activity/stream';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (backfillMinutes !== undefined) {
-            
-            params.append('backfill_minutes', String(backfillMinutes));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-
-        // Make the authenticated request using the main client's request method
-        // We need raw: true to get the raw Response object for streaming
-        const url = path + (params.toString() ? `?${params.toString()}` : '');
-        
-        // For streaming requests, we don't want to timeout the initial connection
-        // Instead, we'll handle timeouts at the stream level
-        const response = await this.client.request(
-            'GET',
-            url,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...headers,
-                },
-                
-                
-                // Pass security requirements for smart auth selection
-                security: [
-                    
-                    {
-                        
-                        'BearerToken': [],
-                        
-                    }
-                    
-                ],
-                
-                signal: signal,
-                raw: true, // Get raw Response object for streaming
-                timeout: 0, // Disable timeout for streaming requests
-                ...requestOptions,
-            }
-        ) as Response;
-
-        // Handle errors
-        if (!response.ok) {
-            throw new Error(
-                `HTTP ${response.status}: ${response.statusText}`
-            );
-        }
-
-        // Return the readable stream
-        // The response.body is the actual ReadableStream for streaming
-        if (!response.body) {
-            throw new Error('Response body is not available for streaming');
-        }
-
-        // Wrap the ReadableStream in an event-driven interface
-        const eventStream = new EventDrivenStream();
-        await eventStream.connect(response.body);
-        return eventStream;
-    }
-
-
-
-
 
 
     /**
@@ -415,12 +194,14 @@ export class ActivityClient {
         
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
         
         
+        
+        body: any,
         
         
         options: UpdateSubscriptionStreamingOptions = {}
@@ -443,15 +224,7 @@ export class ActivityClient {
 
         // Destructure options (exclude path parameters, they're already function params)
         
-        const {
-            
-            
-            body,
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
         
 
         // Build the path with path parameters
@@ -499,7 +272,7 @@ export class ActivityClient {
         
         
         
-        subscriptionId: Schemas.ActivitySubscriptionId,
+        subscriptionId: string,
         
         
         
@@ -584,15 +357,15 @@ export class ActivityClient {
         const requiredAuthTypes = [];
         
         
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        
         requiredAuthTypes.push('OAuth2UserToken');
         
         
         
         requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
         
         
         this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptions');
@@ -688,7 +461,7 @@ export class ActivityClient {
 
     /**
      * Create X activity subscription
-     * Creates a subscription for an X activity event
+     * Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported.
      * 
      * @returns Promise with the API response
      */
@@ -699,6 +472,8 @@ export class ActivityClient {
         
         
         
+        body: any,
+        
         
         options: CreateSubscriptionStreamingOptions = {}
     ): Promise<CreateSubscriptionResponse> {
@@ -707,15 +482,15 @@ export class ActivityClient {
         const requiredAuthTypes = [];
         
         
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        
         requiredAuthTypes.push('OAuth2UserToken');
         
         
         
         requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
         
         
         this.client.validateAuthentication(requiredAuthTypes, 'createSubscription');
@@ -728,15 +503,7 @@ export class ActivityClient {
 
         // Destructure options (exclude path parameters, they're already function params)
         
-        const {
-            
-            
-            body,
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
         
 
         // Build the path with path parameters
@@ -782,7 +549,7 @@ export class ActivityClient {
         
         
         
-        ids: Array<Schemas.ActivitySubscriptionId>,
+        ids: Array<string>,
         
         
         
@@ -849,8 +616,6 @@ export class ActivityClient {
             finalRequestOptions
         );
     }
-
-
 
 
 }

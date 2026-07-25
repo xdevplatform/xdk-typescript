@@ -28,7 +28,7 @@ describe('AccountActivityClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getSubscriptions', async () => {
+  it('should have correct request structure for deleteSubscription', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -63,13 +63,17 @@ describe('AccountActivityClient Contracts', () => {
       'test_value',
       
       
+      
+      'test_value',
+      
+      
       ];
       
       // Build options object (empty for required params test, optional params go here)
       const options: any = {};
       
       // Call the method
-      const method = (accountActivityClient as any)['getSubscriptions'];
+      const method = (accountActivityClient as any)['deleteSubscription'];
       const result = await method.apply(accountActivityClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -81,7 +85,7 @@ describe('AccountActivityClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
+      const expectedPath = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -94,7 +98,7 @@ describe('AccountActivityClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getSubscriptions', async () => {
+  it('should handle required parameters correctly for deleteSubscription', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -113,12 +117,16 @@ describe('AccountActivityClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (accountActivityClient as any)['getSubscriptions'];
+      const method = (accountActivityClient as any)['deleteSubscription'];
       
       
       // Method has required parameters - verify it can be called with proper args
       // Build required parameter arguments (all required params are direct args in TypeScript)
       const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
       
       
       'test_value',
@@ -138,7 +146,7 @@ describe('AccountActivityClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getSubscriptions', async () => {
+  it('should validate response structure for deleteSubscription', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -172,10 +180,14 @@ describe('AccountActivityClient Contracts', () => {
       'test_value',
       
       
+      
+      'test_value',
+      
+      
       ];
       const options: any = {};
 
-      const method = (accountActivityClient as any)['getSubscriptions'];
+      const method = (accountActivityClient as any)['deleteSubscription'];
       const result = await method.apply(accountActivityClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -523,7 +535,7 @@ describe('AccountActivityClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for deleteSubscription', async () => {
+  it('should have correct request structure for getSubscriptions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -558,17 +570,13 @@ describe('AccountActivityClient Contracts', () => {
       'test_value',
       
       
-      
-      'test_value',
-      
-      
       ];
       
       // Build options object (empty for required params test, optional params go here)
       const options: any = {};
       
       // Call the method
-      const method = (accountActivityClient as any)['deleteSubscription'];
+      const method = (accountActivityClient as any)['getSubscriptions'];
       const result = await method.apply(accountActivityClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -580,7 +588,7 @@ describe('AccountActivityClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
+      const expectedPath = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -593,7 +601,7 @@ describe('AccountActivityClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for deleteSubscription', async () => {
+  it('should handle required parameters correctly for getSubscriptions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -612,16 +620,12 @@ describe('AccountActivityClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (accountActivityClient as any)['deleteSubscription'];
+      const method = (accountActivityClient as any)['getSubscriptions'];
       
       
       // Method has required parameters - verify it can be called with proper args
       // Build required parameter arguments (all required params are direct args in TypeScript)
       const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
       
       
       'test_value',
@@ -641,7 +645,7 @@ describe('AccountActivityClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for deleteSubscription', async () => {
+  it('should validate response structure for getSubscriptions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -675,14 +679,10 @@ describe('AccountActivityClient Contracts', () => {
       'test_value',
       
       
-      
-      'test_value',
-      
-      
       ];
       const options: any = {};
 
-      const method = (accountActivityClient as any)['deleteSubscription'];
+      const method = (accountActivityClient as any)['getSubscriptions'];
       const result = await method.apply(accountActivityClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure

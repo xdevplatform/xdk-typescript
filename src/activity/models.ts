@@ -12,7 +12,7 @@ import type * as Schemas from '../schemas.js';
  *
  * @public
  */
-export type UpdateSubscriptionRequest = Schemas.ActivitySubscriptionUpdateRequest;
+export type UpdateSubscriptionRequest = Schemas.UpdateActivitySubscriptionRequest;
 
 
 /**
@@ -20,7 +20,7 @@ export type UpdateSubscriptionRequest = Schemas.ActivitySubscriptionUpdateReques
  *
  * @public
  */
-export type UpdateSubscriptionResponse = Schemas.ActivitySubscriptionUpdateResponse;
+export type UpdateSubscriptionResponse = Schemas.UpdateActivitySubscriptionResponse;
 
 
 
@@ -29,7 +29,7 @@ export type UpdateSubscriptionResponse = Schemas.ActivitySubscriptionUpdateRespo
  *
  * @public
  */
-export type DeleteSubscriptionResponse = Schemas.ActivitySubscriptionDeleteResponse;
+export type DeleteSubscriptionResponse = Schemas.DeleteActivitySubscriptionResponse;
 
 
 
@@ -38,7 +38,7 @@ export type DeleteSubscriptionResponse = Schemas.ActivitySubscriptionDeleteRespo
  *
  * @public
  */
-export type GetSubscriptionsResponse = Schemas.ActivitySubscriptionGetResponse;
+export type GetSubscriptionsResponse = Schemas.GetActivitySubscriptionsResponse;
 
 
 /**
@@ -46,7 +46,7 @@ export type GetSubscriptionsResponse = Schemas.ActivitySubscriptionGetResponse;
  *
  * @public
  */
-export type CreateSubscriptionRequest = Schemas.ActivitySubscriptionCreateRequest;
+export type CreateSubscriptionRequest = Schemas.CreateActivitySubscriptionRequest;
 
 
 /**
@@ -54,7 +54,7 @@ export type CreateSubscriptionRequest = Schemas.ActivitySubscriptionCreateReques
  *
  * @public
  */
-export type CreateSubscriptionResponse = Schemas.ActivitySubscriptionCreateResponse;
+export type CreateSubscriptionResponse = Schemas.CreateActivitySubscriptionResponse;
 
 
 
@@ -63,14 +63,5 @@ export type CreateSubscriptionResponse = Schemas.ActivitySubscriptionCreateRespo
  *
  * @public
  */
-export type DeleteSubscriptionsByIdsResponse = Schemas.ActivitySubscriptionDeleteResponse;
-
-
-
-/**
- * Response for stream
- *
- * @public
- */
-export type StreamResponse = Schemas.ActivityStreamingResponse;
+export type DeleteSubscriptionsByIdsResponse = Schemas.DeleteActivitySubscriptionsByIdsResponse;
 

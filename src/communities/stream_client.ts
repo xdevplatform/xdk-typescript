@@ -52,21 +52,21 @@ export interface GetByIdStreamingOptions {
 export interface SearchStreamingOptions {
     
     
-    /** The maximum number of search results to be returned by a request. 
+    /** max_results 
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
     
     
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified. 
+    /** next_token 
      * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: Schemas.NextToken;
+    nextToken?: string;
     
     
     
-    /** This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified. 
+    /** pagination_token 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: Schemas.NextToken;
+    paginationToken?: string;
     
     
     
@@ -131,8 +131,7 @@ export class CommunitiesClient {
 
 
     /**
-     * Get Community by ID
-     * Retrieves details of a specific Community by its ID.
+     * Get Communities by ID
      * 
      * @returns Promise with the API response
      */
@@ -155,15 +154,15 @@ export class CommunitiesClient {
         const requiredAuthTypes = [];
         
         
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        
         requiredAuthTypes.push('OAuth2UserToken');
         
         
         
         requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
         
         
         this.client.validateAuthentication(requiredAuthTypes, 'getById');
@@ -243,7 +242,6 @@ export class CommunitiesClient {
 
     /**
      * Search Communities
-     * Retrieves a list of Communities matching the specified search query.
      * 
      * @returns Promise with the API response
      */

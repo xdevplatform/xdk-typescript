@@ -13,7 +13,7 @@ import type * as Schemas from '../schemas.js';
  *
  * @public
  */
-export type GetByIdResponse = Schemas.Get2CommunitiesIdResponse;
+export type GetByIdResponse = Schemas.GetCommunitiesByIdResponse;
 
 
 
@@ -22,5 +22,5 @@ export type GetByIdResponse = Schemas.Get2CommunitiesIdResponse;
  *
  * @public
  */
-export type SearchResponse = Schemas.Get2CommunitiesSearchResponse;
+export type SearchResponse = Schemas.SearchCommunitiesResponse;
 

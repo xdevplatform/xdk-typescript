@@ -13,14 +13,5 @@ import type * as Schemas from '../schemas.js';
  *
  * @public
  */
-export type GetPersonalizedResponse = Schemas.Get2UsersPersonalizedTrendsResponse;
-
-
-
-/**
- * Response for getByWoeid
- *
- * @public
- */
-export type GetByWoeidResponse = Schemas.Get2TrendsByWoeidWoeidResponse;
+export type GetPersonalizedResponse = Schemas.GetTrendsPersonalizedTrendsResponse;
 

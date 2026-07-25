@@ -7,20 +7,13 @@
 import type * as Schemas from '../schemas.js';
 
 
+
 /**
- * Request for create
+ * Response for getPosts
  *
  * @public
  */
-export type CreateRequest = Schemas.ListCreateRequest;
-
-
-/**
- * Response for create
- *
- * @public
- */
-export type CreateResponse = Schemas.ListCreateResponse;
+export type GetPostsResponse = Schemas.GetListsPostsResponse;
 
 
 
@@ -29,7 +22,7 @@ export type CreateResponse = Schemas.ListCreateResponse;
  *
  * @public
  */
-export type GetMembersResponse = Schemas.Get2ListsIdMembersResponse;
+export type GetMembersResponse = Schemas.GetListsMembersResponse;
 
 
 /**
@@ -37,7 +30,7 @@ export type GetMembersResponse = Schemas.Get2ListsIdMembersResponse;
  *
  * @public
  */
-export type AddMemberRequest = Schemas.ListAddUserRequest;
+export type AddMemberRequest = Schemas.AddListsMemberRequest;
 
 
 /**
@@ -45,25 +38,57 @@ export type AddMemberRequest = Schemas.ListAddUserRequest;
  *
  * @public
  */
-export type AddMemberResponse = Schemas.ListMutateResponse;
+export type AddMemberResponse = Schemas.AddListsMemberResponse;
 
 
 
 /**
- * Response for getPosts
+ * Response for unfollowList
  *
  * @public
  */
-export type GetPostsResponse = Schemas.Get2ListsIdTweetsResponse;
+export type UnfollowListResponse = Schemas.UnfollowListResponse;
+
+
+/**
+ * Request for create
+ *
+ * @public
+ */
+export type CreateRequest = Schemas.CreateListsRequest;
+
+
+/**
+ * Response for create
+ *
+ * @public
+ */
+export type CreateResponse = Schemas.CreateListsResponse;
+
+
+/**
+ * Request for pinList
+ *
+ * @public
+ */
+export type PinListRequest = Schemas.PinListRequest;
+
+
+/**
+ * Response for pinList
+ *
+ * @public
+ */
+export type PinListResponse = Schemas.PinListResponse;
 
 
 
 /**
- * Response for getFollowers
+ * Response for unpinList
  *
  * @public
  */
-export type GetFollowersResponse = Schemas.Get2ListsIdFollowersResponse;
+export type UnpinListResponse = Schemas.UnpinListResponse;
 
 
 
@@ -72,7 +97,16 @@ export type GetFollowersResponse = Schemas.Get2ListsIdFollowersResponse;
  *
  * @public
  */
-export type RemoveMemberByUserIdResponse = Schemas.ListMutateResponse;
+export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
+
+
+
+/**
+ * Response for getFollowers
+ *
+ * @public
+ */
+export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
 
 
 
@@ -81,7 +115,7 @@ export type RemoveMemberByUserIdResponse = Schemas.ListMutateResponse;
  *
  * @public
  */
-export type GetByIdResponse = Schemas.Get2ListsIdResponse;
+export type GetByIdResponse = Schemas.GetListsByIdResponse;
 
 
 /**
@@ -89,7 +123,7 @@ export type GetByIdResponse = Schemas.Get2ListsIdResponse;
  *
  * @public
  */
-export type UpdateRequest = Schemas.ListUpdateRequest;
+export type UpdateRequest = Schemas.UpdateListsRequest;
 
 
 /**
@@ -97,7 +131,7 @@ export type UpdateRequest = Schemas.ListUpdateRequest;
  *
  * @public
  */
-export type UpdateResponse = Schemas.ListUpdateResponse;
+export type UpdateResponse = Schemas.UpdateListsResponse;
 
 
 
@@ -106,5 +140,5 @@ export type UpdateResponse = Schemas.ListUpdateResponse;
  *
  * @public
  */
-export type DeleteResponse = Schemas.ListDeleteResponse;
+export type DeleteResponse = Schemas.DeleteListsResponse;
 

@@ -19,8 +19,6 @@ import {
 import {
 
 GetPersonalizedResponse,
-
-GetByWoeidResponse,
 } from './models.js';
 
 
@@ -35,33 +33,6 @@ export interface GetPersonalizedOptions {
     /** A comma separated list of PersonalizedTrend fields to display. 
      * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
     personalizedTrendFields?: Array<"category" | "post_count" | "trend_name" | "trending_since">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for getByWoeid method
- * 
- * @public
- */
-export interface GetByWoeidOptions {
-    
-    
-    /** The maximum number of results. 
-     * Also accepts: max_trends or proper camelCase (e.g., maxTrends) */
-    maxTrends?: number;
-    
-    
-    
-    /** A comma separated list of Trend fields to display. 
-     * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
-    trendFields?: Array<"trend_name" | "tweet_count">;
     
     
     
@@ -123,8 +94,7 @@ export class TrendsClient {
 
 
   /**
-   * Get personalized Trends
-   * Retrieves personalized trending topics for the authenticated user.
+   * Get Trends Personalized Trends
 
 
 
@@ -239,162 +209,6 @@ export class TrendsClient {
             finalRequestOptions
         );
     }
-
-
-
-
-  /**
-   * Get Trends by WOEID
-   * Retrieves trending topics for a specific location identified by its WOEID.
-
-
-   * @param woeid The WOEID of the place to lookup a trend for.
-
-
-
-
-   * @returns {Promise<GetByWoeidResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getByWoeid(
-        
-        
-        woeid: number,
-        
-        
-        
-        
-        
-        options: GetByWoeidOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getByWoeid(
-        
-        
-        woeid: number,
-        
-        
-        
-        
-        
-        options?: GetByWoeidOptions
-        
-    ): Promise<GetByWoeidResponse>;
-    // Implementation
-    async getByWoeid(
-        
-        
-        
-        woeid: number,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetByWoeidOptions = {}
-        
-    ): Promise<GetByWoeidResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_trends': 'maxTrends',
-            
-            
-            
-            'trend.fields': 'trendFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxTrends = undefined,
-            
-            
-            
-            trendFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/trends/by/woeid/{woeid}';
-        
-        
-        path = path.replace('{woeid}', encodeURIComponent(String(woeid)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxTrends !== undefined) {
-            
-            params.append('max_trends', String(maxTrends));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (trendFields !== undefined && trendFields.length > 0) {
-            
-            
-            params.append('trend.fields', normalizeFields(trendFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetByWoeidResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
 
 
 

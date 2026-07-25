@@ -25,7 +25,7 @@ import {
 export interface GetStreamingOptions {
     
     
-    /** The number of days for which you need usage for. 
+    /** days 
      * Also accepts: days or proper camelCase (e.g., days) */
     days?: number;
     
@@ -89,8 +89,7 @@ export class UsageClient {
 
 
     /**
-     * Get usage
-     * Retrieves usage statistics for Posts over a specified number of days.
+     * Get Usage
      * 
      * @returns Promise with the API response
      */

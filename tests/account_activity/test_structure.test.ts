@@ -30,12 +30,12 @@ describe('AccountActivityClient Structure', () => {
 
   
   
-  it('should have getSubscriptions method with correct signature', () => {
+  it('should have deleteSubscription method with correct signature', () => {
     // Check method exists
-    expect(AccountActivityClient.prototype).toHaveProperty('getSubscriptions');
+    expect(AccountActivityClient.prototype).toHaveProperty('deleteSubscription');
     
     // Check method is callable
-    const method = accountActivityClient.getSubscriptions;
+    const method = accountActivityClient.deleteSubscription;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -47,6 +47,8 @@ describe('AccountActivityClient Structure', () => {
     const requiredParams = [
       
       'webhookId',
+      
+      'userId',
       
     ];
     
@@ -61,8 +63,8 @@ describe('AccountActivityClient Structure', () => {
     }
   });
 
-  it('should have getSubscriptions method with return type annotation', () => {
-    const method = accountActivityClient.getSubscriptions;
+  it('should have deleteSubscription method with return type annotation', () => {
+    const method = accountActivityClient.deleteSubscription;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -153,12 +155,12 @@ describe('AccountActivityClient Structure', () => {
   
 
   
-  it('should have deleteSubscription method with correct signature', () => {
+  it('should have getSubscriptions method with correct signature', () => {
     // Check method exists
-    expect(AccountActivityClient.prototype).toHaveProperty('deleteSubscription');
+    expect(AccountActivityClient.prototype).toHaveProperty('getSubscriptions');
     
     // Check method is callable
-    const method = accountActivityClient.deleteSubscription;
+    const method = accountActivityClient.getSubscriptions;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -170,8 +172,6 @@ describe('AccountActivityClient Structure', () => {
     const requiredParams = [
       
       'webhookId',
-      
-      'userId',
       
     ];
     
@@ -186,8 +186,8 @@ describe('AccountActivityClient Structure', () => {
     }
   });
 
-  it('should have deleteSubscription method with return type annotation', () => {
-    const method = accountActivityClient.deleteSubscription;
+  it('should have getSubscriptions method with return type annotation', () => {
+    const method = accountActivityClient.getSubscriptions;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -239,13 +239,13 @@ describe('AccountActivityClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'getSubscriptions',
+      'deleteSubscription',
       
       'validateSubscription',
       
       'createSubscription',
       
-      'deleteSubscription',
+      'getSubscriptions',
       
       'getSubscriptionCount',
       

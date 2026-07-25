@@ -13,7 +13,7 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  GetSubscriptionsResponse,
+  DeleteSubscriptionResponse,
 
 
 
@@ -25,7 +25,7 @@ import {
 
 
 
-  DeleteSubscriptionResponse,
+  GetSubscriptionsResponse,
 
 
 
@@ -34,11 +34,11 @@ import {
 } from './models.js';
 
 /**
- * Options for getSubscriptions method
+ * Options for deleteSubscription method
  * 
  * @public
  */
-export interface GetSubscriptionsStreamingOptions {
+export interface DeleteSubscriptionStreamingOptions {
     
     
     /** Additional request options */
@@ -75,9 +75,6 @@ export interface ValidateSubscriptionStreamingOptions {
 export interface CreateSubscriptionStreamingOptions {
     
     
-    /** Request body */
-    body?: any;
-    
     /** Additional request options */
     requestOptions?: RequestOptions;
     /** Additional headers */
@@ -88,11 +85,11 @@ export interface CreateSubscriptionStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteSubscription method
+ * Options for getSubscriptions method
  * 
  * @public
  */
-export interface DeleteSubscriptionStreamingOptions {
+export interface GetSubscriptionsStreamingOptions {
     
     
     /** Additional request options */
@@ -176,12 +173,12 @@ export class AccountActivityClient {
 
 
     /**
-     * Get subscriptions
-     * Retrieves a list of all active subscriptions for a given webhook.
+     * Delete subscription
+     * Deletes an Account Activity subscription for the given webhook and user ID.
      * 
      * @returns Promise with the API response
      */
-    async getSubscriptions(
+    async deleteSubscription(
         
         
         
@@ -189,12 +186,16 @@ export class AccountActivityClient {
         
         
         
+        userId: Schemas.UserId,
         
         
         
         
-        options: GetSubscriptionsStreamingOptions = {}
-    ): Promise<GetSubscriptionsResponse> {
+        
+        
+        
+        options: DeleteSubscriptionStreamingOptions = {}
+    ): Promise<DeleteSubscriptionResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -203,7 +204,7 @@ export class AccountActivityClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptions');
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteSubscription');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -217,10 +218,14 @@ export class AccountActivityClient {
         
 
         // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
         
         
         path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
         
         
 
@@ -240,8 +245,8 @@ export class AccountActivityClient {
         };
 
         // Make the request
-        return this.client.request<GetSubscriptionsResponse>(
-            'GET',
+        return this.client.request<DeleteSubscriptionResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -250,8 +255,7 @@ export class AccountActivityClient {
 
 
     /**
-     * Validate subscription
-     * Checks a user’s Account Activity subscription for a given webhook.
+     * Validate Account Activity Subscription
      * 
      * @returns Promise with the API response
      */
@@ -344,6 +348,8 @@ export class AccountActivityClient {
         
         
         
+        body: any,
+        
         
         options: CreateSubscriptionStreamingOptions = {}
     ): Promise<CreateSubscriptionResponse> {
@@ -369,15 +375,7 @@ export class AccountActivityClient {
 
         // Destructure options (exclude path parameters, they're already function params)
         
-        const {
-            
-            
-            body,
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
         
 
         // Build the path with path parameters
@@ -416,12 +414,11 @@ export class AccountActivityClient {
 
 
     /**
-     * Delete subscription
-     * Deletes an Account Activity subscription for the given webhook and user ID.
+     * Get Account Activity Subscriptions
      * 
      * @returns Promise with the API response
      */
-    async deleteSubscription(
+    async getSubscriptions(
         
         
         
@@ -429,16 +426,12 @@ export class AccountActivityClient {
         
         
         
-        userId: Schemas.UserId,
         
         
         
         
-        
-        
-        
-        options: DeleteSubscriptionStreamingOptions = {}
-    ): Promise<DeleteSubscriptionResponse> {
+        options: GetSubscriptionsStreamingOptions = {}
+    ): Promise<GetSubscriptionsResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -447,7 +440,7 @@ export class AccountActivityClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteSubscription');
+        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptions');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -461,14 +454,10 @@ export class AccountActivityClient {
         
 
         // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/{user_id}/all';
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all/list';
         
         
         path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
         
         
 
@@ -488,8 +477,8 @@ export class AccountActivityClient {
         };
 
         // Make the request
-        return this.client.request<DeleteSubscriptionResponse>(
-            'DELETE',
+        return this.client.request<GetSubscriptionsResponse>(
+            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -498,8 +487,7 @@ export class AccountActivityClient {
 
 
     /**
-     * Get subscription count
-     * Retrieves a count of currently active Account Activity subscriptions.
+     * Get Account Activity Subscription Count
      * 
      * @returns Promise with the API response
      */

@@ -7,38 +7,13 @@
 import type * as Schemas from '../schemas.js';
 
 
-/**
- * Request for evaluate
- *
- * @public
- */
-export type EvaluateRequest = Schemas.EvaluateNoteRequest;
-
-
-/**
- * Response for evaluate
- *
- * @public
- */
-export type EvaluateResponse = Schemas.EvaluateNoteResponse;
-
-
 
 /**
  * Response for delete
  *
  * @public
  */
-export type DeleteResponse = Schemas.DeleteNoteResponse;
-
-
-
-/**
- * Response for searchEligiblePosts
- *
- * @public
- */
-export type SearchEligiblePostsResponse = Schemas.Get2NotesSearchPostsEligibleForNotesResponse;
+export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
 
 
 
@@ -47,7 +22,7 @@ export type SearchEligiblePostsResponse = Schemas.Get2NotesSearchPostsEligibleFo
  *
  * @public
  */
-export type SearchWrittenResponse = Schemas.Get2NotesSearchNotesWrittenResponse;
+export type SearchWrittenResponse = Schemas.SearchCommunityNotesWrittenResponse;
 
 
 /**
@@ -55,7 +30,7 @@ export type SearchWrittenResponse = Schemas.Get2NotesSearchNotesWrittenResponse;
  *
  * @public
  */
-export type CreateRequest = Schemas.CreateNoteRequest;
+export type CreateRequest = Schemas.CreateCommunityNotesRequest;
 
 
 /**
@@ -63,5 +38,30 @@ export type CreateRequest = Schemas.CreateNoteRequest;
  *
  * @public
  */
-export type CreateResponse = Schemas.CreateNoteResponse;
+export type CreateResponse = Schemas.CreateCommunityNotesResponse;
+
+
+/**
+ * Request for evaluate
+ *
+ * @public
+ */
+export type EvaluateRequest = Schemas.EvaluateCommunityNotesRequest;
+
+
+/**
+ * Response for evaluate
+ *
+ * @public
+ */
+export type EvaluateResponse = Schemas.EvaluateCommunityNotesResponse;
+
+
+
+/**
+ * Response for searchEligiblePosts
+ *
+ * @public
+ */
+export type SearchEligiblePostsResponse = Schemas.SearchEligiblePostsResponse;
 

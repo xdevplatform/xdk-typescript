@@ -9,11 +9,11 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getSubscriptions
+ * Response for deleteSubscription
  *
  * @public
  */
-export type GetSubscriptionsResponse = Schemas.SubscriptionsListGetResponse;
+export type DeleteSubscriptionResponse = Schemas.DeleteAccountActivitySubscriptionResponse;
 
 
 
@@ -22,7 +22,7 @@ export type GetSubscriptionsResponse = Schemas.SubscriptionsListGetResponse;
  *
  * @public
  */
-export type ValidateSubscriptionResponse = Schemas.SubscriptionsGetResponse;
+export type ValidateSubscriptionResponse = Schemas.ValidateAccountActivitySubscriptionResponse;
 
 
 /**
@@ -30,7 +30,7 @@ export type ValidateSubscriptionResponse = Schemas.SubscriptionsGetResponse;
  *
  * @public
  */
-export type CreateSubscriptionRequest = Schemas.SubscriptionsCreateRequest;
+export type CreateSubscriptionRequest = Schemas.CreateAccountActivitySubscriptionRequest;
 
 
 /**
@@ -38,16 +38,16 @@ export type CreateSubscriptionRequest = Schemas.SubscriptionsCreateRequest;
  *
  * @public
  */
-export type CreateSubscriptionResponse = Schemas.SubscriptionsCreateResponse;
+export type CreateSubscriptionResponse = Schemas.CreateAccountActivitySubscriptionResponse;
 
 
 
 /**
- * Response for deleteSubscription
+ * Response for getSubscriptions
  *
  * @public
  */
-export type DeleteSubscriptionResponse = Schemas.SubscriptionsDeleteResponse;
+export type GetSubscriptionsResponse = Schemas.GetAccountActivitySubscriptionsResponse;
 
 
 
@@ -56,5 +56,5 @@ export type DeleteSubscriptionResponse = Schemas.SubscriptionsDeleteResponse;
  *
  * @public
  */
-export type GetSubscriptionCountResponse = Schemas.SubscriptionsCountGetResponse;
+export type GetSubscriptionCountResponse = Schemas.GetAccountActivitySubscriptionCountResponse;
 

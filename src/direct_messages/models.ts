@@ -8,48 +8,39 @@ import type * as Schemas from '../schemas.js';
 
 
 
-/**
- * Response for getEventsByParticipantId
- *
- * @public
- */
-export type GetEventsByParticipantIdResponse = Schemas.Get2DmConversationsWithParticipantIdDmEventsResponse;
-
 
 
 /**
- * Response for getEventsById
+ * Response for blockUsersDms
  *
  * @public
  */
-export type GetEventsByIdResponse = Schemas.Get2DmEventsEventIdResponse;
+export type BlockUsersDmsResponse = Schemas.BlockUsersDmsResponse;
 
 
 
 /**
- * Response for deleteEvents
+ * Response for unblockUsersDms
  *
  * @public
  */
-export type DeleteEventsResponse = Schemas.DeleteDmResponse;
-
-
+export type UnblockUsersDmsResponse = Schemas.UnblockUsersDmsResponse;
 
 
 /**
- * Request for createByParticipantId
+ * Request for createConversation
  *
  * @public
  */
-export type CreateByParticipantIdRequest = Schemas.CreateMessageRequest;
+export type CreateConversationRequest = Schemas.CreateDirectMessagesConversationRequest;
 
 
 /**
- * Response for createByParticipantId
+ * Response for createConversation
  *
  * @public
  */
-export type CreateByParticipantIdResponse = Schemas.CreateDmEventResponse;
+export type CreateConversationResponse = Schemas.CreateDirectMessagesConversationResponse;
 
 
 
@@ -58,23 +49,50 @@ export type CreateByParticipantIdResponse = Schemas.CreateDmEventResponse;
  *
  * @public
  */
-export type GetEventsByConversationIdResponse = Schemas.Get2DmConversationsIdDmEventsResponse;
+export type GetEventsByConversationIdResponse = Schemas.GetDirectMessagesEventsByConversationIdResponse;
 
-
-/**
- * Request for createConversation
- *
- * @public
- */
-export type CreateConversationRequest = Schemas.CreateDmConversationRequest;
 
 
 /**
- * Response for createConversation
+ * Response for getEventsByParticipantId
  *
  * @public
  */
-export type CreateConversationResponse = Schemas.CreateDmEventResponse;
+export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsByParticipantIdResponse;
+
+
+
+/**
+ * Response for getEventsById
+ *
+ * @public
+ */
+export type GetEventsByIdResponse = Schemas.GetDirectMessagesEventsByIdResponse;
+
+
+
+/**
+ * Response for deleteEvents
+ *
+ * @public
+ */
+export type DeleteEventsResponse = Schemas.DeleteDirectMessagesEventsResponse;
+
+
+/**
+ * Request for createByParticipantId
+ *
+ * @public
+ */
+export type CreateByParticipantIdRequest = Schemas.CreateDirectMessagesByParticipantIdRequest;
+
+
+/**
+ * Response for createByParticipantId
+ *
+ * @public
+ */
+export type CreateByParticipantIdResponse = Schemas.CreateDirectMessagesByParticipantIdResponse;
 
 
 /**
@@ -82,7 +100,7 @@ export type CreateConversationResponse = Schemas.CreateDmEventResponse;
  *
  * @public
  */
-export type CreateByConversationIdRequest = Schemas.CreateMessageRequest;
+export type CreateByConversationIdRequest = Schemas.CreateDirectMessagesByConversationIdRequest;
 
 
 /**
@@ -90,7 +108,7 @@ export type CreateByConversationIdRequest = Schemas.CreateMessageRequest;
  *
  * @public
  */
-export type CreateByConversationIdResponse = Schemas.CreateDmEventResponse;
+export type CreateByConversationIdResponse = Schemas.CreateDirectMessagesByConversationIdResponse;
 
 
 
@@ -99,5 +117,5 @@ export type CreateByConversationIdResponse = Schemas.CreateDmEventResponse;
  *
  * @public
  */
-export type GetEventsResponse = Schemas.Get2DmEventsResponse;
+export type GetEventsResponse = Schemas.GetDirectMessagesEventsResponse;
 
