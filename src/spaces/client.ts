@@ -18,18 +18,57 @@ import {
 } from '../paginator.js';
 import {
 
+GetByCreatorIdsResponse,
+
 SearchResponse,
+
+GetByIdResponse,
 
 GetByIdsResponse,
 
 GetPostsResponse,
 
-GetByIdResponse,
-
 GetBuyersResponse,
-
-GetByCreatorIdsResponse,
 } from './models.js';
+
+
+/**
+ * Options for getByCreatorIds method
+ * 
+ * @public
+ */
+export interface GetByCreatorIdsOptions {
+    
+    
+    /** A comma separated list of Space fields to display. 
+     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
+    spaceFields?: Array<"created_at" | "creator_id" | "ended_at" | "host_ids" | "id" | "invited_user_ids" | "is_ticketed" | "lang" | "participant_count" | "scheduled_start" | "speaker_ids" | "started_at" | "state" | "subscriber_count" | "title" | "topic_ids" | "updated_at">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"creator_id" | "host_ids" | "invited_user_ids" | "speaker_ids" | "topic_ids">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"affiliation" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "most_recent_tweet_id" | "name" | "parody" | "pinned_tweet_id" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Topic fields to display. 
+     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
+    topicFields?: Array<"description" | "id" | "name">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 /**
@@ -50,6 +89,45 @@ export interface SearchOptions {
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
+    
+    
+    /** A comma separated list of Space fields to display. 
+     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
+    spaceFields?: Array<"created_at" | "creator_id" | "ended_at" | "host_ids" | "id" | "invited_user_ids" | "is_ticketed" | "lang" | "participant_count" | "scheduled_start" | "speaker_ids" | "started_at" | "state" | "subscriber_count" | "title" | "topic_ids" | "updated_at">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"creator_id" | "host_ids" | "invited_user_ids" | "speaker_ids" | "topic_ids">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"affiliation" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "most_recent_tweet_id" | "name" | "parody" | "pinned_tweet_id" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Topic fields to display. 
+     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
+    topicFields?: Array<"description" | "id" | "name">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getById method
+ * 
+ * @public
+ */
+export interface GetByIdOptions {
     
     
     /** A comma separated list of Space fields to display. 
@@ -180,45 +258,6 @@ export interface GetPostsOptions {
 
 
 /**
- * Options for getById method
- * 
- * @public
- */
-export interface GetByIdOptions {
-    
-    
-    /** A comma separated list of Space fields to display. 
-     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
-    spaceFields?: Array<"created_at" | "creator_id" | "ended_at" | "host_ids" | "id" | "invited_user_ids" | "is_ticketed" | "lang" | "participant_count" | "scheduled_start" | "speaker_ids" | "started_at" | "state" | "subscriber_count" | "title" | "topic_ids" | "updated_at">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"creator_id" | "host_ids" | "invited_user_ids" | "speaker_ids" | "topic_ids">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"affiliation" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "most_recent_tweet_id" | "name" | "parody" | "pinned_tweet_id" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Topic fields to display. 
-     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
-    topicFields?: Array<"description" | "id" | "name">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
  * Options for getBuyers method
  * 
  * @public
@@ -253,45 +292,6 @@ export interface GetBuyersOptions {
     /** A comma separated list of Tweet fields to display. 
      * Also accepts: tweet.fields or proper camelCase (e.g., tweetFields) */
     tweetFields?: Array<"article" | "attachments" | "author_id" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "edit_history_tweet_ids" | "entities" | "geo" | "id" | "in_reply_to_user_id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_request_suggestions" | "note_tweet" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "referenced_tweets" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for getByCreatorIds method
- * 
- * @public
- */
-export interface GetByCreatorIdsOptions {
-    
-    
-    /** A comma separated list of Space fields to display. 
-     * Also accepts: space.fields or proper camelCase (e.g., spaceFields) */
-    spaceFields?: Array<"created_at" | "creator_id" | "ended_at" | "host_ids" | "id" | "invited_user_ids" | "is_ticketed" | "lang" | "participant_count" | "scheduled_start" | "speaker_ids" | "started_at" | "state" | "subscriber_count" | "title" | "topic_ids" | "updated_at">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"creator_id" | "host_ids" | "invited_user_ids" | "speaker_ids" | "topic_ids">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"affiliation" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "most_recent_tweet_id" | "name" | "parody" | "pinned_tweet_id" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Topic fields to display. 
-     * Also accepts: topic.fields or proper camelCase (e.g., topicFields) */
-    topicFields?: Array<"description" | "id" | "name">;
     
     
     
@@ -349,6 +349,217 @@ export class SpacesClient {
         
         return normalized as T;
     }
+
+
+
+  /**
+   * Get Spaces by creator IDs
+   * Retrieves details of Spaces created by specified User IDs.
+
+
+
+   * @param userIds The IDs of Users to search through.
+
+
+
+   * @returns {Promise<GetByCreatorIdsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getByCreatorIds(
+        
+        
+        
+        userIds: Array<Schemas.UserId>,
+        
+        
+        
+        
+        options: GetByCreatorIdsOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getByCreatorIds(
+        
+        
+        
+        userIds: Array<Schemas.UserId>,
+        
+        
+        
+        
+        options?: GetByCreatorIdsOptions
+        
+    ): Promise<GetByCreatorIdsResponse>;
+    // Implementation
+    async getByCreatorIds(
+        
+        
+        
+        
+        
+        userIds: Array<Schemas.UserId>,
+        
+        
+        
+        
+        
+        
+        options: GetByCreatorIdsOptions = {}
+        
+    ): Promise<GetByCreatorIdsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'space.fields': 'spaceFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'topic.fields': 'topicFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            spaceFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            topicFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/spaces/by/creator_ids';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (userIds !== undefined && userIds.length > 0) {
+            
+            
+            params.append('user_ids', userIds.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (spaceFields !== undefined && spaceFields.length > 0) {
+            
+            
+            params.append('space.fields', normalizeFields(spaceFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (topicFields !== undefined && topicFields.length > 0) {
+            
+            
+            params.append('topic.fields', normalizeFields(topicFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                },
+                
+                {
+                    
+                    'OAuth2UserToken': ['space.read', 'tweet.read', 'users.read'],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetByCreatorIdsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
 
 
@@ -588,6 +799,208 @@ export class SpacesClient {
         };
 
         return this.client.request<SearchResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Get space by ID
+   * Retrieves details of a specific space by its ID.
+
+
+   * @param id The ID of the Space to be retrieved.
+
+
+
+
+   * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetByIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetByIdOptions
+        
+    ): Promise<GetByIdResponse>;
+    // Implementation
+    async getById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetByIdOptions = {}
+        
+    ): Promise<GetByIdResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'space.fields': 'spaceFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'topic.fields': 'topicFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            spaceFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            topicFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/spaces/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (spaceFields !== undefined && spaceFields.length > 0) {
+            
+            
+            params.append('space.fields', normalizeFields(spaceFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (topicFields !== undefined && topicFields.length > 0) {
+            
+            
+            params.append('topic.fields', normalizeFields(topicFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                },
+                
+                {
+                    
+                    'OAuth2UserToken': ['space.read', 'tweet.read', 'users.read'],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetByIdResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1072,208 +1485,6 @@ export class SpacesClient {
 
 
   /**
-   * Get space by ID
-   * Retrieves details of a specific space by its ID.
-
-
-   * @param id The ID of the Space to be retrieved.
-
-
-
-
-   * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getById(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: GetByIdOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getById(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetByIdOptions
-        
-    ): Promise<GetByIdResponse>;
-    // Implementation
-    async getById(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetByIdOptions = {}
-        
-    ): Promise<GetByIdResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'space.fields': 'spaceFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'topic.fields': 'topicFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            spaceFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            topicFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/spaces/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (spaceFields !== undefined && spaceFields.length > 0) {
-            
-            
-            params.append('space.fields', normalizeFields(spaceFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (topicFields !== undefined && topicFields.length > 0) {
-            
-            
-            params.append('topic.fields', normalizeFields(topicFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'OAuth2UserToken': ['space.read', 'tweet.read', 'users.read'],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetByIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
    * Get Space ticket buyers
    * Retrieves a list of Users who purchased tickets to a specific Space by its ID.
 
@@ -1477,217 +1688,6 @@ export class SpacesClient {
         };
 
         return this.client.request<GetBuyersResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Spaces by creator IDs
-   * Retrieves details of Spaces created by specified User IDs.
-
-
-
-   * @param userIds The IDs of Users to search through.
-
-
-
-   * @returns {Promise<GetByCreatorIdsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getByCreatorIds(
-        
-        
-        
-        userIds: Array<Schemas.UserId>,
-        
-        
-        
-        
-        options: GetByCreatorIdsOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getByCreatorIds(
-        
-        
-        
-        userIds: Array<Schemas.UserId>,
-        
-        
-        
-        
-        options?: GetByCreatorIdsOptions
-        
-    ): Promise<GetByCreatorIdsResponse>;
-    // Implementation
-    async getByCreatorIds(
-        
-        
-        
-        
-        
-        userIds: Array<Schemas.UserId>,
-        
-        
-        
-        
-        
-        
-        options: GetByCreatorIdsOptions = {}
-        
-    ): Promise<GetByCreatorIdsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'space.fields': 'spaceFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'topic.fields': 'topicFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            spaceFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            topicFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/spaces/by/creator_ids';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (userIds !== undefined && userIds.length > 0) {
-            
-            
-            params.append('user_ids', userIds.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (spaceFields !== undefined && spaceFields.length > 0) {
-            
-            
-            params.append('space.fields', normalizeFields(spaceFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (topicFields !== undefined && topicFields.length > 0) {
-            
-            
-            params.append('topic.fields', normalizeFields(topicFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                },
-                
-                {
-                    
-                    'OAuth2UserToken': ['space.read', 'tweet.read', 'users.read'],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetByCreatorIdsResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

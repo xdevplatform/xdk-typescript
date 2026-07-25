@@ -9,24 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for deleteByEndpoint
- *
- * @public
- */
-export type DeleteByEndpointResponse = Schemas.KillConnectionsByEndpointResponse;
-
-
-
-/**
- * Response for deleteAll
- *
- * @public
- */
-export type DeleteAllResponse = Schemas.KillAllConnectionsResponse;
-
-
-
-/**
  * Response for getConnectionHistory
  *
  * @public
@@ -48,4 +30,22 @@ export type DeleteByUuidsRequest = Schemas.KillConnectionsByUuidsRequest;
  * @public
  */
 export type DeleteByUuidsResponse = Schemas.KillConnectionsByUuidsResponse;
+
+
+
+/**
+ * Response for deleteAll
+ *
+ * @public
+ */
+export type DeleteAllResponse = Schemas.KillAllConnectionsResponse;
+
+
+
+/**
+ * Response for deleteByEndpoint
+ *
+ * @public
+ */
+export type DeleteByEndpointResponse = Schemas.KillConnectionsByEndpointResponse;
 

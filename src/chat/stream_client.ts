@@ -13,23 +13,7 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  MediaUploadAppendResponse,
-
-
-
-  AddConversationKeysResponse,
-
-
-
-  AddGroupMembersResponse,
-
-
-
-  MarkConversationReadResponse,
-
-
-
-  AddUserPublicKeyResponse,
+  GetConversationEventsResponse,
 
 
 
@@ -37,27 +21,11 @@ import {
 
 
 
+  AddGroupMembersResponse,
+
+
+
   InitializeGroupResponse,
-
-
-
-  SendMessageResponse,
-
-
-
-  MediaUploadInitializeResponse,
-
-
-
-  SendTypingIndicatorResponse,
-
-
-
-  GetConversationEventsResponse,
-
-
-
-  GetConversationResponse,
 
 
 
@@ -65,86 +33,68 @@ import {
 
 
 
+  MarkConversationReadResponse,
+
+
+
+  MediaUploadInitializeResponse,
+
 
 
   MediaUploadFinalizeResponse,
 
+
+
+  GetConversationResponse,
+
+
+
+  AddUserPublicKeyResponse,
+
+
+
+  SendMessageResponse,
+
+
+
+  SendTypingIndicatorResponse,
+
+
+
+
+
+  AddConversationKeysResponse,
+
+
+
+  MediaUploadAppendResponse,
+
 } from './models.js';
 
 /**
- * Options for mediaUploadAppend method
+ * Options for getConversationEvents method
  * 
  * @public
  */
-export interface MediaUploadAppendStreamingOptions {
+export interface GetConversationEventsStreamingOptions {
     
     
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for addConversationKeys method
- * 
- * @public
- */
-export interface AddConversationKeysStreamingOptions {
+    /** Maximum number of message events to return. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
     
     
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for addGroupMembers method
- * 
- * @public
- */
-export interface AddGroupMembersStreamingOptions {
+    
+    /** Token for pagination to retrieve the next page of results. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
     
     
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for markConversationRead method
- * 
- * @public
- */
-export interface MarkConversationReadStreamingOptions {
     
+    /** A comma separated list of ChatMessageEvent fields to display. 
+     * Also accepts: chat_message_event.fields or proper camelCase (e.g., chatMessageEventFields) */
+    chatMessageEventFields?: Array<"conversation_id" | "conversation_token" | "created_at_msec" | "encoded_event" | "id" | "is_trusted" | "message_event_signature" | "previous_id" | "sender_id">;
     
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for addUserPublicKey method
- * 
- * @public
- */
-export interface AddUserPublicKeyStreamingOptions {
     
     
     /** Additional request options */
@@ -204,6 +154,23 @@ export interface GetConversationsStreamingOptions {
     [key: string]: any;
 }
 /**
+ * Options for addGroupMembers method
+ * 
+ * @public
+ */
+export interface AddGroupMembersStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
  * Options for initializeGroup method
  * 
  * @public
@@ -221,11 +188,28 @@ export interface InitializeGroupStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for sendMessage method
+ * Options for createConversation method
  * 
  * @public
  */
-export interface SendMessageStreamingOptions {
+export interface CreateConversationStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for markConversationRead method
+ * 
+ * @public
+ */
+export interface MarkConversationReadStreamingOptions {
     
     
     /** Additional request options */
@@ -255,46 +239,11 @@ export interface MediaUploadInitializeStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for sendTypingIndicator method
+ * Options for mediaUploadFinalize method
  * 
  * @public
  */
-export interface SendTypingIndicatorStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getConversationEvents method
- * 
- * @public
- */
-export interface GetConversationEventsStreamingOptions {
-    
-    
-    /** Maximum number of message events to return. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** Token for pagination to retrieve the next page of results. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of ChatMessageEvent fields to display. 
-     * Also accepts: chat_message_event.fields or proper camelCase (e.g., chatMessageEventFields) */
-    chatMessageEventFields?: Array<"conversation_id" | "conversation_token" | "created_at_msec" | "encoded_event" | "id" | "is_trusted" | "message_event_signature" | "previous_id" | "sender_id">;
-    
+export interface MediaUploadFinalizeStreamingOptions {
     
     
     /** Additional request options */
@@ -342,11 +291,45 @@ export interface GetConversationStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for createConversation method
+ * Options for addUserPublicKey method
  * 
  * @public
  */
-export interface CreateConversationStreamingOptions {
+export interface AddUserPublicKeyStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for sendMessage method
+ * 
+ * @public
+ */
+export interface SendMessageStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for sendTypingIndicator method
+ * 
+ * @public
+ */
+export interface SendTypingIndicatorStreamingOptions {
     
     
     /** Additional request options */
@@ -376,11 +359,28 @@ export interface MediaDownloadStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for mediaUploadFinalize method
+ * Options for addConversationKeys method
  * 
  * @public
  */
-export interface MediaUploadFinalizeStreamingOptions {
+export interface AddConversationKeysStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for mediaUploadAppend method
+ * 
+ * @public
+ */
+export interface MediaUploadAppendStreamingOptions {
     
     
     /** Additional request options */
@@ -477,117 +477,12 @@ export class ChatClient {
 
 
     /**
-     * Append Chat Media Upload
-     * Appends media data to an XChat upload session.
+     * Get Chat Conversation Events
+     * Retrieves messages and key change events for a specific Chat conversation with pagination support. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
      * 
      * @returns Promise with the API response
      */
-    async mediaUploadAppend(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: MediaUploadAppendStreamingOptions = {}
-    ): Promise<MediaUploadAppendResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'mediaUploadAppend');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/media/upload/{id}/append';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<MediaUploadAppendResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Add Conversation Keys
-     * Adds (initializes or rotates) the encryption keys for a Chat conversation.
-Call this before sending messages in a new 1:1 conversation, and again with a
-newer key version to rotate the conversation key.
-
-For 1:1 conversations, provide the recipient's user ID as the conversation_id.
-The server constructs the canonical conversation ID from the authenticated user
-and recipient.
-
-The request body must contain the conversation key version and participant keys
-(the conversation key encrypted for each participant using their public key).
-
-**Workflow (new 1:1 conversation):**
-1. Generate a conversation key using the SDK
-2. Encrypt the key for both participants using their public keys
-3. Call this endpoint to register the keys
-4. Send messages using `POST /chat/conversations/{id}/messages`
-
-To rotate the keys of an existing conversation, repeat the same call with a
-newer conversation key version.
-
-**Authentication:**
-- Requires OAuth 1.0a User Context or OAuth 2.0 User Context
-- Required scopes: `tweet.read`, `users.read`, `dm.write`
-
-     * 
-     * @returns Promise with the API response
-     */
-    async addConversationKeys(
+    async getConversationEvents(
         
         
         
@@ -598,11 +493,9 @@ newer conversation key version.
         
         
         
-        body: any,
         
-        
-        options: AddConversationKeysStreamingOptions = {}
-    ): Promise<AddConversationKeysResponse> {
+        options: GetConversationEventsStreamingOptions = {}
+    ): Promise<GetConversationEventsResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -615,21 +508,54 @@ newer conversation key version.
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'addConversationKeys');
+        this.client.validateAuthentication(requiredAuthTypes, 'getConversationEvents');
         
 
         // Normalize options to handle both camelCase and original API parameter names
         
-        const normalizedOptions = options || {};
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'chat_message_event.fields': 'chatMessageEventFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
         
 
         // Destructure options (exclude path parameters, they're already function params)
         
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            chatMessageEventFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
         
 
         // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/keys';
+        let path = '/2/chat/conversations/{id}/events';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -638,6 +564,42 @@ newer conversation key version.
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (chatMessageEventFields !== undefined && chatMessageEventFields.length > 0) {
+            
+            params.append('chat_message_event.fields', chatMessageEventFields.join(','));
+            
+        }
+        
+        
         
 
         // Prepare request options
@@ -648,260 +610,12 @@ newer conversation key version.
             },
             signal: signal,
             
-            body: JSON.stringify(body),
-            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<AddConversationKeysResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Add members to a Chat group conversation
-     * Adds one or more members to an existing encrypted Chat group conversation, rotating the conversation key.
-     * 
-     * @returns Promise with the API response
-     */
-    async addGroupMembers(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: AddGroupMembersStreamingOptions = {}
-    ): Promise<AddGroupMembersResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'addGroupMembers');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/members';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<AddGroupMembersResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Mark Conversation as Read
-     * Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-     * 
-     * @returns Promise with the API response
-     */
-    async markConversationRead(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: MarkConversationReadStreamingOptions = {}
-    ): Promise<MarkConversationReadResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'markConversationRead');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/read';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<MarkConversationReadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Add public key
-     * Registers a user's public key for X Chat encryption.
-     * 
-     * @returns Promise with the API response
-     */
-    async addUserPublicKey(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: AddUserPublicKeyStreamingOptions = {}
-    ): Promise<AddUserPublicKeyResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'addUserPublicKey');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/public_keys';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<AddUserPublicKeyResponse>(
-            'POST',
+        return this.client.request<GetConversationEventsResponse>(
+            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -1087,6 +801,88 @@ newer conversation key version.
 
 
     /**
+     * Add members to a Chat group conversation
+     * Adds one or more members to an existing encrypted Chat group conversation, rotating the conversation key.
+     * 
+     * @returns Promise with the API response
+     */
+    async addGroupMembers(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: AddGroupMembersStreamingOptions = {}
+    ): Promise<AddGroupMembersResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'addGroupMembers');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/members';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<AddGroupMembersResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Initialize Chat Group
      * Initializes a new XChat group conversation and returns a unique conversation ID.
 
@@ -1170,16 +966,12 @@ configure the group with members, admins, encryption keys, and other settings.
 
 
     /**
-     * Send Chat Message
-     * Sends an encrypted message to a specific Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+     * Create Chat Group Conversation
+     * Creates a new encrypted Chat group conversation on behalf of the authenticated user.
      * 
      * @returns Promise with the API response
      */
-    async sendMessage(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
+    async createConversation(
         
         
         
@@ -1189,8 +981,8 @@ configure the group with members, admins, encryption keys, and other settings.
         body: any,
         
         
-        options: SendMessageStreamingOptions = {}
-    ): Promise<SendMessageResponse> {
+        options: CreateConversationStreamingOptions = {}
+    ): Promise<CreateConversationResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -1203,7 +995,7 @@ configure the group with members, admins, encryption keys, and other settings.
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'sendMessage');
+        this.client.validateAuthentication(requiredAuthTypes, 'createConversation');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1217,7 +1009,85 @@ configure the group with members, admins, encryption keys, and other settings.
         
 
         // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/messages';
+        let path = '/2/chat/conversations/group';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateConversationResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Mark Conversation as Read
+     * Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+     * 
+     * @returns Promise with the API response
+     */
+    async markConversationRead(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: MarkConversationReadStreamingOptions = {}
+    ): Promise<MarkConversationReadResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'markConversationRead');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/read';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -1242,7 +1112,7 @@ configure the group with members, admins, encryption keys, and other settings.
         };
 
         // Make the request
-        return this.client.request<SendMessageResponse>(
+        return this.client.request<MarkConversationReadResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1326,25 +1196,27 @@ configure the group with members, admins, encryption keys, and other settings.
 
 
     /**
-     * Send Typing Indicator
-     * Sends a typing indicator to a specific Chat conversation on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+     * Finalize Chat Media Upload
+     * Finalizes an XChat media upload session.
      * 
      * @returns Promise with the API response
      */
-    async sendTypingIndicator(
+    async mediaUploadFinalize(
         
         
         
-        id: Schemas.ChatConversationOrRecipientId,
+        id: string,
         
         
         
         
         
         
+        body: any,
         
-        options: SendTypingIndicatorStreamingOptions = {}
-    ): Promise<SendTypingIndicatorResponse> {
+        
+        options: MediaUploadFinalizeStreamingOptions = {}
+    ): Promise<MediaUploadFinalizeResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -1357,7 +1229,7 @@ configure the group with members, admins, encryption keys, and other settings.
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'sendTypingIndicator');
+        this.client.validateAuthentication(requiredAuthTypes, 'mediaUploadFinalize');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1371,7 +1243,7 @@ configure the group with members, admins, encryption keys, and other settings.
         
 
         // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/typing';
+        let path = '/2/chat/media/upload/{id}/finalize';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -1390,159 +1262,14 @@ configure the group with members, admins, encryption keys, and other settings.
             },
             signal: signal,
             
+            body: JSON.stringify(body),
+            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<SendTypingIndicatorResponse>(
+        return this.client.request<MediaUploadFinalizeResponse>(
             'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Chat Conversation Events
-     * Retrieves messages and key change events for a specific Chat conversation with pagination support. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-     * 
-     * @returns Promise with the API response
-     */
-    async getConversationEvents(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetConversationEventsStreamingOptions = {}
-    ): Promise<GetConversationEventsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getConversationEvents');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'chat_message_event.fields': 'chatMessageEventFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            chatMessageEventFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/events';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (chatMessageEventFields !== undefined && chatMessageEventFields.length > 0) {
-            
-            params.append('chat_message_event.fields', chatMessageEventFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetConversationEventsResponse>(
-            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -1696,12 +1423,16 @@ configure the group with members, admins, encryption keys, and other settings.
 
 
     /**
-     * Create Chat Group Conversation
-     * Creates a new encrypted Chat group conversation on behalf of the authenticated user.
+     * Add public key
+     * Registers a user's public key for X Chat encryption.
      * 
      * @returns Promise with the API response
      */
-    async createConversation(
+    async addUserPublicKey(
+        
+        
+        
+        id: Schemas.UserId,
         
         
         
@@ -1711,8 +1442,8 @@ configure the group with members, admins, encryption keys, and other settings.
         body: any,
         
         
-        options: CreateConversationStreamingOptions = {}
-    ): Promise<CreateConversationResponse> {
+        options: AddUserPublicKeyStreamingOptions = {}
+    ): Promise<AddUserPublicKeyResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -1725,7 +1456,7 @@ configure the group with members, admins, encryption keys, and other settings.
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'createConversation');
+        this.client.validateAuthentication(requiredAuthTypes, 'addUserPublicKey');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1739,7 +1470,11 @@ configure the group with members, admins, encryption keys, and other settings.
         
 
         // Build the path with path parameters
-        let path = '/2/chat/conversations/group';
+        let path = '/2/users/{id}/public_keys';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
@@ -1760,7 +1495,167 @@ configure the group with members, admins, encryption keys, and other settings.
         };
 
         // Make the request
-        return this.client.request<CreateConversationResponse>(
+        return this.client.request<AddUserPublicKeyResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Send Chat Message
+     * Sends an encrypted message to a specific Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+     * 
+     * @returns Promise with the API response
+     */
+    async sendMessage(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: SendMessageStreamingOptions = {}
+    ): Promise<SendMessageResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'sendMessage');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/messages';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<SendMessageResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Send Typing Indicator
+     * Sends a typing indicator to a specific Chat conversation on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+     * 
+     * @returns Promise with the API response
+     */
+    async sendTypingIndicator(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        
+        options: SendTypingIndicatorStreamingOptions = {}
+    ): Promise<SendTypingIndicatorResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'sendTypingIndicator');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/typing';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<SendTypingIndicatorResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1856,16 +1751,39 @@ configure the group with members, admins, encryption keys, and other settings.
 
 
     /**
-     * Finalize Chat Media Upload
-     * Finalizes an XChat media upload session.
+     * Add Conversation Keys
+     * Adds (initializes or rotates) the encryption keys for a Chat conversation.
+Call this before sending messages in a new 1:1 conversation, and again with a
+newer key version to rotate the conversation key.
+
+For 1:1 conversations, provide the recipient's user ID as the conversation_id.
+The server constructs the canonical conversation ID from the authenticated user
+and recipient.
+
+The request body must contain the conversation key version and participant keys
+(the conversation key encrypted for each participant using their public key).
+
+**Workflow (new 1:1 conversation):**
+1. Generate a conversation key using the SDK
+2. Encrypt the key for both participants using their public keys
+3. Call this endpoint to register the keys
+4. Send messages using `POST /chat/conversations/{id}/messages`
+
+To rotate the keys of an existing conversation, repeat the same call with a
+newer conversation key version.
+
+**Authentication:**
+- Requires OAuth 1.0a User Context or OAuth 2.0 User Context
+- Required scopes: `tweet.read`, `users.read`, `dm.write`
+
      * 
      * @returns Promise with the API response
      */
-    async mediaUploadFinalize(
+    async addConversationKeys(
         
         
         
-        id: string,
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
@@ -1875,8 +1793,8 @@ configure the group with members, admins, encryption keys, and other settings.
         body: any,
         
         
-        options: MediaUploadFinalizeStreamingOptions = {}
-    ): Promise<MediaUploadFinalizeResponse> {
+        options: AddConversationKeysStreamingOptions = {}
+    ): Promise<AddConversationKeysResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -1889,7 +1807,7 @@ configure the group with members, admins, encryption keys, and other settings.
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'mediaUploadFinalize');
+        this.client.validateAuthentication(requiredAuthTypes, 'addConversationKeys');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -1903,7 +1821,7 @@ configure the group with members, admins, encryption keys, and other settings.
         
 
         // Build the path with path parameters
-        let path = '/2/chat/media/upload/{id}/finalize';
+        let path = '/2/chat/conversations/{id}/keys';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -1928,7 +1846,89 @@ configure the group with members, admins, encryption keys, and other settings.
         };
 
         // Make the request
-        return this.client.request<MediaUploadFinalizeResponse>(
+        return this.client.request<AddConversationKeysResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Append Chat Media Upload
+     * Appends media data to an XChat upload session.
+     * 
+     * @returns Promise with the API response
+     */
+    async mediaUploadAppend(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: MediaUploadAppendStreamingOptions = {}
+    ): Promise<MediaUploadAppendResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'mediaUploadAppend');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/media/upload/{id}/append';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<MediaUploadAppendResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

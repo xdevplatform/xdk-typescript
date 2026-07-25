@@ -13,6 +13,26 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
+  AppendUploadResponse,
+
+
+
+  GetByKeyResponse,
+
+
+
+  GetUploadStatusResponse,
+
+
+
+  UploadResponse,
+
+
+
+  GetByKeysResponse,
+
+
+
   CreateSubtitlesResponse,
 
 
@@ -25,38 +45,127 @@ import {
 
 
 
-  CreateMetadataResponse,
-
-
-
-  GetByKeysResponse,
-
-
-
-  AppendUploadResponse,
-
-
-
   GetAnalyticsResponse,
 
 
 
-  GetByKeyResponse,
+  CreateMetadataResponse,
 
 
 
   FinalizeUploadResponse,
 
-
-
-  GetUploadStatusResponse,
-
-
-
-  UploadResponse,
-
 } from './models.js';
 
+/**
+ * Options for appendUpload method
+ * 
+ * @public
+ */
+export interface AppendUploadStreamingOptions {
+    
+    
+    /** Request body */
+    body?: any;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByKey method
+ * 
+ * @public
+ */
+export interface GetByKeyStreamingOptions {
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getUploadStatus method
+ * 
+ * @public
+ */
+export interface GetUploadStatusStreamingOptions {
+    
+    
+    /** The command for the media upload request. 
+     * Also accepts: command or proper camelCase (e.g., command) */
+    command?: "STATUS";
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for upload method
+ * 
+ * @public
+ */
+export interface UploadStreamingOptions {
+    
+    
+    /** Request body */
+    body?: any;
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByKeys method
+ * 
+ * @public
+ */
+export interface GetByKeysStreamingOptions {
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for createSubtitles method
  * 
@@ -118,69 +227,6 @@ export interface InitializeUploadStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for createMetadata method
- * 
- * @public
- */
-export interface CreateMetadataStreamingOptions {
-    
-    
-    /** Request body */
-    body?: any;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByKeys method
- * 
- * @public
- */
-export interface GetByKeysStreamingOptions {
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for appendUpload method
- * 
- * @public
- */
-export interface AppendUploadStreamingOptions {
-    
-    
-    /** Request body */
-    body?: any;
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
  * Options for getAnalytics method
  * 
  * @public
@@ -204,18 +250,15 @@ export interface GetAnalyticsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getByKey method
+ * Options for createMetadata method
  * 
  * @public
  */
-export interface GetByKeyStreamingOptions {
+export interface CreateMetadataStreamingOptions {
     
     
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
+    /** Request body */
+    body?: any;
     
     /** Additional request options */
     requestOptions?: RequestOptions;
@@ -233,49 +276,6 @@ export interface GetByKeyStreamingOptions {
  */
 export interface FinalizeUploadStreamingOptions {
     
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getUploadStatus method
- * 
- * @public
- */
-export interface GetUploadStatusStreamingOptions {
-    
-    
-    /** The command for the media upload request. 
-     * Also accepts: command or proper camelCase (e.g., command) */
-    command?: "STATUS";
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for upload method
- * 
- * @public
- */
-export interface UploadStreamingOptions {
-    
-    
-    /** Request body */
-    body?: any;
     
     /** Additional request options */
     requestOptions?: RequestOptions;
@@ -355,6 +355,517 @@ export class MediaClient {
 
 
 
+
+
+
+    /**
+     * Append Media upload
+     * Appends data to a Media upload request.
+     * 
+     * @returns Promise with the API response
+     */
+    async appendUpload(
+        
+        
+        
+        id: Schemas.MediaId,
+        
+        
+        
+        
+        
+        
+        
+        options: AppendUploadStreamingOptions = {}
+    ): Promise<AppendUploadResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'appendUpload');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            body,
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload/{id}/append';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<AppendUploadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Media by media key
+     * Retrieves details of a specific Media file by its media key.
+     * 
+     * @returns Promise with the API response
+     */
+    async getByKey(
+        
+        
+        
+        mediaKey: Schemas.MediaKey,
+        
+        
+        
+        
+        
+        
+        
+        options: GetByKeyStreamingOptions = {}
+    ): Promise<GetByKeyResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByKey');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            mediaFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByKeyResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Media upload status
+     * Retrieves the status of a Media upload by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getUploadStatus(
+        
+        
+        
+        
+        
+        mediaId: Schemas.MediaId,
+        
+        
+        
+        
+        
+        options: GetUploadStatusStreamingOptions = {}
+    ): Promise<GetUploadStatusResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getUploadStatus');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            command = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (mediaId !== undefined) {
+            params.append('media_id', String(mediaId));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (command !== undefined) {
+            
+            params.append('command', String(command));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetUploadStatusResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Upload media
+     * Uploads a media file for use in posts or other content.
+     * 
+     * @returns Promise with the API response
+     */
+    async upload(
+        
+        
+        
+        
+        
+        
+        
+        options: UploadStreamingOptions = {}
+    ): Promise<UploadResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'upload');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            body,
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UploadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Media by media keys
+     * Retrieves details of Media files by their media keys.
+     * 
+     * @returns Promise with the API response
+     */
+    async getByKeys(
+        
+        
+        
+        
+        
+        mediaKeys: Array<Schemas.MediaKey>,
+        
+        
+        
+        
+        
+        options: GetByKeysStreamingOptions = {}
+    ): Promise<GetByKeysResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByKeys');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            mediaFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (mediaKeys !== undefined && mediaKeys.length > 0) {
+            params.append('media_keys', mediaKeys.join(','));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByKeysResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 
@@ -599,293 +1110,6 @@ export class MediaClient {
 
 
     /**
-     * Create Media metadata
-     * Creates metadata for a Media file.
-     * 
-     * @returns Promise with the API response
-     */
-    async createMetadata(
-        
-        
-        
-        
-        
-        
-        
-        options: CreateMetadataStreamingOptions = {}
-    ): Promise<CreateMetadataResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createMetadata');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            body,
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/metadata';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateMetadataResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Media by media keys
-     * Retrieves details of Media files by their media keys.
-     * 
-     * @returns Promise with the API response
-     */
-    async getByKeys(
-        
-        
-        
-        
-        
-        mediaKeys: Array<Schemas.MediaKey>,
-        
-        
-        
-        
-        
-        options: GetByKeysStreamingOptions = {}
-    ): Promise<GetByKeysResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getByKeys');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            mediaFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (mediaKeys !== undefined && mediaKeys.length > 0) {
-            params.append('media_keys', mediaKeys.join(','));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByKeysResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Append Media upload
-     * Appends data to a Media upload request.
-     * 
-     * @returns Promise with the API response
-     */
-    async appendUpload(
-        
-        
-        
-        id: Schemas.MediaId,
-        
-        
-        
-        
-        
-        
-        
-        options: AppendUploadStreamingOptions = {}
-    ): Promise<AppendUploadResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'appendUpload');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            body,
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload/{id}/append';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<AppendUploadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
      * Get Media analytics
      * Retrieves analytics data for media.
      * 
@@ -1049,16 +1273,12 @@ export class MediaClient {
 
 
     /**
-     * Get Media by media key
-     * Retrieves details of a specific Media file by its media key.
+     * Create Media metadata
+     * Creates metadata for a Media file.
      * 
      * @returns Promise with the API response
      */
-    async getByKey(
-        
-        
-        
-        mediaKey: Schemas.MediaKey,
+    async createMetadata(
         
         
         
@@ -1066,15 +1286,11 @@ export class MediaClient {
         
         
         
-        options: GetByKeyStreamingOptions = {}
-    ): Promise<GetByKeyResponse> {
+        options: CreateMetadataStreamingOptions = {}
+    ): Promise<CreateMetadataResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
         
         
         requiredAuthTypes.push('OAuth2UserToken');
@@ -1084,19 +1300,12 @@ export class MediaClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getByKey');
+        this.client.validateAuthentication(requiredAuthTypes, 'createMetadata');
         
 
         // Normalize options to handle both camelCase and original API parameter names
         
-        const paramMappings: Record<string, string> = {
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        const normalizedOptions = options || {};
         
 
         // Destructure options (exclude path parameters, they're already function params)
@@ -1104,9 +1313,7 @@ export class MediaClient {
         const {
             
             
-            mediaFields = [],
-            
-            
+            body,
             
             headers = {},
             signal,
@@ -1115,27 +1322,11 @@ export class MediaClient {
         
 
         // Build the path with path parameters
-        let path = '/2/media/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
+        let path = '/2/media/metadata';
         
 
         // Build query parameters
         const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
         
 
         // Prepare request options
@@ -1146,12 +1337,14 @@ export class MediaClient {
             },
             signal: signal,
             
+            body: JSON.stringify(body),
+            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<GetByKeyResponse>(
-            'GET',
+        return this.client.request<CreateMetadataResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -1229,199 +1422,6 @@ export class MediaClient {
 
         // Make the request
         return this.client.request<FinalizeUploadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Media upload status
-     * Retrieves the status of a Media upload by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getUploadStatus(
-        
-        
-        
-        
-        
-        mediaId: Schemas.MediaId,
-        
-        
-        
-        
-        
-        options: GetUploadStatusStreamingOptions = {}
-    ): Promise<GetUploadStatusResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getUploadStatus');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            command = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (mediaId !== undefined) {
-            params.append('media_id', String(mediaId));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (command !== undefined) {
-            
-            params.append('command', String(command));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetUploadStatusResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Upload media
-     * Uploads a media file for use in posts or other content.
-     * 
-     * @returns Promise with the API response
-     */
-    async upload(
-        
-        
-        
-        
-        
-        
-        
-        options: UploadStreamingOptions = {}
-    ): Promise<UploadResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'upload');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            body,
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UploadResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
