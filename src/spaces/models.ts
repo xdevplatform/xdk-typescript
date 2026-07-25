@@ -27,20 +27,20 @@ export type GetByIdResponse = Schemas.GetSpacesByIdResponse;
 
 
 /**
- * Response for getBuyers
- *
- * @public
- */
-export type GetBuyersResponse = Schemas.GetSpacesBuyersResponse;
-
-
-
-/**
  * Response for getByCreatorIds
  *
  * @public
  */
 export type GetByCreatorIdsResponse = Schemas.GetSpacesByCreatorIdsResponse;
+
+
+
+/**
+ * Response for getPosts
+ *
+ * @public
+ */
+export type GetPostsResponse = Schemas.GetSpacesPostsResponse;
 
 
 
@@ -54,9 +54,9 @@ export type SearchResponse = Schemas.SearchSpacesResponse;
 
 
 /**
- * Response for getPosts
+ * Response for getBuyers
  *
  * @public
  */
-export type GetPostsResponse = Schemas.GetSpacesPostsResponse;
+export type GetBuyersResponse = Schemas.GetSpacesBuyersResponse;
 

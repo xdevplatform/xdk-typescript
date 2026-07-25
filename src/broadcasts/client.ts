@@ -18,11 +18,6 @@ import {
 } from '../paginator.js';
 import {
 
-ListScheduledResponse,
-CreateScheduledBroadcastRequest,
-
-CreateScheduledBroadcastResponse,
-
 GetScheduledBroadcastResponse,
 UpdateScheduledBroadcastRequest,
 
@@ -33,8 +28,37 @@ SendBroadcastChatRequest,
 
 SendBroadcastChatResponse,
 
+ListScheduledResponse,
+CreateScheduledBroadcastRequest,
+
+CreateScheduledBroadcastResponse,
+
 GoLiveScheduledBroadcastResponse,
 } from './models.js';
+
+
+
+
+/**
+ * Options for deleteScheduledBroadcast method
+ * 
+ * @public
+ */
+export interface DeleteScheduledBroadcastOptions {
+    
+    
+    /** roll_forward 
+     * Also accepts: roll_forward or proper camelCase (e.g., rollForward) */
+    rollForward?: boolean;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
 
 
 /**
@@ -66,30 +90,6 @@ export interface ListScheduledOptions {
     /** pagination_token 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
     paginationToken?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-
-
-/**
- * Options for deleteScheduledBroadcast method
- * 
- * @public
- */
-export interface DeleteScheduledBroadcastOptions {
-    
-    
-    /** roll_forward 
-     * Also accepts: roll_forward or proper camelCase (e.g., rollForward) */
-    rollForward?: boolean;
     
     
     
@@ -149,276 +149,6 @@ export class BroadcastsClient {
         
         return normalized as T;
     }
-
-
-
-  /**
-   * List scheduled broadcasts
-   * Returns scheduled broadcasts owned by the authenticated user.
-
-
-
-   * @returns {Promise<ListScheduledResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    listScheduled(
-        
-        
-        
-        
-        options: ListScheduledOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    listScheduled(
-        
-        
-        
-        
-        options?: ListScheduledOptions
-        
-    ): Promise<ListScheduledResponse>;
-    // Implementation
-    async listScheduled(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: ListScheduledOptions = {}
-        
-    ): Promise<ListScheduledResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'oldest_start_time': 'oldestStartTime',
-            
-            
-            
-            'newest_start_time': 'newestStartTime',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            oldestStartTime = undefined,
-            
-            
-            
-            newestStartTime = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (oldestStartTime !== undefined) {
-            
-            params.append('oldest_start_time', String(oldestStartTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (newestStartTime !== undefined) {
-            
-            params.append('newest_start_time', String(newestStartTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<ListScheduledResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Create a scheduled broadcast
-   * Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateScheduledBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createScheduledBroadcast(
-        
-        
-        
-        body: CreateScheduledBroadcastRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createScheduledBroadcast(
-        
-        
-        
-        body: CreateScheduledBroadcastRequest,
-        
-        
-    ): Promise<CreateScheduledBroadcastResponse>;
-    // Implementation
-    async createScheduledBroadcast(
-        
-        
-        
-        
-        
-        
-        body: CreateScheduledBroadcastRequest,
-        
-        
-        
-    ): Promise<CreateScheduledBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateScheduledBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
 
 
 
@@ -866,7 +596,7 @@ export class BroadcastsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
                     
                 },
                 
@@ -884,6 +614,276 @@ export class BroadcastsClient {
         };
 
         return this.client.request<SendBroadcastChatResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * List scheduled broadcasts
+   * Returns scheduled broadcasts owned by the authenticated user.
+
+
+
+   * @returns {Promise<ListScheduledResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    listScheduled(
+        
+        
+        
+        
+        options: ListScheduledOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    listScheduled(
+        
+        
+        
+        
+        options?: ListScheduledOptions
+        
+    ): Promise<ListScheduledResponse>;
+    // Implementation
+    async listScheduled(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: ListScheduledOptions = {}
+        
+    ): Promise<ListScheduledResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'oldest_start_time': 'oldestStartTime',
+            
+            
+            
+            'newest_start_time': 'newestStartTime',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            oldestStartTime = undefined,
+            
+            
+            
+            newestStartTime = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (oldestStartTime !== undefined) {
+            
+            params.append('oldest_start_time', String(oldestStartTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (newestStartTime !== undefined) {
+            
+            params.append('newest_start_time', String(newestStartTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<ListScheduledResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Create a scheduled broadcast
+   * Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateScheduledBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createScheduledBroadcast(
+        
+        
+        
+        body: CreateScheduledBroadcastRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createScheduledBroadcast(
+        
+        
+        
+        body: CreateScheduledBroadcastRequest,
+        
+        
+    ): Promise<CreateScheduledBroadcastResponse>;
+    // Implementation
+    async createScheduledBroadcast(
+        
+        
+        
+        
+        
+        
+        body: CreateScheduledBroadcastRequest,
+        
+        
+        
+    ): Promise<CreateScheduledBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateScheduledBroadcastResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

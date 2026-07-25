@@ -9,47 +9,29 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getQuoted
+ * Response for searchRecent
  *
  * @public
  */
-export type GetQuotedResponse = Schemas.GetPostsQuotedPostsResponse;
+export type SearchRecentResponse = Schemas.SearchPostsRecentResponse;
 
 
 
 /**
- * Response for getReposts
+ * Response for getById
  *
  * @public
  */
-export type GetRepostsResponse = Schemas.GetPostsRepostsResponse;
+export type GetByIdResponse = Schemas.GetPostsByIdResponse;
 
 
 
 /**
- * Response for getAnalytics
+ * Response for delete
  *
  * @public
  */
-export type GetAnalyticsResponse = Schemas.GetPostsAnalyticsResponse;
-
-
-
-/**
- * Response for getCountsAll
- *
- * @public
- */
-export type GetCountsAllResponse = Schemas.GetPostsCountsAllResponse;
-
-
-
-/**
- * Response for getCountsRecent
- *
- * @public
- */
-export type GetCountsRecentResponse = Schemas.GetPostsCountsRecentResponse;
+export type DeleteResponse = Schemas.DeletePostsResponse;
 
 
 
@@ -63,11 +45,11 @@ export type SearchAllResponse = Schemas.SearchPostsAllResponse;
 
 
 /**
- * Response for getLikingUsers
+ * Response for getReposts
  *
  * @public
  */
-export type GetLikingUsersResponse = Schemas.GetPostsLikingUsersResponse;
+export type GetRepostsResponse = Schemas.GetPostsRepostsResponse;
 
 
 
@@ -97,11 +79,11 @@ export type CreateResponse = Schemas.CreatePostsResponse;
 
 
 /**
- * Response for searchRecent
+ * Response for getLikingUsers
  *
  * @public
  */
-export type SearchRecentResponse = Schemas.SearchPostsRecentResponse;
+export type GetLikingUsersResponse = Schemas.GetPostsLikingUsersResponse;
 
 
 /**
@@ -122,27 +104,45 @@ export type HideReplyResponse = Schemas.HidePostsReplyResponse;
 
 
 /**
+ * Response for getQuoted
+ *
+ * @public
+ */
+export type GetQuotedResponse = Schemas.GetPostsQuotedPostsResponse;
+
+
+
+/**
+ * Response for getCountsAll
+ *
+ * @public
+ */
+export type GetCountsAllResponse = Schemas.GetPostsCountsAllResponse;
+
+
+
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+export type GetAnalyticsResponse = Schemas.GetPostsAnalyticsResponse;
+
+
+
+/**
+ * Response for getCountsRecent
+ *
+ * @public
+ */
+export type GetCountsRecentResponse = Schemas.GetPostsCountsRecentResponse;
+
+
+
+/**
  * Response for getRepostedBy
  *
  * @public
  */
 export type GetRepostedByResponse = Schemas.GetPostsRepostedByResponse;
-
-
-
-/**
- * Response for getById
- *
- * @public
- */
-export type GetByIdResponse = Schemas.GetPostsByIdResponse;
-
-
-
-/**
- * Response for delete
- *
- * @public
- */
-export type DeleteResponse = Schemas.DeletePostsResponse;
 

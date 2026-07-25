@@ -17,51 +17,7 @@ import {
 
 
 
-import { MediaClient } from "./media/index.js";
-
-
-
-import { PostsClient } from "./posts/index.js";
-
-
-
 import { StreamClient } from "./stream/client.js";
-
-
-
-import { ConnectionsClient } from "./connections/index.js";
-
-
-
-import { WebhooksClient } from "./webhooks/index.js";
-
-
-
-import { NewsClient } from "./news/index.js";
-
-
-
-import { ComplianceClient } from "./compliance/index.js";
-
-
-
-import { ChatClient } from "./chat/index.js";
-
-
-
-import { CommunitiesClient } from "./communities/index.js";
-
-
-
-import { CommunityNotesClient } from "./community_notes/index.js";
-
-
-
-import { UsersClient } from "./users/index.js";
-
-
-
-import { DirectMessagesClient } from "./direct_messages/index.js";
 
 
 
@@ -69,15 +25,11 @@ import { UsageClient } from "./usage/index.js";
 
 
 
+import { CommunityNotesClient } from "./community_notes/index.js";
+
+
+
 import { SpacesClient } from "./spaces/index.js";
-
-
-
-import { AccountActivityClient } from "./account_activity/index.js";
-
-
-
-import { ActivityClient } from "./activity/index.js";
 
 
 
@@ -85,11 +37,43 @@ import { BroadcastsClient } from "./broadcasts/index.js";
 
 
 
+import { MediaClient } from "./media/index.js";
+
+
+
+import { UsersClient } from "./users/index.js";
+
+
+
+import { ChatClient } from "./chat/index.js";
+
+
+
+import { PostsClient } from "./posts/index.js";
+
+
+
+import { AccountActivityClient } from "./account_activity/index.js";
+
+
+
+import { WebhooksClient } from "./webhooks/index.js";
+
+
+
 import { ListsClient } from "./lists/index.js";
 
 
 
-import { TrendsClient } from "./trends/index.js";
+import { GeneralClient } from "./general/index.js";
+
+
+
+import { ComplianceClient } from "./compliance/index.js";
+
+
+
+import { ActivityClient } from "./activity/index.js";
 
 
 
@@ -97,7 +81,23 @@ import { ArticlesClient } from "./articles/index.js";
 
 
 
-import { GeneralClient } from "./general/index.js";
+import { TrendsClient } from "./trends/index.js";
+
+
+
+import { ConnectionsClient } from "./connections/index.js";
+
+
+
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { CommunitiesClient } from "./communities/index.js";
+
+
+
+import { NewsClient } from "./news/index.js";
 
 
 
@@ -334,68 +334,68 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** media client */
-  readonly media: MediaClient;
-
-  /** posts client */
-  readonly posts: PostsClient;
-
   /** stream client */
   readonly stream: StreamClient;
-
-  /** connections client */
-  readonly connections: ConnectionsClient;
-
-  /** webhooks client */
-  readonly webhooks: WebhooksClient;
-
-  /** news client */
-  readonly news: NewsClient;
-
-  /** compliance client */
-  readonly compliance: ComplianceClient;
-
-  /** chat client */
-  readonly chat: ChatClient;
-
-  /** communities client */
-  readonly communities: CommunitiesClient;
-
-  /** community notes client */
-  readonly communityNotes: CommunityNotesClient;
-
-  /** users client */
-  readonly users: UsersClient;
-
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
 
   /** usage client */
   readonly usage: UsageClient;
 
+  /** community notes client */
+  readonly communityNotes: CommunityNotesClient;
+
   /** spaces client */
   readonly spaces: SpacesClient;
-
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
-
-  /** activity client */
-  readonly activity: ActivityClient;
 
   /** broadcasts client */
   readonly broadcasts: BroadcastsClient;
 
+  /** media client */
+  readonly media: MediaClient;
+
+  /** users client */
+  readonly users: UsersClient;
+
+  /** chat client */
+  readonly chat: ChatClient;
+
+  /** posts client */
+  readonly posts: PostsClient;
+
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
+
+  /** webhooks client */
+  readonly webhooks: WebhooksClient;
+
   /** lists client */
   readonly lists: ListsClient;
 
-  /** trends client */
-  readonly trends: TrendsClient;
+  /** general client */
+  readonly general: GeneralClient;
+
+  /** compliance client */
+  readonly compliance: ComplianceClient;
+
+  /** activity client */
+  readonly activity: ActivityClient;
 
   /** articles client */
   readonly articles: ArticlesClient;
 
-  /** general client */
-  readonly general: GeneralClient;
+  /** trends client */
+  readonly trends: TrendsClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
+
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
+  /** communities client */
+  readonly communities: CommunitiesClient;
+
+  /** news client */
+  readonly news: NewsClient;
 
 
   /**
@@ -442,7 +442,7 @@ export class Client {
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.6.5',
+      'User-Agent': 'xdk-typescript/0.6.6',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((config as ClientConfig).headers || {}),
@@ -451,47 +451,47 @@ export class Client {
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.media = new MediaClient(this);
-
-    this.posts = new PostsClient(this);
-
     this.stream = new StreamClient(this);
-
-    this.connections = new ConnectionsClient(this);
-
-    this.webhooks = new WebhooksClient(this);
-
-    this.news = new NewsClient(this);
-
-    this.compliance = new ComplianceClient(this);
-
-    this.chat = new ChatClient(this);
-
-    this.communities = new CommunitiesClient(this);
-
-    this.communityNotes = new CommunityNotesClient(this);
-
-    this.users = new UsersClient(this);
-
-    this.directMessages = new DirectMessagesClient(this);
 
     this.usage = new UsageClient(this);
 
+    this.communityNotes = new CommunityNotesClient(this);
+
     this.spaces = new SpacesClient(this);
-
-    this.accountActivity = new AccountActivityClient(this);
-
-    this.activity = new ActivityClient(this);
 
     this.broadcasts = new BroadcastsClient(this);
 
+    this.media = new MediaClient(this);
+
+    this.users = new UsersClient(this);
+
+    this.chat = new ChatClient(this);
+
+    this.posts = new PostsClient(this);
+
+    this.accountActivity = new AccountActivityClient(this);
+
+    this.webhooks = new WebhooksClient(this);
+
     this.lists = new ListsClient(this);
 
-    this.trends = new TrendsClient(this);
+    this.general = new GeneralClient(this);
+
+    this.compliance = new ComplianceClient(this);
+
+    this.activity = new ActivityClient(this);
 
     this.articles = new ArticlesClient(this);
 
-    this.general = new GeneralClient(this);
+    this.trends = new TrendsClient(this);
+
+    this.connections = new ConnectionsClient(this);
+
+    this.directMessages = new DirectMessagesClient(this);
+
+    this.communities = new CommunitiesClient(this);
+
+    this.news = new NewsClient(this);
 
   }
 
@@ -577,13 +577,23 @@ export class Client {
       });
 
       if (!response.ok) {
+        // Read the body exactly once: a fetch Response body is a one-shot
+        // stream, so a failed json() followed by text() would throw
+        // "Body is unusable" and mask the real error.
         let errorData: any;
         try {
-          errorData = await response.json();
+          const errorText = await response.text();
+          try {
+            errorData = JSON.parse(errorText);
+          } catch {
+            errorData = errorText;
+          }
         } catch {
-          errorData = await response.text();
+          // The body could not be read at all (e.g. an aborted stream);
+          // still surface the status line below.
+          errorData = undefined;
         }
-        
+
         throw new ApiError(
           errorData && errorData.message ? errorData.message : `HTTP ${response.status}: ${response.statusText}`,
           response.status,

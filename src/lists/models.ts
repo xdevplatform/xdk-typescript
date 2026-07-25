@@ -9,36 +9,20 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
+ * Response for removeMemberByUserId
+ *
+ * @public
+ */
+export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
+
+
+
+/**
  * Response for getFollowers
  *
  * @public
  */
 export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
-
-
-/**
- * Request for create
- *
- * @public
- */
-export type CreateRequest = Schemas.CreateListsRequest;
-
-
-/**
- * Response for create
- *
- * @public
- */
-export type CreateResponse = Schemas.CreateListsResponse;
-
-
-
-/**
- * Response for getPosts
- *
- * @public
- */
-export type GetPostsResponse = Schemas.GetListsPostsResponse;
 
 
 
@@ -77,11 +61,27 @@ export type DeleteResponse = Schemas.DeleteListsResponse;
 
 
 /**
- * Response for removeMemberByUserId
+ * Response for getPosts
  *
  * @public
  */
-export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
+export type GetPostsResponse = Schemas.GetListsPostsResponse;
+
+
+/**
+ * Request for create
+ *
+ * @public
+ */
+export type CreateRequest = Schemas.CreateListsRequest;
+
+
+/**
+ * Response for create
+ *
+ * @public
+ */
+export type CreateResponse = Schemas.CreateListsResponse;
 
 
 

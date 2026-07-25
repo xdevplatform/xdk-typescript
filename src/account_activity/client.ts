@@ -25,9 +25,9 @@ CreateSubscriptionResponse,
 
 DeleteSubscriptionResponse,
 
-GetSubscriptionsResponse,
-
 GetSubscriptionCountResponse,
+
+GetSubscriptionsResponse,
 } from './models.js';
 
 
@@ -162,7 +162,7 @@ export class AccountActivityClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.write', 'dm.read'],
+                    'OAuth2UserToken': ['dm.write', 'dm.read', 'tweet.read', 'users.read'],
                     
                 },
                 
@@ -276,7 +276,7 @@ export class AccountActivityClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.read', 'dm.write', 'users.read', 'tweet.read'],
+                    'OAuth2UserToken': ['dm.write', 'users.read', 'tweet.read', 'dm.read'],
                     
                 },
                 
@@ -422,6 +422,83 @@ export class AccountActivityClient {
 
 
   /**
+   * Get Account Activity Subscription Count
+
+
+
+   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getSubscriptionCount(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSubscriptionCount(
+        
+        
+        
+        
+    ): Promise<GetSubscriptionCountResponse>;
+    // Implementation
+    async getSubscriptionCount(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionCountResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/subscriptions/count';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetSubscriptionCountResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
    * Get Account Activity Subscriptions
 
 
@@ -509,83 +586,6 @@ export class AccountActivityClient {
         };
 
         return this.client.request<GetSubscriptionsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Account Activity Subscription Count
-
-
-
-   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getSubscriptionCount(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getSubscriptionCount(
-        
-        
-        
-        
-    ): Promise<GetSubscriptionCountResponse>;
-    // Implementation
-    async getSubscriptionCount(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetSubscriptionCountResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/subscriptions/count';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetSubscriptionCountResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

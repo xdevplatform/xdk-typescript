@@ -43,18 +43,18 @@ export type DeleteSubscriptionResponse = Schemas.DeleteAccountActivitySubscripti
 
 
 /**
- * Response for getSubscriptions
- *
- * @public
- */
-export type GetSubscriptionsResponse = Schemas.GetAccountActivitySubscriptionsResponse;
-
-
-
-/**
  * Response for getSubscriptionCount
  *
  * @public
  */
 export type GetSubscriptionCountResponse = Schemas.GetAccountActivitySubscriptionCountResponse;
+
+
+
+/**
+ * Response for getSubscriptions
+ *
+ * @public
+ */
+export type GetSubscriptionsResponse = Schemas.GetAccountActivitySubscriptionsResponse;
 

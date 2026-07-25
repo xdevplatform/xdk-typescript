@@ -9,31 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for listScheduled
- *
- * @public
- */
-export type ListScheduledResponse = Schemas.ListScheduledBroadcastsResponse;
-
-
-/**
- * Request for createScheduledBroadcast
- *
- * @public
- */
-export type CreateScheduledBroadcastRequest = Schemas.CreateScheduledBroadcastRequest;
-
-
-/**
- * Response for createScheduledBroadcast
- *
- * @public
- */
-export type CreateScheduledBroadcastResponse = Schemas.CreateScheduledBroadcastResponse;
-
-
-
-/**
  * Response for getScheduledBroadcast
  *
  * @public
@@ -80,6 +55,31 @@ export type SendBroadcastChatRequest = Schemas.SendBroadcastChatRequest;
  * @public
  */
 export type SendBroadcastChatResponse = Schemas.SendBroadcastChatResponse;
+
+
+
+/**
+ * Response for listScheduled
+ *
+ * @public
+ */
+export type ListScheduledResponse = Schemas.ListScheduledBroadcastsResponse;
+
+
+/**
+ * Request for createScheduledBroadcast
+ *
+ * @public
+ */
+export type CreateScheduledBroadcastRequest = Schemas.CreateScheduledBroadcastRequest;
+
+
+/**
+ * Response for createScheduledBroadcast
+ *
+ * @public
+ */
+export type CreateScheduledBroadcastResponse = Schemas.CreateScheduledBroadcastResponse;
 
 
 

@@ -21,11 +21,11 @@ import {
 
 
 
-  DeleteByEndpointResponse,
-
-
-
   DeleteAllResponse,
+
+
+
+  DeleteByEndpointResponse,
 
 } from './models.js';
 
@@ -94,11 +94,11 @@ export interface DeleteByUuidsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteByEndpoint method
+ * Options for deleteAll method
  * 
  * @public
  */
-export interface DeleteByEndpointStreamingOptions {
+export interface DeleteAllStreamingOptions {
     
     
     /** Additional request options */
@@ -111,11 +111,11 @@ export interface DeleteByEndpointStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteAll method
+ * Options for deleteByEndpoint method
  * 
  * @public
  */
-export interface DeleteAllStreamingOptions {
+export interface DeleteByEndpointStreamingOptions {
     
     
     /** Additional request options */
@@ -420,6 +420,72 @@ export class ConnectionsClient {
 
 
     /**
+     * Terminate all connections
+     * Terminates all active streaming connections for the authenticated application.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteAll(
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteAllStreamingOptions = {}
+    ): Promise<DeleteAllResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteAll');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections/all';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteAllResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Terminate connections by endpoint
      * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
      * 
@@ -485,72 +551,6 @@ export class ConnectionsClient {
 
         // Make the request
         return this.client.request<DeleteByEndpointResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Terminate all connections
-     * Terminates all active streaming connections for the authenticated application.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteAll(
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteAllStreamingOptions = {}
-    ): Promise<DeleteAllResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteAll');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/connections/all';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteAllResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

@@ -30,12 +30,12 @@ describe('StreamClient Structure', () => {
 
   
   
-  it('should have posts method with correct signature', () => {
+  it('should have postsCompliance method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('posts');
+    expect(StreamClient.prototype).toHaveProperty('postsCompliance');
     
     // Check method is callable
-    const method = streamClient.posts;
+    const method = streamClient.postsCompliance;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -45,6 +45,8 @@ describe('StreamClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
+      
+      'partition',
       
     ];
     
@@ -59,8 +61,8 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have posts method with return type annotation', () => {
-    const method = streamClient.posts;
+  it('should have postsCompliance method with return type annotation', () => {
+    const method = streamClient.postsCompliance;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -69,12 +71,135 @@ describe('StreamClient Structure', () => {
   
 
   
-  it('should have postsSample method with correct signature', () => {
+  it('should have postsFirehoseKo method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('postsSample');
+    expect(StreamClient.prototype).toHaveProperty('postsFirehoseKo');
     
     // Check method is callable
-    const method = streamClient.postsSample;
+    const method = streamClient.postsFirehoseKo;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'partition',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have postsFirehoseKo method with return type annotation', () => {
+    const method = streamClient.postsFirehoseKo;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have postsFirehose method with correct signature', () => {
+    // Check method exists
+    expect(StreamClient.prototype).toHaveProperty('postsFirehose');
+    
+    // Check method is callable
+    const method = streamClient.postsFirehose;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'partition',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have postsFirehose method with return type annotation', () => {
+    const method = streamClient.postsFirehose;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have likesFirehose method with correct signature', () => {
+    // Check method exists
+    expect(StreamClient.prototype).toHaveProperty('likesFirehose');
+    
+    // Check method is callable
+    const method = streamClient.likesFirehose;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'partition',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have likesFirehose method with return type annotation', () => {
+    const method = streamClient.likesFirehose;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getRuleCounts method with correct signature', () => {
+    // Check method exists
+    expect(StreamClient.prototype).toHaveProperty('getRuleCounts');
+    
+    // Check method is callable
+    const method = streamClient.getRuleCounts;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -98,8 +223,8 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have postsSample method with return type annotation', () => {
-    const method = streamClient.postsSample;
+  it('should have getRuleCounts method with return type annotation', () => {
+    const method = streamClient.getRuleCounts;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -204,12 +329,12 @@ describe('StreamClient Structure', () => {
   
 
   
-  it('should have likesSample10 method with correct signature', () => {
+  it('should have postsFirehoseJa method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('likesSample10');
+    expect(StreamClient.prototype).toHaveProperty('postsFirehoseJa');
     
     // Check method is callable
-    const method = streamClient.likesSample10;
+    const method = streamClient.postsFirehoseJa;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -235,8 +360,8 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have likesSample10 method with return type annotation', () => {
-    const method = streamClient.likesSample10;
+  it('should have postsFirehoseJa method with return type annotation', () => {
+    const method = streamClient.postsFirehoseJa;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -284,12 +409,12 @@ describe('StreamClient Structure', () => {
   
 
   
-  it('should have postsSample10 method with correct signature', () => {
+  it('should have likesSample10 method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('postsSample10');
+    expect(StreamClient.prototype).toHaveProperty('likesSample10');
     
     // Check method is callable
-    const method = streamClient.postsSample10;
+    const method = streamClient.likesSample10;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -315,8 +440,8 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have postsSample10 method with return type annotation', () => {
-    const method = streamClient.postsSample10;
+  it('should have likesSample10 method with return type annotation', () => {
+    const method = streamClient.likesSample10;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -325,176 +450,12 @@ describe('StreamClient Structure', () => {
   
 
   
-  it('should have postsCompliance method with correct signature', () => {
+  it('should have posts method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('postsCompliance');
+    expect(StreamClient.prototype).toHaveProperty('posts');
     
     // Check method is callable
-    const method = streamClient.postsCompliance;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'partition',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have postsCompliance method with return type annotation', () => {
-    const method = streamClient.postsCompliance;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have postsFirehoseKo method with correct signature', () => {
-    // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('postsFirehoseKo');
-    
-    // Check method is callable
-    const method = streamClient.postsFirehoseKo;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'partition',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have postsFirehoseKo method with return type annotation', () => {
-    const method = streamClient.postsFirehoseKo;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have likesFirehose method with correct signature', () => {
-    // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('likesFirehose');
-    
-    // Check method is callable
-    const method = streamClient.likesFirehose;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'partition',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have likesFirehose method with return type annotation', () => {
-    const method = streamClient.likesFirehose;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have postsFirehoseJa method with correct signature', () => {
-    // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('postsFirehoseJa');
-    
-    // Check method is callable
-    const method = streamClient.postsFirehoseJa;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'partition',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have postsFirehoseJa method with return type annotation', () => {
-    const method = streamClient.postsFirehoseJa;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have labelsCompliance method with correct signature', () => {
-    // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('labelsCompliance');
-    
-    // Check method is callable
-    const method = streamClient.labelsCompliance;
+    const method = streamClient.posts;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -518,49 +479,8 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have labelsCompliance method with return type annotation', () => {
-    const method = streamClient.labelsCompliance;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have usersCompliance method with correct signature', () => {
-    // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('usersCompliance');
-    
-    // Check method is callable
-    const method = streamClient.usersCompliance;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'partition',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have usersCompliance method with return type annotation', () => {
-    const method = streamClient.usersCompliance;
+  it('should have posts method with return type annotation', () => {
+    const method = streamClient.posts;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -610,12 +530,51 @@ describe('StreamClient Structure', () => {
   
 
   
-  it('should have postsFirehose method with correct signature', () => {
+  it('should have labelsCompliance method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('postsFirehose');
+    expect(StreamClient.prototype).toHaveProperty('labelsCompliance');
     
     // Check method is callable
-    const method = streamClient.postsFirehose;
+    const method = streamClient.labelsCompliance;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have labelsCompliance method with return type annotation', () => {
+    const method = streamClient.labelsCompliance;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have postsSample10 method with correct signature', () => {
+    // Check method exists
+    expect(StreamClient.prototype).toHaveProperty('postsSample10');
+    
+    // Check method is callable
+    const method = streamClient.postsSample10;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -641,8 +600,88 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have postsFirehose method with return type annotation', () => {
-    const method = streamClient.postsFirehose;
+  it('should have postsSample10 method with return type annotation', () => {
+    const method = streamClient.postsSample10;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have activity method with correct signature', () => {
+    // Check method exists
+    expect(StreamClient.prototype).toHaveProperty('activity');
+    
+    // Check method is callable
+    const method = streamClient.activity;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have activity method with return type annotation', () => {
+    const method = streamClient.activity;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have usersCompliance method with correct signature', () => {
+    // Check method exists
+    expect(StreamClient.prototype).toHaveProperty('usersCompliance');
+    
+    // Check method is callable
+    const method = streamClient.usersCompliance;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'partition',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have usersCompliance method with return type annotation', () => {
+    const method = streamClient.usersCompliance;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -692,12 +731,12 @@ describe('StreamClient Structure', () => {
   
 
   
-  it('should have activity method with correct signature', () => {
+  it('should have postsSample method with correct signature', () => {
     // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('activity');
+    expect(StreamClient.prototype).toHaveProperty('postsSample');
     
     // Check method is callable
-    const method = streamClient.activity;
+    const method = streamClient.postsSample;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -721,47 +760,8 @@ describe('StreamClient Structure', () => {
     }
   });
 
-  it('should have activity method with return type annotation', () => {
-    const method = streamClient.activity;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getRuleCounts method with correct signature', () => {
-    // Check method exists
-    expect(StreamClient.prototype).toHaveProperty('getRuleCounts');
-    
-    // Check method is callable
-    const method = streamClient.getRuleCounts;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getRuleCounts method with return type annotation', () => {
-    const method = streamClient.getRuleCounts;
+  it('should have postsSample method with return type annotation', () => {
+    const method = streamClient.postsSample;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -774,41 +774,41 @@ describe('StreamClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'posts',
+      'postsCompliance',
       
-      'postsSample',
+      'postsFirehoseKo',
+      
+      'postsFirehose',
+      
+      'likesFirehose',
+      
+      'getRuleCounts',
       
       'getRules',
       
       'updateRules',
       
-      'likesSample10',
+      'postsFirehoseJa',
       
       'likesCompliance',
       
-      'postsSample10',
+      'likesSample10',
       
-      'postsCompliance',
-      
-      'postsFirehoseKo',
-      
-      'likesFirehose',
-      
-      'postsFirehoseJa',
-      
-      'labelsCompliance',
-      
-      'usersCompliance',
+      'posts',
       
       'postsFirehoseEn',
       
-      'postsFirehose',
+      'labelsCompliance',
       
-      'postsFirehosePt',
+      'postsSample10',
       
       'activity',
       
-      'getRuleCounts',
+      'usersCompliance',
+      
+      'postsFirehosePt',
+      
+      'postsSample',
       
     ];
 

@@ -30,102 +30,6 @@ describe('BroadcastsClient Structure', () => {
 
   
   
-  it('should have listScheduled method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('listScheduled');
-    
-    // Check method is callable
-    const method = broadcastsClient.listScheduled;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have listScheduled method with return type annotation', () => {
-    const method = broadcastsClient.listScheduled;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have listScheduled method with pagination parameters', () => {
-    const method = broadcastsClient.listScheduled;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have createScheduledBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('createScheduledBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.createScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have createScheduledBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.createScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
   it('should have getScheduledBroadcast method with correct signature', () => {
     // Check method exists
     expect(BroadcastsClient.prototype).toHaveProperty('getScheduledBroadcast');
@@ -290,6 +194,102 @@ describe('BroadcastsClient Structure', () => {
   
 
   
+  it('should have listScheduled method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('listScheduled');
+    
+    // Check method is callable
+    const method = broadcastsClient.listScheduled;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have listScheduled method with return type annotation', () => {
+    const method = broadcastsClient.listScheduled;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have listScheduled method with pagination parameters', () => {
+    const method = broadcastsClient.listScheduled;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have createScheduledBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('createScheduledBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.createScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have createScheduledBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.createScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
   it('should have goLiveScheduledBroadcast method with correct signature', () => {
     // Check method exists
     expect(BroadcastsClient.prototype).toHaveProperty('goLiveScheduledBroadcast');
@@ -335,10 +335,6 @@ describe('BroadcastsClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'listScheduled',
-      
-      'createScheduledBroadcast',
-      
       'getScheduledBroadcast',
       
       'updateScheduledBroadcast',
@@ -346,6 +342,10 @@ describe('BroadcastsClient Structure', () => {
       'deleteScheduledBroadcast',
       
       'sendBroadcastChat',
+      
+      'listScheduled',
+      
+      'createScheduledBroadcast',
       
       'goLiveScheduledBroadcast',
       

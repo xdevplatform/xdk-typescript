@@ -17,11 +17,6 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-UpdateSubscriptionRequest,
-
-UpdateSubscriptionResponse,
-
-DeleteSubscriptionResponse,
 
 GetSubscriptionsResponse,
 CreateSubscriptionRequest,
@@ -29,9 +24,12 @@ CreateSubscriptionRequest,
 CreateSubscriptionResponse,
 
 DeleteSubscriptionsByIdsResponse,
+UpdateSubscriptionRequest,
+
+UpdateSubscriptionResponse,
+
+DeleteSubscriptionResponse,
 } from './models.js';
-
-
 
 
 /**
@@ -59,6 +57,8 @@ export interface GetSubscriptionsOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+
+
 
 
 
@@ -110,212 +110,6 @@ export class ActivityClient {
         
         return normalized as T;
     }
-
-
-
-  /**
-   * Update X activity subscription
-   * Updates a subscription for an X activity event
-
-
-   * @param subscriptionId subscription_id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    updateSubscription(
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        body: UpdateSubscriptionRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    updateSubscription(
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        body: UpdateSubscriptionRequest,
-        
-        
-    ): Promise<UpdateSubscriptionResponse>;
-    // Implementation
-    async updateSubscription(
-        
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        
-        
-        body: UpdateSubscriptionRequest,
-        
-        
-        
-    ): Promise<UpdateSubscriptionResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/activity/subscriptions/{subscription_id}';
-        
-        
-        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UpdateSubscriptionResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Deletes X activity subscription
-   * Deletes a subscription for an X activity event
-
-
-   * @param subscriptionId subscription_id
-
-
-
-
-   * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteSubscription(
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteSubscription(
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteSubscriptionResponse>;
-    // Implementation
-    async deleteSubscription(
-        
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteSubscriptionResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/activity/subscriptions/{subscription_id}';
-        
-        
-        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteSubscriptionResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
 
 
 
@@ -661,6 +455,212 @@ export class ActivityClient {
         };
 
         return this.client.request<DeleteSubscriptionsByIdsResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Update X activity subscription
+   * Updates a subscription for an X activity event
+
+
+   * @param subscriptionId subscription_id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UpdateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    updateSubscription(
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        body: UpdateSubscriptionRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    updateSubscription(
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        body: UpdateSubscriptionRequest,
+        
+        
+    ): Promise<UpdateSubscriptionResponse>;
+    // Implementation
+    async updateSubscription(
+        
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        
+        body: UpdateSubscriptionRequest,
+        
+        
+        
+    ): Promise<UpdateSubscriptionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions/{subscription_id}';
+        
+        
+        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UpdateSubscriptionResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Deletes X activity subscription
+   * Deletes a subscription for an X activity event
+
+
+   * @param subscriptionId subscription_id
+
+
+
+
+   * @returns {Promise<DeleteSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteSubscription(
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteSubscription(
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse>;
+    // Implementation
+    async deleteSubscription(
+        
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteSubscriptionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions/{subscription_id}';
+        
+        
+        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteSubscriptionResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

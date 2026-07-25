@@ -23,9 +23,9 @@ DeleteByUuidsRequest,
 
 DeleteByUuidsResponse,
 
-DeleteByEndpointResponse,
-
 DeleteAllResponse,
+
+DeleteByEndpointResponse,
 } from './models.js';
 
 
@@ -405,6 +405,84 @@ export class ConnectionsClient {
 
 
   /**
+   * Terminate all connections
+   * Terminates all active streaming connections for the authenticated application.
+
+
+
+   * @returns {Promise<DeleteAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteAll(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteAll(
+        
+        
+        
+        
+    ): Promise<DeleteAllResponse>;
+    // Implementation
+    async deleteAll(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteAllResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections/all';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteAllResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
    * Terminate connections by endpoint
    * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
 
@@ -493,84 +571,6 @@ export class ConnectionsClient {
         };
 
         return this.client.request<DeleteByEndpointResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Terminate all connections
-   * Terminates all active streaming connections for the authenticated application.
-
-
-
-   * @returns {Promise<DeleteAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteAll(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteAll(
-        
-        
-        
-        
-    ): Promise<DeleteAllResponse>;
-    // Implementation
-    async deleteAll(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteAllResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/connections/all';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteAllResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

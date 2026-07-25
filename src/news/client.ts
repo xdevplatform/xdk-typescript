@@ -286,7 +286,7 @@ export class NewsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
                     
                 },
                 

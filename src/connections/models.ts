@@ -34,18 +34,18 @@ export type DeleteByUuidsResponse = Schemas.DeleteConnectionsByUuidsResponse;
 
 
 /**
- * Response for deleteByEndpoint
- *
- * @public
- */
-export type DeleteByEndpointResponse = Schemas.DeleteConnectionsByEndpointResponse;
-
-
-
-/**
  * Response for deleteAll
  *
  * @public
  */
 export type DeleteAllResponse = Schemas.DeleteAllConnectionsResponse;
+
+
+
+/**
+ * Response for deleteByEndpoint
+ *
+ * @public
+ */
+export type DeleteByEndpointResponse = Schemas.DeleteConnectionsByEndpointResponse;
 

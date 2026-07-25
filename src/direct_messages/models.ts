@@ -7,22 +7,6 @@
 import type * as Schemas from '../schemas.js';
 
 
-/**
- * Request for createByConversationId
- *
- * @public
- */
-export type CreateByConversationIdRequest = Schemas.CreateDirectMessagesByConversationIdRequest;
-
-
-/**
- * Response for createByConversationId
- *
- * @public
- */
-export type CreateByConversationIdResponse = Schemas.CreateDirectMessagesByConversationIdResponse;
-
-
 
 /**
  * Response for getEventsById
@@ -42,12 +26,39 @@ export type DeleteEventsResponse = Schemas.DeleteDirectMessagesEventsResponse;
 
 
 
+
+
 /**
- * Response for getEventsByParticipantId
+ * Response for getEvents
  *
  * @public
  */
-export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsByParticipantIdResponse;
+export type GetEventsResponse = Schemas.GetDirectMessagesEventsResponse;
+
+
+/**
+ * Request for createByConversationId
+ *
+ * @public
+ */
+export type CreateByConversationIdRequest = Schemas.CreateDirectMessagesByConversationIdRequest;
+
+
+/**
+ * Response for createByConversationId
+ *
+ * @public
+ */
+export type CreateByConversationIdResponse = Schemas.CreateDirectMessagesByConversationIdResponse;
+
+
+
+/**
+ * Response for getEventsByConversationId
+ *
+ * @public
+ */
+export type GetEventsByConversationIdResponse = Schemas.GetDirectMessagesEventsByConversationIdResponse;
 
 
 /**
@@ -68,11 +79,11 @@ export type CreateByParticipantIdResponse = Schemas.CreateDirectMessagesByPartic
 
 
 /**
- * Response for getEvents
+ * Response for getEventsByParticipantId
  *
  * @public
  */
-export type GetEventsResponse = Schemas.GetDirectMessagesEventsResponse;
+export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsByParticipantIdResponse;
 
 
 /**
@@ -89,15 +100,4 @@ export type CreateConversationRequest = Schemas.CreateDirectMessagesConversation
  * @public
  */
 export type CreateConversationResponse = Schemas.CreateDirectMessagesConversationResponse;
-
-
-
-/**
- * Response for getEventsByConversationId
- *
- * @public
- */
-export type GetEventsByConversationIdResponse = Schemas.GetDirectMessagesEventsByConversationIdResponse;
-
-
 

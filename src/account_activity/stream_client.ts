@@ -25,11 +25,11 @@ import {
 
 
 
-  GetSubscriptionsResponse,
-
-
-
   GetSubscriptionCountResponse,
+
+
+
+  GetSubscriptionsResponse,
 
 } from './models.js';
 
@@ -85,11 +85,11 @@ export interface DeleteSubscriptionStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getSubscriptions method
+ * Options for getSubscriptionCount method
  * 
  * @public
  */
-export interface GetSubscriptionsStreamingOptions {
+export interface GetSubscriptionCountStreamingOptions {
     
     
     /** Additional request options */
@@ -102,11 +102,11 @@ export interface GetSubscriptionsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getSubscriptionCount method
+ * Options for getSubscriptions method
  * 
  * @public
  */
-export interface GetSubscriptionCountStreamingOptions {
+export interface GetSubscriptionsStreamingOptions {
     
     
     /** Additional request options */
@@ -414,6 +414,71 @@ export class AccountActivityClient {
 
 
     /**
+     * Get Account Activity Subscription Count
+     * 
+     * @returns Promise with the API response
+     */
+    async getSubscriptionCount(
+        
+        
+        
+        
+        
+        
+        
+        options: GetSubscriptionCountStreamingOptions = {}
+    ): Promise<GetSubscriptionCountResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptionCount');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/subscriptions/count';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetSubscriptionCountResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Get Account Activity Subscriptions
      * 
      * @returns Promise with the API response
@@ -478,71 +543,6 @@ export class AccountActivityClient {
 
         // Make the request
         return this.client.request<GetSubscriptionsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Account Activity Subscription Count
-     * 
-     * @returns Promise with the API response
-     */
-    async getSubscriptionCount(
-        
-        
-        
-        
-        
-        
-        
-        options: GetSubscriptionCountStreamingOptions = {}
-    ): Promise<GetSubscriptionCountResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getSubscriptionCount');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/subscriptions/count';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetSubscriptionCountResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

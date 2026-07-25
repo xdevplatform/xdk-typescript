@@ -13,14 +13,6 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  ListScheduledResponse,
-
-
-
-  CreateScheduledBroadcastResponse,
-
-
-
   GetScheduledBroadcastResponse,
 
 
@@ -37,68 +29,18 @@ import {
 
 
 
+  ListScheduledResponse,
+
+
+
+  CreateScheduledBroadcastResponse,
+
+
+
   GoLiveScheduledBroadcastResponse,
 
 } from './models.js';
 
-/**
- * Options for listScheduled method
- * 
- * @public
- */
-export interface ListScheduledStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** oldest_start_time 
-     * Also accepts: oldest_start_time or proper camelCase (e.g., oldestStartTime) */
-    oldestStartTime?: string;
-    
-    
-    
-    /** newest_start_time 
-     * Also accepts: newest_start_time or proper camelCase (e.g., newestStartTime) */
-    newestStartTime?: string;
-    
-    
-    
-    /** pagination_token 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createScheduledBroadcast method
- * 
- * @public
- */
-export interface CreateScheduledBroadcastStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 /**
  * Options for getScheduledBroadcast method
  * 
@@ -162,6 +104,64 @@ export interface DeleteScheduledBroadcastStreamingOptions {
  * @public
  */
 export interface SendBroadcastChatStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for listScheduled method
+ * 
+ * @public
+ */
+export interface ListScheduledStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** oldest_start_time 
+     * Also accepts: oldest_start_time or proper camelCase (e.g., oldestStartTime) */
+    oldestStartTime?: string;
+    
+    
+    
+    /** newest_start_time 
+     * Also accepts: newest_start_time or proper camelCase (e.g., newestStartTime) */
+    newestStartTime?: string;
+    
+    
+    
+    /** pagination_token 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createScheduledBroadcast method
+ * 
+ * @public
+ */
+export interface CreateScheduledBroadcastStreamingOptions {
     
     
     /** Additional request options */
@@ -247,239 +247,6 @@ export class BroadcastsClient {
 
 
 
-
-
-
-    /**
-     * List scheduled broadcasts
-     * Returns scheduled broadcasts owned by the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async listScheduled(
-        
-        
-        
-        
-        
-        
-        
-        options: ListScheduledStreamingOptions = {}
-    ): Promise<ListScheduledResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'listScheduled');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'oldest_start_time': 'oldestStartTime',
-            
-            
-            
-            'newest_start_time': 'newestStartTime',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            oldestStartTime = undefined,
-            
-            
-            
-            newestStartTime = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (oldestStartTime !== undefined) {
-            
-            params.append('oldest_start_time', String(oldestStartTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (newestStartTime !== undefined) {
-            
-            params.append('newest_start_time', String(newestStartTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<ListScheduledResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create a scheduled broadcast
-     * Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
-     * 
-     * @returns Promise with the API response
-     */
-    async createScheduledBroadcast(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateScheduledBroadcastStreamingOptions = {}
-    ): Promise<CreateScheduledBroadcastResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createScheduledBroadcast');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateScheduledBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
@@ -824,6 +591,239 @@ export class BroadcastsClient {
 
         // Make the request
         return this.client.request<SendBroadcastChatResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * List scheduled broadcasts
+     * Returns scheduled broadcasts owned by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async listScheduled(
+        
+        
+        
+        
+        
+        
+        
+        options: ListScheduledStreamingOptions = {}
+    ): Promise<ListScheduledResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'listScheduled');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'oldest_start_time': 'oldestStartTime',
+            
+            
+            
+            'newest_start_time': 'newestStartTime',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            oldestStartTime = undefined,
+            
+            
+            
+            newestStartTime = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (oldestStartTime !== undefined) {
+            
+            params.append('oldest_start_time', String(oldestStartTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (newestStartTime !== undefined) {
+            
+            params.append('newest_start_time', String(newestStartTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ListScheduledResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create a scheduled broadcast
+     * Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
+     * 
+     * @returns Promise with the API response
+     */
+    async createScheduledBroadcast(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateScheduledBroadcastStreamingOptions = {}
+    ): Promise<CreateScheduledBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createScheduledBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateScheduledBroadcastResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
