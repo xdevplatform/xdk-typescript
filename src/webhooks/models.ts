@@ -9,24 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for createStreamLink
- *
- * @public
- */
-export type CreateStreamLinkResponse = Schemas.WebhookLinksCreateResponse;
-
-
-
-/**
- * Response for deleteStreamLink
- *
- * @public
- */
-export type DeleteStreamLinkResponse = Schemas.WebhookLinksDeleteResponse;
-
-
-
-/**
  * Response for getStreamLinks
  *
  * @public
@@ -59,20 +41,22 @@ export type CreateRequest = Schemas.WebhookConfigCreateRequest;
 export type CreateResponse = Schemas.WebhookConfigCreateResponse;
 
 
+
 /**
- * Request for createWebhookReplayJob
+ * Response for createStreamLink
  *
  * @public
  */
-export type CreateWebhookReplayJobRequest = Schemas.WebhookReplayCreateRequest;
+export type CreateStreamLinkResponse = Schemas.WebhookLinksCreateResponse;
+
 
 
 /**
- * Response for createWebhookReplayJob
+ * Response for deleteStreamLink
  *
  * @public
  */
-export type CreateWebhookReplayJobResponse = Schemas.ReplayJobCreateResponse;
+export type DeleteStreamLinkResponse = Schemas.WebhookLinksDeleteResponse;
 
 
 
@@ -91,4 +75,20 @@ export type ValidateResponse = Schemas.WebhookConfigPutResponse;
  * @public
  */
 export type DeleteResponse = Schemas.WebhookConfigDeleteResponse;
+
+
+/**
+ * Request for createWebhookReplayJob
+ *
+ * @public
+ */
+export type CreateWebhookReplayJobRequest = Schemas.WebhookReplayCreateRequest;
+
+
+/**
+ * Response for createWebhookReplayJob
+ *
+ * @public
+ */
+export type CreateWebhookReplayJobResponse = Schemas.ReplayJobCreateResponse;
 

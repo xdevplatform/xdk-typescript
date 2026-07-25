@@ -13,20 +13,20 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  ArticlePublishResponse,
-
-
-
   ArticleCreateDraftResponse,
+
+
+
+  ArticlePublishResponse,
 
 } from './models.js';
 
 /**
- * Options for articlePublish method
+ * Options for articleCreateDraft method
  * 
  * @public
  */
-export interface ArticlePublishStreamingOptions {
+export interface ArticleCreateDraftStreamingOptions {
     
     
     /** Additional request options */
@@ -39,11 +39,11 @@ export interface ArticlePublishStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for articleCreateDraft method
+ * Options for articlePublish method
  * 
  * @public
  */
-export interface ArticleCreateDraftStreamingOptions {
+export interface ArticlePublishStreamingOptions {
     
     
     /** Additional request options */
@@ -97,6 +97,80 @@ export class ArticlesClient {
 
 
 
+
+
+
+    /**
+     * Create draft Article
+     * Creates a new Article draft that can later be published.
+     * 
+     * @returns Promise with the API response
+     */
+    async articleCreateDraft(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: ArticleCreateDraftStreamingOptions = {}
+    ): Promise<ArticleCreateDraftResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'articleCreateDraft');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/articles/draft';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(body),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ArticleCreateDraftResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 
@@ -170,80 +244,6 @@ export class ArticlesClient {
 
         // Make the request
         return this.client.request<ArticlePublishResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create draft Article
-     * Creates a new Article draft that can later be published.
-     * 
-     * @returns Promise with the API response
-     */
-    async articleCreateDraft(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: ArticleCreateDraftStreamingOptions = {}
-    ): Promise<ArticleCreateDraftResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'articleCreateDraft');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/articles/draft';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<ArticleCreateDraftResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

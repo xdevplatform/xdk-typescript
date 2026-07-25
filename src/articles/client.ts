@@ -17,11 +17,11 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-
-ArticlePublishResponse,
 ArticleCreateDraftRequest,
 
 ArticleCreateDraftResponse,
+
+ArticlePublishResponse,
 } from './models.js';
 
 
@@ -74,6 +74,100 @@ export class ArticlesClient {
         
         return normalized as T;
     }
+
+
+
+  /**
+   * Create draft Article
+   * Creates a new Article draft that can later be published.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<ArticleCreateDraftResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    articleCreateDraft(
+        
+        
+        
+        body: ArticleCreateDraftRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    articleCreateDraft(
+        
+        
+        
+        body: ArticleCreateDraftRequest,
+        
+        
+    ): Promise<ArticleCreateDraftResponse>;
+    // Implementation
+    async articleCreateDraft(
+        
+        
+        
+        
+        
+        
+        body: ArticleCreateDraftRequest,
+        
+        
+        
+    ): Promise<ArticleCreateDraftResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/articles/draft';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ArticleCreateDraftResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
 
 
@@ -172,100 +266,6 @@ export class ArticlesClient {
         };
 
         return this.client.request<ArticlePublishResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Create draft Article
-   * Creates a new Article draft that can later be published.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<ArticleCreateDraftResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    articleCreateDraft(
-        
-        
-        
-        body: ArticleCreateDraftRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    articleCreateDraft(
-        
-        
-        
-        body: ArticleCreateDraftRequest,
-        
-        
-    ): Promise<ArticleCreateDraftResponse>;
-    // Implementation
-    async articleCreateDraft(
-        
-        
-        
-        
-        
-        
-        body: ArticleCreateDraftRequest,
-        
-        
-        
-    ): Promise<ArticleCreateDraftResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/articles/draft';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ArticleCreateDraftResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

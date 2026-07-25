@@ -18,11 +18,11 @@ export type GetQuotedResponse = Schemas.Get2TweetsIdQuoteTweetsResponse;
 
 
 /**
- * Response for getRepostedBy
+ * Response for getInsights28hr
  *
  * @public
  */
-export type GetRepostedByResponse = Schemas.Get2TweetsIdRetweetedByResponse;
+export type GetInsights28hrResponse = Schemas.Get2Insights28hrResponse;
 
 
 
@@ -32,6 +32,94 @@ export type GetRepostedByResponse = Schemas.Get2TweetsIdRetweetedByResponse;
  * @public
  */
 export type SearchRecentResponse = Schemas.Get2TweetsSearchRecentResponse;
+
+
+/**
+ * Request for hideReply
+ *
+ * @public
+ */
+export type HideReplyRequest = Schemas.TweetHideRequest;
+
+
+/**
+ * Response for hideReply
+ *
+ * @public
+ */
+export type HideReplyResponse = Schemas.TweetHideResponse;
+
+
+
+/**
+ * Response for searchAll
+ *
+ * @public
+ */
+export type SearchAllResponse = Schemas.Get2TweetsSearchAllResponse;
+
+
+
+/**
+ * Response for getCountsAll
+ *
+ * @public
+ */
+export type GetCountsAllResponse = Schemas.Get2TweetsCountsAllResponse;
+
+
+
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+export type GetAnalyticsResponse = Schemas.Analytics;
+
+
+
+/**
+ * Response for getRepostedBy
+ *
+ * @public
+ */
+export type GetRepostedByResponse = Schemas.Get2TweetsIdRetweetedByResponse;
+
+
+
+/**
+ * Response for getReposts
+ *
+ * @public
+ */
+export type GetRepostsResponse = Schemas.Get2TweetsIdRetweetsResponse;
+
+
+
+/**
+ * Response for getInsightsHistorical
+ *
+ * @public
+ */
+export type GetInsightsHistoricalResponse = Schemas.Get2InsightsHistoricalResponse;
+
+
+
+/**
+ * Response for getById
+ *
+ * @public
+ */
+export type GetByIdResponse = Schemas.Get2TweetsIdResponse;
+
+
+
+/**
+ * Response for delete
+ *
+ * @public
+ */
+export type DeleteResponse = Schemas.TweetDeleteResponse;
 
 
 
@@ -68,22 +156,6 @@ export type CreateRequest = Schemas.TweetCreateRequest;
 export type CreateResponse = Schemas.TweetCreateResponse;
 
 
-/**
- * Request for hideReply
- *
- * @public
- */
-export type HideReplyRequest = Schemas.TweetHideRequest;
-
-
-/**
- * Response for hideReply
- *
- * @public
- */
-export type HideReplyResponse = Schemas.TweetHideResponse;
-
-
 
 /**
  * Response for getCountsRecent
@@ -91,76 +163,4 @@ export type HideReplyResponse = Schemas.TweetHideResponse;
  * @public
  */
 export type GetCountsRecentResponse = Schemas.Get2TweetsCountsRecentResponse;
-
-
-
-/**
- * Response for getInsights28hr
- *
- * @public
- */
-export type GetInsights28hrResponse = Schemas.Get2Insights28hrResponse;
-
-
-
-/**
- * Response for getCountsAll
- *
- * @public
- */
-export type GetCountsAllResponse = Schemas.Get2TweetsCountsAllResponse;
-
-
-
-/**
- * Response for getById
- *
- * @public
- */
-export type GetByIdResponse = Schemas.Get2TweetsIdResponse;
-
-
-
-/**
- * Response for delete
- *
- * @public
- */
-export type DeleteResponse = Schemas.TweetDeleteResponse;
-
-
-
-/**
- * Response for searchAll
- *
- * @public
- */
-export type SearchAllResponse = Schemas.Get2TweetsSearchAllResponse;
-
-
-
-/**
- * Response for getAnalytics
- *
- * @public
- */
-export type GetAnalyticsResponse = Schemas.Analytics;
-
-
-
-/**
- * Response for getReposts
- *
- * @public
- */
-export type GetRepostsResponse = Schemas.Get2TweetsIdRetweetsResponse;
-
-
-
-/**
- * Response for getInsightsHistorical
- *
- * @public
- */
-export type GetInsightsHistoricalResponse = Schemas.Get2InsightsHistoricalResponse;
 

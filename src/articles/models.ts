@@ -7,15 +7,6 @@
 import type * as Schemas from '../schemas.js';
 
 
-
-/**
- * Response for articlePublish
- *
- * @public
- */
-export type ArticlePublishResponse = Schemas.ArticlePublishResponse;
-
-
 /**
  * Request for articleCreateDraft
  *
@@ -30,4 +21,13 @@ export type ArticleCreateDraftRequest = Schemas.ArticleDraftCreateRequest;
  * @public
  */
 export type ArticleCreateDraftResponse = Schemas.ArticleDraftCreateResponse;
+
+
+
+/**
+ * Response for articlePublish
+ *
+ * @public
+ */
+export type ArticlePublishResponse = Schemas.ArticlePublishResponse;
 
