@@ -18,6 +18,24 @@ export type GetStreamLinksResponse = Schemas.WebhookLinksGetResponse;
 
 
 /**
+ * Response for validate
+ *
+ * @public
+ */
+export type ValidateResponse = Schemas.WebhookConfigPutResponse;
+
+
+
+/**
+ * Response for delete
+ *
+ * @public
+ */
+export type DeleteResponse = Schemas.WebhookConfigDeleteResponse;
+
+
+
+/**
  * Response for get
  *
  * @public
@@ -41,6 +59,22 @@ export type CreateRequest = Schemas.WebhookConfigCreateRequest;
 export type CreateResponse = Schemas.WebhookConfigCreateResponse;
 
 
+/**
+ * Request for createWebhookReplayJob
+ *
+ * @public
+ */
+export type CreateWebhookReplayJobRequest = Schemas.WebhookReplayCreateRequest;
+
+
+/**
+ * Response for createWebhookReplayJob
+ *
+ * @public
+ */
+export type CreateWebhookReplayJobResponse = Schemas.ReplayJobCreateResponse;
+
+
 
 /**
  * Response for createStreamLink
@@ -57,38 +91,4 @@ export type CreateStreamLinkResponse = Schemas.WebhookLinksCreateResponse;
  * @public
  */
 export type DeleteStreamLinkResponse = Schemas.WebhookLinksDeleteResponse;
-
-
-
-/**
- * Response for validate
- *
- * @public
- */
-export type ValidateResponse = Schemas.WebhookConfigPutResponse;
-
-
-
-/**
- * Response for delete
- *
- * @public
- */
-export type DeleteResponse = Schemas.WebhookConfigDeleteResponse;
-
-
-/**
- * Request for createWebhookReplayJob
- *
- * @public
- */
-export type CreateWebhookReplayJobRequest = Schemas.WebhookReplayCreateRequest;
-
-
-/**
- * Response for createWebhookReplayJob
- *
- * @public
- */
-export type CreateWebhookReplayJobResponse = Schemas.ReplayJobCreateResponse;
 

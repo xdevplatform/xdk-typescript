@@ -7,15 +7,6 @@
 import type * as Schemas from '../schemas.js';
 
 
-
-/**
- * Response for getPosts
- *
- * @public
- */
-export type GetPostsResponse = Schemas.Get2ListsIdTweetsResponse;
-
-
 /**
  * Request for create
  *
@@ -55,6 +46,15 @@ export type AddMemberRequest = Schemas.ListAddUserRequest;
  * @public
  */
 export type AddMemberResponse = Schemas.ListMutateResponse;
+
+
+
+/**
+ * Response for getPosts
+ *
+ * @public
+ */
+export type GetPostsResponse = Schemas.Get2ListsIdTweetsResponse;
 
 
 

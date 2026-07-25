@@ -18,24 +18,6 @@ export type GetSubscriptionsResponse = Schemas.SubscriptionsListGetResponse;
 
 
 /**
- * Response for getSubscriptionCount
- *
- * @public
- */
-export type GetSubscriptionCountResponse = Schemas.SubscriptionsCountGetResponse;
-
-
-
-/**
- * Response for deleteSubscription
- *
- * @public
- */
-export type DeleteSubscriptionResponse = Schemas.SubscriptionsDeleteResponse;
-
-
-
-/**
  * Response for validateSubscription
  *
  * @public
@@ -57,4 +39,22 @@ export type CreateSubscriptionRequest = Schemas.SubscriptionsCreateRequest;
  * @public
  */
 export type CreateSubscriptionResponse = Schemas.SubscriptionsCreateResponse;
+
+
+
+/**
+ * Response for deleteSubscription
+ *
+ * @public
+ */
+export type DeleteSubscriptionResponse = Schemas.SubscriptionsDeleteResponse;
+
+
+
+/**
+ * Response for getSubscriptionCount
+ *
+ * @public
+ */
+export type GetSubscriptionCountResponse = Schemas.SubscriptionsCountGetResponse;
 

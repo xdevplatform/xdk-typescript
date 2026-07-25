@@ -17,45 +17,119 @@ import {
     EventPaginator
 } from '../paginator.js';
 import {
-CreateConversationRequest,
-
-CreateConversationResponse,
-
-
-SendTypingIndicatorResponse,
-
-InitializeGroupResponse,
-
-GetConversationsResponse,
-
-GetConversationResponse,
-MediaUploadInitializeRequest,
-
-MediaUploadInitializeResponse,
-AddUserPublicKeyRequest,
-
-AddUserPublicKeyResponse,
-MediaUploadFinalizeRequest,
-
-MediaUploadFinalizeResponse,
-
-GetConversationEventsResponse,
-MediaUploadAppendRequest,
-
-MediaUploadAppendResponse,
-AddConversationKeysRequest,
-
-AddConversationKeysResponse,
-AddGroupMembersRequest,
-
-AddGroupMembersResponse,
 SendMessageRequest,
 
 SendMessageResponse,
+
+
+InitializeGroupResponse,
+
+SendTypingIndicatorResponse,
+
+GetConversationEventsResponse,
+
+GetConversationResponse,
+MediaUploadFinalizeRequest,
+
+MediaUploadFinalizeResponse,
+CreateConversationRequest,
+
+CreateConversationResponse,
+AddGroupMembersRequest,
+
+AddGroupMembersResponse,
 MarkConversationReadRequest,
 
 MarkConversationReadResponse,
+MediaUploadInitializeRequest,
+
+MediaUploadInitializeResponse,
+MediaUploadAppendRequest,
+
+MediaUploadAppendResponse,
+AddUserPublicKeyRequest,
+
+AddUserPublicKeyResponse,
+AddConversationKeysRequest,
+
+AddConversationKeysResponse,
+
+GetConversationsResponse,
 } from './models.js';
+
+
+
+
+
+
+/**
+ * Options for getConversationEvents method
+ * 
+ * @public
+ */
+export interface GetConversationEventsOptions {
+    
+    
+    /** Maximum number of message events to return. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** Token for pagination to retrieve the next page of results. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of ChatMessageEvent fields to display. 
+     * Also accepts: chat_message_event.fields or proper camelCase (e.g., chatMessageEventFields) */
+    chatMessageEventFields?: Array<"conversation_id" | "conversation_token" | "created_at_msec" | "encoded_event" | "id" | "is_trusted" | "message_event_signature" | "previous_id" | "sender_id">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getConversation method
+ * 
+ * @public
+ */
+export interface GetConversationOptions {
+    
+    
+    /** A comma separated list of ChatConversation fields to display. 
+     * Also accepts: chat_conversation.fields or proper camelCase (e.g., chatConversationFields) */
+    chatConversationFields?: Array<"admin_ids" | "created_at" | "group_avatar_url" | "group_name" | "id" | "is_muted" | "member_ids" | "message_ttl_msec" | "participant_ids" | "screen_capture_blocking_enabled" | "screen_capture_detection_enabled" | "type" | "updated_at">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"admin_ids" | "member_ids" | "participant_ids">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"affiliation" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "most_recent_tweet_id" | "name" | "parody" | "pinned_tweet_id" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+
 
 
 
@@ -105,80 +179,6 @@ export interface GetConversationsOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-
-
-/**
- * Options for getConversation method
- * 
- * @public
- */
-export interface GetConversationOptions {
-    
-    
-    /** A comma separated list of ChatConversation fields to display. 
-     * Also accepts: chat_conversation.fields or proper camelCase (e.g., chatConversationFields) */
-    chatConversationFields?: Array<"admin_ids" | "created_at" | "group_avatar_url" | "group_name" | "id" | "is_muted" | "member_ids" | "message_ttl_msec" | "participant_ids" | "screen_capture_blocking_enabled" | "screen_capture_detection_enabled" | "type" | "updated_at">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"admin_ids" | "member_ids" | "participant_ids">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"affiliation" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "most_recent_tweet_id" | "name" | "parody" | "pinned_tweet_id" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-
-
-/**
- * Options for getConversationEvents method
- * 
- * @public
- */
-export interface GetConversationEventsOptions {
-    
-    
-    /** Maximum number of message events to return. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** Token for pagination to retrieve the next page of results. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of ChatMessageEvent fields to display. 
-     * Also accepts: chat_message_event.fields or proper camelCase (e.g., chatMessageEventFields) */
-    chatMessageEventFields?: Array<"conversation_id" | "conversation_token" | "created_at_msec" | "encoded_event" | "id" | "is_trusted" | "message_event_signature" | "previous_id" | "sender_id">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-
-
 
 
 
@@ -232,55 +232,75 @@ export class ChatClient {
 
 
   /**
-   * Create Chat Group Conversation
-   * Creates a new encrypted Chat group conversation on behalf of the authenticated user.
+   * Send Chat Message
+   * Sends an encrypted message to a specific Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+
+
+   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
+
 
 
 
    * @param body Request body
 
-   * @returns {Promise<CreateConversationResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<SendMessageResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    createConversation(
+    sendMessage(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
-        body: CreateConversationRequest,
+        
+        body: SendMessageRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    createConversation(
+    sendMessage(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
-        body: CreateConversationRequest,
+        
+        body: SendMessageRequest,
         
         
-    ): Promise<CreateConversationResponse>;
+    ): Promise<SendMessageResponse>;
     // Implementation
-    async createConversation(
+    async sendMessage(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
         
         
         
-        body: CreateConversationRequest,
+        body: SendMessageRequest,
         
         
         
-    ): Promise<CreateConversationResponse | Response> {
+    ): Promise<SendMessageResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/chat/conversations/group';
+        let path = '/2/chat/conversations/{id}/messages';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
@@ -315,7 +335,7 @@ export class ChatClient {
             
         };
 
-        return this.client.request<CreateConversationResponse>(
+        return this.client.request<SendMessageResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -450,6 +470,103 @@ export class ChatClient {
 
 
   /**
+   * Initialize Chat Group
+   * Initializes a new XChat group conversation and returns a unique conversation ID.
+
+This endpoint is the first step in creating a group chat. The returned conversation_id 
+should be used in subsequent calls to POST /chat/conversations/group to fully create and 
+configure the group with members, admins, encryption keys, and other settings.
+
+**Workflow:**
+1. Call this endpoint to get a `conversation_id`
+2. Use that `conversation_id` when calling `POST /chat/conversations/group` to create the group
+
+**Authentication:**
+- Requires OAuth 1.0a User Context or OAuth 2.0 User Context
+- Required scope: `dm.write`
+
+
+
+
+   * @returns {Promise<InitializeGroupResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    initializeGroup(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    initializeGroup(
+        
+        
+        
+        
+    ): Promise<InitializeGroupResponse>;
+    // Implementation
+    async initializeGroup(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<InitializeGroupResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/group/initialize';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<InitializeGroupResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
    * Send Typing Indicator
    * Sends a typing indicator to a specific Chat conversation on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
 
@@ -554,44 +671,49 @@ export class ChatClient {
 
 
   /**
-   * Initialize Chat Group
-   * Initializes a new XChat group conversation and returns a unique conversation ID.
+   * Get Chat Conversation Events
+   * Retrieves messages and key change events for a specific Chat conversation with pagination support. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
 
-This endpoint is the first step in creating a group chat. The returned conversation_id 
-should be used in subsequent calls to POST /chat/conversations/group to fully create and 
-configure the group with members, admins, encryption keys, and other settings.
 
-**Workflow:**
-1. Call this endpoint to get a `conversation_id`
-2. Use that `conversation_id` when calling `POST /chat/conversations/group` to create the group
-
-**Authentication:**
-- Requires OAuth 1.0a User Context or OAuth 2.0 User Context
-- Required scope: `dm.write`
+   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
 
 
 
 
-   * @returns {Promise<InitializeGroupResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetConversationEventsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    initializeGroup(
+    getConversationEvents(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
         
-        options: { requestOptions: { raw: true } }
+        
+        options: GetConversationEventsOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    initializeGroup(
+    getConversationEvents(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
         
-    ): Promise<InitializeGroupResponse>;
+        
+        options?: GetConversationEventsOptions
+        
+    ): Promise<GetConversationEventsResponse>;
     // Implementation
-    async initializeGroup(
+    async getConversationEvents(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
         
         
         
@@ -600,18 +722,95 @@ configure the group with members, admins, encryption keys, and other settings.
         
         
         
-    ): Promise<InitializeGroupResponse | Response> {
+        options: GetConversationEventsOptions = {}
+        
+    ): Promise<GetConversationEventsResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        const requestOptions = {};
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'chat_message_event.fields': 'chatMessageEventFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            chatMessageEventFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
         
 
         // Build the path with path parameters
-        let path = '/2/chat/conversations/group/initialize';
+        let path = '/2/chat/conversations/{id}/events';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (chatMessageEventFields !== undefined && chatMessageEventFields.length > 0) {
+            
+            
+            params.append('chat_message_event.fields', normalizeFields(chatMessageEventFields).join(','));
+            
+            
+        }
+        
+        
         
 
         // Prepare request options
@@ -623,7 +822,302 @@ configure the group with members, admins, encryption keys, and other settings.
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.write'],
+                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetConversationEventsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Get Chat Conversation
+   * Returns metadata for a Chat conversation including type, muted status, and group details. Use chat_conversation.fields to select which fields are returned. Use expansions to hydrate member, admin, or participant user objects. Use user.fields to control which profile fields are returned for expanded users.
+
+
+   * @param id The conversation ID. For 1:1 conversations, use the recipient user ID or dash-separated canonical ID. For group conversations, use the group ID (prefixed with 'g').
+
+
+
+
+   * @returns {Promise<GetConversationResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getConversation(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetConversationOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getConversation(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetConversationOptions
+        
+    ): Promise<GetConversationResponse>;
+    // Implementation
+    async getConversation(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetConversationOptions = {}
+        
+    ): Promise<GetConversationResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'chat_conversation.fields': 'chatConversationFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            chatConversationFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (chatConversationFields !== undefined && chatConversationFields.length > 0) {
+            
+            
+            params.append('chat_conversation.fields', normalizeFields(chatConversationFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetConversationResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Finalize Chat Media Upload
+   * Finalizes an XChat media upload session.
+
+
+   * @param id The session/resume id from initialize.
+
+
+
+
+   * @param body Request body for finalizing a Chat media upload.
+
+   * @returns {Promise<MediaUploadFinalizeResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    mediaUploadFinalize(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: MediaUploadFinalizeRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    mediaUploadFinalize(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: MediaUploadFinalizeRequest,
+        
+        
+    ): Promise<MediaUploadFinalizeResponse>;
+    // Implementation
+    async mediaUploadFinalize(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: MediaUploadFinalizeRequest,
+        
+        
+        
+    ): Promise<MediaUploadFinalizeResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/media/upload/{id}/finalize';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
                     
                 },
                 
@@ -640,7 +1134,788 @@ configure the group with members, admins, encryption keys, and other settings.
             
         };
 
-        return this.client.request<InitializeGroupResponse>(
+        return this.client.request<MediaUploadFinalizeResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Create Chat Group Conversation
+   * Creates a new encrypted Chat group conversation on behalf of the authenticated user.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateConversationResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createConversation(
+        
+        
+        
+        body: CreateConversationRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createConversation(
+        
+        
+        
+        body: CreateConversationRequest,
+        
+        
+    ): Promise<CreateConversationResponse>;
+    // Implementation
+    async createConversation(
+        
+        
+        
+        
+        
+        
+        body: CreateConversationRequest,
+        
+        
+        
+    ): Promise<CreateConversationResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/group';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateConversationResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Add members to a Chat group conversation
+   * Adds one or more members to an existing encrypted Chat group conversation, rotating the conversation key.
+
+
+   * @param id The Chat group conversation ID (prefixed with 'g').
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AddGroupMembersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    addGroupMembers(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        body: AddGroupMembersRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    addGroupMembers(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        body: AddGroupMembersRequest,
+        
+        
+    ): Promise<AddGroupMembersResponse>;
+    // Implementation
+    async addGroupMembers(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        body: AddGroupMembersRequest,
+        
+        
+        
+    ): Promise<AddGroupMembersResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/members';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AddGroupMembersResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Mark Conversation as Read
+   * Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
+
+
+   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<MarkConversationReadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    markConversationRead(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        body: MarkConversationReadRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    markConversationRead(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        body: MarkConversationReadRequest,
+        
+        
+    ): Promise<MarkConversationReadResponse>;
+    // Implementation
+    async markConversationRead(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        body: MarkConversationReadRequest,
+        
+        
+        
+    ): Promise<MarkConversationReadResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/read';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<MarkConversationReadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Initialize Chat Media Upload
+   * Initializes an XChat media upload session.
+
+
+
+   * @param body Request body for initializing a Chat media upload.
+
+   * @returns {Promise<MediaUploadInitializeResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    mediaUploadInitialize(
+        
+        
+        
+        body: MediaUploadInitializeRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    mediaUploadInitialize(
+        
+        
+        
+        body: MediaUploadInitializeRequest,
+        
+        
+    ): Promise<MediaUploadInitializeResponse>;
+    // Implementation
+    async mediaUploadInitialize(
+        
+        
+        
+        
+        
+        
+        body: MediaUploadInitializeRequest,
+        
+        
+        
+    ): Promise<MediaUploadInitializeResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/media/upload/initialize';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<MediaUploadInitializeResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Append Chat Media Upload
+   * Appends media data to an XChat upload session.
+
+
+   * @param id The session/resume id from initialize.
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<MediaUploadAppendResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    mediaUploadAppend(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: MediaUploadAppendRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    mediaUploadAppend(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: MediaUploadAppendRequest,
+        
+        
+    ): Promise<MediaUploadAppendResponse>;
+    // Implementation
+    async mediaUploadAppend(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: MediaUploadAppendRequest,
+        
+        
+        
+    ): Promise<MediaUploadAppendResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/media/upload/{id}/append';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<MediaUploadAppendResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Add public key
+   * Registers a user's public key for X Chat encryption.
+
+
+   * @param id The ID of the requesting user.
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AddUserPublicKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    addUserPublicKey(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        body: AddUserPublicKeyRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    addUserPublicKey(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        body: AddUserPublicKeyRequest,
+        
+        
+    ): Promise<AddUserPublicKeyResponse>;
+    // Implementation
+    async addUserPublicKey(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: AddUserPublicKeyRequest,
+        
+        
+        
+    ): Promise<AddUserPublicKeyResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/public_keys';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AddUserPublicKeyResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+
+  /**
+   * Add Conversation Keys
+   * Adds (initializes or rotates) the encryption keys for a Chat conversation.
+Call this before sending messages in a new 1:1 conversation, and again with a
+newer key version to rotate the conversation key.
+
+For 1:1 conversations, provide the recipient's user ID as the conversation_id.
+The server constructs the canonical conversation ID from the authenticated user
+and recipient.
+
+The request body must contain the conversation key version and participant keys
+(the conversation key encrypted for each participant using their public key).
+
+**Workflow (new 1:1 conversation):**
+1. Generate a conversation key using the SDK
+2. Encrypt the key for both participants using their public keys
+3. Call this endpoint to register the keys
+4. Send messages using `POST /chat/conversations/{id}/messages`
+
+To rotate the keys of an existing conversation, repeat the same call with a
+newer conversation key version.
+
+**Authentication:**
+- Requires OAuth 1.0a User Context or OAuth 2.0 User Context
+- Required scopes: `tweet.read`, `users.read`, `dm.write`
+
+
+
+   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AddConversationKeysResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    addConversationKeys(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        body: AddConversationKeysRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    addConversationKeys(
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        body: AddConversationKeysRequest,
+        
+        
+    ): Promise<AddConversationKeysResponse>;
+    // Implementation
+    async addConversationKeys(
+        
+        
+        
+        id: Schemas.ChatConversationOrRecipientId,
+        
+        
+        
+        
+        
+        
+        body: AddConversationKeysRequest,
+        
+        
+        
+    ): Promise<AddConversationKeysResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/chat/conversations/{id}/keys';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AddConversationKeysResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -841,1281 +2116,6 @@ configure the group with members, admins, encryption keys, and other settings.
 
         return this.client.request<GetConversationsResponse>(
             'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Chat Conversation
-   * Returns metadata for a Chat conversation including type, muted status, and group details. Use chat_conversation.fields to select which fields are returned. Use expansions to hydrate member, admin, or participant user objects. Use user.fields to control which profile fields are returned for expanded users.
-
-
-   * @param id The conversation ID. For 1:1 conversations, use the recipient user ID or dash-separated canonical ID. For group conversations, use the group ID (prefixed with 'g').
-
-
-
-
-   * @returns {Promise<GetConversationResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getConversation(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: GetConversationOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getConversation(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetConversationOptions
-        
-    ): Promise<GetConversationResponse>;
-    // Implementation
-    async getConversation(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetConversationOptions = {}
-        
-    ): Promise<GetConversationResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'chat_conversation.fields': 'chatConversationFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            chatConversationFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (chatConversationFields !== undefined && chatConversationFields.length > 0) {
-            
-            
-            params.append('chat_conversation.fields', normalizeFields(chatConversationFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetConversationResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Initialize Chat Media Upload
-   * Initializes an XChat media upload session.
-
-
-
-   * @param body Request body for initializing a Chat media upload.
-
-   * @returns {Promise<MediaUploadInitializeResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    mediaUploadInitialize(
-        
-        
-        
-        body: MediaUploadInitializeRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    mediaUploadInitialize(
-        
-        
-        
-        body: MediaUploadInitializeRequest,
-        
-        
-    ): Promise<MediaUploadInitializeResponse>;
-    // Implementation
-    async mediaUploadInitialize(
-        
-        
-        
-        
-        
-        
-        body: MediaUploadInitializeRequest,
-        
-        
-        
-    ): Promise<MediaUploadInitializeResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/media/upload/initialize';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<MediaUploadInitializeResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Add public key
-   * Registers a user's public key for X Chat encryption.
-
-
-   * @param id The ID of the requesting user.
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<AddUserPublicKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    addUserPublicKey(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        body: AddUserPublicKeyRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    addUserPublicKey(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        body: AddUserPublicKeyRequest,
-        
-        
-    ): Promise<AddUserPublicKeyResponse>;
-    // Implementation
-    async addUserPublicKey(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: AddUserPublicKeyRequest,
-        
-        
-        
-    ): Promise<AddUserPublicKeyResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/public_keys';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<AddUserPublicKeyResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Finalize Chat Media Upload
-   * Finalizes an XChat media upload session.
-
-
-   * @param id The session/resume id from initialize.
-
-
-
-
-   * @param body Request body for finalizing a Chat media upload.
-
-   * @returns {Promise<MediaUploadFinalizeResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    mediaUploadFinalize(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: MediaUploadFinalizeRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    mediaUploadFinalize(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: MediaUploadFinalizeRequest,
-        
-        
-    ): Promise<MediaUploadFinalizeResponse>;
-    // Implementation
-    async mediaUploadFinalize(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: MediaUploadFinalizeRequest,
-        
-        
-        
-    ): Promise<MediaUploadFinalizeResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/media/upload/{id}/finalize';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<MediaUploadFinalizeResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Chat Conversation Events
-   * Retrieves messages and key change events for a specific Chat conversation with pagination support. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-
-
-   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
-
-
-
-
-   * @returns {Promise<GetConversationEventsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getConversationEvents(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        options: GetConversationEventsOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getConversationEvents(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        options?: GetConversationEventsOptions
-        
-    ): Promise<GetConversationEventsResponse>;
-    // Implementation
-    async getConversationEvents(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetConversationEventsOptions = {}
-        
-    ): Promise<GetConversationEventsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'chat_message_event.fields': 'chatMessageEventFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            chatMessageEventFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/events';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (chatMessageEventFields !== undefined && chatMessageEventFields.length > 0) {
-            
-            
-            params.append('chat_message_event.fields', normalizeFields(chatMessageEventFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetConversationEventsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Append Chat Media Upload
-   * Appends media data to an XChat upload session.
-
-
-   * @param id The session/resume id from initialize.
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<MediaUploadAppendResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    mediaUploadAppend(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: MediaUploadAppendRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    mediaUploadAppend(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: MediaUploadAppendRequest,
-        
-        
-    ): Promise<MediaUploadAppendResponse>;
-    // Implementation
-    async mediaUploadAppend(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: MediaUploadAppendRequest,
-        
-        
-        
-    ): Promise<MediaUploadAppendResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/media/upload/{id}/append';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<MediaUploadAppendResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Add Conversation Keys
-   * Adds (initializes or rotates) the encryption keys for a Chat conversation.
-Call this before sending messages in a new 1:1 conversation, and again with a
-newer key version to rotate the conversation key.
-
-For 1:1 conversations, provide the recipient's user ID as the conversation_id.
-The server constructs the canonical conversation ID from the authenticated user
-and recipient.
-
-The request body must contain the conversation key version and participant keys
-(the conversation key encrypted for each participant using their public key).
-
-**Workflow (new 1:1 conversation):**
-1. Generate a conversation key using the SDK
-2. Encrypt the key for both participants using their public keys
-3. Call this endpoint to register the keys
-4. Send messages using `POST /chat/conversations/{id}/messages`
-
-To rotate the keys of an existing conversation, repeat the same call with a
-newer conversation key version.
-
-**Authentication:**
-- Requires OAuth 1.0a User Context or OAuth 2.0 User Context
-- Required scopes: `tweet.read`, `users.read`, `dm.write`
-
-
-
-   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<AddConversationKeysResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    addConversationKeys(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: AddConversationKeysRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    addConversationKeys(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: AddConversationKeysRequest,
-        
-        
-    ): Promise<AddConversationKeysResponse>;
-    // Implementation
-    async addConversationKeys(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        body: AddConversationKeysRequest,
-        
-        
-        
-    ): Promise<AddConversationKeysResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/keys';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<AddConversationKeysResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Add members to a Chat group conversation
-   * Adds one or more members to an existing encrypted Chat group conversation, rotating the conversation key.
-
-
-   * @param id The Chat group conversation ID (prefixed with 'g').
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<AddGroupMembersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    addGroupMembers(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: AddGroupMembersRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    addGroupMembers(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: AddGroupMembersRequest,
-        
-        
-    ): Promise<AddGroupMembersResponse>;
-    // Implementation
-    async addGroupMembers(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        body: AddGroupMembersRequest,
-        
-        
-        
-    ): Promise<AddGroupMembersResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/members';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<AddGroupMembersResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Send Chat Message
-   * Sends an encrypted message to a specific Chat conversation. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-
-
-   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<SendMessageResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    sendMessage(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: SendMessageRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    sendMessage(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: SendMessageRequest,
-        
-        
-    ): Promise<SendMessageResponse>;
-    // Implementation
-    async sendMessage(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        body: SendMessageRequest,
-        
-        
-        
-    ): Promise<SendMessageResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/messages';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<SendMessageResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Mark Conversation as Read
-   * Marks a specific Chat conversation as read on behalf of the authenticated user. For 1:1 conversations, provide the recipient's user ID; the server constructs the canonical conversation ID from the authenticated user and recipient.
-
-
-   * @param id The recipient's user ID for a 1:1 conversation, the hyphen-separated 1:1 conversation ID (e.g. '123-456'), or a group conversation ID (prefixed with 'g').
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<MarkConversationReadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    markConversationRead(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: MarkConversationReadRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    markConversationRead(
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        body: MarkConversationReadRequest,
-        
-        
-    ): Promise<MarkConversationReadResponse>;
-    // Implementation
-    async markConversationRead(
-        
-        
-        
-        id: Schemas.ChatConversationOrRecipientId,
-        
-        
-        
-        
-        
-        
-        body: MarkConversationReadRequest,
-        
-        
-        
-    ): Promise<MarkConversationReadResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/chat/conversations/{id}/read';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<MarkConversationReadResponse>(
-            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

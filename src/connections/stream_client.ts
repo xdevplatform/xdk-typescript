@@ -13,10 +13,6 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  DeleteByEndpointResponse,
-
-
-
   GetConnectionHistoryResponse,
 
 
@@ -25,27 +21,14 @@ import {
 
 
 
+  DeleteByEndpointResponse,
+
+
+
   DeleteAllResponse,
 
 } from './models.js';
 
-/**
- * Options for deleteByEndpoint method
- * 
- * @public
- */
-export interface DeleteByEndpointStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 /**
  * Options for getConnectionHistory method
  * 
@@ -99,6 +82,23 @@ export interface GetConnectionHistoryStreamingOptions {
  * @public
  */
 export interface DeleteByUuidsStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteByEndpoint method
+ * 
+ * @public
+ */
+export interface DeleteByEndpointStreamingOptions {
     
     
     /** Additional request options */
@@ -175,80 +175,6 @@ export class ConnectionsClient {
 
 
 
-
-
-
-    /**
-     * Terminate connections by endpoint
-     * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteByEndpoint(
-        
-        
-        
-        endpointId: "filtered_stream" | "sample_stream" | "sample10_stream" | "firehose_stream" | "tweets_compliance_stream" | "users_compliance_stream" | "tweet_label_stream" | "firehose_stream_lang_en" | "firehose_stream_lang_ja" | "firehose_stream_lang_ko" | "firehose_stream_lang_pt" | "likes_firehose_stream" | "likes_sample10_stream" | "likes_compliance_stream",
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteByEndpointStreamingOptions = {}
-    ): Promise<DeleteByEndpointResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteByEndpoint');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/connections/{endpoint_id}';
-        
-        
-        path = path.replace('{endpoint_id}', encodeURIComponent(String(endpointId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteByEndpointResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
@@ -485,6 +411,80 @@ export class ConnectionsClient {
 
         // Make the request
         return this.client.request<DeleteByUuidsResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Terminate connections by endpoint
+     * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteByEndpoint(
+        
+        
+        
+        endpointId: "filtered_stream" | "sample_stream" | "sample10_stream" | "firehose_stream" | "tweets_compliance_stream" | "users_compliance_stream" | "tweet_label_stream" | "firehose_stream_lang_en" | "firehose_stream_lang_ja" | "firehose_stream_lang_ko" | "firehose_stream_lang_pt" | "likes_firehose_stream" | "likes_sample10_stream" | "likes_compliance_stream",
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteByEndpointStreamingOptions = {}
+    ): Promise<DeleteByEndpointResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteByEndpoint');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/connections/{endpoint_id}';
+        
+        
+        path = path.replace('{endpoint_id}', encodeURIComponent(String(endpointId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteByEndpointResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

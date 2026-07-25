@@ -30,90 +30,6 @@ describe('DirectMessagesClient Structure', () => {
 
   
   
-  it('should have createConversation method with correct signature', () => {
-    // Check method exists
-    expect(DirectMessagesClient.prototype).toHaveProperty('createConversation');
-    
-    // Check method is callable
-    const method = directMessagesClient.createConversation;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have createConversation method with return type annotation', () => {
-    const method = directMessagesClient.createConversation;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have dmConversationsMediaDownload method with correct signature', () => {
-    // Check method exists
-    expect(DirectMessagesClient.prototype).toHaveProperty('dmConversationsMediaDownload');
-    
-    // Check method is callable
-    const method = directMessagesClient.dmConversationsMediaDownload;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'dmId',
-      
-      'mediaId',
-      
-      'resourceId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have dmConversationsMediaDownload method with return type annotation', () => {
-    const method = directMessagesClient.dmConversationsMediaDownload;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
   it('should have getEventsByParticipantId method with correct signature', () => {
     // Check method exists
     expect(DirectMessagesClient.prototype).toHaveProperty('getEventsByParticipantId');
@@ -170,6 +86,133 @@ describe('DirectMessagesClient Structure', () => {
       expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
     }
   });
+  
+
+  
+  it('should have getEventsById method with correct signature', () => {
+    // Check method exists
+    expect(DirectMessagesClient.prototype).toHaveProperty('getEventsById');
+    
+    // Check method is callable
+    const method = directMessagesClient.getEventsById;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'eventId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getEventsById method with return type annotation', () => {
+    const method = directMessagesClient.getEventsById;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteEvents method with correct signature', () => {
+    // Check method exists
+    expect(DirectMessagesClient.prototype).toHaveProperty('deleteEvents');
+    
+    // Check method is callable
+    const method = directMessagesClient.deleteEvents;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'eventId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteEvents method with return type annotation', () => {
+    const method = directMessagesClient.deleteEvents;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have dmConversationsMediaDownload method with correct signature', () => {
+    // Check method exists
+    expect(DirectMessagesClient.prototype).toHaveProperty('dmConversationsMediaDownload');
+    
+    // Check method is callable
+    const method = directMessagesClient.dmConversationsMediaDownload;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'dmId',
+      
+      'mediaId',
+      
+      'resourceId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have dmConversationsMediaDownload method with return type annotation', () => {
+    const method = directMessagesClient.dmConversationsMediaDownload;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
   
 
   
@@ -273,12 +316,12 @@ describe('DirectMessagesClient Structure', () => {
   
 
   
-  it('should have getEventsById method with correct signature', () => {
+  it('should have createConversation method with correct signature', () => {
     // Check method exists
-    expect(DirectMessagesClient.prototype).toHaveProperty('getEventsById');
+    expect(DirectMessagesClient.prototype).toHaveProperty('createConversation');
     
     // Check method is callable
-    const method = directMessagesClient.getEventsById;
+    const method = directMessagesClient.createConversation;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -288,8 +331,6 @@ describe('DirectMessagesClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
-      
-      'eventId',
       
     ];
     
@@ -304,49 +345,8 @@ describe('DirectMessagesClient Structure', () => {
     }
   });
 
-  it('should have getEventsById method with return type annotation', () => {
-    const method = directMessagesClient.getEventsById;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteEvents method with correct signature', () => {
-    // Check method exists
-    expect(DirectMessagesClient.prototype).toHaveProperty('deleteEvents');
-    
-    // Check method is callable
-    const method = directMessagesClient.deleteEvents;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'eventId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have deleteEvents method with return type annotation', () => {
-    const method = directMessagesClient.deleteEvents;
+  it('should have createConversation method with return type annotation', () => {
+    const method = directMessagesClient.createConversation;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -457,19 +457,19 @@ describe('DirectMessagesClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'createConversation',
+      'getEventsByParticipantId',
+      
+      'getEventsById',
+      
+      'deleteEvents',
       
       'dmConversationsMediaDownload',
-      
-      'getEventsByParticipantId',
       
       'createByParticipantId',
       
       'getEventsByConversationId',
       
-      'getEventsById',
-      
-      'deleteEvents',
+      'createConversation',
       
       'createByConversationId',
       
