@@ -7,10 +7,94 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
+
+
+  ListScheduledResponse,
+
+
+
+  CreateScheduledBroadcastResponse,
+
+
+
+  GetUserBroadcastResponse,
+
+
+
+  DeleteUserBroadcastResponse,
+
+
+
+  GetBroadcastResponse,
+
+
+
+  UpdateBroadcastResponse,
+
+
+
+  DeleteBroadcastResponse,
+
+
+
+  ListLiveCategoriesResponse,
+
+
+
+  GetRegionResponse,
+
+
+
+  UnmuteBroadcastChatUserResponse,
+
+
+
+  GetBroadcastChatResponse,
+
+
+
+  SendBroadcastChatResponse,
+
+
+
+  GetChatMutedUsersResponse,
+
+
+
+  MuteChatUserResponse,
+
+
+
+  ListSourcesResponse,
+
+
+
+  CreateSourceResponse,
+
+
+
+  ListResponse,
+
+
+
+  CreateBroadcastResponse,
+
+
+
+  GetChatModeratorsResponse,
+
+
+
+  AddChatModeratorResponse,
+
+
+
+  UnmuteChatUserResponse,
+
 
 
   GetScheduledBroadcastResponse,
@@ -25,96 +109,74 @@ import {
 
 
 
-  SendBroadcastChatResponse,
+  GetSourceResponse,
 
 
 
-  ListScheduledResponse,
+  UpdateSourceResponse,
 
 
 
-  CreateScheduledBroadcastResponse,
+  DeleteSourceResponse,
+
+
+
+  ListUserResponse,
+
+
+
+  CreateUserBroadcastResponse,
+
+
+
+  UpdateUserBroadcastStateResponse,
+
+
+
+  ListUserSourcesResponse,
+
+
+
+  CreateUserSourceResponse,
+
+
+
+  MuteBroadcastChatUserResponse,
+
+
+
+  UpdateBroadcastStateResponse,
+
+
+
+  RemoveChatModeratorResponse,
+
+
+
+  GetUserSourceResponse,
+
+
+
+  UpdateUserSourceResponse,
+
+
+
+  DeleteUserSourceResponse,
+
+
+
+  DeleteBroadcastChatMessageResponse,
 
 
 
   GoLiveScheduledBroadcastResponse,
 
+
+
+  GetSourceStreamKeyResponse,
+
 } from './models.js';
 
-/**
- * Options for getScheduledBroadcast method
- * 
- * @public
- */
-export interface GetScheduledBroadcastStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for updateScheduledBroadcast method
- * 
- * @public
- */
-export interface UpdateScheduledBroadcastStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for deleteScheduledBroadcast method
- * 
- * @public
- */
-export interface DeleteScheduledBroadcastStreamingOptions {
-    
-    
-    /** roll_forward 
-     * Also accepts: roll_forward or proper camelCase (e.g., rollForward) */
-    rollForward?: boolean;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for sendBroadcastChat method
- * 
- * @public
- */
-export interface SendBroadcastChatStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 /**
  * Options for listScheduled method
  * 
@@ -174,11 +236,783 @@ export interface CreateScheduledBroadcastStreamingOptions {
     [key: string]: any;
 }
 /**
+ * Options for getUserBroadcast method
+ * 
+ * @public
+ */
+export interface GetUserBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteUserBroadcast method
+ * 
+ * @public
+ */
+export interface DeleteUserBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getBroadcast method
+ * 
+ * @public
+ */
+export interface GetBroadcastStreamingOptions {
+    
+    
+    /** A comma separated list of Broadcast fields to display. 
+     * Also accepts: broadcast.fields or proper camelCase (e.g., broadcastFields) */
+    broadcastFields?: Array<"available_for_replay" | "broadcast_id" | "chat_option" | "created_at_ms" | "end_ms" | "height" | "id" | "image_url" | "image_url_medium" | "image_url_small" | "is_high_latency" | "language" | "live_category_id" | "media_key" | "scheduled_end_ms" | "scheduled_start_ms" | "share_url" | "source_id" | "start_ms" | "state" | "title" | "total_watched" | "total_watching" | "tweet_id" | "twitter_user_id" | "updated_at_ms" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateBroadcast method
+ * 
+ * @public
+ */
+export interface UpdateBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteBroadcast method
+ * 
+ * @public
+ */
+export interface DeleteBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for listLiveCategories method
+ * 
+ * @public
+ */
+export interface ListLiveCategoriesStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getRegion method
+ * 
+ * @public
+ */
+export interface GetRegionStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for unmuteBroadcastChatUser method
+ * 
+ * @public
+ */
+export interface UnmuteBroadcastChatUserStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getBroadcastChat method
+ * 
+ * @public
+ */
+export interface GetBroadcastChatStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A 64-bit signed integer. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of BroadcastChatMessage fields to display. 
+     * Also accepts: broadcast_chat_message.fields or proper camelCase (e.g., broadcastChatMessageFields) */
+    broadcastChatMessageFields?: Array<"author_name" | "author_username" | "broadcast_id" | "created_at_ms" | "id" | "relay_source" | "reply_to" | "text">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"author_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for sendBroadcastChat method
+ * 
+ * @public
+ */
+export interface SendBroadcastChatStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getChatMutedUsers method
+ * 
+ * @public
+ */
+export interface GetChatMutedUsersStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** pagination_token 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of BroadcastChatMute fields to display. 
+     * Also accepts: broadcast_chat_mute.fields or proper camelCase (e.g., broadcastChatMuteFields) */
+    broadcastChatMuteFields?: Array<"end_at_ms">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"user_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for muteChatUser method
+ * 
+ * @public
+ */
+export interface MuteChatUserStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for listSources method
+ * 
+ * @public
+ */
+export interface ListSourcesStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createSource method
+ * 
+ * @public
+ */
+export interface CreateSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for list method
+ * 
+ * @public
+ */
+export interface ListStreamingOptions {
+    
+    
+    /** Comma-separated broadcast IDs to retrieve instead of listing broadcasts. 
+     * Also accepts: ids or proper camelCase (e.g., ids) */
+    ids?: Array<string>;
+    
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** pagination_token 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of Broadcast fields to display. 
+     * Also accepts: broadcast.fields or proper camelCase (e.g., broadcastFields) */
+    broadcastFields?: Array<"available_for_replay" | "broadcast_id" | "chat_option" | "created_at_ms" | "end_ms" | "height" | "id" | "image_url" | "image_url_medium" | "image_url_small" | "is_high_latency" | "language" | "live_category_id" | "media_key" | "scheduled_end_ms" | "scheduled_start_ms" | "share_url" | "source_id" | "start_ms" | "state" | "title" | "total_watched" | "total_watching" | "tweet_id" | "twitter_user_id" | "updated_at_ms" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createBroadcast method
+ * 
+ * @public
+ */
+export interface CreateBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getChatModerators method
+ * 
+ * @public
+ */
+export interface GetChatModeratorsStreamingOptions {
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for addChatModerator method
+ * 
+ * @public
+ */
+export interface AddChatModeratorStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for unmuteChatUser method
+ * 
+ * @public
+ */
+export interface UnmuteChatUserStreamingOptions {
+    
+    
+    /** A broadcast whose host's chats the user is unmuted in. 
+     * Also accepts: broadcast_id or proper camelCase (e.g., broadcastId) */
+    broadcastId?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getScheduledBroadcast method
+ * 
+ * @public
+ */
+export interface GetScheduledBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateScheduledBroadcast method
+ * 
+ * @public
+ */
+export interface UpdateScheduledBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteScheduledBroadcast method
+ * 
+ * @public
+ */
+export interface DeleteScheduledBroadcastStreamingOptions {
+    
+    
+    /** Deprecated: recurring schedules are being retired and `true` will be rejected. 
+     * Also accepts: roll_forward or proper camelCase (e.g., rollForward) */
+    rollForward?: boolean;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getSource method
+ * 
+ * @public
+ */
+export interface GetSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateSource method
+ * 
+ * @public
+ */
+export interface UpdateSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteSource method
+ * 
+ * @public
+ */
+export interface DeleteSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for listUser method
+ * 
+ * @public
+ */
+export interface ListUserStreamingOptions {
+    
+    
+    /** `next_token.offset` from the previous page. Empty reads the first page. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createUserBroadcast method
+ * 
+ * @public
+ */
+export interface CreateUserBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateUserBroadcastState method
+ * 
+ * @public
+ */
+export interface UpdateUserBroadcastStateStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for listUserSources method
+ * 
+ * @public
+ */
+export interface ListUserSourcesStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createUserSource method
+ * 
+ * @public
+ */
+export interface CreateUserSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for muteBroadcastChatUser method
+ * 
+ * @public
+ */
+export interface MuteBroadcastChatUserStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateBroadcastState method
+ * 
+ * @public
+ */
+export interface UpdateBroadcastStateStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for removeChatModerator method
+ * 
+ * @public
+ */
+export interface RemoveChatModeratorStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getUserSource method
+ * 
+ * @public
+ */
+export interface GetUserSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for updateUserSource method
+ * 
+ * @public
+ */
+export interface UpdateUserSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteUserSource method
+ * 
+ * @public
+ */
+export interface DeleteUserSourceStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteBroadcastChatMessage method
+ * 
+ * @public
+ */
+export interface DeleteBroadcastChatMessageStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
  * Options for goLiveScheduledBroadcast method
  * 
  * @public
  */
 export interface GoLiveScheduledBroadcastStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getSourceStreamKey method
+ * 
+ * @public
+ */
+export interface GetSourceStreamKeyStreamingOptions {
     
     
     /** Additional request options */
@@ -250,13 +1084,120 @@ export class BroadcastsClient {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
-     * Get a scheduled broadcast
-     * Returns a single scheduled broadcast by its alphanumeric UBS broadcast id.
+     * Get a Stream Source's Stream Key
+     * Returns the stream key of one of the authenticated user's stream sources. The stream key is a credential: anyone with it can stream to the source, so keep it out of logs, URLs and client-side code.
      * 
-     * @returns Promise with the API response
+     * Returns an event-driven stream that's easy to use.
+     * Use .on() to listen for events like 'data', 'error', 'close'.
+     * Also supports async iteration with for await...of.
+
+
+     * @param id Source id (19 digits), from GET /2/sources.
+
+
+
+
+     * @returns {Promise<EventDrivenStream>} Event-driven stream for handling streaming data
      */
-    async getScheduledBroadcast(
+    async getSourceStreamKey(
         
         
         
@@ -268,8 +1209,8 @@ export class BroadcastsClient {
         
         
         
-        options: GetScheduledBroadcastStreamingOptions = {}
-    ): Promise<GetScheduledBroadcastResponse> {
+        options: GetSourceStreamKeyStreamingOptions = {}
+    ): Promise<EventDrivenStream> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -282,7 +1223,7 @@ export class BroadcastsClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getScheduledBroadcast');
+        this.client.validateAuthentication(requiredAuthTypes, 'getSourceStreamKey');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -296,7 +1237,7 @@ export class BroadcastsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled/{id}';
+        let path = '/2/sources/{id}/stream_key';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -307,300 +1248,72 @@ export class BroadcastsClient {
         const params = new URLSearchParams();
         
 
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetScheduledBroadcastResponse>(
+        // Make the authenticated request using the main client's request method
+        // We need raw: true to get the raw Response object for streaming
+        const url = path + (params.toString() ? `?${params.toString()}` : '');
+        
+        // For streaming requests, we don't want to timeout the initial connection
+        // Instead, we'll handle timeouts at the stream level
+        const response = await this.client.request(
             'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
+            url,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...headers,
+                },
+                
+                
+                // Pass security requirements for smart auth selection
+                security: [
+                    
+                    {
+                        
+                        'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                        
+                    },
+                    
+                    {
+                        
+                        'UserToken': [],
+                        
+                    }
+                    
+                ],
+                
+                signal: signal,
+                ...requestOptions,
+                raw: true, // Get raw Response object for streaming
+                timeout: requestOptions?.timeout !== undefined ? requestOptions.timeout : 0, // Disable timeout for streaming requests unless explicitly overridden
+            }
+        ) as Response;
 
-
-
-    /**
-     * Update a scheduled broadcast
-     * Fully replaces schedule fields for a broadcast. Path `:id` is the UBS broadcast id; the body must include `scheduled_broadcast_id` and re-send any fields that should be kept.
-     * 
-     * @returns Promise with the API response
-     */
-    async updateScheduledBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: UpdateScheduledBroadcastStreamingOptions = {}
-    ): Promise<UpdateScheduledBroadcastResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'updateScheduledBroadcast');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UpdateScheduledBroadcastResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete a scheduled broadcast
-     * Deletes a scheduled broadcast by its alphanumeric UBS broadcast id.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteScheduledBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteScheduledBroadcastStreamingOptions = {}
-    ): Promise<DeleteScheduledBroadcastResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteScheduledBroadcast');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'roll_forward': 'rollForward',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            rollForward = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (rollForward !== undefined) {
-            
-            params.append('roll_forward', String(rollForward));
-            
+        // Handle errors
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}: ${response.statusText}`
+            );
         }
-        
-        
-        
 
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
+        // Return the readable stream
+        // The response.body is the actual ReadableStream for streaming
+        if (!response.body) {
+            throw new Error('Response body is not available for streaming');
+        }
 
-        // Make the request
-        return this.client.request<DeleteScheduledBroadcastResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
+        // Wrap the ReadableStream in an event-driven interface
+        const eventStream = new EventDrivenStream();
+        await eventStream.connect(response.body);
+        return eventStream;
     }
 
 
 
-    /**
-     * Send a chat message to a live broadcast
-     * Posts a chat message to a running broadcast, attributed to the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async sendBroadcastChat(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: SendBroadcastChatStreamingOptions = {}
-    ): Promise<SendBroadcastChatResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'sendBroadcastChat');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<SendBroadcastChatResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
     /**
-     * List scheduled broadcasts
+     * List Scheduled Broadcasts
      * Returns scheduled broadcasts owned by the authenticated user.
      * 
      * @returns Promise with the API response
@@ -759,8 +1472,8 @@ export class BroadcastsClient {
 
 
     /**
-     * Create a scheduled broadcast
-     * Schedules a one-off or recurring broadcast for the authenticated user. A `source_id` (ingest) is required at create time.
+     * Create a Scheduled Broadcast
+     * Schedules a broadcast for the authenticated user on one of their sources: `source_id` is required. Passing a stream key as `source_id` is deprecated and stops working when the /2/users/:id/sources and /2/users/:id/broadcasts routes reach end of life on January 1, 2027; pass the source's `id` from GET /2/sources instead.
      * 
      * @returns Promise with the API response
      */
@@ -817,7 +1530,7 @@ export class BroadcastsClient {
             },
             signal: signal,
             
-            body: JSON.stringify(body),
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             ...requestOptions,
         };
@@ -833,7 +1546,3419 @@ export class BroadcastsClient {
 
 
     /**
-     * Go live on a scheduled broadcast
+     * Get a User's Broadcast
+     * Returns one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts/:id.
+     * 
+     * @returns Promise with the API response
+     */
+    async getUserBroadcast(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetUserBroadcastStreamingOptions = {}
+    ): Promise<GetUserBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getUserBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts/{broadcast_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetUserBroadcastResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete a User's Broadcast
+     * Deletes one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use DELETE /2/broadcasts/:id.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteUserBroadcast(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteUserBroadcastStreamingOptions = {}
+    ): Promise<DeleteUserBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteUserBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts/{broadcast_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteUserBroadcastResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get a Broadcast
+     * Returns a broadcast owned by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetBroadcastStreamingOptions = {}
+    ): Promise<GetBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'broadcast.fields': 'broadcastFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            broadcastFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (broadcastFields !== undefined && broadcastFields.length > 0) {
+            
+            params.append('broadcast.fields', broadcastFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetBroadcastResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Update a Broadcast
+     * Changes the title, chat option or live category of one of the authenticated user's broadcasts and returns the broadcast. Send at least one of `title`, `chat_option` and `live_category_id`; fields left out keep their values. A broadcast can be updated before it starts, while it is live and after it has ended. A 409 `conflict` means the broadcast can't be edited, for example because it was deleted or moderated.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateBroadcastStreamingOptions = {}
+    ): Promise<UpdateBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateBroadcastResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete a Broadcast
+     * Deletes one of the authenticated user's broadcasts, scheduled or ended, including its replay. A running broadcast must be ended first.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteBroadcastStreamingOptions = {}
+    ): Promise<DeleteBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteBroadcastResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * List Live Categories
+     * Returns the live categories a host can pick when going live, in display order. Pass a category's `id` as `live_category_id` on POST /2/broadcasts. Ids are permanent; names can change, so store the id and show the current name. The whole list is returned in one response, without paging.
+     * 
+     * @returns Promise with the API response
+     */
+    async listLiveCategories(
+        
+        
+        
+        
+        
+        
+        
+        options: ListLiveCategoriesStreamingOptions = {}
+    ): Promise<ListLiveCategoriesResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'listLiveCategories');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/categories';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ListLiveCategoriesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get the Ingest Region
+     * Returns the ingest region nearest the server handling the request. Pass it as `region` when creating a stream source to ingest there.
+     * 
+     * @returns Promise with the API response
+     */
+    async getRegion(
+        
+        
+        
+        
+        
+        
+        
+        options: GetRegionStreamingOptions = {}
+    ): Promise<GetRegionResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getRegion');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/region';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetRegionResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unmute a User in a Broadcast Chat
+     * Allows a muted user to post messages in a running broadcast chat again. The authenticated user must be the broadcast host or a moderator.
+     * 
+     * @returns Promise with the API response
+     */
+    async unmuteBroadcastChatUser(
+        
+        
+        
+        id: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: UnmuteBroadcastChatUserStreamingOptions = {}
+    ): Promise<UnmuteBroadcastChatUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unmuteBroadcastChatUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat/mutes/{user_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnmuteBroadcastChatUserResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Broadcast Chat History
+     * Returns newest-first chat messages for a broadcast owned by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getBroadcastChat(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetBroadcastChatStreamingOptions = {}
+    ): Promise<GetBroadcastChatResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getBroadcastChat');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'broadcast_chat_message.fields': 'broadcastChatMessageFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            broadcastChatMessageFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (broadcastChatMessageFields !== undefined && broadcastChatMessageFields.length > 0) {
+            
+            params.append('broadcast_chat_message.fields', broadcastChatMessageFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetBroadcastChatResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Send a Chat Message to a Live Broadcast
+     * Posts a chat message to a running broadcast, attributed to the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async sendBroadcastChat(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: SendBroadcastChatStreamingOptions = {}
+    ): Promise<SendBroadcastChatResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'sendBroadcastChat');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<SendBroadcastChatResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Muted Chat Users
+     * Returns the users muted in the authenticated broadcaster's chat, with the expiry time of timed mutes. Mutes apply to all of their broadcasts. Expired timed mutes are omitted. Use `expansions=user_id` to include the muted users.
+     * 
+     * @returns Promise with the API response
+     */
+    async getChatMutedUsers(
+        
+        
+        
+        
+        
+        
+        
+        options: GetChatMutedUsersStreamingOptions = {}
+    ): Promise<GetChatMutedUsersResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getChatMutedUsers');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'broadcast_chat_mute.fields': 'broadcastChatMuteFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            broadcastChatMuteFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/mutes';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (broadcastChatMuteFields !== undefined && broadcastChatMuteFields.length > 0) {
+            
+            params.append('broadcast_chat_mute.fields', broadcastChatMuteFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetChatMutedUsersResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Mute or Time Out a User in Chat
+     * Prevents a user from posting messages in all of a broadcaster's chats. Without `broadcast_id`, the user is muted in the authenticated user's own chats. Moderators pass `broadcast_id` to mute the user in that broadcast host's chats. When `end_at_ms` is provided, the mute expires at that time.
+     * 
+     * @returns Promise with the API response
+     */
+    async muteChatUser(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: MuteChatUserStreamingOptions = {}
+    ): Promise<MuteChatUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'muteChatUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/mutes';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<MuteChatUserResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * List Stream Sources
+     * Returns the authenticated user's RTMP/RTMPS stream sources. A source's `id` is the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Stream keys are not included; read one with GET /2/sources/:id/stream_key.
+     * 
+     * @returns Promise with the API response
+     */
+    async listSources(
+        
+        
+        
+        
+        
+        
+        
+        options: ListSourcesStreamingOptions = {}
+    ): Promise<ListSourcesResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'listSources');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ListSourcesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create a Stream Source
+     * Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the returned `stream_key`. This is the only response that includes the stream key; read it later with GET /2/sources/:id/stream_key.
+     * 
+     * @returns Promise with the API response
+     */
+    async createSource(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateSourceStreamingOptions = {}
+    ): Promise<CreateSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateSourceResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * List Broadcasts
+     * Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.
+
+At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.
+     * 
+     * @returns Promise with the API response
+     */
+    async list(
+        
+        
+        
+        
+        
+        
+        
+        options: ListStreamingOptions = {}
+    ): Promise<ListResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'list');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'broadcast.fields': 'broadcastFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            ids = [],
+            
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            broadcastFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (ids !== undefined && ids.length > 0) {
+            
+            params.append('ids', ids.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (broadcastFields !== undefined && broadcastFields.length > 0) {
+            
+            params.append('broadcast.fields', broadcastFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ListResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Go Live on a Source
+     * Takes one or more of the authenticated user's sources live and returns 201 with the new broadcast. Several sources (`source_id` plus `additional_source_ids`, one per video format) go live together as one broadcast; they must all be RTMP sources in one region, and when one of them is already live its broadcast is returned only if it holds every listed source. The broadcast goes live immediately (state `RUNNING`), even before the encoder sends video, and is ended (`TIMED_OUT`) if no video arrives within 5 minutes. It is announced in a Post unless `should_not_tweet` is true. When the source already has a live broadcast, returns 200 with that broadcast unchanged and ignores the request's `title`, `locale`, `chat_option` and `should_not_tweet`. A missing `tweet_id` means the Post hasn't been created yet, was suppressed with `should_not_tweet`, or could not be created; read it later with GET /2/broadcasts/:id. A 409 `conflict` means the source can't go live right now: either it can't take video before the encoder connects (external HLS sources, or regions where this isn't available), so retry once video is flowing, or another broadcast is live on it, so END that broadcast first. The `detail` says which, and names the live broadcast when known.
+     * 
+     * @returns Promise with the API response
+     */
+    async createBroadcast(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateBroadcastStreamingOptions = {}
+    ): Promise<CreateBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateBroadcastResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Chat Moderators
+     * Returns the authenticated broadcaster's persistent moderators as User resources. The list applies to all of their current and future broadcast chats.
+     * 
+     * @returns Promise with the API response
+     */
+    async getChatModerators(
+        
+        
+        
+        
+        
+        
+        
+        options: GetChatModeratorsStreamingOptions = {}
+    ): Promise<GetChatModeratorsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getChatModerators');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/moderators';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetChatModeratorsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Add a Chat Moderator
+     * Adds a moderator to the authenticated broadcaster's persistent list and returns the updated moderator user IDs. The list applies to all current and future broadcast chats.
+     * 
+     * @returns Promise with the API response
+     */
+    async addChatModerator(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: AddChatModeratorStreamingOptions = {}
+    ): Promise<AddChatModeratorResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'addChatModerator');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/moderators';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<AddChatModeratorResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unmute a User in Chat
+     * Allows a muted user to post messages in a broadcaster's chats again. Without `broadcast_id`, the user is unmuted in the authenticated user's own chats. Moderators pass `broadcast_id` to unmute the user in that broadcast host's chats.
+     * 
+     * @returns Promise with the API response
+     */
+    async unmuteChatUser(
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: UnmuteChatUserStreamingOptions = {}
+    ): Promise<UnmuteChatUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unmuteChatUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'broadcast_id': 'broadcastId',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            broadcastId = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/mutes/{user_id}';
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (broadcastId !== undefined) {
+            
+            params.append('broadcast_id', String(broadcastId));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnmuteChatUserResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get a Scheduled Broadcast
+     * Returns a single scheduled broadcast by its alphanumeric broadcast id.
+     * 
+     * @returns Promise with the API response
+     */
+    async getScheduledBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetScheduledBroadcastStreamingOptions = {}
+    ): Promise<GetScheduledBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getScheduledBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetScheduledBroadcastResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Update a Scheduled Broadcast
+     * Updates a scheduled broadcast. Path `:id` is the broadcast id; the body must include `scheduled_broadcast_id`. Re-send every field that should be kept. Passing a stream key as `source_id` is deprecated and stops working when the /2/users/:id/sources and /2/users/:id/broadcasts routes reach end of life on January 1, 2027; pass the source's `id` from GET /2/sources instead.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateScheduledBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateScheduledBroadcastStreamingOptions = {}
+    ): Promise<UpdateScheduledBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateScheduledBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateScheduledBroadcastResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete a Scheduled Broadcast
+     * Deletes a scheduled broadcast by its alphanumeric broadcast id.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteScheduledBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteScheduledBroadcastStreamingOptions = {}
+    ): Promise<DeleteScheduledBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteScheduledBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'roll_forward': 'rollForward',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            rollForward = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (rollForward !== undefined) {
+            
+            params.append('roll_forward', String(rollForward));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteScheduledBroadcastResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get a Stream Source
+     * Returns one of the authenticated user's stream sources. Poll it after starting an encoder and wait for `is_stream_active` before going live. The stream key is not included; read it with GET /2/sources/:id/stream_key.
+     * 
+     * @returns Promise with the API response
+     */
+    async getSource(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetSourceStreamingOptions = {}
+    ): Promise<GetSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetSourceResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Rename a Stream Source
+     * Renames one of the authenticated user's stream sources.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateSource(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateSourceStreamingOptions = {}
+    ): Promise<UpdateSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateSourceResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete a Stream Source
+     * Deletes one of the authenticated user's stream sources.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteSource(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteSourceStreamingOptions = {}
+    ): Promise<DeleteSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteSourceResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * List a User's Broadcasts
+     * Returns the authenticated user's broadcasts, 100 per page. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts.
+     * 
+     * @returns Promise with the API response
+     */
+    async listUser(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: ListUserStreamingOptions = {}
+    ): Promise<ListUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'listUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ListUserResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create a Broadcast on a User's Source
+     * Creates a broadcast on one of the authenticated user's sources. `id` must be the authenticated user. The broadcast is `NOT_STARTED` and posts nothing until it is published with PUT /2/users/:id/broadcasts/:broadcast_id/state; one that is never published is deleted after 7 days. When the source already has a running broadcast, that broadcast is returned.
+     * 
+     * @returns Promise with the API response
+     */
+    async createUserBroadcast(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateUserBroadcastStreamingOptions = {}
+    ): Promise<CreateUserBroadcastResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createUserBroadcast');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateUserBroadcastResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Publish or End a User's Broadcast
+     * Publishes or ends one of the authenticated user's broadcasts. `id` must be the authenticated user. `PUBLISH` takes a broadcast created with POST /2/users/:id/broadcasts live once its source is receiving video, and posts it unless `should_not_tweet` is true. `END` ends the broadcast. Deprecated: use PUT /2/broadcasts/:id/state to end a broadcast.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateUserBroadcastState(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateUserBroadcastStateStreamingOptions = {}
+    ): Promise<UpdateUserBroadcastStateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateUserBroadcastState');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts/{broadcast_id}/state';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateUserBroadcastStateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * List a User's Stream Sources
+     * Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). `id` must be the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async listUserSources(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: ListUserSourcesStreamingOptions = {}
+    ): Promise<ListUserSourcesResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'listUserSources');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<ListUserSourcesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create a Stream Source for a User
+     * Creates a persistent RTMP/RTMPS ingest point for the authenticated user. `id` must be the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async createUserSource(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateUserSourceStreamingOptions = {}
+    ): Promise<CreateUserSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createUserSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateUserSourceResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Mute or Time Out a User in a Broadcast Chat
+     * Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must be the broadcast host or a moderator.
+     * 
+     * @returns Promise with the API response
+     */
+    async muteBroadcastChatUser(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: MuteBroadcastChatUserStreamingOptions = {}
+    ): Promise<MuteBroadcastChatUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'muteBroadcastChatUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat/mutes';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<MuteBroadcastChatUserResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * End a Broadcast
+     * Ends one of the authenticated user's broadcasts. Only `state: END` is supported.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateBroadcastState(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateBroadcastStateStreamingOptions = {}
+    ): Promise<UpdateBroadcastStateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateBroadcastState');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/state';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateBroadcastStateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Remove a Chat Moderator
+     * Removes a moderator from the authenticated broadcaster's persistent list and returns the updated moderator user IDs.
+     * 
+     * @returns Promise with the API response
+     */
+    async removeChatModerator(
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: RemoveChatModeratorStreamingOptions = {}
+    ): Promise<RemoveChatModeratorResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'removeChatModerator');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/moderators/{user_id}';
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<RemoveChatModeratorResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get a User's Stream Source
+     * Returns one of the authenticated user's stream sources. `id` must be the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getUserSource(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        sourceId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetUserSourceStreamingOptions = {}
+    ): Promise<GetUserSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getUserSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources/{source_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{source_id}', encodeURIComponent(String(sourceId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetUserSourceResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Rename a User's Stream Source
+     * Renames one of the authenticated user's stream sources. `id` must be the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateUserSource(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        sourceId: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateUserSourceStreamingOptions = {}
+    ): Promise<UpdateUserSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateUserSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources/{source_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{source_id}', encodeURIComponent(String(sourceId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateUserSourceResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete a User's Stream Source
+     * Deletes one of the authenticated user's stream sources. `id` must be the authenticated user. Success is an empty object.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteUserSource(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        sourceId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteUserSourceStreamingOptions = {}
+    ): Promise<DeleteUserSourceResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteUserSource');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources/{source_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{source_id}', encodeURIComponent(String(sourceId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteUserSourceResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Remove a Chat Message from a Live Broadcast
+     * Removes a specific chat message from a running broadcast where the authenticated user is the host or a moderator.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteBroadcastChatMessage(
+        
+        
+        
+        id: string,
+        
+        
+        
+        messageId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteBroadcastChatMessageStreamingOptions = {}
+    ): Promise<DeleteBroadcastChatMessageResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteBroadcastChatMessage');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat/{message_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{message_id}', encodeURIComponent(String(messageId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteBroadcastChatMessageResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Go Live on a Scheduled Broadcast
      * Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.
      * 
      * @returns Promise with the API response
@@ -907,6 +5032,8 @@ export class BroadcastsClient {
             finalRequestOptions
         );
     }
+
+
 
 
 }

@@ -7,7 +7,7 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
@@ -132,6 +132,7 @@ export class CommunitiesClient {
 
     /**
      * Search Communities
+     * Retrieves a list of Communities matching the specified search query.
      * 
      * @returns Promise with the API response
      */
@@ -305,7 +306,8 @@ export class CommunitiesClient {
 
 
     /**
-     * Get Communities by ID
+     * Get Community by ID
+     * Retrieves details of a specific Community by its ID.
      * 
      * @returns Promise with the API response
      */

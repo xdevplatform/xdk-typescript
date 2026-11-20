@@ -7,7 +7,7 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
@@ -179,7 +179,7 @@ export class ArticlesClient {
 
 
     /**
-     * Create draft Article
+     * Create Draft Article
      * Creates a new Article draft that can later be published.
      * 
      * @returns Promise with the API response
@@ -237,7 +237,7 @@ export class ArticlesClient {
             },
             signal: signal,
             
-            body: JSON.stringify(body),
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             ...requestOptions,
         };

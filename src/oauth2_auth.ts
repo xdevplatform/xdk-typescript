@@ -60,6 +60,11 @@ export class OAuth2 {
    * @returns Authorization URL
    */
   async getAuthorizationUrl(state?: string): Promise<string> {
+    if (!this.codeChallenge) {
+      const verifier = this.codeVerifier || generateCodeVerifier();
+      await this.setPkceParameters(verifier);
+    }
+
     const params = new URLSearchParams({
       response_type: 'code',
       client_id: this.config.clientId,
@@ -68,7 +73,7 @@ export class OAuth2 {
       state: state || ''
     });
 
-    // Add PKCE parameters if they've been set
+    // Add PKCE parameters
     if (this.codeChallenge) {
       params.append('code_challenge', this.codeChallenge);
       params.append('code_challenge_method', 'S256');
@@ -80,7 +85,7 @@ export class OAuth2 {
   /**
    * Exchange authorization code for tokens
    * @param code Authorization code from callback
-   * @param codeVerifier Optional code verifier for PKCE
+   * @param codeVerifier Optional code verifier for PKCE (uses stored verifier if omitted)
    * @returns Promise with OAuth2 token
    */
   async exchangeCode(code: string, codeVerifier?: string): Promise<OAuth2Token> {
@@ -90,9 +95,10 @@ export class OAuth2 {
       redirect_uri: this.config.redirectUri
     });
 
-    // Add PKCE code verifier if provided
-    if (codeVerifier) {
-      params.append('code_verifier', codeVerifier);
+    // Add PKCE code verifier if provided or previously generated
+    const verifierToUse = codeVerifier || this.codeVerifier;
+    if (verifierToUse) {
+      params.append('code_verifier', verifierToUse);
     }
 
     // Prepare headers
@@ -131,6 +137,10 @@ export class OAuth2 {
       refresh_token: data.refresh_token,
       scope: data.scope
     };
+    // Track when the token expires
+    if (data.expires_in) {
+      this.tokenExpiresAt = Date.now() + (data.expires_in * 1000);
+    }
 
     return this.token;
   }

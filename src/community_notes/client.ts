@@ -10,27 +10,20 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
-DeleteResponse,
-
 SearchWrittenResponse,
+EvaluateRequest,
+
+EvaluateResponse,
 
 SearchEligiblePostsResponse,
 CreateRequest,
 
 CreateResponse,
-EvaluateRequest,
 
-EvaluateResponse,
+DeleteResponse,
 } from './models.js';
-
 
 
 /**
@@ -64,6 +57,7 @@ export interface SearchWrittenOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+
 
 
 /**
@@ -106,13 +100,13 @@ export interface SearchEligiblePostsOptions {
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
     
     
     
     /** A comma separated list of Media fields to display. 
      * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
     
     
     
@@ -186,113 +180,9 @@ export class CommunityNotesClient {
     }
 
 
-
   /**
-   * Delete a Community Note
-   * Deletes a community note.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    delete(
-        
-        
-        id: Schemas.NoteId,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    delete(
-        
-        
-        id: Schemas.NoteId,
-        
-        
-        
-        
-        
-    ): Promise<DeleteResponse>;
-    // Implementation
-    async delete(
-        
-        
-        
-        id: Schemas.NoteId,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/notes/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Search Community Notes Written
+   * Search for Community Notes Written
+   * Retrieves the Community Notes written by the authenticated user.
 
 
 
@@ -474,10 +364,101 @@ export class CommunityNotesClient {
     }
 
 
+  /**
+   * Evaluate a Community Note
+   * Evaluates the text of a proposed Community Note on a Post and returns its claim-opinion score.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<EvaluateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    evaluate(
+        
+        
+        
+        body: EvaluateRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    evaluate(
+        
+        
+        
+        body: EvaluateRequest,
+        
+        
+    ): Promise<EvaluateResponse>;
+    // Implementation
+    async evaluate(
+        
+        
+        
+        
+        
+        
+        body: EvaluateRequest,
+        
+        
+        
+    ): Promise<EvaluateResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/notes/evaluate';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<EvaluateResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
   /**
-   * Search Eligible Posts
+   * Search for Posts Eligible for Community Notes
+   * Retrieves Posts that are eligible for Community Notes.
 
 
 
@@ -781,10 +762,9 @@ export class CommunityNotesClient {
     }
 
 
-
-
   /**
-   * Create Community Notes
+   * Create a Community Note
+   * Creates a Community Note on a Post. With test_mode set to true, the note is only for testing and is not publicly visible.
 
 
 
@@ -874,57 +854,68 @@ export class CommunityNotesClient {
     }
 
 
-
-
   /**
-   * Evaluate Community Notes
+   * Delete a Community Note
+   * Deletes a community note.
+
+
+   * @param id id
 
 
 
-   * @param body Request body
 
-   * @returns {Promise<EvaluateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    evaluate(
+    delete(
+        
+        
+        id: Schemas.NoteId,
         
         
         
-        body: EvaluateRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    evaluate(
+    delete(
+        
+        
+        id: Schemas.NoteId,
         
         
         
-        body: EvaluateRequest,
         
         
-    ): Promise<EvaluateResponse>;
+    ): Promise<DeleteResponse>;
     // Implementation
-    async evaluate(
+    async delete(
+        
+        
+        
+        id: Schemas.NoteId,
         
         
         
         
         
         
-        body: EvaluateRequest,
         
         
-        
-    ): Promise<EvaluateResponse | Response> {
+    ): Promise<DeleteResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/notes/evaluate';
+        let path = '/2/notes/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
@@ -933,8 +924,6 @@ export class CommunityNotesClient {
 
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             
             // Pass security requirements for smart auth selection
@@ -959,25 +948,12 @@ export class CommunityNotesClient {
             
         };
 
-        return this.client.request<EvaluateResponse>(
-            'POST',
+        return this.client.request<DeleteResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

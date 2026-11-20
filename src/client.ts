@@ -17,59 +17,7 @@ import {
 
 
 
-import { StreamClient } from "./stream/client.js";
-
-
-
-import { UsageClient } from "./usage/index.js";
-
-
-
-import { CommunityNotesClient } from "./community_notes/index.js";
-
-
-
-import { SpacesClient } from "./spaces/index.js";
-
-
-
-import { BroadcastsClient } from "./broadcasts/index.js";
-
-
-
-import { MediaClient } from "./media/index.js";
-
-
-
 import { UsersClient } from "./users/index.js";
-
-
-
-import { ChatClient } from "./chat/index.js";
-
-
-
-import { PostsClient } from "./posts/index.js";
-
-
-
-import { AccountActivityClient } from "./account_activity/index.js";
-
-
-
-import { WebhooksClient } from "./webhooks/index.js";
-
-
-
-import { ListsClient } from "./lists/index.js";
-
-
-
-import { GeneralClient } from "./general/index.js";
-
-
-
-import { ComplianceClient } from "./compliance/index.js";
 
 
 
@@ -77,19 +25,23 @@ import { ActivityClient } from "./activity/index.js";
 
 
 
-import { ArticlesClient } from "./articles/index.js";
+import { AccountActivityClient } from "./account_activity/index.js";
 
 
 
-import { TrendsClient } from "./trends/index.js";
+import { AccountClient } from "./account/index.js";
 
 
 
-import { ConnectionsClient } from "./connections/index.js";
+import { StreamClient } from "./stream/client.js";
 
 
 
-import { DirectMessagesClient } from "./direct_messages/index.js";
+import { SpacesClient } from "./spaces/index.js";
+
+
+
+import { ChatClient } from "./chat/index.js";
 
 
 
@@ -97,7 +49,67 @@ import { CommunitiesClient } from "./communities/index.js";
 
 
 
+import { BotsClient } from "./bots/index.js";
+
+
+
+import { WebhooksClient } from "./webhooks/index.js";
+
+
+
+import { ArticlesClient } from "./articles/index.js";
+
+
+
+import { GeneralClient } from "./general/index.js";
+
+
+
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { PostsClient } from "./posts/index.js";
+
+
+
+import { MediaClient } from "./media/index.js";
+
+
+
+import { ListsClient } from "./lists/index.js";
+
+
+
+import { BroadcastsClient } from "./broadcasts/index.js";
+
+
+
+import { ComplianceClient } from "./compliance/index.js";
+
+
+
+import { CommunityNotesClient } from "./community_notes/index.js";
+
+
+
+import { CallsClient } from "./calls/index.js";
+
+
+
 import { NewsClient } from "./news/index.js";
+
+
+
+import { TrendsClient } from "./trends/index.js";
+
+
+
+import { UsageClient } from "./usage/index.js";
+
+
+
+import { ConnectionsClient } from "./connections/index.js";
 
 
 
@@ -111,6 +123,8 @@ export interface ClientConfig {
   bearerToken?: string;
   /** OAuth2 access token */
   accessToken?: string;
+  /** OAuth2 instance for token management and refresh */
+  oauth2?: any;
   /** OAuth1 instance for authentication */
   oauth1?: any;
   /** Custom headers to include in requests */
@@ -152,8 +166,8 @@ export interface RequestOptions {
   headers?: Record<string, string>;
   /** Request signal for cancellation */
   signal?: AbortSignal;
-  /** Request body */
-  body?: string;
+    /** Request body */
+    body?: string | Buffer | ArrayBuffer | ArrayBufferView;
   /** Return raw HTTP wrapper instead of parsed body */
   raw?: boolean;
   /** Security requirements for the endpoint (from OpenAPI spec) - used for smart auth selection */
@@ -318,7 +332,9 @@ export class Client {
   /** Bearer token for authentication */
   readonly bearerToken?: string;
   /** OAuth2 access token */
-  readonly accessToken?: string;
+  accessToken?: string;
+  /** OAuth2 instance for token management and refresh */
+  readonly oauth2?: any;
   /** OAuth1 instance for authentication */
   readonly oauth1?: any;
   /** Headers for requests */
@@ -334,68 +350,77 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** stream client */
-  readonly stream: StreamClient;
-
-  /** usage client */
-  readonly usage: UsageClient;
-
-  /** community notes client */
-  readonly communityNotes: CommunityNotesClient;
-
-  /** spaces client */
-  readonly spaces: SpacesClient;
-
-  /** broadcasts client */
-  readonly broadcasts: BroadcastsClient;
-
-  /** media client */
-  readonly media: MediaClient;
-
   /** users client */
   readonly users: UsersClient;
-
-  /** chat client */
-  readonly chat: ChatClient;
-
-  /** posts client */
-  readonly posts: PostsClient;
-
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
-
-  /** webhooks client */
-  readonly webhooks: WebhooksClient;
-
-  /** lists client */
-  readonly lists: ListsClient;
-
-  /** general client */
-  readonly general: GeneralClient;
-
-  /** compliance client */
-  readonly compliance: ComplianceClient;
 
   /** activity client */
   readonly activity: ActivityClient;
 
-  /** articles client */
-  readonly articles: ArticlesClient;
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
 
-  /** trends client */
-  readonly trends: TrendsClient;
+  /** account client */
+  readonly account: AccountClient;
 
-  /** connections client */
-  readonly connections: ConnectionsClient;
+  /** stream client */
+  readonly stream: StreamClient;
 
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
+  /** spaces client */
+  readonly spaces: SpacesClient;
+
+  /** chat client */
+  readonly chat: ChatClient;
 
   /** communities client */
   readonly communities: CommunitiesClient;
 
+  /** bots client */
+  readonly bots: BotsClient;
+
+  /** webhooks client */
+  readonly webhooks: WebhooksClient;
+
+  /** articles client */
+  readonly articles: ArticlesClient;
+
+  /** general client */
+  readonly general: GeneralClient;
+
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
+  /** posts client */
+  readonly posts: PostsClient;
+
+  /** media client */
+  readonly media: MediaClient;
+
+  /** lists client */
+  readonly lists: ListsClient;
+
+  /** broadcasts client */
+  readonly broadcasts: BroadcastsClient;
+
+  /** compliance client */
+  readonly compliance: ComplianceClient;
+
+  /** community notes client */
+  readonly communityNotes: CommunityNotesClient;
+
+  /** calls client */
+  readonly calls: CallsClient;
+
   /** news client */
   readonly news: NewsClient;
+
+  /** trends client */
+  readonly trends: TrendsClient;
+
+  /** usage client */
+  readonly usage: UsageClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
 
 
   /**
@@ -432,17 +457,18 @@ export class Client {
       const clientConfig = config as ClientConfig;
       this.baseUrl = clientConfig.baseUrl || "https://api.x.com";
       this.bearerToken = clientConfig.bearerToken;
-      this.accessToken = clientConfig.accessToken;
+      this.accessToken = clientConfig.accessToken || clientConfig.oauth2?.getToken?.()?.access_token;
+      this.oauth2 = clientConfig.oauth2;
       this.oauth1 = clientConfig.oauth1;
     }
     
-    this.timeout = (config as ClientConfig).timeout || 30000;
-    this.retry = (config as ClientConfig).retry ?? true;
-    this.maxRetries = (config as ClientConfig).maxRetries || 3;
+    this.timeout = (config as ClientConfig)?.timeout ?? 30000;
+    this.retry = (config as ClientConfig)?.retry ?? false;
+    this.maxRetries = (config as ClientConfig)?.maxRetries ?? 3;
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.6.6',
+      'User-Agent': 'xdk-typescript/0.7.0',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((config as ClientConfig).headers || {}),
@@ -451,47 +477,53 @@ export class Client {
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.stream = new StreamClient(this);
-
-    this.usage = new UsageClient(this);
-
-    this.communityNotes = new CommunityNotesClient(this);
-
-    this.spaces = new SpacesClient(this);
-
-    this.broadcasts = new BroadcastsClient(this);
-
-    this.media = new MediaClient(this);
-
     this.users = new UsersClient(this);
-
-    this.chat = new ChatClient(this);
-
-    this.posts = new PostsClient(this);
-
-    this.accountActivity = new AccountActivityClient(this);
-
-    this.webhooks = new WebhooksClient(this);
-
-    this.lists = new ListsClient(this);
-
-    this.general = new GeneralClient(this);
-
-    this.compliance = new ComplianceClient(this);
 
     this.activity = new ActivityClient(this);
 
-    this.articles = new ArticlesClient(this);
+    this.accountActivity = new AccountActivityClient(this);
 
-    this.trends = new TrendsClient(this);
+    this.account = new AccountClient(this);
 
-    this.connections = new ConnectionsClient(this);
+    this.stream = new StreamClient(this);
 
-    this.directMessages = new DirectMessagesClient(this);
+    this.spaces = new SpacesClient(this);
+
+    this.chat = new ChatClient(this);
 
     this.communities = new CommunitiesClient(this);
 
+    this.bots = new BotsClient(this);
+
+    this.webhooks = new WebhooksClient(this);
+
+    this.articles = new ArticlesClient(this);
+
+    this.general = new GeneralClient(this);
+
+    this.directMessages = new DirectMessagesClient(this);
+
+    this.posts = new PostsClient(this);
+
+    this.media = new MediaClient(this);
+
+    this.lists = new ListsClient(this);
+
+    this.broadcasts = new BroadcastsClient(this);
+
+    this.compliance = new ComplianceClient(this);
+
+    this.communityNotes = new CommunityNotesClient(this);
+
+    this.calls = new CallsClient(this);
+
     this.news = new NewsClient(this);
+
+    this.trends = new TrendsClient(this);
+
+    this.usage = new UsageClient(this);
+
+    this.connections = new ConnectionsClient(this);
 
   }
 
@@ -536,12 +568,19 @@ export class Client {
     // Add authentication headers based on selected method
     if (selectedAuth === 'bearer_token' && this.bearerToken) {
       headers.set('Authorization', `Bearer ${this.bearerToken}`);
-    } else if (selectedAuth === 'oauth2_user_context' && this.accessToken) {
-      headers.set('Authorization', `Bearer ${this.accessToken}`);
+    } else if (selectedAuth === 'oauth2_user_context' && this.getEffectiveAccessToken()) {
+      if (this.oauth2 && this.isTokenExpired()) {
+        await this.refreshToken();
+      }
+      const effectiveToken = this.getEffectiveAccessToken();
+      if (effectiveToken) {
+        headers.set('Authorization', `Bearer ${effectiveToken}`);
+      }
     } else if (selectedAuth === 'oauth1' && this.oauth1 && this.oauth1.accessToken) {
       // OAuth1 authentication - build proper OAuth1 header
       try {
-        const oauthHeader = await this.oauth1.buildRequestHeader(method, url, options.body || '');
+        const bodyForSigning = typeof options.body === 'string' ? options.body : '';
+        const oauthHeader = await this.oauth1.buildRequestHeader(method, url, bodyForSigning);
         headers.set('Authorization', oauthHeader);
         
         // Keep Content-Type header for JSON requests - X API requires it
@@ -567,79 +606,116 @@ export class Client {
       });
     }
 
-    try {
-      const response = await this.httpClient.request(url, {
-        method,
-        headers,
-        signal: options.signal,
-        body: options.body,
-        timeout: options.timeout !== undefined ? options.timeout : this.timeout,
-      });
+    const maxAttempts = this.retry ? Math.max(0, this.maxRetries) + 1 : 1;
+    const retryableStatuses = new Set([429, 500, 502, 503, 504]);
 
-      if (!response.ok) {
-        // Read the body exactly once: a fetch Response body is a one-shot
-        // stream, so a failed json() followed by text() would throw
-        // "Body is unusable" and mask the real error.
-        let errorData: any;
-        try {
-          const errorText = await response.text();
-          try {
-            errorData = JSON.parse(errorText);
-          } catch {
-            errorData = errorText;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        const response = await this.httpClient.request(url, {
+          method,
+          headers,
+          signal: options.signal,
+          body: options.body,
+          timeout: options.timeout !== undefined ? options.timeout : this.timeout,
+        });
+
+        if (!response.ok) {
+          if (attempt + 1 < maxAttempts && !options.raw && retryableStatuses.has(response.status)) {
+            const retryAfter = response.headers?.get?.('retry-after');
+            const parsedDelay = retryAfter ? Number(retryAfter) * 1000 : NaN;
+            const delayMs = !Number.isNaN(parsedDelay) && parsedDelay >= 0
+              ? Math.min(parsedDelay, 5000)
+              : Math.min(100 * Math.pow(2, attempt), 2000);
+            // Drain body if needed before retrying
+            await response.text().catch(() => '');
+            if (delayMs > 0) {
+              await new Promise(resolve => {
+                const t = setTimeout(resolve, delayMs);
+                if (typeof (t as any)?.unref === 'function') {
+                  (t as any).unref();
+                }
+              });
+            }
+            continue;
           }
-        } catch {
-          // The body could not be read at all (e.g. an aborted stream);
-          // still surface the status line below.
-          errorData = undefined;
+
+          // Read the body exactly once: a fetch Response body is a one-shot
+          // stream, so a failed json() followed by text() would throw
+          // "Body is unusable" and mask the real error.
+          let errorData: any;
+          try {
+            const errorText = await response.text();
+            try {
+              errorData = JSON.parse(errorText);
+            } catch {
+              errorData = errorText;
+            }
+          } catch {
+            // The body could not be read at all (e.g. an aborted stream);
+            // still surface the status line below.
+            errorData = undefined;
+          }
+
+          throw new ApiError(
+            errorData && errorData.message ? errorData.message : `HTTP ${response.status}: ${response.statusText}`,
+            response.status,
+            response.statusText,
+            response.headers,
+            errorData
+          );
         }
 
+        // For streaming requests, return the raw Response object
+        if (options.raw) {
+          return response as any; // Return the actual Response object for streaming
+        }
+
+        let data: T;
+        // Check if binary response is expected (from OpenAPI spec)
+        if (options.binary) {
+          // Return ArrayBuffer for binary endpoints
+          data = await response.arrayBuffer() as T;
+        } else {
+          // Default: parse as JSON and transform keys
+          const rawData = await response.json();
+          data = transformKeys<T>(rawData);
+        }
+
+        // Return parsed body for non-streaming requests
+        return data;
+      } catch (error) {
+        if (error instanceof ApiError) {
+          throw error;
+        }
+        if (attempt + 1 < maxAttempts && !options.raw && !options.signal?.aborted) {
+          const delayMs = Math.min(100 * Math.pow(2, attempt), 2000);
+          await new Promise(resolve => {
+            const t = setTimeout(resolve, delayMs);
+            if (typeof (t as any)?.unref === 'function') {
+              (t as any).unref();
+            }
+          });
+          continue;
+        }
         throw new ApiError(
-          errorData && errorData.message ? errorData.message : `HTTP ${response.status}: ${response.statusText}`,
-          response.status,
-          response.statusText,
-          response.headers,
-          errorData
+          error instanceof Error ? error.message : 'Request failed',
+          0,
+          'NETWORK_ERROR',
+          new Headers(),
+          error
         );
       }
-
-      // For streaming requests, return the raw Response object
-      if (options.raw) {
-        return response as any; // Return the actual Response object for streaming
-      }
-
-      let data: T;
-      // Check if binary response is expected (from OpenAPI spec)
-      if (options.binary) {
-        // Return ArrayBuffer for binary endpoints
-        data = await response.arrayBuffer() as T;
-      } else {
-        // Default: parse as JSON and transform keys
-        const rawData = await response.json();
-        data = transformKeys<T>(rawData);
-      }
-
-      // Return parsed body for non-streaming requests
-      return data;
-    } catch (error) {
-      if (error instanceof ApiError) {
-        throw error;
-      }
-      throw new ApiError(
-        error instanceof Error ? error.message : 'Request failed',
-        0,
-        'NETWORK_ERROR',
-        new Headers(),
-        error
-      );
     }
+    throw new ApiError('Request failed', 0, 'NETWORK_ERROR', new Headers());
   }
 
   /**
    * Check if the OAuth2 token is expired
    */
   isTokenExpired(): boolean {
-    // TODO: Implement token expiration check
+    if (this.oauth2 && typeof this.oauth2.isTokenExpired === 'function') {
+      return this.oauth2.isTokenExpired();
+    }
     return false;
   }
 
@@ -647,14 +723,23 @@ export class Client {
    * Refresh the OAuth2 token
    */
   async refreshToken(): Promise<void> {
-    // TODO: Implement token refresh
+    if (this.oauth2 && typeof this.oauth2.refreshToken === 'function') {
+      const token = await this.oauth2.refreshToken();
+      if (token && token.access_token) {
+        this.accessToken = token.access_token;
+      }
+    }
+  }
+
+  private getEffectiveAccessToken(): string | undefined {
+    return this.oauth2?.getToken?.()?.access_token || this.accessToken;
   }
 
   /**
    * Get the current authentication status
    */
   isAuthenticated(): boolean {
-    return !!(this.bearerToken || this.accessToken || (this.oauth1 && this.oauth1.accessToken));
+    return !!(this.bearerToken || this.getEffectiveAccessToken() || (this.oauth1 && this.oauth1.accessToken));
   }
 
   /**
@@ -695,9 +780,10 @@ export class Client {
    */
   private selectAuthMethod(method: string, securityRequirements?: Array<Record<string, string[]>>): 'bearer_token' | 'oauth2_user_context' | 'oauth1' | null {
     // If no security requirements, use default priority
+    const oauth2AccessToken = this.getEffectiveAccessToken();
     if (!securityRequirements || securityRequirements.length === 0) {
       if (this.bearerToken) return 'bearer_token';
-      if (this.accessToken) return 'oauth2_user_context';
+      if (oauth2AccessToken) return 'oauth2_user_context';
       if (this.oauth1 && this.oauth1.accessToken) return 'oauth1';
       return null;
     }
@@ -714,7 +800,7 @@ export class Client {
     // Check what auth methods we have available
     const availableAuth: Record<string, boolean> = {
       'BearerToken': !!this.bearerToken,
-      'OAuth2UserToken': !!this.accessToken,
+      'OAuth2UserToken': !!oauth2AccessToken,
       'UserToken': !!(this.oauth1 && this.oauth1.accessToken),
     };
 
@@ -774,7 +860,7 @@ export class Client {
     if (this.bearerToken) {
       availableAuthTypes.push('bearer_token');
     }
-    if (this.accessToken) {
+    if (this.getEffectiveAccessToken()) {
       availableAuthTypes.push('oauth2_user_context');
     }
     if (this.oauth1 && this.oauth1.accessToken) {

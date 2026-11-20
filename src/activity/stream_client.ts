@@ -7,10 +7,18 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
+
+
+  UpdateSubscriptionResponse,
+
+
+
+  DeleteSubscriptionResponse,
+
 
 
   GetSubscriptionsResponse,
@@ -23,16 +31,42 @@ import {
 
   DeleteSubscriptionsByIdsResponse,
 
-
-
-  UpdateSubscriptionResponse,
-
-
-
-  DeleteSubscriptionResponse,
-
 } from './models.js';
 
+/**
+ * Options for updateSubscription method
+ * 
+ * @public
+ */
+export interface UpdateSubscriptionStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteSubscription method
+ * 
+ * @public
+ */
+export interface DeleteSubscriptionStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for getSubscriptions method
  * 
@@ -47,9 +81,15 @@ export interface GetSubscriptionsStreamingOptions {
     
     
     
-    /** A base32hex-encoded pagination token. 
+    /** A base32hex-encoded pagination token that decodes to 9 bytes. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
     paginationToken?: string;
+    
+    
+    
+    /** Only return subscriptions whose filter.user_id matches. 
+     * Also accepts: user_id or proper camelCase (e.g., userId) */
+    userId?: Schemas.UserId;
     
     
     
@@ -85,40 +125,6 @@ export interface CreateSubscriptionStreamingOptions {
  * @public
  */
 export interface DeleteSubscriptionsByIdsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for updateSubscription method
- * 
- * @public
- */
-export interface UpdateSubscriptionStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for deleteSubscription method
- * 
- * @public
- */
-export interface DeleteSubscriptionStreamingOptions {
     
     
     /** Additional request options */
@@ -185,8 +191,176 @@ export class ActivityClient {
 
 
     /**
-     * Get X activity subscriptions
-     * Get a list of active subscriptions for XAA
+     * Update X Activity Subscription
+     * Updates a subscription for an X activity event
+     * 
+     * @returns Promise with the API response
+     */
+    async updateSubscription(
+        
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateSubscriptionStreamingOptions = {}
+    ): Promise<UpdateSubscriptionResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateSubscription');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions/{subscription_id}';
+        
+        
+        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateSubscriptionResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete X Activity Subscription
+     * Deletes a subscription for an X activity event
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteSubscription(
+        
+        
+        
+        subscriptionId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteSubscriptionStreamingOptions = {}
+    ): Promise<DeleteSubscriptionResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteSubscription');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/activity/subscriptions/{subscription_id}';
+        
+        
+        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteSubscriptionResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get X Activity Subscriptions
+     * Get a list of active subscriptions for XAA. Optional user_id narrows the list to subscriptions whose filter.user_id matches; with a user-context token it must identify the authenticated user.
      * 
      * @returns Promise with the API response
      */
@@ -231,6 +405,10 @@ export class ActivityClient {
             'pagination_token': 'paginationToken',
             
             
+            
+            'user_id': 'userId',
+            
+            
         };
         const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
         
@@ -245,6 +423,10 @@ export class ActivityClient {
             
             
             paginationToken = undefined,
+            
+            
+            
+            userId = undefined,
             
             
             
@@ -285,6 +467,18 @@ export class ActivityClient {
         
         
         
+        
+        
+        
+        
+        if (userId !== undefined) {
+            
+            params.append('user_id', String(userId));
+            
+        }
+        
+        
+        
 
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
@@ -308,8 +502,8 @@ export class ActivityClient {
 
 
     /**
-     * Create X activity subscription
-     * Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported.
+     * Create X Activity Subscription
+     * Creates a subscription for an X activity event. OAuth2 user-context tokens must hold the scope matching the requested event_type: dm.read for chat.* and dm.* events, like.read for like.* events, mute.read for mute.* events, block.read for block.* events, follows.read for subscriptions.* events, and tweet.read for all other event types. Mute and block subscriptions are actor-only: filter.user_id must identify the authenticated user and direction is not supported. subscriptions.* events require a user-context token and filter.user_id must identify the authenticated user. Optional filter.qualifiers further narrow supported chat, follow, unfollow, like, and subscriptions events.
      * 
      * @returns Promise with the API response
      */
@@ -370,7 +564,7 @@ export class ActivityClient {
             },
             signal: signal,
             
-            body: JSON.stringify(body),
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             ...requestOptions,
         };
@@ -386,7 +580,7 @@ export class ActivityClient {
 
 
     /**
-     * Delete X activity subscriptions by IDs
+     * Delete X Activity Subscriptions by IDs
      * Deletes multiple subscriptions for X activity events by their IDs
      * 
      * @returns Promise with the API response
@@ -459,158 +653,6 @@ export class ActivityClient {
 
         // Make the request
         return this.client.request<DeleteSubscriptionsByIdsResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Update X activity subscription
-     * Updates a subscription for an X activity event
-     * 
-     * @returns Promise with the API response
-     */
-    async updateSubscription(
-        
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: UpdateSubscriptionStreamingOptions = {}
-    ): Promise<UpdateSubscriptionResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'updateSubscription');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/activity/subscriptions/{subscription_id}';
-        
-        
-        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(body),
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UpdateSubscriptionResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Deletes X activity subscription
-     * Deletes a subscription for an X activity event
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteSubscription(
-        
-        
-        
-        subscriptionId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteSubscriptionStreamingOptions = {}
-    ): Promise<DeleteSubscriptionResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteSubscription');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/activity/subscriptions/{subscription_id}';
-        
-        
-        path = path.replace('{subscription_id}', encodeURIComponent(String(subscriptionId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteSubscriptionResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

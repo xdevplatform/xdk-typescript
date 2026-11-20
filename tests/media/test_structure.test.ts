@@ -30,12 +30,12 @@ describe('MediaClient Structure', () => {
 
   
   
-  it('should have getByKey method with correct signature', () => {
+  it('should have getAnalytics method with correct signature', () => {
     // Check method exists
-    expect(MediaClient.prototype).toHaveProperty('getByKey');
+    expect(MediaClient.prototype).toHaveProperty('getAnalytics');
     
     // Check method is callable
-    const method = mediaClient.getByKey;
+    const method = mediaClient.getAnalytics;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -46,7 +46,11 @@ describe('MediaClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'mediaKey',
+      'mediaKeys',
+      
+      'startTime',
+      
+      'endTime',
       
     ];
     
@@ -61,8 +65,8 @@ describe('MediaClient Structure', () => {
     }
   });
 
-  it('should have getByKey method with return type annotation', () => {
-    const method = mediaClient.getByKey;
+  it('should have getAnalytics method with return type annotation', () => {
+    const method = mediaClient.getAnalytics;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -112,12 +116,12 @@ describe('MediaClient Structure', () => {
   
 
   
-  it('should have appendUpload method with correct signature', () => {
+  it('should have createSubtitles method with correct signature', () => {
     // Check method exists
-    expect(MediaClient.prototype).toHaveProperty('appendUpload');
+    expect(MediaClient.prototype).toHaveProperty('createSubtitles');
     
     // Check method is callable
-    const method = mediaClient.appendUpload;
+    const method = mediaClient.createSubtitles;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -127,8 +131,6 @@ describe('MediaClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
-      
-      'id',
       
     ];
     
@@ -143,8 +145,47 @@ describe('MediaClient Structure', () => {
     }
   });
 
-  it('should have appendUpload method with return type annotation', () => {
-    const method = mediaClient.appendUpload;
+  it('should have createSubtitles method with return type annotation', () => {
+    const method = mediaClient.createSubtitles;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteSubtitles method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('deleteSubtitles');
+    
+    // Check method is callable
+    const method = mediaClient.deleteSubtitles;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteSubtitles method with return type annotation', () => {
+    const method = mediaClient.deleteSubtitles;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -233,6 +274,86 @@ describe('MediaClient Structure', () => {
   
 
   
+  it('should have addToLibrary method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('addToLibrary');
+    
+    // Check method is callable
+    const method = mediaClient.addToLibrary;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have addToLibrary method with return type annotation', () => {
+    const method = mediaClient.addToLibrary;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getAmplifyProgram method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('getAmplifyProgram');
+    
+    // Check method is callable
+    const method = mediaClient.getAmplifyProgram;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'programId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getAmplifyProgram method with return type annotation', () => {
+    const method = mediaClient.getAmplifyProgram;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
   it('should have getUploadStatus method with correct signature', () => {
     // Check method exists
     expect(MediaClient.prototype).toHaveProperty('getUploadStatus');
@@ -313,12 +434,12 @@ describe('MediaClient Structure', () => {
   
 
   
-  it('should have createSubtitles method with correct signature', () => {
+  it('should have updateInLibrary method with correct signature', () => {
     // Check method exists
-    expect(MediaClient.prototype).toHaveProperty('createSubtitles');
+    expect(MediaClient.prototype).toHaveProperty('updateInLibrary');
     
     // Check method is callable
-    const method = mediaClient.createSubtitles;
+    const method = mediaClient.updateInLibrary;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -328,6 +449,8 @@ describe('MediaClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
+      
+      'mediaKey',
       
     ];
     
@@ -342,8 +465,8 @@ describe('MediaClient Structure', () => {
     }
   });
 
-  it('should have createSubtitles method with return type annotation', () => {
-    const method = mediaClient.createSubtitles;
+  it('should have updateInLibrary method with return type annotation', () => {
+    const method = mediaClient.updateInLibrary;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -352,12 +475,12 @@ describe('MediaClient Structure', () => {
   
 
   
-  it('should have deleteSubtitles method with correct signature', () => {
+  it('should have removeFromLibrary method with correct signature', () => {
     // Check method exists
-    expect(MediaClient.prototype).toHaveProperty('deleteSubtitles');
+    expect(MediaClient.prototype).toHaveProperty('removeFromLibrary');
     
     // Check method is callable
-    const method = mediaClient.deleteSubtitles;
+    const method = mediaClient.removeFromLibrary;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -367,6 +490,8 @@ describe('MediaClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
+      
+      'mediaKey',
       
     ];
     
@@ -381,8 +506,8 @@ describe('MediaClient Structure', () => {
     }
   });
 
-  it('should have deleteSubtitles method with return type annotation', () => {
-    const method = mediaClient.deleteSubtitles;
+  it('should have removeFromLibrary method with return type annotation', () => {
+    const method = mediaClient.removeFromLibrary;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -391,12 +516,12 @@ describe('MediaClient Structure', () => {
   
 
   
-  it('should have getAnalytics method with correct signature', () => {
+  it('should have getLibraryCategories method with correct signature', () => {
     // Check method exists
-    expect(MediaClient.prototype).toHaveProperty('getAnalytics');
+    expect(MediaClient.prototype).toHaveProperty('getLibraryCategories');
     
     // Check method is callable
-    const method = mediaClient.getAnalytics;
+    const method = mediaClient.getLibraryCategories;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -406,12 +531,6 @@ describe('MediaClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
-      
-      'mediaKeys',
-      
-      'startTime',
-      
-      'endTime',
       
     ];
     
@@ -426,8 +545,127 @@ describe('MediaClient Structure', () => {
     }
   });
 
-  it('should have getAnalytics method with return type annotation', () => {
-    const method = mediaClient.getAnalytics;
+  it('should have getLibraryCategories method with return type annotation', () => {
+    const method = mediaClient.getLibraryCategories;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getAmplifyPrograms method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('getAmplifyPrograms');
+    
+    // Check method is callable
+    const method = mediaClient.getAmplifyPrograms;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getAmplifyPrograms method with return type annotation', () => {
+    const method = mediaClient.getAmplifyPrograms;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getByKey method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('getByKey');
+    
+    // Check method is callable
+    const method = mediaClient.getByKey;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'mediaKey',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getByKey method with return type annotation', () => {
+    const method = mediaClient.getByKey;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have addPostToAmplifyPrograms method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('addPostToAmplifyPrograms');
+    
+    // Check method is callable
+    const method = mediaClient.addPostToAmplifyPrograms;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have addPostToAmplifyPrograms method with return type annotation', () => {
+    const method = mediaClient.addPostToAmplifyPrograms;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -475,31 +713,129 @@ describe('MediaClient Structure', () => {
   
 
   
+  it('should have appendUpload method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('appendUpload');
+    
+    // Check method is callable
+    const method = mediaClient.appendUpload;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have appendUpload method with return type annotation', () => {
+    const method = mediaClient.appendUpload;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getAmplifyProgramPosts method with correct signature', () => {
+    // Check method exists
+    expect(MediaClient.prototype).toHaveProperty('getAmplifyProgramPosts');
+    
+    // Check method is callable
+    const method = mediaClient.getAmplifyProgramPosts;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'programId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getAmplifyProgramPosts method with return type annotation', () => {
+    const method = mediaClient.getAmplifyProgramPosts;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
 
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'getByKey',
+      'getAnalytics',
       
       'finalizeUpload',
-      
-      'appendUpload',
-      
-      'initializeUpload',
-      
-      'getByKeys',
-      
-      'getUploadStatus',
-      
-      'upload',
       
       'createSubtitles',
       
       'deleteSubtitles',
       
-      'getAnalytics',
+      'initializeUpload',
+      
+      'getByKeys',
+      
+      'addToLibrary',
+      
+      'getAmplifyProgram',
+      
+      'getUploadStatus',
+      
+      'upload',
+      
+      'updateInLibrary',
+      
+      'removeFromLibrary',
+      
+      'getLibraryCategories',
+      
+      'getAmplifyPrograms',
+      
+      'getByKey',
+      
+      'addPostToAmplifyPrograms',
       
       'createMetadata',
+      
+      'appendUpload',
+      
+      'getAmplifyProgramPosts',
       
     ];
 

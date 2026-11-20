@@ -7,16 +7,37 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
+
+
+  GetCreditsResponse,
+
 
 
   GetResponse,
 
 } from './models.js';
 
+/**
+ * Options for getCredits method
+ * 
+ * @public
+ */
+export interface GetCreditsStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for get method
  * 
@@ -88,8 +109,82 @@ export class UsageClient {
 
 
 
+
+
+
+    /**
+     * Get Usage Credits
+     * Returns the payer's developer-platform credit balance in USD. total_balance is max(0, prepaid_balance + free_balance); prepaid_balance may be negative.
+     * 
+     * @returns Promise with the API response
+     */
+    async getCredits(
+        
+        
+        
+        
+        
+        
+        
+        options: GetCreditsStreamingOptions = {}
+    ): Promise<GetCreditsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getCredits');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/usage/credits';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetCreditsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
     /**
      * Get Usage
+     * Retrieves usage statistics for Posts over a specified number of days.
      * 
      * @returns Promise with the API response
      */

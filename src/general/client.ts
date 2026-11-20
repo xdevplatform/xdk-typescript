@@ -10,12 +10,6 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
 GetOpenApiSpecResponse,
@@ -72,9 +66,8 @@ export class GeneralClient {
     }
 
 
-
   /**
-   * Get OpenAPI Spec.
+   * Get OpenAPI Spec
    * Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
 
 
@@ -136,11 +129,6 @@ export class GeneralClient {
             finalRequestOptions
         );
     }
-
-
-
-
-
 
 
 }

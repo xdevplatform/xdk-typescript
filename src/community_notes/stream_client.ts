@@ -7,17 +7,17 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  DeleteResponse,
-
-
-
   SearchWrittenResponse,
+
+
+
+  EvaluateResponse,
 
 
 
@@ -29,27 +29,10 @@ import {
 
 
 
-  EvaluateResponse,
+  DeleteResponse,
 
 } from './models.js';
 
-/**
- * Options for delete method
- * 
- * @public
- */
-export interface DeleteStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 /**
  * Options for searchWritten method
  * 
@@ -74,6 +57,23 @@ export interface SearchWrittenStreamingOptions {
      * Also accepts: note.fields or proper camelCase (e.g., noteFields) */
     noteFields?: Array<"id" | "info" | "scoring_status" | "status" | "test_result">;
     
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for evaluate method
+ * 
+ * @public
+ */
+export interface EvaluateStreamingOptions {
     
     
     /** Additional request options */
@@ -125,13 +125,13 @@ export interface SearchEligiblePostsStreamingOptions {
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
     
     
     
     /** A comma separated list of Media fields to display. 
      * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
     
     
     
@@ -174,11 +174,11 @@ export interface CreateStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for evaluate method
+ * Options for delete method
  * 
  * @public
  */
-export interface EvaluateStreamingOptions {
+export interface DeleteStreamingOptions {
     
     
     /** Additional request options */
@@ -245,85 +245,8 @@ export class CommunityNotesClient {
 
 
     /**
-     * Delete a Community Note
-     * Deletes a community note.
-     * 
-     * @returns Promise with the API response
-     */
-    async delete(
-        
-        
-        
-        id: Schemas.NoteId,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteStreamingOptions = {}
-    ): Promise<DeleteResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'delete');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/notes/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Search Community Notes Written
+     * Search for Community Notes Written
+     * Retrieves the Community Notes written by the authenticated user.
      * 
      * @returns Promise with the API response
      */
@@ -477,7 +400,82 @@ export class CommunityNotesClient {
 
 
     /**
-     * Search Eligible Posts
+     * Evaluate a Community Note
+     * Evaluates the text of a proposed Community Note on a Post and returns its claim-opinion score.
+     * 
+     * @returns Promise with the API response
+     */
+    async evaluate(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: EvaluateStreamingOptions = {}
+    ): Promise<EvaluateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'evaluate');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/notes/evaluate';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<EvaluateResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Search for Posts Eligible for Community Notes
+     * Retrieves Posts that are eligible for Community Notes.
      * 
      * @returns Promise with the API response
      */
@@ -749,7 +747,8 @@ export class CommunityNotesClient {
 
 
     /**
-     * Create Community Notes
+     * Create a Community Note
+     * Creates a Community Note on a Post. With test_mode set to true, the note is only for testing and is not publicly visible.
      * 
      * @returns Promise with the API response
      */
@@ -806,7 +805,7 @@ export class CommunityNotesClient {
             },
             signal: signal,
             
-            body: JSON.stringify(body),
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             ...requestOptions,
         };
@@ -822,22 +821,25 @@ export class CommunityNotesClient {
 
 
     /**
-     * Evaluate Community Notes
+     * Delete a Community Note
+     * Deletes a community note.
      * 
      * @returns Promise with the API response
      */
-    async evaluate(
+    async delete(
+        
+        
+        
+        id: Schemas.NoteId,
         
         
         
         
         
         
-        body: any,
         
-        
-        options: EvaluateStreamingOptions = {}
-    ): Promise<EvaluateResponse> {
+        options: DeleteStreamingOptions = {}
+    ): Promise<DeleteResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -850,7 +852,7 @@ export class CommunityNotesClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'evaluate');
+        this.client.validateAuthentication(requiredAuthTypes, 'delete');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -864,7 +866,11 @@ export class CommunityNotesClient {
         
 
         // Build the path with path parameters
-        let path = '/2/notes/evaluate';
+        let path = '/2/notes/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
         
 
         // Build query parameters
@@ -879,14 +885,12 @@ export class CommunityNotesClient {
             },
             signal: signal,
             
-            body: JSON.stringify(body),
-            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<EvaluateResponse>(
-            'POST',
+        return this.client.request<DeleteResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

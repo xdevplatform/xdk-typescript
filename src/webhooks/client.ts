@@ -10,32 +10,31 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 CreateWebhookReplayJobRequest,
 
 CreateWebhookReplayJobResponse,
-
-GetResponse,
-CreateRequest,
-
-CreateResponse,
-
-CreateStreamLinkResponse,
-
-DeleteStreamLinkResponse,
 
 GetStreamLinksResponse,
 
 ValidateResponse,
 
 DeleteResponse,
+
+CreateStreamLinkResponse,
+
+DeleteStreamLinkResponse,
+
+GetResponse,
+CreateRequest,
+
+CreateResponse,
 } from './models.js';
+
+
+
+
+
 
 
 
@@ -58,11 +57,6 @@ export interface GetOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-
-
-
-
-
 
 
 
@@ -115,9 +109,8 @@ export class WebhooksClient {
     }
 
 
-
   /**
-   * Create replay job for webhook
+   * Create Replay Job for Webhook
    * Creates a replay job to retrieve events from up to the past 24 hours for all events delivered or attempted to be delivered to the webhook.
 
 
@@ -202,36 +195,32 @@ export class WebhooksClient {
     }
 
 
-
-
   /**
-   * Get webhook
-   * Get a list of webhook configs associated with a client app.
+   * Get Stream Links
+   * Get a list of webhook links associated with a filtered stream ruleset.
 
 
 
-   * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetStreamLinksResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    get(
+    getStreamLinks(
         
         
         
         
-        options: GetOptions & { requestOptions: { raw: true } }
+        options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    get(
+    getStreamLinks(
         
         
         
         
-        options?: GetOptions
-        
-    ): Promise<GetResponse>;
+    ): Promise<GetStreamLinksResponse>;
     // Implementation
-    async get(
+    async getStreamLinks(
         
         
         
@@ -240,53 +229,18 @@ export class WebhooksClient {
         
         
         
-        options: GetOptions = {}
-        
-    ): Promise<GetResponse | Response> {
+    ): Promise<GetStreamLinksResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'webhook_config.fields': 'webhookConfigFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            webhookConfigFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
+        const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/webhooks';
+        let path = '/2/tweets/search/webhooks';
         
 
         // Build query parameters
         const params = new URLSearchParams();
-        
-        
-        
-        
-        if (webhookConfigFields !== undefined && webhookConfigFields.length > 0) {
-            
-            
-            params.append('webhook_config.fields', normalizeFields(webhookConfigFields).join(','));
-            
-            
-        }
-        
-        
         
 
         // Prepare request options
@@ -305,11 +259,11 @@ export class WebhooksClient {
             ],
             
             
-            ...requestOptions
+            // No optional parameters, using empty request options
             
         };
 
-        return this.client.request<GetResponse>(
+        return this.client.request<GetStreamLinksResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -317,58 +271,68 @@ export class WebhooksClient {
     }
 
 
-
-
   /**
-   * Create webhook
-   * Creates a new webhook configuration.
+   * Validate Webhook
+   * Triggers a CRC check for a given webhook.
+
+
+   * @param webhookId webhook_id
 
 
 
-   * @param body Request body
 
-   * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<ValidateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    create(
+    validate(
+        
+        
+        webhookId: string,
         
         
         
-        body: CreateRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    create(
+    validate(
+        
+        
+        webhookId: string,
         
         
         
-        body: CreateRequest,
         
         
-    ): Promise<CreateResponse>;
+    ): Promise<ValidateResponse>;
     // Implementation
-    async create(
+    async validate(
+        
+        
+        
+        webhookId: string,
         
         
         
         
         
         
-        body: CreateRequest,
         
         
-        
-    ): Promise<CreateResponse | Response> {
+    ): Promise<ValidateResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/webhooks';
+        let path = '/2/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
         
 
         // Build query parameters
@@ -378,11 +342,15 @@ export class WebhooksClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
             
             // Pass security requirements for smart auth selection
             security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
                 
                 {
                     
@@ -403,18 +371,124 @@ export class WebhooksClient {
             
         };
 
-        return this.client.request<CreateResponse>(
-            'POST',
+        return this.client.request<ValidateResponse>(
+            'PUT',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
     }
 
 
+  /**
+   * Delete Webhook
+   * Deletes an existing webhook configuration.
+
+
+   * @param webhookId webhook_id
+
+
+
+
+   * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    delete(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    delete(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteResponse>;
+    // Implementation
+    async delete(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
   /**
-   * Create stream link
+   * Create Stream Link
    * Creates a link to deliver FilteredStream events to the given webhook.
 
 
@@ -509,10 +583,8 @@ export class WebhooksClient {
     }
 
 
-
-
   /**
-   * Delete stream link
+   * Delete Stream Link
    * Deletes the link delivering FilteredStream events to the given webhook.
 
 
@@ -607,34 +679,34 @@ export class WebhooksClient {
     }
 
 
-
-
   /**
-   * Get stream links
-   * Get a list of webhook links associated with a filtered stream ruleset.
+   * Get Webhook
+   * Get a list of webhook configs associated with a client app.
 
 
 
-   * @returns {Promise<GetStreamLinksResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getStreamLinks(
+    get(
         
         
         
         
-        options: { requestOptions: { raw: true } }
+        options: GetOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getStreamLinks(
+    get(
         
         
         
         
-    ): Promise<GetStreamLinksResponse>;
+        options?: GetOptions
+        
+    ): Promise<GetResponse>;
     // Implementation
-    async getStreamLinks(
+    async get(
         
         
         
@@ -643,18 +715,53 @@ export class WebhooksClient {
         
         
         
-    ): Promise<GetStreamLinksResponse | Response> {
+        options: GetOptions = {}
+        
+    ): Promise<GetResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        const requestOptions = {};
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'webhook_config.fields': 'webhookConfigFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            webhookConfigFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/search/webhooks';
+        let path = '/2/webhooks';
         
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        if (webhookConfigFields !== undefined && webhookConfigFields.length > 0) {
+            
+            
+            params.append('webhook_config.fields', normalizeFields(webhookConfigFields).join(','));
+            
+            
+        }
+        
+        
         
 
         // Prepare request options
@@ -666,6 +773,18 @@ export class WebhooksClient {
                 
                 {
                     
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
                     'BearerToken': [],
                     
                 }
@@ -673,11 +792,11 @@ export class WebhooksClient {
             ],
             
             
-            // No optional parameters, using empty request options
+            ...requestOptions
             
         };
 
-        return this.client.request<GetStreamLinksResponse>(
+        return this.client.request<GetResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -685,70 +804,56 @@ export class WebhooksClient {
     }
 
 
-
-
   /**
-   * Validate webhook
-   * Triggers a CRC check for a given webhook.
-
-
-   * @param webhookId webhook_id
+   * Create Webhook
+   * Creates a new webhook configuration.
 
 
 
+   * @param body Request body
 
-   * @returns {Promise<ValidateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<CreateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    validate(
-        
-        
-        webhookId: string,
+    create(
         
         
         
+        body: CreateRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    validate(
-        
-        
-        webhookId: string,
+    create(
         
         
         
+        body: CreateRequest,
         
         
-    ): Promise<ValidateResponse>;
+    ): Promise<CreateResponse>;
     // Implementation
-    async validate(
-        
-        
-        
-        webhookId: string,
+    async create(
         
         
         
         
         
         
+        body: CreateRequest,
         
         
-    ): Promise<ValidateResponse | Response> {
+        
+    ): Promise<CreateResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
+        let path = '/2/webhooks';
         
 
         // Build query parameters
@@ -758,9 +863,17 @@ export class WebhooksClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
             
             // Pass security requirements for smart auth selection
             security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
                 
                 {
                     
@@ -781,135 +894,12 @@ export class WebhooksClient {
             
         };
 
-        return this.client.request<ValidateResponse>(
-            'PUT',
+        return this.client.request<CreateResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
     }
-
-
-
-
-  /**
-   * Delete webhook
-   * Deletes an existing webhook configuration.
-
-
-   * @param webhookId webhook_id
-
-
-
-
-   * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    delete(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    delete(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteResponse>;
-    // Implementation
-    async delete(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

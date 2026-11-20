@@ -10,17 +10,13 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
 GetPersonalizedResponse,
 
 GetByWoeidResponse,
+
+GetLocationsResponse,
 } from './models.js';
 
 
@@ -62,6 +58,27 @@ export interface GetByWoeidOptions {
     /** A comma separated list of Trend fields to display. 
      * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
     trendFields?: Array<"trend_name" | "tweet_count">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getLocations method
+ * 
+ * @public
+ */
+export interface GetLocationsOptions {
+    
+    
+    /** A comma separated list of TrendLocation fields to display. 
+     * Also accepts: trend_location.fields or proper camelCase (e.g., trendLocationFields) */
+    trendLocationFields?: Array<"country" | "country_code" | "name" | "parent_id" | "place_type" | "woeid">;
     
     
     
@@ -121,9 +138,9 @@ export class TrendsClient {
     }
 
 
-
   /**
-   * Get Trends Personalized Trends
+   * Get Personalized Trends
+   * Retrieves personalized trending topics for the authenticated user.
 
 
 
@@ -240,10 +257,9 @@ export class TrendsClient {
     }
 
 
-
-
   /**
-   * Get Trends by Woeid
+   * Get Trends by WOEID
+   * Retrieves trending topics for a specific location identified by its WOEID. `meta.location` describes that location: its `woeid` and `name`, and when they are known its `country`, `country_code`, `place_type` (`town`, `country` or `supername`) and `parent_id`, the WOEID of the place that contains it.
 
 
    * @param woeid woeid
@@ -399,11 +415,123 @@ export class TrendsClient {
     }
 
 
+  /**
+   * Get Trend Locations
+   * Retrieves every location that has trends. Each location has a WOEID to pass to `GET /2/trends/by/woeid/{woeid}`. The list is short and is returned whole, so the route takes no paging parameters.
 
 
 
+   * @returns {Promise<GetLocationsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getLocations(
+        
+        
+        
+        
+        options: GetLocationsOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getLocations(
+        
+        
+        
+        
+        options?: GetLocationsOptions
+        
+    ): Promise<GetLocationsResponse>;
+    // Implementation
+    async getLocations(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetLocationsOptions = {}
+        
+    ): Promise<GetLocationsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'trend_location.fields': 'trendLocationFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            trendLocationFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
 
+        // Build the path with path parameters
+        let path = '/2/trends/locations';
+        
 
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (trendLocationFields !== undefined && trendLocationFields.length > 0) {
+            
+            
+            params.append('trend_location.fields', normalizeFields(trendLocationFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetLocationsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 }

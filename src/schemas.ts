@@ -10,6 +10,28 @@
 
 
 /**
+ * Schema type for AcceptChatMessageRequestResponse
+ *
+ * @public
+ */
+export interface AcceptChatMessageRequestResponse {
+  data?: AcceptChatMessageRequestResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AcceptChatMessageRequestResponseData
+ *
+ * @public
+ */
+export interface AcceptChatMessageRequestResponseData {
+  /** Whether the message request was accepted. */
+  accepted: boolean;
+}
+
+
+/**
  * The unique identifier of an Activity event.
  *
  * @public
@@ -23,7 +45,7 @@ export type ActivityEventId = string;
  * @public
  */
 export interface ActivityStreamResponse {
-  data?: { eventType?: string; eventUuid?: ActivityEventId; filter?: ActivitySubscriptionFilter; includes?: Expansions; payload?: ActivityStreamingResponsePayload; tag?: string; };
+  data?: { createdAt?: string; eventType?: string; eventUuid?: ActivityEventId; filter?: ActivitySubscriptionFilter; includes?: Expansions; payload?: ActivityStreamingResponsePayload; tag?: string; };
   errors?: Array<Problem>;
 }
 
@@ -43,11 +65,96 @@ export type ActivityStreamingResponsePayload = ProfileUpdateActivityResponsePayl
  */
 export interface ActivitySubscriptionFilter {
   /** Optional direction filter for directional events. */
-  direction?: "inbound" | "outbound";
+  direction?: "inbound" | "outbound" | (string & {});
   /** A keyword to filter on. */
   keyword?: Keyword;
   /** Unique identifier of a User */
   userId?: UserId;
+}
+
+
+/**
+ * Schema type for AddChatGroupAdminsActionSignatures
+ *
+ * @public
+ */
+export interface AddChatGroupAdminsActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: AddChatGroupAdminsActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for AddChatGroupAdminsActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface AddChatGroupAdminsActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<AddChatGroupAdminsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for AddChatGroupAdminsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface AddChatGroupAdminsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for AddChatGroupAdminsRequest
+ *
+ * @public
+ */
+export interface AddChatGroupAdminsRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<AddChatGroupAdminsActionSignatures>;
+  /** List of member user IDs to make admins. */
+  userIds: Array<string>;
+}
+
+
+/**
+ * Schema type for AddChatGroupAdminsResponse
+ *
+ * @public
+ */
+export interface AddChatGroupAdminsResponse {
+  data?: AddChatGroupAdminsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddChatGroupAdminsResponseData
+ *
+ * @public
+ */
+export interface AddChatGroupAdminsResponseData {
+  /** Whether the admins were added. */
+  added: boolean;
 }
 
 
@@ -57,7 +164,7 @@ export interface ActivitySubscriptionFilter {
  * @public
  */
 export interface AddChatGroupMembersActionSignatures {
-  /** Base64-encoded message event detail. */
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
   encodedMessageEventDetail: string;
   messageEventSignature: AddChatGroupMembersActionSignaturesMessageEventSignature;
   /** Client-generated ID of the message being signed. */
@@ -108,11 +215,11 @@ export interface AddChatGroupMembersActionSignaturesMessageEventSignatureMessage
  */
 export interface AddChatGroupMembersConversationParticipantKeys {
   /** Conversation key encrypted with this participant's public key. */
-  encryptedConversationKey?: string;
+  encryptedConversationKey: string;
   /** Version of the participant's public key used for encryption. */
-  publicKeyVersion?: string;
+  publicKeyVersion: string;
   /** Participant user ID. */
-  userId?: string;
+  userId: string;
 }
 
 
@@ -122,7 +229,7 @@ export interface AddChatGroupMembersConversationParticipantKeys {
  * @public
  */
 export interface AddChatGroupMembersRequest {
-  /** Cryptographic signatures for the action. */
+  /** Signatures for this action, forwarded in the order they are sent. */
   actionSignatures?: Array<AddChatGroupMembersActionSignatures>;
   /** Version of the new rotated conversation key. */
   conversationKeyVersion?: string;
@@ -149,12 +256,45 @@ export interface AddChatGroupMembersResponse {
 
 
 /**
+ * Schema type for AddChatModeratorRequest
+ *
+ * @public
+ */
+export interface AddChatModeratorRequest {
+  /** The user to appoint as a moderator. */
+  userId: string;
+}
+
+
+/**
+ * Schema type for AddChatModeratorResponse
+ *
+ * @public
+ */
+export interface AddChatModeratorResponse {
+  data?: AddChatModeratorResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddChatModeratorResponseData
+ *
+ * @public
+ */
+export interface AddChatModeratorResponseData {
+  /** The user IDs currently appointed as chat moderators. */
+  moderatorUserIds: Array<string>;
+}
+
+
+/**
  * Schema type for AddConversationKeysActionSignatures
  *
  * @public
  */
 export interface AddConversationKeysActionSignatures {
-  /** Base64-encoded message event detail. */
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
   encodedMessageEventDetail: string;
   messageEventSignature: AddConversationKeysActionSignaturesMessageEventSignature;
   /** Client-generated ID of the message being signed. */
@@ -205,11 +345,11 @@ export interface AddConversationKeysActionSignaturesMessageEventSignatureMessage
  */
 export interface AddConversationKeysConversationParticipantKeys {
   /** Conversation key encrypted with this participant's public key. */
-  encryptedConversationKey?: string;
+  encryptedConversationKey: string;
   /** Version of the participant's public key used for encryption. */
-  publicKeyVersion?: string;
+  publicKeyVersion: string;
   /** Participant user ID. */
-  userId?: string;
+  userId: string;
 }
 
 
@@ -219,7 +359,7 @@ export interface AddConversationKeysConversationParticipantKeys {
  * @public
  */
 export interface AddConversationKeysRequest {
-  /** Cryptographic signatures for the action. */
+  /** Signatures for this action, forwarded in the order they are sent. */
   actionSignatures?: Array<AddConversationKeysActionSignatures>;
   /** Base64-encoded key rotation payload for ratchet tree key management. */
   base64EncodedKeyRotation?: string;
@@ -287,6 +427,108 @@ export interface AddListsMemberResponseData {
 
 
 /**
+ * Schema type for AddMediaToLibraryMonetization
+ *
+ * @public
+ */
+export interface AddMediaToLibraryMonetization {
+  /** ISO 3166-1 alpha-2 codes of the only countries the video is monetized in. Omit to monetize everywhere. */
+  allowedCountries?: Array<string>;
+  /** Advertiser categories (from the categories endpoint) whose ads may not run against the video. */
+  blockedAdvertiserCategoryIds?: Array<number>;
+  /** Advertiser account ids whose ads may not run against the video. */
+  blockedAdvertiserIds?: Array<string>;
+  /** Whether ads may run against the video. Requires the account to be enrolled in video monetization. */
+  enabled?: boolean;
+  /** Amplify program to monetize the video through, instead of `video_category_ids`. */
+  programId?: string;
+  /** Video category ids (from the categories endpoint) describing the content; at most one when creating. Required when enabled, unless `program_id` is set. */
+  videoCategoryIds?: Array<number>;
+}
+
+
+/**
+ * Schema type for AddMediaToLibraryRequest
+ *
+ * @public
+ */
+export interface AddMediaToLibraryRequest {
+  /** Description shown with the video in the player card. */
+  description?: string;
+  /** Label of the item in the library. */
+  label?: string;
+  /** The media key of the uploaded image, GIF or video to add. */
+  mediaKey: string;
+  monetization?: AddMediaToLibraryMonetization;
+  /** Name of the item in the library. */
+  name?: string;
+  /** Title shown with the video in the player card. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for AddMediaToLibraryResponse
+ *
+ * @public
+ */
+export interface AddMediaToLibraryResponse {
+  data?: AddMediaToLibraryResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddMediaToLibraryResponseData
+ *
+ * @public
+ */
+export interface AddMediaToLibraryResponseData {
+  /** The media key of the library item. */
+  mediaKey: string;
+}
+
+
+/**
+ * Schema type for AddPostToAmplifyProgramsRequest
+ *
+ * @public
+ */
+export interface AddPostToAmplifyProgramsRequest {
+  /** Advertiser account ids whose pre-rolls may not run on this post. */
+  blockedAdvertiserIds?: Array<string>;
+  /** The post to publish. It must belong to the user. */
+  postId: string;
+  /** The programs to publish the post into. */
+  programIds: Array<string>;
+  /** When promotion of the post ends (ISO 8601). */
+  promotionEndsAt?: string;
+}
+
+
+/**
+ * Schema type for AddPostToAmplifyProgramsResponse
+ *
+ * @public
+ */
+export interface AddPostToAmplifyProgramsResponse {
+  data?: AddPostToAmplifyProgramsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for AddPostToAmplifyProgramsResponseData
+ *
+ * @public
+ */
+export interface AddPostToAmplifyProgramsResponseData {
+  /** Whether the post was published into the programs. */
+  added: boolean;
+}
+
+
+/**
  * Schema type for AddUserPublicKeyPublicKey
  *
  * @public
@@ -313,11 +555,7 @@ export interface AddUserPublicKeyPublicKey {
  * @public
  */
 export interface AddUserPublicKeyRequest {
-  /** When true, the server generates a new version. */
-  generateVersion?: boolean;
   publicKey: AddUserPublicKeyPublicKey;
-  /** Public key version. */
-  version: string;
 }
 
 
@@ -400,9 +638,9 @@ export type AnalyticsTimestampedMetrics = Array<{ metrics?: { appInstallAttempts
  * @public
  */
 export interface AppendMediaUploadRequest {
-  /** The media chunk to upload. */
+  /** One segment of the file: base64-encoded in JSON bodies, raw bytes in multipart bodies. */
   media: string;
-  /** The index of this segment in the upload sequence. */
+  /** The segment's position in the file, counting from 0. */
   segmentIndex: number;
 }
 
@@ -430,6 +668,172 @@ export interface AppendMediaUploadResponseData {
 
 
 /**
+ * Schema type for ApproveChatGroupAdminRequestActionSignatures
+ *
+ * @public
+ */
+export interface ApproveChatGroupAdminRequestActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: ApproveChatGroupAdminRequestActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for ApproveChatGroupAdminRequestActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface ApproveChatGroupAdminRequestActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<ApproveChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for ApproveChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface ApproveChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for ApproveChatGroupAdminRequestRequest
+ *
+ * @public
+ */
+export interface ApproveChatGroupAdminRequestRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<ApproveChatGroupAdminRequestActionSignatures>;
+}
+
+
+/**
+ * Schema type for ApproveChatGroupAdminRequestResponse
+ *
+ * @public
+ */
+export interface ApproveChatGroupAdminRequestResponse {
+  data?: ApproveChatGroupAdminRequestResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ApproveChatGroupAdminRequestResponseData
+ *
+ * @public
+ */
+export interface ApproveChatGroupAdminRequestResponseData {
+  /** Whether the admin request was approved. */
+  approved: boolean;
+}
+
+
+/**
+ * Schema type for ArchiveChatConversationActionSignatures
+ *
+ * @public
+ */
+export interface ArchiveChatConversationActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: ArchiveChatConversationActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for ArchiveChatConversationActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface ArchiveChatConversationActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<ArchiveChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for ArchiveChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface ArchiveChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for ArchiveChatConversationRequest
+ *
+ * @public
+ */
+export interface ArchiveChatConversationRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<ArchiveChatConversationActionSignatures>;
+}
+
+
+/**
+ * Schema type for ArchiveChatConversationResponse
+ *
+ * @public
+ */
+export interface ArchiveChatConversationResponse {
+  data?: ArchiveChatConversationResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ArchiveChatConversationResponseData
+ *
+ * @public
+ */
+export interface ArchiveChatConversationResponseData {
+  /** Whether the conversation is archived for the authenticated user. */
+  archived: boolean;
+}
+
+
+/**
  * Schema type for ArticleCreateDraftContentState
  *
  * @public
@@ -437,7 +841,7 @@ export interface AppendMediaUploadResponseData {
 export interface ArticleCreateDraftContentState {
   /** The text blocks that make up the article body. */
   blocks: Array<ArticleCreateDraftContentStateBlocks>;
-  /** Non-text entities referenced by blocks (links, embedded posts, images, emoji,          markdown/code/tables, dividers, LaTeX). Full set matches article storage. */
+  /** Non-text entities referenced by blocks (links, embedded posts, images, emoji, markdown/code/tables, dividers, LaTeX). Full set matches article storage. */
   entities: Array<ArticleCreateDraftContentStateEntities>;
 }
 
@@ -449,16 +853,16 @@ export interface ArticleCreateDraftContentState {
  */
 export interface ArticleCreateDraftContentStateBlocks {
   data?: ArticleCreateDraftContentStateBlocksData;
-  /** References to entries in entities. */
+  /** Entity references. Each item has offset, length and key, the entity's key as an integer (0 for "0"). */
   entityRanges?: Array<ArticleCreateDraftContentStateBlocksEntityRanges>;
-  /** Inline formatting ranges. */
+  /** Inline styles. Each item has offset, length and style: bold, italic or strikethrough, in lowercase. */
   inlineStyleRanges?: Array<ArticleCreateDraftContentStateBlocksInlineStyleRanges>;
   /** Optional block key. */
   key?: string;
-  /** The text content of this block. For latex entities, this holds the LaTeX source;          for divider/markdown/image/post atomic placeholders, typically a single space. */
+  /** The text content of this block. For latex entities, this holds the LaTeX source; for divider/markdown/image/post atomic placeholders, typically a single space. */
   text: string;
-  /** The block type. Use atomic for non-text embeds (image, post, markdown, divider, latex). */
-  type: "unstyled" | "header-one" | "header-two" | "header-three" | "unordered-list-item" | "ordered-list-item" | "blockquote" | "atomic";
+  /** The block type. Articles have two heading levels, header-one and header-two. Use atomic for non-text embeds (image, post, markdown, divider, latex). */
+  type: "unstyled" | "header-one" | "header-two" | "unordered-list-item" | "ordered-list-item" | "blockquote" | "atomic";
 }
 
 
@@ -545,7 +949,7 @@ export interface ArticleCreateDraftContentStateBlocksDataUrls {
  * @public
  */
 export interface ArticleCreateDraftContentStateBlocksEntityRanges {
-  /** Index into the entities array. */
+  /** The key of the referenced entity, as an integer. */
   key: number;
   /** Length of the entity range. */
   length: number;
@@ -575,7 +979,7 @@ export interface ArticleCreateDraftContentStateBlocksInlineStyleRanges {
  * @public
  */
 export interface ArticleCreateDraftContentStateEntities {
-  /** The entity key referenced by entity_ranges. */
+  /** The entity's key, a string such as "0". entity_ranges refer to it as an integer. */
   key: string;
   value: ArticleCreateDraftContentStateEntitiesValue;
 }
@@ -590,7 +994,7 @@ export interface ArticleCreateDraftContentStateEntitiesValue {
   data: ArticleCreateDraftContentStateEntitiesValueData;
   /** Whether the entity can be edited. Recommended: immutable for post, image, divider, latex; mutable for link and markdown (matches the in-app Articles composer). */
   mutability: "immutable" | "mutable" | "segmented";
-  /** The entity type. markdown carries code blocks, GFM tables, and other Markdown;          emoji maps to backend TWEMOJI (Twemoji is internal); divider is a horizontal rule;          latex renders TeX from the block text. Tables are not a separate enum value — use          type markdown with a pipe table in data.markdown. */
+  /** The entity type. markdown carries code blocks, GFM tables, and other Markdown; emoji maps to backend TWEMOJI (Twemoji is internal); divider is a horizontal rule; latex renders TeX from the block text. Tables are not a separate enum value — use type markdown with a pipe table in data.markdown. */
   type: "post" | "link" | "image" | "emoji" | "markdown" | "divider" | "latex";
 }
 
@@ -641,7 +1045,7 @@ export interface ArticleCreateDraftCoverMedia {
 
 
 /**
- * Schema type for ArticleCreateDraftRequest
+ * Create a draft Article.
  *
  * @public
  */
@@ -722,24 +1126,236 @@ export interface BlockUsersDmsResponseData {
 
 
 /**
+ * Schema type for Broadcast
+ *
+ * @public
+ */
+export interface Broadcast {
+  availableForReplay?: boolean;
+  broadcastId?: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  createdAtMs?: string;
+  endMs?: string;
+  height?: number;
+  id?: string;
+  imageUrl?: string;
+  imageUrlMedium?: string;
+  imageUrlSmall?: string;
+  isHighLatency?: boolean;
+  language?: string;
+  /** Id of the live category the host picked for the broadcast, as listed by GET /2/broadcasts/categories. Omitted when the broadcast has none. */
+  liveCategoryId?: string;
+  mediaKey?: string;
+  scheduledEndMs?: string;
+  scheduledStartMs?: string;
+  shareUrl?: string;
+  /** Id of the source the broadcast streams from, as returned by GET /2/sources. */
+  sourceId?: string;
+  startMs?: string;
+  state?: string;
+  title?: string;
+  totalWatched?: string;
+  totalWatching?: string;
+  tweetId?: string;
+  twitterUserId?: string;
+  updatedAtMs?: string;
+  width?: number;
+}
+
+
+/**
+ * Schema type for BroadcastChatMessage
+ *
+ * @public
+ */
+export interface BroadcastChatMessage {
+  authorId?: string;
+  authorName?: string;
+  authorUsername?: string;
+  broadcastId?: string;
+  createdAtMs?: string;
+  id?: string;
+  relaySource?: string;
+  replyTo?: string;
+  text?: string;
+}
+
+
+/**
+ * Schema type for BroadcastChatMute
+ *
+ * @public
+ */
+export interface BroadcastChatMute {
+  /** The Unix timestamp in milliseconds when the mute expires. Absent for indefinite mutes. */
+  endAtMs?: string;
+  /** The muted user's ID. */
+  userId?: string;
+}
+
+
+/**
+ * Schema type for Call
+ *
+ * @public
+ */
+export interface Call {
+  /** XChat conversation the call belongs to, if any. */
+  conversationId?: string;
+  /** Creation time (RFC 3339). */
+  createdAt?: string;
+  /** X user id of the call's host. */
+  hostId?: string;
+  /** Unique identifier of the call; also its join secret. */
+  id?: string;
+  /** Who may join: open (anyone with the link), closed (the host admits people), or trusted (the host's Verified Organization). */
+  joinPolicy?: string;
+  /** Link people open to join the call on X. */
+  joinUrl?: string;
+  /** People in the call right now. */
+  participantCount?: number;
+  /** Title of the call. */
+  title?: string;
+  /** Whether the authenticated user may join without asking the host. */
+  viewerMayJoin?: boolean;
+}
+
+
+/**
+ * Schema type for CancelScheduledCallResponse
+ *
+ * @public
+ */
+export interface CancelScheduledCallResponse {
+  data?: CancelScheduledCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CancelScheduledCallResponseData
+ *
+ * @public
+ */
+export interface CancelScheduledCallResponseData {
+  /** Whether the occurrences are cancelled. */
+  cancelled?: boolean;
+}
+
+
+/**
  * Schema type for ChatConversation
  *
  * @public
  */
 export interface ChatConversation {
   adminIds?: Array<string>;
+  /** Group actions restricted to admins. true means only admins can perform the action. */
+  adminSettings?: ChatConversationAdminSettings;
   createdAt?: string;
   groupAvatarUrl?: string;
+  /** The group description, encrypted with the conversation key like group_name. */
+  groupDescription?: string;
+  /** The conversation key version that group_description is encrypted with. */
+  groupDescriptionKeyVersion?: string;
   groupName?: string;
   id?: string;
+  /** An active invite link for a group Chat conversation. */
+  invite?: ChatConversationInvite;
+  /** Whether the authenticated user archived this conversation. */
+  isArchived?: boolean;
   isMuted?: boolean;
+  /** The event ID you have read up to: the seen_until_sequence_id of your latest read receipt. Absent when you have no read receipt. */
+  lastReadEventId?: string;
   memberIds?: Array<string>;
   messageTtlMs?: number;
+  /** The ID of the latest notifying message in the conversation. */
+  newestEventId?: string;
   participantIds?: Array<string>;
+  /** Unique identifiers of Users who asked to join this group and are awaiting approval. Returned only to callers who can add members. */
+  pendingMemberIds?: ChatConversationPendingMemberIds;
   screenCaptureBlockingEnabled?: boolean;
   screenCaptureDetectionEnabled?: boolean;
   type?: string;
+  /** Whether the conversation is unread for you: its latest notifying message was sent by someone else after last_read_event_id, or you have no read receipt. Marking the conversation unread does not set it. */
+  unread?: boolean;
   updatedAt?: string;
+}
+
+
+/**
+ * Group actions restricted to admins. true means only admins can perform the action.
+ *
+ * @public
+ */
+export interface ChatConversationAdminSettings {
+  /** Whether only admins may add members. */
+  addMember?: boolean | null;
+  /** Whether only admins may block screen capture. Through the API, only admins can change screen capture in a group, whatever this setting says. */
+  blockScreenCapture?: boolean | null;
+  /** Whether only admins may edit group info. */
+  editGroupInfo?: boolean | null;
+  /** Whether only admins may edit the message TTL. */
+  editMessageTtl?: boolean | null;
+  /** Whether only admins may send messages. */
+  sendMessage?: boolean | null;
+  /** Whether only admins may start a call. */
+  startCall?: boolean | null;
+}
+
+
+/**
+ * An active invite link for a group Chat conversation.
+ *
+ * @public
+ */
+export interface ChatConversationInvite {
+  /** Unique identifier of the admin who turned on the invite link. */
+  adminUserId?: string | null;
+  /** When the invite link stops working. */
+  expiresAt?: string | null;
+  /** The shareable invite link. */
+  inviteUrl: string;
+  /** Token identifying this invite link. */
+  token?: string | null;
+  /** Message shown to Users who join through the invite link. */
+  welcomeMessage?: string | null;
+}
+
+
+/**
+ * Unique identifiers of Users who asked to join this group and are awaiting approval. Returned only to callers who can add members.
+ *
+ * @public
+ */
+export type ChatConversationPendingMemberIds = Array<string>;
+
+
+/**
+ * Schema type for ChatGroupInvite
+ *
+ * @public
+ */
+export interface ChatGroupInvite {
+  /** ID of the group conversation the link joins. */
+  conversationId?: string;
+  /** When the link expires (ISO 8601). Absent when the link does not expire. */
+  expiresAt?: string;
+  /** Group avatar URL shown on the invite preview, stored unencrypted. Absent when the backend flags the avatar as NSFW. */
+  groupAvatarUrl?: string;
+  /** Group name shown on the invite preview, stored unencrypted. */
+  groupName?: string;
+  /** Shareable invite link. */
+  inviteUrl?: string;
+  /** The authenticated user's relationship to the group: `member`, `not_member`, `removed`, or `requested`. */
+  joinState?: string;
+  /** Number of members in the group. */
+  memberCount?: number;
+  /** Invite token. Together with the conversation ID it identifies the link. */
+  token?: string;
+  /** Message shown to people who open the link. */
+  welcomeMessage?: string;
 }
 
 
@@ -869,14 +1485,162 @@ export interface ChatMediaUploadInitializeResponseData {
  */
 export interface ChatMessageEvent {
   conversationId?: string;
+  /** The version of the conversation key that encrypts the event's contents. Absent when the event is not encrypted, such as a message sent before the conversation was encrypted. */
+  conversationKeyVersion?: string;
+  /** Usually present on encrypted events; unencrypted events have none. */
   conversationToken?: string;
   createdAt?: string;
   encodedEvent?: string;
   id?: string;
   isTrusted?: boolean;
+  /** Usually present on encrypted events; unencrypted events have none. Treat an encrypted event without one as unverified. */
   messageEventSignature?: Record<string, any>;
   previousId?: string;
   senderId?: string;
+}
+
+
+/**
+ * Schema type for ChatMessageRequest
+ *
+ * @public
+ */
+export interface ChatMessageRequest {
+  /** The 1:1 conversation ID: both user IDs joined by a hyphen. */
+  conversationId?: string;
+  /** The conversation key change events needed to decrypt `message_events`. */
+  conversationKeyEvents?: ChatMessageRequestConversationKeyEvents;
+  /** The message that previews the request, as an encoded message event. Its contents are end-to-end encrypted unless the conversation is unencrypted. */
+  encodedMessageCreateEvent?: string;
+  /** Whether the conversation has older message events than `message_events`. */
+  hasMoreEvents?: boolean;
+  /** The conversation's latest message events, newest first, as encoded message events. Their contents are end-to-end encrypted unless the conversation is unencrypted. */
+  messageEvents?: ChatMessageRequestMessageEvents;
+  /** The user ID of the user who sent the request. */
+  senderId?: string;
+  /** Whether the sender recently changed their name or avatar, a possible sign of impersonation. */
+  senderRecentlyModifiedProfile?: boolean;
+  /** IDs of users the authenticated user follows who also follow the sender. */
+  socialProofUserIds?: ChatMessageRequestSocialProofUserIds;
+}
+
+
+/**
+ * The conversation key change events needed to decrypt `message_events`.
+ *
+ * @public
+ */
+export type ChatMessageRequestConversationKeyEvents = Array<string>;
+
+
+/**
+ * Schema type for ChatMessageRequestDetail
+ *
+ * @public
+ */
+export interface ChatMessageRequestDetail {
+  /** The 1:1 conversation ID: both user IDs joined by a hyphen. */
+  conversationId?: string;
+  /** The conversation key change events needed to decrypt `message_events`. */
+  conversationKeyEvents?: ChatMessageRequestDetailConversationKeyEvents;
+  /** Whether older message events may exist. Always `true` when `message_events` isn't empty. */
+  hasMoreEvents?: boolean;
+  /** The newest message events, newest first, as encoded message events. Their contents are end-to-end encrypted unless the conversation is unencrypted. */
+  messageEvents?: ChatMessageRequestDetailMessageEvents;
+  /** `received` while the other user's request is pending, `sent` while the authenticated user's request is pending, `none` otherwise. */
+  messageRequestState?: string;
+  /** The other user in the conversation: the sender when `message_request_state` is `received`. */
+  participantId?: string;
+}
+
+
+/**
+ * The conversation key change events needed to decrypt `message_events`.
+ *
+ * @public
+ */
+export type ChatMessageRequestDetailConversationKeyEvents = Array<string>;
+
+
+/**
+ * The newest message events, newest first, as encoded message events. Their contents are end-to-end encrypted unless the conversation is unencrypted.
+ *
+ * @public
+ */
+export type ChatMessageRequestDetailMessageEvents = Array<string>;
+
+
+/**
+ * The conversation's latest message events, newest first, as encoded message events. Their contents are end-to-end encrypted unless the conversation is unencrypted.
+ *
+ * @public
+ */
+export type ChatMessageRequestMessageEvents = Array<string>;
+
+
+/**
+ * IDs of users the authenticated user follows who also follow the sender.
+ *
+ * @public
+ */
+export type ChatMessageRequestSocialProofUserIds = Array<string>;
+
+
+/**
+ * Schema type for ChatPermissionsUnavailableProblem
+ *
+ * @public
+ */
+export interface ChatPermissionsUnavailableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/chat-permissions-unavailable";
+}
+
+
+/**
+ * Schema type for ChatPinnedMessage
+ *
+ * @public
+ */
+export interface ChatPinnedMessage {
+  /** Base64-encoded Thrift pin event with end-to-end encrypted contents. */
+  encodedEvent?: string;
+}
+
+
+/**
+ * Schema type for ChatSettings
+ *
+ * @public
+ */
+export interface ChatSettings {
+  /** Who can send the user messages: `all` (anyone), `verified` (verified accounts only), or `following` (accounts the user follows). */
+  allowDmsFrom?: string;
+  /** Whether the user's subscribers can always message them regardless of allow_dms_from. */
+  alwaysAllowDmsFromSubscribers?: boolean;
+  /** Audio and video call settings. */
+  avSettings?: ChatSettingsAvSettings;
+  /** Low-quality message request filter: `enabled` (low-quality requests go to a separate folder) or `disabled` (all requests stay in the main inbox). */
+  dmQualityFilter?: string;
+  /** Read receipts: `all_enabled` (send and receive read receipts) or `all_disabled` (neither). */
+  dmReceiptSettings?: string;
+}
+
+
+/**
+ * Audio and video call settings.
+ *
+ * @public
+ */
+export interface ChatSettingsAvSettings {
+  /** Who may place audio or video calls to the user. */
+  avCallPermissions?: { acceptCallsFromAddressbook?: boolean | null; acceptCallsFromEveryone?: boolean | null; acceptCallsFromFollowing?: boolean | null; acceptCallsFromVerified?: boolean | null; } | null;
+  /** Whether audio and video calls are enabled. */
+  hasAvCallsEnabled?: boolean | null;
+  /** Whether enhanced call privacy is enabled. */
+  hasEnhancedCallPrivacyEnabled?: boolean | null;
 }
 
 
@@ -986,6 +1750,8 @@ export interface CreateActivitySubscriptionFilter {
   direction?: "inbound" | "outbound";
   /** Optional keyword filter. */
   keyword?: string;
+  /** Optional event-specific string predicates. */
+  qualifiers?: Record<string, any>;
   /** User the subscription is scoped to. For mute.* and block.* events, this must be the authenticated source user. */
   userId?: string;
 }
@@ -997,8 +1763,10 @@ export interface CreateActivitySubscriptionFilter {
  * @public
  */
 export interface CreateActivitySubscriptionRequest {
-  /** Activity event type in dot notation. */
-  eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "news.new" | "follow.follow" | "follow.unfollow" | "spaces.start" | "spaces.end" | "chat.received" | "chat.sent" | "chat.conversation_join" | "dm.sent" | "dm.received" | "dm.indicate_typing" | "dm.read" | "post.create" | "post.delete" | "post.mention.create" | "like.create" | "mute.mute" | "mute.unmute" | "block.block" | "block.unblock";
+  /** Activity event type in dot notation. `chat.conversation_join` is a deprecated alias of `chat.conversation.join`; responses always use the canonical name. */
+  eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "news.new" | "follow.follow" | "follow.unfollow" | "subscriptions.subscribe" | "subscriptions.unsubscribe" | "spaces.start" | "spaces.end" | "broadcast.start" | "broadcast.end" | "broadcast.chat" | "broadcast.chat.remove" | "chat.received" | "chat.sent" | "chat.conversation.join" | "chat.conversation_join" | "chat.conversation.member_added" | "chat.conversation.member_removed" | "chat.conversation.admin_added" | "chat.conversation.admin_removed" | "chat.update.group_name" | "chat.update.restrictions" | "dm.sent" | "dm.received" | "dm.indicate_typing" | "dm.read" | "post.create" | "post.delete" | "post.mention.create" | "post.reply.create" | "post.quote.create" | "post.repost.create" | "like.create" | "mute.mute" | "mute.unmute" | "block.block" | "block.unblock";
+  /** Optional RFC 3339 expiration time. Re-creating the same subscription refreshes this value; omitting it makes the subscription permanent. */
+  expiresAt?: string;
   filter: CreateActivitySubscriptionFilter;
   /** Optional caller-defined tag. */
   tag?: string;
@@ -1038,6 +1806,8 @@ export interface CreateActivitySubscriptionResponseDataSubscription {
   createdAt?: string;
   /** Activity event type in dot notation. */
   eventType?: string;
+  /** Subscription expiration time. */
+  expiresAt?: string;
   filter?: CreateActivitySubscriptionResponseDataSubscriptionFilter;
   /** Unique identifier of the subscription. */
   subscriptionId?: string;
@@ -1060,8 +1830,181 @@ export interface CreateActivitySubscriptionResponseDataSubscriptionFilter {
   direction?: string;
   /** Optional keyword filter. */
   keyword?: string;
+  /** Event-specific string predicates applied to the subscription. */
+  qualifiers?: Record<string, any>;
   /** User the subscription is scoped to. */
   userId?: string;
+}
+
+
+/**
+ * Schema type for CreateBotRequest
+ *
+ * @public
+ */
+export interface CreateBotRequest {
+  /** The bot's display name; defaults to the handle. */
+  displayName?: string;
+  /** The bot's handle (X screen name): 5-15 characters, letters, numbers, or underscores. */
+  handle: string;
+  /** Whether only members of the bot's developer account can add it to group chats. An org-only bot has no public profile and doesn't appear in public search. Everyone in its developer account should be able to message it, so leave its Direct Messages open to everyone rather than premium senders only. Defaults to false. Applies only when the request creates the bot: a handle that already names one of the project's bots keeps that bot's setting, which the response's org_only reports. */
+  orgOnly?: boolean;
+  /** Scopes for the bot's bearer token. Broadcast moderation additionally supports broadcast.read and broadcast.write. Defaults to the XChat scope set (dm.read, dm.write, tweet.read, users.read, media.write). */
+  scopes?: Array<string>;
+}
+
+
+/**
+ * Schema type for CreateBotResponse
+ *
+ * @public
+ */
+export interface CreateBotResponse {
+  data?: CreateBotResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateBotResponseData
+ *
+ * @public
+ */
+export interface CreateBotResponseData {
+  /** Unique identifier of the bot's User account. */
+  id: string;
+  /** The bot's display name. */
+  name?: string;
+  /** Whether the bot is org only. For a handle that already names one of the project's bots, this is that bot's current setting. Absent when X couldn't read the setting back. */
+  orgOnly?: boolean;
+  /** Scopes granted to the bot's bearer token. */
+  scopes?: Array<string>;
+  /** The bot's bearer token. Returned exactly once; store it securely. */
+  token: string;
+  /** Expiry of the bot's bearer token, in epoch milliseconds. */
+  tokenExpiresAtMs?: number;
+  /** The bot's X handle (screen name). */
+  username?: string;
+}
+
+
+/**
+ * Schema type for CreateBroadcastRequest
+ *
+ * @public
+ */
+export interface CreateBroadcastRequest {
+  /** Ids of further sources to go live on together with `source_id`, one per video format, at most 2, each a source's `id` from GET /2/sources. `source_id` comes first; duplicates are ignored. */
+  additionalSourceIds?: Array<string>;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** The live category the host picked, e.g. `gaming`. Ids come from GET /2/broadcasts/categories; an unknown id is a 400. Ignored when the source already has a live broadcast. */
+  liveCategoryId?: string;
+  /** Broadcast language, e.g. `en`. */
+  locale?: string;
+  /** Skip the Post announcing the broadcast. Defaults to false. */
+  shouldNotTweet?: boolean;
+  /** Id of the source to go live on: a source's `id` (19 digits) from GET /2/sources. */
+  sourceId: string;
+  /** Broadcast title. Defaults to the user's display name. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for CreateBroadcastResponse
+ *
+ * @public
+ */
+export interface CreateBroadcastResponse {
+  data?: CreateBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateBroadcastResponseData
+ *
+ * @public
+ */
+export interface CreateBroadcastResponseData {
+  /** Broadcast id; the same as `id`. */
+  broadcastId: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** Broadcast id. */
+  id: string;
+  /** Broadcast language. */
+  language?: string;
+  /** The broadcast's live category. Missing when it has none. */
+  liveCategoryId?: string;
+  /** Media key of the broadcast. */
+  mediaKey?: string;
+  /** The broadcast's watch page. */
+  shareUrl: string;
+  /** Start time, milliseconds since Unix epoch (decimal string). */
+  startMs?: string;
+  /** Broadcast state, `RUNNING` once live. */
+  state: string;
+  /** Broadcast title. */
+  title?: string;
+  /** Id of the Post announcing the broadcast. Missing when the Post hasn't been created yet, was suppressed with `should_not_tweet`, or could not be created. */
+  tweetId?: string;
+}
+
+
+/**
+ * Schema type for CreateCallRequest
+ *
+ * @public
+ */
+export interface CreateCallRequest {
+  /** Start the call without video. */
+  audioOnly?: boolean;
+  /** XChat conversation to start the call in. */
+  conversationId?: string;
+  /** open (default): anyone with the link joins; closed: the host admits each person; trusted: members of the host's Verified Organization join, others ask. */
+  joinPolicy?: "open" | "closed" | "trusted";
+  /** Title shown to participants. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for CreateCallResponse
+ *
+ * @public
+ */
+export interface CreateCallResponse {
+  data?: CreateCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateCallResponseData
+ *
+ * @public
+ */
+export interface CreateCallResponseData {
+  /** XChat conversation the call belongs to, if any. */
+  conversationId?: string;
+  /** Creation time (RFC 3339). */
+  createdAt?: string;
+  /** X user id of the call's host. */
+  hostId?: string;
+  /** Unique identifier of the call; also its join secret. */
+  id: string;
+  /** Who may join: open (anyone with the link), closed (the host admits people), or trusted (the host's Verified Organization). */
+  joinPolicy?: string;
+  /** Link people open to join the call on X. */
+  joinUrl?: string;
+  /** People in the call right now. */
+  participantCount?: number;
+  /** Title of the call. */
+  title?: string;
+  /** Whether the authenticated user may join without asking the host. */
+  viewerMayJoin?: boolean;
 }
 
 
@@ -1071,7 +2014,7 @@ export interface CreateActivitySubscriptionResponseDataSubscriptionFilter {
  * @public
  */
 export interface CreateChatConversationActionSignatures {
-  /** Base64-encoded message event detail. */
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
   encodedMessageEventDetail: string;
   messageEventSignature: CreateChatConversationActionSignaturesMessageEventSignature;
   /** Client-generated ID of the message being signed. */
@@ -1122,11 +2065,11 @@ export interface CreateChatConversationActionSignaturesMessageEventSignatureMess
  */
 export interface CreateChatConversationConversationParticipantKeys {
   /** Conversation key encrypted with this participant's public key. */
-  encryptedConversationKey?: string;
+  encryptedConversationKey: string;
   /** Version of the participant's public key used for encryption. */
-  publicKeyVersion?: string;
+  publicKeyVersion: string;
   /** Participant user ID. */
-  userId?: string;
+  userId: string;
 }
 
 
@@ -1136,7 +2079,7 @@ export interface CreateChatConversationConversationParticipantKeys {
  * @public
  */
 export interface CreateChatConversationRequest {
-  /** Cryptographic signatures for the action. */
+  /** Signatures for this action, forwarded in the order they are sent. */
   actionSignatures?: Array<CreateChatConversationActionSignatures>;
   /** Base64-encoded key rotation payload. */
   base64EncodedKeyRotation?: string;
@@ -1182,6 +2125,174 @@ export interface CreateChatConversationResponseData {
   conversationId: string;
   /** Sequence ID of the conversation key change. */
   conversationKeyChangeSequenceId?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupAdminRequestActionSignatures
+ *
+ * @public
+ */
+export interface CreateChatGroupAdminRequestActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: CreateChatGroupAdminRequestActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupAdminRequestActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface CreateChatGroupAdminRequestActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<CreateChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface CreateChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupAdminRequestRequest
+ *
+ * @public
+ */
+export interface CreateChatGroupAdminRequestRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<CreateChatGroupAdminRequestActionSignatures>;
+}
+
+
+/**
+ * Schema type for CreateChatGroupAdminRequestResponse
+ *
+ * @public
+ */
+export interface CreateChatGroupAdminRequestResponse {
+  data?: CreateChatGroupAdminRequestResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateChatGroupAdminRequestResponseData
+ *
+ * @public
+ */
+export interface CreateChatGroupAdminRequestResponseData {
+  /** Whether the admin request was created. */
+  requested: boolean;
+}
+
+
+/**
+ * Schema type for CreateChatGroupJoinRequestActionSignatures
+ *
+ * @public
+ */
+export interface CreateChatGroupJoinRequestActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: CreateChatGroupJoinRequestActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupJoinRequestActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface CreateChatGroupJoinRequestActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<CreateChatGroupJoinRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupJoinRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface CreateChatGroupJoinRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupJoinRequestRequest
+ *
+ * @public
+ */
+export interface CreateChatGroupJoinRequestRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<CreateChatGroupJoinRequestActionSignatures>;
+  /** The 10-character invite token from the group's invite link. */
+  token: string;
+}
+
+
+/**
+ * Schema type for CreateChatGroupJoinRequestResponse
+ *
+ * @public
+ */
+export interface CreateChatGroupJoinRequestResponse {
+  data?: CreateChatGroupJoinRequestResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateChatGroupJoinRequestResponseData
+ *
+ * @public
+ */
+export interface CreateChatGroupJoinRequestResponseData {
+  /** Whether the join request was created. */
+  requested: boolean;
 }
 
 
@@ -1602,7 +2713,7 @@ export interface CreateMediaMetadataMetadataUploadSource {
 export interface CreateMediaMetadataRequest {
   /** The media id the metadata is attached to. */
   id: string;
-  metadata?: CreateMediaMetadataMetadata;
+  metadata: CreateMediaMetadataMetadata;
 }
 
 
@@ -1637,10 +2748,10 @@ export interface CreateMediaMetadataResponseData {
  */
 export interface CreateMediaSubtitlesRequest {
   /** The media id of the video the subtitles belong to. */
-  id?: string;
+  id: string;
   /** The media category of the target media. */
-  mediaCategory?: "AmplifyVideo" | "TweetVideo";
-  subtitles?: CreateMediaSubtitlesSubtitles;
+  mediaCategory: "AmplifyVideo" | "TweetVideo";
+  subtitles: CreateMediaSubtitlesSubtitles;
 }
 
 
@@ -1686,6 +2797,220 @@ export interface CreateMediaSubtitlesSubtitles {
 
 
 /**
+ * Schema type for CreatePostDraftClip
+ *
+ * @public
+ */
+export interface CreatePostDraftClip {
+  /** Second of the video at which the clip ends. A clip is 5 to 60 seconds long and at most 30% of the video. */
+  endSeconds: number;
+  /** The ID of the Post whose video is clipped. The Post must have exactly one video, longer than 2 minutes. */
+  postId: string;
+  /** Second of the video at which the clip starts. */
+  startSeconds: number;
+}
+
+
+/**
+ * Schema type for CreatePostDraftEditOptions
+ *
+ * @public
+ */
+export interface CreatePostDraftEditOptions {
+  /** The ID of the Post being edited. */
+  previousPostId: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftGeo
+ *
+ * @public
+ */
+export interface CreatePostDraftGeo {
+  /** Place ID for geo tagging. */
+  placeId: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftMedia
+ *
+ * @public
+ */
+export interface CreatePostDraftMedia {
+  callToActions?: CreatePostDraftMediaCallToActions;
+  /** Description for the media, rendered on the Post card for video and Amplify content. */
+  description?: string;
+  /** When true, the media's asset URLs do not expire and external syndicated playback is allowed. */
+  embeddable?: boolean;
+  /** Media IDs to attach to the Post, in the order given. */
+  mediaIds: Array<string>;
+  /** Media id whose asset is used as the preview image. */
+  previewMediaId?: string;
+  /** User IDs tagged in the media. */
+  taggedUserIds?: Array<string>;
+  /** Title for the media, rendered on the Post card for video and Amplify content. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftMediaCallToActions
+ *
+ * @public
+ */
+export interface CreatePostDraftMediaCallToActions {
+  appInstall?: CreatePostDraftMediaCallToActionsAppInstall;
+  visitSite?: CreatePostDraftMediaCallToActionsVisitSite;
+  watchNow?: CreatePostDraftMediaCallToActionsWatchNow;
+}
+
+
+/**
+ * Schema type for CreatePostDraftMediaCallToActionsAppInstall
+ *
+ * @public
+ */
+export interface CreatePostDraftMediaCallToActionsAppInstall {
+  /** Apple App Store iPhone app id. */
+  appStoreId?: string;
+  /** Apple App Store iPad app id. */
+  ipadAppStoreId?: string;
+  /** Google Play Store app id. */
+  playStoreId?: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftMediaCallToActionsVisitSite
+ *
+ * @public
+ */
+export interface CreatePostDraftMediaCallToActionsVisitSite {
+  /** HTTPS URL the CTA links to. */
+  url: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftMediaCallToActionsWatchNow
+ *
+ * @public
+ */
+export interface CreatePostDraftMediaCallToActionsWatchNow {
+  /** HTTPS URL the CTA links to. */
+  url: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftPoll
+ *
+ * @public
+ */
+export interface CreatePostDraftPoll {
+  /** Duration of the poll in minutes. */
+  durationMinutes: number;
+  /** Poll options (2-4 choices, 1-25 characters each). */
+  options: Array<string>;
+  /** Who can reply to the poll Tweet. Accepted for compatibility; it carries no backend argument and is dropped before the mutation is issued (see `translate_body`). */
+  replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified";
+}
+
+
+/**
+ * Schema type for CreatePostDraftReply
+ *
+ * @public
+ */
+export interface CreatePostDraftReply {
+  /** If true, reply metadata is automatically populated. Accepted for compatibility; it carries no backend argument and is dropped before the mutation is issued (see `translate_body`). */
+  autoPopulateReplyMetadata?: boolean;
+  /** User IDs to exclude from the reply thread. */
+  excludeReplyUserIds?: Array<string>;
+  /** The ID of the tweet being replied to. */
+  inReplyToTweetId: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftRequest
+ *
+ * @public
+ */
+export interface CreatePostDraftRequest {
+  /** Card URI parameter. */
+  cardUri?: string;
+  clip?: CreatePostDraftClip;
+  /** Community to post the tweet to. */
+  communityId?: string;
+  /** Direct message deep link. */
+  directMessageDeepLink?: string;
+  editOptions?: CreatePostDraftEditOptions;
+  /** Restrict tweet to super followers. */
+  forSuperFollowersOnly?: boolean;
+  geo?: CreatePostDraftGeo;
+  /** Disclose that the tweet contains AI-generated media. */
+  madeWithAi?: boolean;
+  media?: CreatePostDraftMedia;
+  /** If true, the tweet is not shown in the public timeline. */
+  nullcast?: boolean;
+  /** Disclose that the tweet is a paid partnership. */
+  paidPartnership?: boolean;
+  poll?: CreatePostDraftPoll;
+  /** Tweet ID to quote. */
+  quoteTweetId?: string;
+  reply?: CreatePostDraftReply;
+  /** Who can reply to this tweet. */
+  replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified";
+  /** Share an exclusive (super-follower) tweet with all followers. */
+  shareWithFollowers?: boolean;
+  /** Text of the Post. Required unless media is provided. At most 280 characters unless the account has X Premium. */
+  text?: string;
+}
+
+
+/**
+ * Schema type for CreatePostDraftResponse
+ *
+ * @public
+ */
+export interface CreatePostDraftResponse {
+  data?: CreatePostDraftResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreatePostDraftResponseData
+ *
+ * @public
+ */
+export interface CreatePostDraftResponseData {
+  /** Unique identifier of the saved draft. */
+  id: string;
+  /** The text of the saved draft. */
+  text: string;
+}
+
+
+/**
+ * Schema type for CreatePostsClip
+ *
+ * @public
+ */
+export interface CreatePostsClip {
+  /** Second of the video at which the clip ends. A clip is 5 to 60 seconds long and at most 30% of the video. */
+  endSeconds: number;
+  /** The ID of the Post whose video is clipped. The Post must have exactly one video, longer than 2 minutes. */
+  postId: string;
+  /** Second of the video at which the clip starts. */
+  startSeconds: number;
+}
+
+
+/**
  * Schema type for CreatePostsEditOptions
  *
  * @public
@@ -1718,7 +3043,7 @@ export interface CreatePostsMedia {
   description?: string;
   /** When true, the media's asset URLs do not expire and external syndicated playback is allowed. */
   embeddable?: boolean;
-  /** Media IDs to attach to the tweet. */
+  /** Media IDs to attach to the Post, in the order given. */
   mediaIds: Array<string>;
   /** Media id whose asset is used as the preview image. */
   previewMediaId?: string;
@@ -1816,6 +3141,7 @@ export interface CreatePostsReply {
 export interface CreatePostsRequest {
   /** Card URI parameter. */
   cardUri?: string;
+  clip?: CreatePostsClip;
   /** Community to post the tweet to. */
   communityId?: string;
   /** Direct message deep link. */
@@ -1839,7 +3165,7 @@ export interface CreatePostsRequest {
   replySettings?: "following" | "mentionedUsers" | "subscribers" | "verified";
   /** Share an exclusive (super-follower) tweet with all followers. */
   shareWithFollowers?: boolean;
-  /** Text of the tweet. Required unless media is provided.  Defaulted to an empty string so it is always sent: the backend's `tweet_text` variable is non-null and rejects an absent value. */
+  /** Text of the Post. Required unless media is provided. At most 280 characters unless the account has X Premium. */
   text?: string;
 }
 
@@ -1891,7 +3217,7 @@ export interface CreateScheduledBroadcastRecurrence {
 export interface CreateScheduledBroadcastRequest {
   /** Enable replay. */
   availableForReplay?: boolean;
-  /** Chat permission option (numeric string). */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Description. */
   description?: string;
@@ -1902,13 +3228,13 @@ export interface CreateScheduledBroadcastRequest {
   /** If true, do not auto-publish at start; call POST .../live when ready. */
   manualPublish?: boolean;
   recurrence?: CreateScheduledBroadcastRecurrence;
-  /** End time, ms since Unix epoch (decimal string). */
-  scheduledEndMs: string;
+  /** Optional end time, ms since Unix epoch (decimal string). Omit for an open-ended broadcast. */
+  scheduledEndMs?: string;
   /** Start time, ms since Unix epoch (decimal string). */
   scheduledStartMs: string;
-  /** Ingest / source id to bind (same as sources `rtmp_stream_key`). */
+  /** Source to bind: a source's `id` from GET /2/sources. A stream key is also accepted but deprecated; stream keys stop being accepted when the /2/users/:id/sources and /2/users/:id/broadcasts routes reach end of life on January 1, 2027. */
   sourceId: string;
-  /** Optional telecast id (numeric string). */
+  /** Deprecated: telecast associations are being retired and this field will be ignored. */
   telecastId?: string;
   /** Pre-live slate media id (numeric string). */
   thumbnailMediaId?: string;
@@ -1936,9 +3262,9 @@ export interface CreateScheduledBroadcastResponse {
 export interface CreateScheduledBroadcastResponseData {
   /** Whether replay is enabled. */
   availableForReplay?: boolean;
-  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  /** Alphanumeric broadcast id (path `:id` for get/update/delete/live). */
   broadcastId?: string;
-  /** Optional chat permission option. */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Optional description. */
   description?: string;
@@ -1946,7 +3272,7 @@ export interface CreateScheduledBroadcastResponseData {
   locale?: string;
   /** When true, coordinator will not auto-publish; call POST .../live when ready. */
   manualPublish?: boolean;
-  /** Set when this occurrence belongs to a recurrence. */
+  /** Deprecated: always null for new schedules. */
   recurringScheduleId?: string;
   /** Numeric scheduler id. Required in the update request body. */
   scheduledBroadcastId?: string;
@@ -1954,16 +3280,266 @@ export interface CreateScheduledBroadcastResponseData {
   scheduledEndMs?: string;
   /** Scheduled start, milliseconds since Unix epoch (decimal string). */
   scheduledStartMs?: string;
-  /** Bound ingest / source id (`rtmp_stream_key`). */
+  /** Id of the bound source, as returned by GET /2/sources. Omitted when unknown. */
   sourceId?: string;
-  /** Scheduler state (Created, Scheduled, Running, …). */
+  /** Scheduler state: `Created` or `Scheduled` before start, then `Running`, `Ended`, or `Error`. */
   state?: string;
-  /** Optional telecast association. */
+  /** Deprecated: always null for new schedules. */
   telecastId?: string;
   /** Optional pre-live slate media id. */
   thumbnailMediaId?: string;
   /** Broadcast title / status text. */
   title?: string;
+}
+
+
+/**
+ * Schema type for CreateSourceRequest
+ *
+ * @public
+ */
+export interface CreateSourceRequest {
+  /** Label for the source. */
+  name: string;
+  /** Ingest region, as returned by GET /2/region. us-west-1 and us-west-2 ingest in US West; us-east-1, us-east-2, ca-central-1, sa-east-1, eu-west-1, eu-west-2, eu-west-3, eu-central-1, eu-north-1, ap-south-1, ap-northeast-1, ap-northeast-2, ap-southeast-1 and ap-southeast-2 ingest in US East. The response's `region` is the serving location (`us-east-1` or `us-west-2`). */
+  region: string;
+}
+
+
+/**
+ * Schema type for CreateSourceResponse
+ *
+ * @public
+ */
+export interface CreateSourceResponse {
+  data?: CreateSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateSourceResponseData
+ *
+ * @public
+ */
+export interface CreateSourceResponseData {
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** Source id, 19 decimal digits; the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Not a credential: read the stream key with GET /2/sources/:id/stream_key. */
+  id: string;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Region of the ingest location serving the source: `us-east-1` or `us-west-2`. Sources created before October 31, 2026 keep the AWS region they were created in. */
+  region?: string;
+  /** Ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). Configure your encoder with this URL and the source's stream key. */
+  rtmpsUrl?: string;
+  /** Stream key. A credential: anyone with it can stream to the source. */
+  streamKey: string;
+}
+
+
+/**
+ * Schema type for CreateUserBroadcastRequest
+ *
+ * @public
+ */
+export interface CreateUserBroadcastRequest {
+  /** Ignored. */
+  isLowLatency?: boolean | string | number;
+  /** Ignored: the source sets the region. */
+  region?: string;
+  /** The source's `rtmp_stream_key`. */
+  sourceId: string;
+}
+
+
+/**
+ * Schema type for CreateUserBroadcastResponse
+ *
+ * @public
+ */
+export interface CreateUserBroadcastResponse {
+  data?: CreateUserBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateUserBroadcastResponseData
+ *
+ * @public
+ */
+export interface CreateUserBroadcastResponseData {
+  broadcast: CreateUserBroadcastResponseDataBroadcast;
+  /** The broadcast's watch page. */
+  shareUrl: string;
+  videoAccess: CreateUserBroadcastResponseDataVideoAccess;
+}
+
+
+/**
+ * Schema type for CreateUserBroadcastResponseDataBroadcast
+ *
+ * @public
+ */
+export interface CreateUserBroadcastResponseDataBroadcast {
+  /** Whether a replay is available. */
+  availableForReplay?: boolean;
+  /** Broadcast id. */
+  broadcastId?: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** End time, milliseconds since Unix epoch (decimal string). */
+  endMs?: string;
+  /** Video height in pixels. */
+  height?: number;
+  /** Broadcast id; equal to `broadcast_id`. */
+  id: string;
+  /** Thumbnail URL. */
+  imageUrl?: string;
+  /** Medium thumbnail URL. */
+  imageUrlMedium?: string;
+  /** Small thumbnail URL. */
+  imageUrlSmall?: string;
+  /** Whether the broadcast is high latency. */
+  isHighLatency?: boolean;
+  /** Broadcast language. */
+  language?: string;
+  /** Numeric media id from `media_key`. */
+  mediaId?: string;
+  /** Media key of the broadcast's video. */
+  mediaKey?: string;
+  /** Scheduled end time, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start time, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Start time, milliseconds since Unix epoch (decimal string). */
+  startMs?: string;
+  /** `NOT_STARTED`, `RUNNING`, `TIMED_OUT`, `ENDED`, `PRE_PUBLISHED` or `CANCELED`. */
+  state?: string;
+  /** Broadcast title. */
+  status?: string;
+  /** Total viewers (decimal string). */
+  totalWatched?: string;
+  /** Current viewers (decimal string). */
+  totalWatching?: string;
+  /** Id of the Post announcing the broadcast. */
+  tweetId?: string;
+  /** Owner's user id. */
+  twitterUserId?: string;
+  /** Last update time, milliseconds since Unix epoch (decimal string). */
+  updatedAtMs?: string;
+  /** Video width in pixels. */
+  width?: number;
+}
+
+
+/**
+ * Schema type for CreateUserBroadcastResponseDataVideoAccess
+ *
+ * @public
+ */
+export type CreateUserBroadcastResponseDataVideoAccess = Record<string, any>;
+
+
+/**
+ * Schema type for CreateUserSourceRequest
+ *
+ * @public
+ */
+export interface CreateUserSourceRequest {
+  /** Label for the source. */
+  name: string;
+  /** Ingest data center, `atla` or `pdxa` (default). The AWS regions us-west-1 and us-west-2 map to `pdxa`; us-east-1, us-east-2, ca-central-1, sa-east-1, eu-west-1, eu-west-2, eu-west-3, eu-central-1, eu-north-1, ap-south-1, ap-northeast-1, ap-northeast-2, ap-southeast-1 and ap-southeast-2 map to `atla`. */
+  region?: string;
+}
+
+
+/**
+ * Schema type for CreateUserSourceResponse
+ *
+ * @public
+ */
+export interface CreateUserSourceResponse {
+  data?: CreateUserSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for CreateUserSourceResponseData
+ *
+ * @public
+ */
+export interface CreateUserSourceResponseData {
+  source: CreateUserSourceResponseDataSource;
+}
+
+
+/**
+ * Schema type for CreateUserSourceResponseDataSource
+ *
+ * @public
+ */
+export interface CreateUserSourceResponseDataSource {
+  creationOrigin?: CreateUserSourceResponseDataSourceCreationOrigin;
+  /** Creation time, ms since Unix epoch. */
+  creationTime?: number;
+  /** Source id; also the RTMP stream key. */
+  id: string;
+  /** Whether the source streams 360° video. */
+  is360?: boolean;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Owner's numeric user id. Exceeds the exact integer range of many JSON parsers. */
+  ownerId?: number;
+  /** Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source. */
+  rtmpRegion?: string;
+  /** Stream key; equal to `id`. */
+  rtmpStreamKey?: string;
+  /** RTMP ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). */
+  rtmpsUrl?: string;
+  videoService?: CreateUserSourceResponseDataSourceVideoService;
+}
+
+
+/**
+ * Schema type for CreateUserSourceResponseDataSourceCreationOrigin
+ *
+ * @public
+ */
+export interface CreateUserSourceResponseDataSourceCreationOrigin {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
+}
+
+
+/**
+ * Schema type for CreateUserSourceResponseDataSourceVideoService
+ *
+ * @public
+ */
+export interface CreateUserSourceResponseDataSourceVideoService {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
 }
 
 
@@ -2003,15 +3579,17 @@ export interface CreateUsersBookmarkFolderResponseData {
 
 
 /**
- * Schema type for CreateUsersBookmarkRequest
+ * At least one of `tweet_id`, `tweet_ids` is required.
  *
  * @public
  */
 export interface CreateUsersBookmarkRequest {
-  /** Optional ID of the Bookmark folder to add the Post to. When omitted, the Post is added to the user's top-level Bookmarks only. */
+  /** Optional ID of the Bookmark folder to add the Post(s) to. When omitted, Posts are added to the user's top-level Bookmarks only. A bulk request uses this one folder for every ID. */
   folderId?: string;
-  /** The ID of the Post to add to the user's Bookmarks. */
-  tweetId: string;
+  /** The ID of the Post to add to the user's Bookmarks. Mutually exclusive with `tweet_ids`. */
+  tweetId?: string;
+  /** Post IDs to add to the user's Bookmarks. At most 25. Mutually exclusive with `tweet_id`. */
+  tweetIds?: Array<string>;
 }
 
 
@@ -2020,21 +3598,7 @@ export interface CreateUsersBookmarkRequest {
  *
  * @public
  */
-export interface CreateUsersBookmarkResponse {
-  data?: CreateUsersBookmarkResponseData;
-  errors?: Array<Problem>;
-}
-
-
-/**
- * Schema type for CreateUsersBookmarkResponseData
- *
- * @public
- */
-export interface CreateUsersBookmarkResponseData {
-  /** Indicates whether the Post is bookmarked by the user. */
-  bookmarked: boolean;
-}
+export type CreateUsersBookmarkResponse = { data?: { bookmarked: boolean; }; } | { data?: Array<{ bookmarked: boolean; tweetId: string; }>; errors?: Array<{ detail?: string; title?: string; tweetId?: string; }>; };
 
 
 /**
@@ -2232,12 +3796,244 @@ export interface DeleteAllConnectionsResponseDataResults {
 
 
 /**
+ * Schema type for DeleteBotResponse
+ *
+ * @public
+ */
+export interface DeleteBotResponse {
+  data?: DeleteBotResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteBotResponseData
+ *
+ * @public
+ */
+export interface DeleteBotResponseData {
+  /** Whether the bot was deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteBroadcastChatMessageResponse
+ *
+ * @public
+ */
+export interface DeleteBroadcastChatMessageResponse {
+  data?: DeleteBroadcastChatMessageResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteBroadcastChatMessageResponseData
+ *
+ * @public
+ */
+export interface DeleteBroadcastChatMessageResponseData {
+  /** Whether the chat message was removed. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteBroadcastResponse
+ *
+ * @public
+ */
+export interface DeleteBroadcastResponse {
+  data?: DeleteBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteBroadcastResponseData
+ *
+ * @public
+ */
+export interface DeleteBroadcastResponseData {
+  /** Whether the broadcast was deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationActionSignatures
+ *
+ * @public
+ */
+export interface DeleteChatConversationActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: DeleteChatConversationActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface DeleteChatConversationActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<DeleteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface DeleteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationMessageTtlActionSignatures
+ *
+ * @public
+ */
+export interface DeleteChatConversationMessageTtlActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: DeleteChatConversationMessageTtlActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationMessageTtlActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface DeleteChatConversationMessageTtlActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<DeleteChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface DeleteChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationMessageTtlRequest
+ *
+ * @public
+ */
+export interface DeleteChatConversationMessageTtlRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<DeleteChatConversationMessageTtlActionSignatures>;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationMessageTtlResponse
+ *
+ * @public
+ */
+export interface DeleteChatConversationMessageTtlResponse {
+  data?: DeleteChatConversationMessageTtlResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationMessageTtlResponseData
+ *
+ * @public
+ */
+export interface DeleteChatConversationMessageTtlResponseData {
+  /** Whether the message lifetime was removed. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationRequest
+ *
+ * @public
+ */
+export interface DeleteChatConversationRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<DeleteChatConversationActionSignatures>;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationResponse
+ *
+ * @public
+ */
+export interface DeleteChatConversationResponse {
+  data?: DeleteChatConversationResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationResponseData
+ *
+ * @public
+ */
+export interface DeleteChatConversationResponseData {
+  /** Whether the conversation was deleted. */
+  deleted: boolean;
+}
+
+
+/**
  * Schema type for DeleteChatMessagesActionSignatures
  *
  * @public
  */
 export interface DeleteChatMessagesActionSignatures {
-  /** Base64-encoded message event detail. */
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
   encodedMessageEventDetail: string;
   messageEventSignature: DeleteChatMessagesActionSignaturesMessageEventSignature;
   /** Client-generated ID of the message being signed. */
@@ -2287,7 +4083,7 @@ export interface DeleteChatMessagesActionSignaturesMessageEventSignatureMessageS
  * @public
  */
 export interface DeleteChatMessagesRequest {
-  /** Cryptographic signatures for the action. */
+  /** Signatures for this action, forwarded in the order they are sent. */
   actionSignatures: Array<DeleteChatMessagesActionSignatures>;
   /** delete_for_all removes the messages for every participant; delete_for_self removes them only from the authenticated user's view. */
   deleteMessageAction: "delete_for_all" | "delete_for_self";
@@ -2339,6 +4135,17 @@ export interface DeleteCommunityNotesResponse {
 export interface DeleteCommunityNotesResponseData {
   /** Indicates whether the Community Note was deleted. */
   deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteComplianceJobsByIdResponse
+ *
+ * @public
+ */
+export interface DeleteComplianceJobsByIdResponse {
+  data?: ComplianceJob;
+  errors?: Array<Problem>;
 }
 
 
@@ -2509,6 +4316,28 @@ export interface DeleteMediaSubtitlesResponseData {
 
 
 /**
+ * Schema type for DeletePostDraftResponse
+ *
+ * @public
+ */
+export interface DeletePostDraftResponse {
+  data?: DeletePostDraftResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeletePostDraftResponseData
+ *
+ * @public
+ */
+export interface DeletePostDraftResponseData {
+  /** Whether the draft is gone from the user's drafts. */
+  deleted: boolean;
+}
+
+
+/**
  * Schema type for DeletePostsResponse
  *
  * @public
@@ -2550,6 +4379,69 @@ export interface DeleteScheduledBroadcastResponseData {
   /** Whether the scheduled broadcast was deleted. */
   deleted: boolean;
 }
+
+
+/**
+ * Schema type for DeleteSourceResponse
+ *
+ * @public
+ */
+export interface DeleteSourceResponse {
+  data?: DeleteSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteSourceResponseData
+ *
+ * @public
+ */
+export interface DeleteSourceResponseData {
+  /** Whether the source was deleted. */
+  deleted: boolean;
+}
+
+
+/**
+ * Schema type for DeleteUserBroadcastResponse
+ *
+ * @public
+ */
+export interface DeleteUserBroadcastResponse {
+  data?: DeleteUserBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteUserBroadcastResponseData
+ *
+ * @public
+ */
+export interface DeleteUserBroadcastResponseData {
+  /** Always `true` on success. */
+  success: boolean;
+}
+
+
+/**
+ * Schema type for DeleteUserSourceResponse
+ *
+ * @public
+ */
+export interface DeleteUserSourceResponse {
+  data?: DeleteUserSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteUserSourceResponseData
+ *
+ * @public
+ */
+export type DeleteUserSourceResponseData = Record<string, any>;
 
 
 /**
@@ -2619,6 +4511,89 @@ export interface DeleteWebhooksStreamLinkResponseData {
 
 
 /**
+ * Schema type for DisableChatGroupInviteActionSignatures
+ *
+ * @public
+ */
+export interface DisableChatGroupInviteActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: DisableChatGroupInviteActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for DisableChatGroupInviteActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface DisableChatGroupInviteActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<DisableChatGroupInviteActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DisableChatGroupInviteActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface DisableChatGroupInviteActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DisableChatGroupInviteRequest
+ *
+ * @public
+ */
+export interface DisableChatGroupInviteRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<DisableChatGroupInviteActionSignatures>;
+}
+
+
+/**
+ * Schema type for DisableChatGroupInviteResponse
+ *
+ * @public
+ */
+export interface DisableChatGroupInviteResponse {
+  data?: DisableChatGroupInviteResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DisableChatGroupInviteResponseData
+ *
+ * @public
+ */
+export interface DisableChatGroupInviteResponseData {
+  /** Whether the invite link was turned off. */
+  disabled: boolean;
+}
+
+
+/**
  * Schema type for DisallowedResourceProblem
  *
  * @public
@@ -2631,6 +4606,123 @@ export interface DisallowedResourceProblem {
   status?: number;
   title: string;
   type: "https://api.x.com/2/problems/disallowed-resource";
+}
+
+
+/**
+ * Schema type for DmBadAttachmentProblem
+ *
+ * @public
+ */
+export interface DmBadAttachmentProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-bad-attachment";
+}
+
+
+/**
+ * Schema type for DmBadCtaProblem
+ *
+ * @public
+ */
+export interface DmBadCtaProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-bad-cta";
+}
+
+
+/**
+ * Schema type for DmBadCustomProfileProblem
+ *
+ * @public
+ */
+export interface DmBadCustomProfileProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-bad-custom-profile";
+}
+
+
+/**
+ * Schema type for DmBadMediaProblem
+ *
+ * @public
+ */
+export interface DmBadMediaProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-bad-media";
+}
+
+
+/**
+ * Schema type for DmBadQuickReplyProblem
+ *
+ * @public
+ */
+export interface DmBadQuickReplyProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-bad-quick-reply";
+}
+
+
+/**
+ * Schema type for DmBadUrlProblem
+ *
+ * @public
+ */
+export interface DmBadUrlProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-bad-url";
+}
+
+
+/**
+ * Schema type for DmConversationNameTooLongProblem
+ *
+ * @public
+ */
+export interface DmConversationNameTooLongProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-conversation-name-too-long";
+}
+
+
+/**
+ * Schema type for DmConversationNotFoundProblem
+ *
+ * @public
+ */
+export interface DmConversationNotFoundProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-conversation-not-found";
+}
+
+
+/**
+ * Schema type for DmDuplicateProblem
+ *
+ * @public
+ */
+export interface DmDuplicateProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-duplicate";
 }
 
 
@@ -2690,6 +4782,619 @@ export type DmEventReferencedPosts = Array<{ id: string; }>;
 
 
 /**
+ * Schema type for DmInactiveDeviceProblem
+ *
+ * @public
+ */
+export interface DmInactiveDeviceProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-inactive-device";
+}
+
+
+/**
+ * Schema type for DmNotDeliveredProblem
+ *
+ * @public
+ */
+export interface DmNotDeliveredProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-not-delivered";
+}
+
+
+/**
+ * Schema type for DmNotFoundProblem
+ *
+ * @public
+ */
+export interface DmNotFoundProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-not-found";
+}
+
+
+/**
+ * Schema type for DmNotOwnerProblem
+ *
+ * @public
+ */
+export interface DmNotOwnerProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-not-owner";
+}
+
+
+/**
+ * Schema type for DmParticipantNotAddedProblem
+ *
+ * @public
+ */
+export interface DmParticipantNotAddedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-participant-not-added";
+}
+
+
+/**
+ * Schema type for DmParticipantNotFoundProblem
+ *
+ * @public
+ */
+export interface DmParticipantNotFoundProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-participant-not-found";
+}
+
+
+/**
+ * Schema type for DmParticipantRestrictedProblem
+ *
+ * @public
+ */
+export interface DmParticipantRestrictedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-participant-restricted";
+}
+
+
+/**
+ * Schema type for DmParticipantUnavailableProblem
+ *
+ * @public
+ */
+export interface DmParticipantUnavailableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-participant-unavailable";
+}
+
+
+/**
+ * Schema type for DmRateLimitedProblem
+ *
+ * @public
+ */
+export interface DmRateLimitedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-rate-limited";
+}
+
+
+/**
+ * Schema type for DmRecipientBlocksSenderProblem
+ *
+ * @public
+ */
+export interface DmRecipientBlocksSenderProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-blocks-sender";
+}
+
+
+/**
+ * Schema type for DmRecipientCannotReceiveProblem
+ *
+ * @public
+ */
+export interface DmRecipientCannotReceiveProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-cannot-receive";
+}
+
+
+/**
+ * Schema type for DmRecipientEncryptedUnavailableProblem
+ *
+ * @public
+ */
+export interface DmRecipientEncryptedUnavailableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-encrypted-unavailable";
+}
+
+
+/**
+ * Schema type for DmRecipientNotAcceptingProblem
+ *
+ * @public
+ */
+export interface DmRecipientNotAcceptingProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-not-accepting";
+}
+
+
+/**
+ * Schema type for DmRecipientNotFoundProblem
+ *
+ * @public
+ */
+export interface DmRecipientNotFoundProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-not-found";
+}
+
+
+/**
+ * Schema type for DmRecipientRestrictsGroupsProblem
+ *
+ * @public
+ */
+export interface DmRecipientRestrictsGroupsProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-restricts-groups";
+}
+
+
+/**
+ * Schema type for DmRecipientUnavailableProblem
+ *
+ * @public
+ */
+export interface DmRecipientUnavailableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-recipient-unavailable";
+}
+
+
+/**
+ * Schema type for DmRequestInProgressProblem
+ *
+ * @public
+ */
+export interface DmRequestInProgressProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-request-in-progress";
+}
+
+
+/**
+ * Schema type for DmSafetyLimitedProblem
+ *
+ * @public
+ */
+export interface DmSafetyLimitedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-safety-limited";
+}
+
+
+/**
+ * Schema type for DmSafetyRejectedProblem
+ *
+ * @public
+ */
+export interface DmSafetyRejectedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-safety-rejected";
+}
+
+
+/**
+ * Schema type for DmSenderBlocksRecipientProblem
+ *
+ * @public
+ */
+export interface DmSenderBlocksRecipientProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-blocks-recipient";
+}
+
+
+/**
+ * Schema type for DmSenderDeclinedDmsProblem
+ *
+ * @public
+ */
+export interface DmSenderDeclinedDmsProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-declined-dms";
+}
+
+
+/**
+ * Schema type for DmSenderDmsClosedProblem
+ *
+ * @public
+ */
+export interface DmSenderDmsClosedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-dms-closed";
+}
+
+
+/**
+ * Schema type for DmSenderEncryptedUnavailableProblem
+ *
+ * @public
+ */
+export interface DmSenderEncryptedUnavailableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-encrypted-unavailable";
+}
+
+
+/**
+ * Schema type for DmSenderNotInConversationProblem
+ *
+ * @public
+ */
+export interface DmSenderNotInConversationProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-not-in-conversation";
+}
+
+
+/**
+ * Schema type for DmSenderNotPermittedProblem
+ *
+ * @public
+ */
+export interface DmSenderNotPermittedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-not-permitted";
+}
+
+
+/**
+ * Schema type for DmSenderNotVerifiedProblem
+ *
+ * @public
+ */
+export interface DmSenderNotVerifiedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-not-verified";
+}
+
+
+/**
+ * Schema type for DmSenderPhoneRequiredProblem
+ *
+ * @public
+ */
+export interface DmSenderPhoneRequiredProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-phone-required";
+}
+
+
+/**
+ * Schema type for DmSenderReadOnlyProblem
+ *
+ * @public
+ */
+export interface DmSenderReadOnlyProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-read-only";
+}
+
+
+/**
+ * Schema type for DmSenderUnavailableProblem
+ *
+ * @public
+ */
+export interface DmSenderUnavailableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-sender-unavailable";
+}
+
+
+/**
+ * Schema type for DmTextEmptyProblem
+ *
+ * @public
+ */
+export interface DmTextEmptyProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-text-empty";
+}
+
+
+/**
+ * Schema type for DmTextTooLongProblem
+ *
+ * @public
+ */
+export interface DmTextTooLongProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-text-too-long";
+}
+
+
+/**
+ * Schema type for DmTooFewParticipantsProblem
+ *
+ * @public
+ */
+export interface DmTooFewParticipantsProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-too-few-participants";
+}
+
+
+/**
+ * Schema type for DmTooManyParticipantsProblem
+ *
+ * @public
+ */
+export interface DmTooManyParticipantsProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-too-many-participants";
+}
+
+
+/**
+ * Schema type for DmUnsupportedMessageProblem
+ *
+ * @public
+ */
+export interface DmUnsupportedMessageProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/dm-unsupported-message";
+}
+
+
+/**
+ * Schema type for DuplicateRuleProblem
+ *
+ * @public
+ */
+export interface DuplicateRuleProblem {
+  detail?: string;
+  id?: string;
+  title: string;
+  type: "https://api.twitter.com/2/problems/duplicate-rules";
+  value: string;
+}
+
+
+/**
+ * Schema type for EnableChatGroupInviteActionSignatures
+ *
+ * @public
+ */
+export interface EnableChatGroupInviteActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: EnableChatGroupInviteActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for EnableChatGroupInviteActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface EnableChatGroupInviteActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<EnableChatGroupInviteActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for EnableChatGroupInviteActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface EnableChatGroupInviteActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for EnableChatGroupInviteRequest
+ *
+ * @public
+ */
+export interface EnableChatGroupInviteRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<EnableChatGroupInviteActionSignatures>;
+  /** ID of the affiliate account to associate with the link. */
+  affiliateUserId?: string;
+  /** Group avatar URL (https) to show on the invite preview. */
+  decryptedAvatarUrl?: string;
+  /** Group name to show on the invite preview. */
+  decryptedTitle?: string;
+  /** Invite link built by the client, in the form https://x.com/i/chat/group_join/<conversation_id>/<token>, where the token is exactly 10 letters, digits, '-' or '_'. The conversation segment must match the path ID. It is part of the signed payload, so it is required when action_signatures is sent. */
+  inviteUrl?: string;
+  /** How long the link stays valid, in milliseconds, from the time of the request. With action_signatures, send validity_expiry_timestamp_msec instead. */
+  validityDurationMsec?: string;
+  /** When the link expires, in epoch milliseconds. Must be in the future. If validity_duration_msec is also sent, the two must agree within a minute. */
+  validityExpiryTimestampMsec?: string;
+  /** Message shown to people who open the link. */
+  welcomeMessage?: string;
+}
+
+
+/**
+ * Schema type for EnableChatGroupInviteResponse
+ *
+ * @public
+ */
+export interface EnableChatGroupInviteResponse {
+  data?: EnableChatGroupInviteResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for EnableChatGroupInviteResponseData
+ *
+ * @public
+ */
+export interface EnableChatGroupInviteResponseData {
+  /** ID of the group conversation the link joins. */
+  conversationId?: string;
+  /** When the link expires (ISO 8601). Absent when the link does not expire. */
+  expiresAt?: string;
+  /** Group avatar URL shown on the invite preview, stored unencrypted. Absent when the backend flags the avatar as NSFW. */
+  groupAvatarUrl?: string;
+  /** Group name shown on the invite preview, stored unencrypted. */
+  groupName?: string;
+  /** Shareable invite link. */
+  inviteUrl?: string;
+  /** Invite token. Together with the conversation ID it identifies the link. */
+  token?: string;
+  /** Message shown to people who open the link. */
+  welcomeMessage?: string;
+}
+
+
+/**
+ * Schema type for EncryptionRequiredProblem
+ *
+ * @public
+ */
+export interface EncryptionRequiredProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/encryption-required";
+}
+
+
+/**
+ * Schema type for EnsureAccountRequest
+ *
+ * @public
+ */
+export interface EnsureAccountRequest {
+  /** Optional provisioning-credit metadata (an opaque string, e.g. a subscription tier) to claim for the account, attributed to the calling app. Omit to just ensure the account. */
+  metadata?: string;
+}
+
+
+/**
+ * Schema type for EnsureAccountResponse
+ *
+ * @public
+ */
+export interface EnsureAccountResponse {
+  data?: EnsureAccountResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for EnsureAccountResponseData
+ *
+ * @public
+ */
+export interface EnsureAccountResponseData {
+  /** Unique identifier of the developer account. */
+  accountId: string;
+  /** Whether this request created the account. */
+  created: boolean;
+}
+
+
+/**
  * Schema type for Error
  *
  * @public
@@ -2741,6 +5446,7 @@ export interface EvaluateCommunityNotesResponseData {
  * @public
  */
 export interface Expansions {
+  calls?: Array<Call>;
   media?: Array<Media>;
   places?: Array<Place>;
   polls?: Array<Poll>;
@@ -3018,6 +5724,8 @@ export interface GetActivitySubscriptionsResponseData {
   createdAt?: string;
   /** Activity event type in dot notation. */
   eventType?: string;
+  /** Subscription expiration time. */
+  expiresAt?: string;
   filter?: GetActivitySubscriptionsResponseDataFilter;
   /** Unique identifier of the subscription. */
   subscriptionId?: string;
@@ -3040,8 +5748,145 @@ export interface GetActivitySubscriptionsResponseDataFilter {
   direction?: string;
   /** Optional keyword filter. */
   keyword?: string;
+  /** Event-specific string predicates applied to the subscription. */
+  qualifiers?: Record<string, any>;
   /** User the subscription is scoped to. */
   userId?: string;
+}
+
+
+/**
+ * Schema type for GetAmplifyProgramPostsResponse
+ *
+ * @public
+ */
+export interface GetAmplifyProgramPostsResponse {
+  data?: Array<GetAmplifyProgramPostsResponseData>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetAmplifyProgramPostsResponseData
+ *
+ * @public
+ */
+export interface GetAmplifyProgramPostsResponseData {
+  /** When the post was published into the program (ISO 8601). */
+  addedAt: string;
+  /** Identifier of the post. */
+  postId: string;
+  /** When promotion of the post ends (ISO 8601), when one was set. */
+  promotionEndsAt?: string;
+}
+
+
+/**
+ * Schema type for GetAmplifyProgramResponse
+ *
+ * @public
+ */
+export interface GetAmplifyProgramResponse {
+  data?: GetAmplifyProgramResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetAmplifyProgramResponseData
+ *
+ * @public
+ */
+export interface GetAmplifyProgramResponseData {
+  /** Advertiser account ids sponsoring the program. */
+  advertiserIds: Array<string>;
+  /** Identifier of the program. */
+  id: string;
+  /** Display name of the program. */
+  name: string;
+  /** User ids of the publishers enrolled in the program. */
+  publisherIds: Array<string>;
+  /** Lifecycle state of the program. Only `active` programs accept posts. */
+  state: "active" | "inactive" | "deleted" | (string & {});
+}
+
+
+/**
+ * Schema type for GetAmplifyProgramsResponse
+ *
+ * @public
+ */
+export interface GetAmplifyProgramsResponse {
+  data?: Array<GetAmplifyProgramsResponseData>;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetAmplifyProgramsResponseData
+ *
+ * @public
+ */
+export interface GetAmplifyProgramsResponseData {
+  /** Advertiser account ids sponsoring the program. */
+  advertiserIds: Array<string>;
+  /** Identifier of the program. */
+  id: string;
+  /** Display name of the program. */
+  name: string;
+  /** User ids of the publishers enrolled in the program. */
+  publisherIds: Array<string>;
+  /** Lifecycle state of the program. Only `active` programs accept posts. */
+  state: "active" | "inactive" | "deleted" | (string & {});
+}
+
+
+/**
+ * Schema type for GetBotsResponse
+ *
+ * @public
+ */
+export interface GetBotsResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { maxBots?: number; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetBroadcastChatResponse
+ *
+ * @public
+ */
+export interface GetBroadcastChatResponse {
+  data?: Array<BroadcastChatMessage>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetBroadcastResponse
+ *
+ * @public
+ */
+export interface GetBroadcastResponse {
+  data?: Broadcast;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetCallResponse
+ *
+ * @public
+ */
+export interface GetCallResponse {
+  data?: Call;
+  errors?: Array<Problem>;
+  includes?: Expansions;
 }
 
 
@@ -3054,6 +5899,18 @@ export interface GetChatConversationEventsResponse {
   data?: Array<ChatMessageEvent>;
   errors?: Array<Problem>;
   meta?: { conversationKeyEvents?: Array<string>; hasMore?: boolean; nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetChatConversationPinnedMessagesResponse
+ *
+ * @public
+ */
+export interface GetChatConversationPinnedMessagesResponse {
+  data?: Array<ChatPinnedMessage>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; resultCount?: number; };
 }
 
 
@@ -3079,6 +5936,90 @@ export interface GetChatConversationsResponse {
   errors?: Array<Problem>;
   includes?: Expansions;
   meta?: { hasMessageRequests?: boolean; hasMore?: boolean; nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetChatGroupAdminRequestsResponse
+ *
+ * @public
+ */
+export interface GetChatGroupAdminRequestsResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; resultCount?: number; totalCount?: number; };
+}
+
+
+/**
+ * Schema type for GetChatGroupInviteResponse
+ *
+ * @public
+ */
+export interface GetChatGroupInviteResponse {
+  data?: ChatGroupInvite;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetChatMessageRequestResponse
+ *
+ * @public
+ */
+export interface GetChatMessageRequestResponse {
+  data?: ChatMessageRequestDetail;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetChatMessageRequestsResponse
+ *
+ * @public
+ */
+export interface GetChatMessageRequestsResponse {
+  data?: Array<ChatMessageRequest>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; resultCount?: number; totalCount?: number; };
+}
+
+
+/**
+ * Schema type for GetChatModeratorsResponse
+ *
+ * @public
+ */
+export interface GetChatModeratorsResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetChatMutedUsersResponse
+ *
+ * @public
+ */
+export interface GetChatMutedUsersResponse {
+  data?: Array<BroadcastChatMute>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetChatSettingsResponse
+ *
+ * @public
+ */
+export interface GetChatSettingsResponse {
+  data?: ChatSettings;
+  errors?: Array<Problem>;
 }
 
 
@@ -3125,6 +6066,32 @@ export interface GetConnectionHistoryResponse {
   data?: Array<Connection>;
   errors?: Array<Problem>;
   meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetDeveloperAccountResponse
+ *
+ * @public
+ */
+export interface GetDeveloperAccountResponse {
+  data?: GetDeveloperAccountResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetDeveloperAccountResponseData
+ *
+ * @public
+ */
+export interface GetDeveloperAccountResponseData {
+  /** Unique identifier of the developer account. */
+  accountId: string;
+  /** Creation time of the account (ISO 8601). */
+  createdAt: string;
+  /** Display name of the developer account. */
+  name: string;
 }
 
 
@@ -3264,6 +6231,56 @@ export interface GetMediaByMediaKeysResponse {
 
 
 /**
+ * Schema type for GetMediaLibraryCategoriesResponse
+ *
+ * @public
+ */
+export interface GetMediaLibraryCategoriesResponse {
+  data?: GetMediaLibraryCategoriesResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetMediaLibraryCategoriesResponseData
+ *
+ * @public
+ */
+export interface GetMediaLibraryCategoriesResponseData {
+  /** Advertiser categories that can be blocked. */
+  advertiserCategories: Array<GetMediaLibraryCategoriesResponseDataAdvertiserCategories>;
+  /** Video categories a library item can be assigned. */
+  videoCategories: Array<GetMediaLibraryCategoriesResponseDataVideoCategories>;
+}
+
+
+/**
+ * Schema type for GetMediaLibraryCategoriesResponseDataAdvertiserCategories
+ *
+ * @public
+ */
+export interface GetMediaLibraryCategoriesResponseDataAdvertiserCategories {
+  /** Human readable name, localized to `lang` when a translation exists. */
+  description: string;
+  /** Identifier used in `monetization.video_category_ids` / `monetization.blocked_advertiser_category_ids`. */
+  id: number;
+}
+
+
+/**
+ * Schema type for GetMediaLibraryCategoriesResponseDataVideoCategories
+ *
+ * @public
+ */
+export interface GetMediaLibraryCategoriesResponseDataVideoCategories {
+  /** Human readable name, localized to `lang` when a translation exists. */
+  description: string;
+  /** Identifier used in `monetization.video_category_ids` / `monetization.blocked_advertiser_category_ids`. */
+  id: number;
+}
+
+
+/**
  * Schema type for GetMediaUploadStatusResponse
  *
  * @public
@@ -3343,6 +6360,100 @@ export interface GetMediaUploadStatusResponseDataVideo {
 export interface GetNewsResponse {
   data?: News;
   errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetPostDraftsResponse
+ *
+ * @public
+ */
+export interface GetPostDraftsResponse {
+  data?: Array<GetPostDraftsResponseData>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetPostDraftsResponseData
+ *
+ * @public
+ */
+export interface GetPostDraftsResponseData {
+  /** When the draft was saved (RFC 3339). */
+  createdAt?: string;
+  /** Unique identifier of the draft. */
+  id: string;
+  /** Whether the draft discloses AI-generated media. */
+  madeWithAi?: boolean;
+  media?: GetPostDraftsResponseDataMedia;
+  /** Whether the draft discloses a paid partnership. */
+  paidPartnership?: boolean;
+  /** The ID of the Post this Post quotes. */
+  quoteTweetId?: string;
+  reply?: GetPostDraftsResponseDataReply;
+  /** The text of the draft. Empty for a draft that only has media. */
+  text: string;
+  /** For a draft that is a thread, the Posts after the first one, in order. Each replies to the Post before it. */
+  thread?: Array<GetPostDraftsResponseDataThread>;
+  /** Parts of the draft that the other fields do not carry. Present only when the draft holds more than is listed. */
+  unsupportedContent?: Array<"text_formatting" | "inline_media" | "media_tags" | "possibly_sensitive" | "attachment" | "cashtag_attachment" | (string & {})>;
+  /** When the draft last changed (RFC 3339). */
+  updatedAt?: string;
+}
+
+
+/**
+ * Schema type for GetPostDraftsResponseDataMedia
+ *
+ * @public
+ */
+export interface GetPostDraftsResponseDataMedia {
+  /** Media IDs attached to the Post, in order. */
+  mediaIds: Array<string>;
+  /** IDs of the users tagged in any of the media. */
+  taggedUserIds?: Array<string>;
+}
+
+
+/**
+ * Schema type for GetPostDraftsResponseDataReply
+ *
+ * @public
+ */
+export interface GetPostDraftsResponseDataReply {
+  /** IDs of the users the reply does not mention. */
+  excludeReplyUserIds?: Array<string>;
+  /** The ID of the Post the draft replies to. */
+  inReplyToTweetId: string;
+}
+
+
+/**
+ * Schema type for GetPostDraftsResponseDataThread
+ *
+ * @public
+ */
+export interface GetPostDraftsResponseDataThread {
+  media?: GetPostDraftsResponseDataThreadMedia;
+  /** The ID of the Post this Post quotes. */
+  quoteTweetId?: string;
+  /** The text of the Post. Empty when it only has media. */
+  text: string;
+}
+
+
+/**
+ * Schema type for GetPostDraftsResponseDataThreadMedia
+ *
+ * @public
+ */
+export interface GetPostDraftsResponseDataThreadMedia {
+  /** Media IDs attached to the Post, in order. */
+  mediaIds: Array<string>;
+  /** IDs of the users tagged in any of the media. */
+  taggedUserIds?: Array<string>;
 }
 
 
@@ -3489,6 +6600,17 @@ export interface GetPostsRepostsResponse {
 
 
 /**
+ * Schema type for GetRegionResponse
+ *
+ * @public
+ */
+export interface GetRegionResponse {
+  /** Ingest region. Pass it as `region` when creating a stream source. */
+  region: "us-east-1" | "us-west-2" | (string & {});
+}
+
+
+/**
  * Schema type for GetRuleCountsResponse
  *
  * @public
@@ -3589,9 +6711,9 @@ export interface GetScheduledBroadcastResponse {
 export interface GetScheduledBroadcastResponseData {
   /** Whether replay is enabled. */
   availableForReplay?: boolean;
-  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  /** Alphanumeric broadcast id (path `:id` for get/update/delete/live). */
   broadcastId?: string;
-  /** Optional chat permission option. */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Optional description. */
   description?: string;
@@ -3599,7 +6721,7 @@ export interface GetScheduledBroadcastResponseData {
   locale?: string;
   /** When true, coordinator will not auto-publish; call POST .../live when ready. */
   manualPublish?: boolean;
-  /** Set when this occurrence belongs to a recurrence. */
+  /** Deprecated: always null for new schedules. */
   recurringScheduleId?: string;
   /** Numeric scheduler id. Required in the update request body. */
   scheduledBroadcastId?: string;
@@ -3607,16 +6729,86 @@ export interface GetScheduledBroadcastResponseData {
   scheduledEndMs?: string;
   /** Scheduled start, milliseconds since Unix epoch (decimal string). */
   scheduledStartMs?: string;
-  /** Bound ingest / source id (`rtmp_stream_key`). */
+  /** Id of the bound source, as returned by GET /2/sources. Omitted when unknown. */
   sourceId?: string;
-  /** Scheduler state (Created, Scheduled, Running, …). */
+  /** Scheduler state: `Created` or `Scheduled` before start, then `Running`, `Ended`, or `Error`. */
   state?: string;
-  /** Optional telecast association. */
+  /** Deprecated: always null for new schedules. */
   telecastId?: string;
   /** Optional pre-live slate media id. */
   thumbnailMediaId?: string;
   /** Broadcast title / status text. */
   title?: string;
+}
+
+
+/**
+ * Schema type for GetScheduledCallResponse
+ *
+ * @public
+ */
+export interface GetScheduledCallResponse {
+  data?: ScheduledCall;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+}
+
+
+/**
+ * Schema type for GetSourceResponse
+ *
+ * @public
+ */
+export interface GetSourceResponse {
+  data?: GetSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetSourceResponseData
+ *
+ * @public
+ */
+export interface GetSourceResponseData {
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** Source id, 19 decimal digits; the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Not a credential: read the stream key with GET /2/sources/:id/stream_key. */
+  id: string;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Region of the ingest location serving the source: `us-east-1` or `us-west-2`. Sources created before October 31, 2026 keep the AWS region they were created in. */
+  region?: string;
+  /** Ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). Configure your encoder with this URL and the source's stream key. */
+  rtmpsUrl?: string;
+}
+
+
+/**
+ * Schema type for GetSourceStreamKeyResponse
+ *
+ * @public
+ */
+export interface GetSourceStreamKeyResponse {
+  data?: GetSourceStreamKeyResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetSourceStreamKeyResponseData
+ *
+ * @public
+ */
+export interface GetSourceStreamKeyResponseData {
+  /** Source id. */
+  id: string;
+  /** Stream key. A credential: anyone with it can stream to the source. */
+  streamKey: string;
 }
 
 
@@ -3691,6 +6883,18 @@ export interface GetSpacesPostsResponse {
 export interface GetTrendsByWoeidResponse {
   data?: Array<Trend>;
   errors?: Array<Problem>;
+  meta?: { location?: Record<string, any>; };
+}
+
+
+/**
+ * Schema type for GetTrendsLocationsResponse
+ *
+ * @public
+ */
+export interface GetTrendsLocationsResponse {
+  data?: Array<TrendLocation>;
+  errors?: Array<Problem>;
 }
 
 
@@ -3706,6 +6910,47 @@ export interface GetTrendsPersonalizedTrendsResponse {
 
 
 /**
+ * Schema type for GetUsageCreditsResponse
+ *
+ * @public
+ */
+export interface GetUsageCreditsResponse {
+  data?: GetUsageCreditsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUsageCreditsResponseData
+ *
+ * @public
+ */
+export interface GetUsageCreditsResponseData {
+  /** USD remaining across unexpired free grants. */
+  freeBalance: number;
+  /** Unexpired free grants, soonest expiry first. */
+  freeGrants: Array<GetUsageCreditsResponseDataFreeGrants>;
+  /** Purchased (prepaid) USD balance. May be negative when paid usage has overdrawn this bucket. */
+  prepaidBalance: number;
+  /** Spendable USD remaining, clamped at 0.00: total_balance = max(0, prepaid_balance + free_balance). */
+  totalBalance: number;
+}
+
+
+/**
+ * Schema type for GetUsageCreditsResponseDataFreeGrants
+ *
+ * @public
+ */
+export interface GetUsageCreditsResponseDataFreeGrants {
+  /** USD remaining in this free grant. */
+  amount: number;
+  /** When this grant expires (RFC 3339). Omitted if the grant never expires or the expiry is unknown. */
+  expiresAt?: string;
+}
+
+
+/**
  * Schema type for GetUsageResponse
  *
  * @public
@@ -3713,6 +6958,168 @@ export interface GetTrendsPersonalizedTrendsResponse {
 export interface GetUsageResponse {
   data?: Usage;
   errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUserBroadcastResponse
+ *
+ * @public
+ */
+export interface GetUserBroadcastResponse {
+  data?: GetUserBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUserBroadcastResponseData
+ *
+ * @public
+ */
+export interface GetUserBroadcastResponseData {
+  broadcast: GetUserBroadcastResponseDataBroadcast;
+}
+
+
+/**
+ * Schema type for GetUserBroadcastResponseDataBroadcast
+ *
+ * @public
+ */
+export interface GetUserBroadcastResponseDataBroadcast {
+  /** Whether a replay is available. */
+  availableForReplay?: boolean;
+  /** Broadcast id. */
+  broadcastId?: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** End time, milliseconds since Unix epoch (decimal string). */
+  endMs?: string;
+  /** Video height in pixels. */
+  height?: number;
+  /** Broadcast id; equal to `broadcast_id`. */
+  id: string;
+  /** Thumbnail URL. */
+  imageUrl?: string;
+  /** Medium thumbnail URL. */
+  imageUrlMedium?: string;
+  /** Small thumbnail URL. */
+  imageUrlSmall?: string;
+  /** Whether the broadcast is high latency. */
+  isHighLatency?: boolean;
+  /** Broadcast language. */
+  language?: string;
+  /** Numeric media id from `media_key`. */
+  mediaId?: string;
+  /** Media key of the broadcast's video. */
+  mediaKey?: string;
+  /** Scheduled end time, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start time, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Start time, milliseconds since Unix epoch (decimal string). */
+  startMs?: string;
+  /** `NOT_STARTED`, `RUNNING`, `TIMED_OUT`, `ENDED`, `PRE_PUBLISHED` or `CANCELED`. */
+  state?: string;
+  /** Broadcast title. */
+  status?: string;
+  /** Total viewers (decimal string). */
+  totalWatched?: string;
+  /** Current viewers (decimal string). */
+  totalWatching?: string;
+  /** Id of the Post announcing the broadcast. */
+  tweetId?: string;
+  /** Owner's user id. */
+  twitterUserId?: string;
+  /** Last update time, milliseconds since Unix epoch (decimal string). */
+  updatedAtMs?: string;
+  /** Video width in pixels. */
+  width?: number;
+}
+
+
+/**
+ * Schema type for GetUserSourceResponse
+ *
+ * @public
+ */
+export interface GetUserSourceResponse {
+  data?: GetUserSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for GetUserSourceResponseData
+ *
+ * @public
+ */
+export interface GetUserSourceResponseData {
+  source: GetUserSourceResponseDataSource;
+}
+
+
+/**
+ * Schema type for GetUserSourceResponseDataSource
+ *
+ * @public
+ */
+export interface GetUserSourceResponseDataSource {
+  creationOrigin?: GetUserSourceResponseDataSourceCreationOrigin;
+  /** Creation time, ms since Unix epoch. */
+  creationTime?: number;
+  /** Source id; also the RTMP stream key. */
+  id: string;
+  /** Whether the source streams 360° video. */
+  is360?: boolean;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Owner's numeric user id. Exceeds the exact integer range of many JSON parsers. */
+  ownerId?: number;
+  /** Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source. */
+  rtmpRegion?: string;
+  /** Stream key; equal to `id`. */
+  rtmpStreamKey?: string;
+  /** RTMP ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). */
+  rtmpsUrl?: string;
+  videoService?: GetUserSourceResponseDataSourceVideoService;
+}
+
+
+/**
+ * Schema type for GetUserSourceResponseDataSourceCreationOrigin
+ *
+ * @public
+ */
+export interface GetUserSourceResponseDataSourceCreationOrigin {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
+}
+
+
+/**
+ * Schema type for GetUserSourceResponseDataSourceVideoService
+ *
+ * @public
+ */
+export interface GetUserSourceResponseDataSourceVideoService {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
 }
 
 
@@ -3898,6 +7305,32 @@ export interface GetUsersLikedPostsResponse {
  */
 export interface GetUsersListMembershipsResponse {
   data?: Array<List>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersMeFollowersResponse
+ *
+ * @public
+ */
+export interface GetUsersMeFollowersResponse {
+  data?: Array<User>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
+}
+
+
+/**
+ * Schema type for GetUsersMeFollowingResponse
+ *
+ * @public
+ */
+export interface GetUsersMeFollowingResponse {
+  data?: Array<User>;
   errors?: Array<Problem>;
   includes?: Expansions;
   meta?: { nextToken?: string; previousToken?: string; resultCount?: number; };
@@ -4092,9 +7525,9 @@ export interface GoLiveScheduledBroadcastResponse {
 export interface GoLiveScheduledBroadcastResponseData {
   /** Whether replay is enabled. */
   availableForReplay?: boolean;
-  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  /** Alphanumeric broadcast id (path `:id` for get/update/delete/live). */
   broadcastId?: string;
-  /** Optional chat permission option. */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Optional description. */
   description?: string;
@@ -4102,7 +7535,7 @@ export interface GoLiveScheduledBroadcastResponseData {
   locale?: string;
   /** When true, coordinator will not auto-publish; call POST .../live when ready. */
   manualPublish?: boolean;
-  /** Set when this occurrence belongs to a recurrence. */
+  /** Deprecated: always null for new schedules. */
   recurringScheduleId?: string;
   /** Numeric scheduler id. Required in the update request body. */
   scheduledBroadcastId?: string;
@@ -4110,11 +7543,11 @@ export interface GoLiveScheduledBroadcastResponseData {
   scheduledEndMs?: string;
   /** Scheduled start, milliseconds since Unix epoch (decimal string). */
   scheduledStartMs?: string;
-  /** Bound ingest / source id (`rtmp_stream_key`). */
+  /** Id of the bound source, as returned by GET /2/sources. Omitted when unknown. */
   sourceId?: string;
-  /** Scheduler state (Created, Scheduled, Running, …). */
+  /** Scheduler state: `Created` or `Scheduled` before start, then `Running`, `Ended`, or `Error`. */
   state?: string;
-  /** Optional telecast association. */
+  /** Deprecated: always null for new schedules. */
   telecastId?: string;
   /** Optional pre-live slate media id. */
   thumbnailMediaId?: string;
@@ -4252,11 +7685,142 @@ export interface InvalidRequestProblem {
 
 
 /**
+ * Schema type for InvalidRuleProblem
+ *
+ * @public
+ */
+export interface InvalidRuleProblem {
+  detail?: string;
+  details: Array<string>;
+  title: string;
+  type: "https://api.twitter.com/2/problems/invalid-rules";
+  value?: string;
+}
+
+
+/**
+ * Schema type for JoinCallMedia
+ *
+ * @public
+ */
+export interface JoinCallMedia {
+  audio?: JoinCallMediaAudio;
+  /** websocket (default): your agent over the media WebSocket. */
+  type?: "websocket";
+}
+
+
+/**
+ * Schema type for JoinCallMediaAudio
+ *
+ * @public
+ */
+export interface JoinCallMediaAudio {
+  /** Audio encoding on the media WebSocket (PCM16 little-endian mono). */
+  encoding?: "pcm16";
+  /** 8000, 16000, 24000 (default) or 48000. */
+  sampleRate?: number;
+}
+
+
+/**
+ * Schema type for JoinCallRequest
+ *
+ * @public
+ */
+export interface JoinCallRequest {
+  media?: JoinCallMedia;
+}
+
+
+/**
+ * Schema type for JoinCallResponse
+ *
+ * @public
+ */
+export interface JoinCallResponse {
+  data?: JoinCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for JoinCallResponseData
+ *
+ * @public
+ */
+export interface JoinCallResponseData {
+  /** immediate, or requires_approval when the host must admit the session. */
+  admission?: string;
+  call?: JoinCallResponseDataCall;
+  /** When media_token expires (RFC 3339). */
+  expiresAt?: string;
+  /** Bearer token for media_url; single use, short-lived. */
+  mediaToken?: string;
+  /** websocket. */
+  mediaType?: string;
+  /** Where to open the media WebSocket. */
+  mediaUrl?: string;
+  /** Media session id. */
+  sessionId: string;
+}
+
+
+/**
+ * Schema type for JoinCallResponseDataCall
+ *
+ * @public
+ */
+export interface JoinCallResponseDataCall {
+  /** XChat conversation the call belongs to, if any. */
+  conversationId?: string;
+  /** Creation time (RFC 3339). */
+  createdAt?: string;
+  /** X user id of the call's host. */
+  hostId?: string;
+  /** Unique identifier of the call; also its join secret. */
+  id: string;
+  /** Who may join: open (anyone with the link), closed (the host admits people), or trusted (the host's Verified Organization). */
+  joinPolicy?: string;
+  /** Link people open to join the call on X. */
+  joinUrl?: string;
+  /** People in the call right now. */
+  participantCount?: number;
+  /** Title of the call. */
+  title?: string;
+  /** Whether the authenticated user may join without asking the host. */
+  viewerMayJoin?: boolean;
+}
+
+
+/**
  * A keyword to filter on.
  *
  * @public
  */
 export type Keyword = string;
+
+
+/**
+ * Schema type for LeaveCallResponse
+ *
+ * @public
+ */
+export interface LeaveCallResponse {
+  data?: LeaveCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for LeaveCallResponseData
+ *
+ * @public
+ */
+export interface LeaveCallResponseData {
+  /** Whether the user left the call. */
+  left?: boolean;
+}
 
 
 /**
@@ -4348,6 +7912,18 @@ export interface List {
 
 
 /**
+ * Schema type for ListBroadcastsResponse
+ *
+ * @public
+ */
+export interface ListBroadcastsResponse {
+  data?: Array<Broadcast>;
+  errors?: Array<Problem>;
+  meta?: { nextToken?: string; resultCount?: number; };
+}
+
+
+/**
  * The number of users who follow this List.
  *
  * @public
@@ -4361,6 +7937,31 @@ export type ListFollowerCount = number;
  * @public
  */
 export type ListId = string;
+
+
+/**
+ * Schema type for ListLiveCategoriesResponse
+ *
+ * @public
+ */
+export interface ListLiveCategoriesResponse {
+  data?: Array<ListLiveCategoriesResponseData>;
+  errors?: Array<Problem>;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for ListLiveCategoriesResponseData
+ *
+ * @public
+ */
+export interface ListLiveCategoriesResponseData {
+  /** Category id, e.g. `gaming`. Permanent. Pass it as `live_category_id` on POST /2/broadcasts. */
+  id: string;
+  /** Display name, e.g. `Gaming`. Can change. */
+  name: string;
+}
 
 
 /**
@@ -4390,9 +7991,9 @@ export interface ListScheduledBroadcastsResponse {
 export interface ListScheduledBroadcastsResponseData {
   /** Whether replay is enabled. */
   availableForReplay?: boolean;
-  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  /** Alphanumeric broadcast id (path `:id` for get/update/delete/live). */
   broadcastId?: string;
-  /** Optional chat permission option. */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Optional description. */
   description?: string;
@@ -4400,7 +8001,7 @@ export interface ListScheduledBroadcastsResponseData {
   locale?: string;
   /** When true, coordinator will not auto-publish; call POST .../live when ready. */
   manualPublish?: boolean;
-  /** Set when this occurrence belongs to a recurrence. */
+  /** Deprecated: always null for new schedules. */
   recurringScheduleId?: string;
   /** Numeric scheduler id. Required in the update request body. */
   scheduledBroadcastId?: string;
@@ -4408,11 +8009,11 @@ export interface ListScheduledBroadcastsResponseData {
   scheduledEndMs?: string;
   /** Scheduled start, milliseconds since Unix epoch (decimal string). */
   scheduledStartMs?: string;
-  /** Bound ingest / source id (`rtmp_stream_key`). */
+  /** Id of the bound source, as returned by GET /2/sources. Omitted when unknown. */
   sourceId?: string;
-  /** Scheduler state (Created, Scheduled, Running, …). */
+  /** Scheduler state: `Created` or `Scheduled` before start, then `Running`, `Ended`, or `Error`. */
   state?: string;
-  /** Optional telecast association. */
+  /** Deprecated: always null for new schedules. */
   telecastId?: string;
   /** Optional pre-live slate media id. */
   thumbnailMediaId?: string;
@@ -4422,13 +8023,285 @@ export interface ListScheduledBroadcastsResponseData {
 
 
 /**
+ * Schema type for ListScheduledCallsResponse
+ *
+ * @public
+ */
+export interface ListScheduledCallsResponse {
+  data?: Array<ScheduledCall>;
+  errors?: Array<Problem>;
+  includes?: Expansions;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for ListSourcesResponse
+ *
+ * @public
+ */
+export interface ListSourcesResponse {
+  data?: Array<ListSourcesResponseData>;
+  errors?: Array<Problem>;
+  meta?: { resultCount?: number; };
+}
+
+
+/**
+ * Schema type for ListSourcesResponseData
+ *
+ * @public
+ */
+export interface ListSourcesResponseData {
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** Source id, 19 decimal digits; the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Not a credential: read the stream key with GET /2/sources/:id/stream_key. */
+  id: string;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Region of the ingest location serving the source: `us-east-1` or `us-west-2`. Sources created before October 31, 2026 keep the AWS region they were created in. */
+  region?: string;
+  /** Ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). Configure your encoder with this URL and the source's stream key. */
+  rtmpsUrl?: string;
+}
+
+
+/**
+ * Schema type for ListUserBroadcastsResponse
+ *
+ * @public
+ */
+export interface ListUserBroadcastsResponse {
+  data?: ListUserBroadcastsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ListUserBroadcastsResponseData
+ *
+ * @public
+ */
+export interface ListUserBroadcastsResponseData {
+  broadcasts: Array<ListUserBroadcastsResponseDataBroadcasts>;
+  nextToken?: ListUserBroadcastsResponseDataNextToken;
+}
+
+
+/**
+ * Schema type for ListUserBroadcastsResponseDataBroadcasts
+ *
+ * @public
+ */
+export interface ListUserBroadcastsResponseDataBroadcasts {
+  /** Whether a replay is available. */
+  availableForReplay?: boolean;
+  /** Broadcast id. */
+  broadcastId?: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** End time, milliseconds since Unix epoch (decimal string). */
+  endMs?: string;
+  /** Video height in pixels. */
+  height?: number;
+  /** Broadcast id; equal to `broadcast_id`. */
+  id: string;
+  /** Thumbnail URL. */
+  imageUrl?: string;
+  /** Medium thumbnail URL. */
+  imageUrlMedium?: string;
+  /** Small thumbnail URL. */
+  imageUrlSmall?: string;
+  /** Whether the broadcast is high latency. */
+  isHighLatency?: boolean;
+  /** Broadcast language. */
+  language?: string;
+  /** Numeric media id from `media_key`. */
+  mediaId?: string;
+  /** Media key of the broadcast's video. */
+  mediaKey?: string;
+  /** Scheduled end time, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start time, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Start time, milliseconds since Unix epoch (decimal string). */
+  startMs?: string;
+  /** `NOT_STARTED`, `RUNNING`, `TIMED_OUT`, `ENDED`, `PRE_PUBLISHED` or `CANCELED`. */
+  state?: string;
+  /** Broadcast title. */
+  status?: string;
+  /** Total viewers (decimal string). */
+  totalWatched?: string;
+  /** Current viewers (decimal string). */
+  totalWatching?: string;
+  /** Id of the Post announcing the broadcast. */
+  tweetId?: string;
+  /** Owner's user id. */
+  twitterUserId?: string;
+  /** Last update time, milliseconds since Unix epoch (decimal string). */
+  updatedAtMs?: string;
+  /** Video width in pixels. */
+  width?: number;
+}
+
+
+/**
+ * Schema type for ListUserBroadcastsResponseDataNextToken
+ *
+ * @public
+ */
+export interface ListUserBroadcastsResponseDataNextToken {
+  /** Pass as `pagination_token` to read the next page. */
+  offset: string;
+}
+
+
+/**
+ * Schema type for ListUserSourcesResponse
+ *
+ * @public
+ */
+export interface ListUserSourcesResponse {
+  data?: ListUserSourcesResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ListUserSourcesResponseData
+ *
+ * @public
+ */
+export interface ListUserSourcesResponseData {
+  sources: Array<ListUserSourcesResponseDataSources>;
+}
+
+
+/**
+ * Schema type for ListUserSourcesResponseDataSources
+ *
+ * @public
+ */
+export interface ListUserSourcesResponseDataSources {
+  creationOrigin?: ListUserSourcesResponseDataSourcesCreationOrigin;
+  /** Creation time, ms since Unix epoch. */
+  creationTime?: number;
+  /** Source id; also the RTMP stream key. */
+  id: string;
+  /** Whether the source streams 360° video. */
+  is360?: boolean;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Owner's numeric user id. Exceeds the exact integer range of many JSON parsers. */
+  ownerId?: number;
+  /** Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source. */
+  rtmpRegion?: string;
+  /** Stream key; equal to `id`. */
+  rtmpStreamKey?: string;
+  /** RTMP ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). */
+  rtmpsUrl?: string;
+  videoService?: ListUserSourcesResponseDataSourcesVideoService;
+}
+
+
+/**
+ * Schema type for ListUserSourcesResponseDataSourcesCreationOrigin
+ *
+ * @public
+ */
+export interface ListUserSourcesResponseDataSourcesCreationOrigin {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
+}
+
+
+/**
+ * Schema type for ListUserSourcesResponseDataSourcesVideoService
+ *
+ * @public
+ */
+export interface ListUserSourcesResponseDataSourcesVideoService {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
+}
+
+
+/**
+ * Schema type for MarkChatConversationReadActionSignatures
+ *
+ * @public
+ */
+export interface MarkChatConversationReadActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: MarkChatConversationReadActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for MarkChatConversationReadActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface MarkChatConversationReadActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<MarkChatConversationReadActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for MarkChatConversationReadActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface MarkChatConversationReadActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
  * Schema type for MarkChatConversationReadRequest
  *
  * @public
  */
 export interface MarkChatConversationReadRequest {
-  /** The sequence ID of the last message to mark as read up to. */
-  seenUntilSequenceId: string;
+  /** Signature over the read receipt (a MarkConversationReadEvent). Omit to send it unsigned. */
+  actionSignatures?: Array<MarkChatConversationReadActionSignatures>;
 }
 
 
@@ -4455,6 +8328,28 @@ export interface MarkChatConversationReadResponseData {
 
 
 /**
+ * Schema type for MarkChatConversationUnreadResponse
+ *
+ * @public
+ */
+export interface MarkChatConversationUnreadResponse {
+  data?: MarkChatConversationUnreadResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for MarkChatConversationUnreadResponseData
+ *
+ * @public
+ */
+export interface MarkChatConversationUnreadResponseData {
+  /** Whether the conversation was marked unread. */
+  success: boolean;
+}
+
+
+/**
  * Schema type for Media
  *
  * @public
@@ -4466,13 +8361,15 @@ export interface Media {
   mediaKey?: string;
   /** Nonpublic engagement metrics for the media at the time of the request. */
   nonPublicMetrics?: MediaNonPublicMetrics;
-  /** Organic nonpublic engagement metrics for the media at the time of the request. */
+  /** Lifetime organic engagement metrics for the media at the time of the request. Only available to the user who uploaded the video. */
   organicMetrics?: MediaOrganicMetrics;
   previewImageUrl?: string;
   /** Promoted nonpublic engagement metrics for the media at the time of the request. */
   promotedMetrics?: MediaPromotedMetrics;
   /** Public engagement metrics for the media at the time of the request. */
   publicMetrics?: MediaPublicMetrics;
+  /** Lifetime revenue earned by the media. Only available to the user who uploaded the video, and only to apps holding the `media.library.read` scope. */
+  revenue?: MediaRevenue;
   type?: string;
   url?: string;
   /** Each media object may have multiple display or playback variants, with different resolutions or formats. */
@@ -4540,11 +8437,15 @@ export interface MediaNonPublicMetrics {
 
 
 /**
- * Organic nonpublic engagement metrics for the media at the time of the request.
+ * Lifetime organic engagement metrics for the media at the time of the request. Only available to the user who uploaded the video.
  *
  * @public
  */
 export interface MediaOrganicMetrics {
+  /** Number of clicks on the video's call-to-action URL. */
+  ctaUrlClickCount?: number | null;
+  /** Number of clicks on the video's "watch" call to action. */
+  ctaWatchClickCount?: number | null;
   /** Number of users who started playback (0% quartile) of this video. */
   playback_0Count?: number | null;
   /** Number of users who completed playback (100% quartile) of this video. */
@@ -4555,8 +8456,10 @@ export interface MediaOrganicMetrics {
   playback_50Count?: number | null;
   /** Number of users who watched at least 75% of this video. */
   playback_75Count?: number | null;
-  /** The number of organic views of this video. Null when the backend returns quartile data without a view count. */
+  /** The number of organic views of this video. */
   viewCount?: number | null;
+  /** Total time this video has been watched, in milliseconds. */
+  watchTimeMs?: number | null;
 }
 
 
@@ -4589,6 +8492,19 @@ export interface MediaPromotedMetrics {
 export interface MediaPublicMetrics {
   /** The number of times this video has been viewed. */
   viewCount: number;
+}
+
+
+/**
+ * Lifetime revenue earned by the media. Only available to the user who uploaded the video, and only to apps holding the `media.library.read` scope.
+ *
+ * @public
+ */
+export interface MediaRevenue {
+  /** Revenue earned by this video, in micro-units (1/1,000,000) of `currency_code`. */
+  amountMicros: number;
+  /** ISO 4217 code of the currency `amount_micros` is denominated in. */
+  currencyCode: string;
 }
 
 
@@ -4685,6 +8601,178 @@ export interface MediaUploadResponseDataVideo {
  * @public
  */
 export type MediaVariants = Array<{ bitRate?: number | null; contentType?: string | null; url?: string | null; }>;
+
+
+/**
+ * Schema type for MessageRequestNotSupportedProblem
+ *
+ * @public
+ */
+export interface MessageRequestNotSupportedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/message-request-not-supported";
+}
+
+
+/**
+ * Schema type for MuteBroadcastChatUserRequest
+ *
+ * @public
+ */
+export interface MuteBroadcastChatUserRequest {
+  /** The Unix timestamp in milliseconds when the mute expires. Omit this field to mute indefinitely. */
+  endAtMs?: string;
+  /** A chat message to remove while muting the user. */
+  messageId?: string;
+  /** The user to mute. */
+  userId: string;
+}
+
+
+/**
+ * Schema type for MuteBroadcastChatUserResponse
+ *
+ * @public
+ */
+export interface MuteBroadcastChatUserResponse {
+  data?: MuteBroadcastChatUserResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for MuteBroadcastChatUserResponseData
+ *
+ * @public
+ */
+export interface MuteBroadcastChatUserResponseData {
+  /** Whether the user is muted in this broadcast chat. */
+  muted: boolean;
+}
+
+
+/**
+ * Schema type for MuteChatConversationActionSignatures
+ *
+ * @public
+ */
+export interface MuteChatConversationActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: MuteChatConversationActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for MuteChatConversationActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface MuteChatConversationActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<MuteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for MuteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface MuteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for MuteChatConversationRequest
+ *
+ * @public
+ */
+export interface MuteChatConversationRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<MuteChatConversationActionSignatures>;
+}
+
+
+/**
+ * Schema type for MuteChatConversationResponse
+ *
+ * @public
+ */
+export interface MuteChatConversationResponse {
+  data?: MuteChatConversationResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for MuteChatConversationResponseData
+ *
+ * @public
+ */
+export interface MuteChatConversationResponseData {
+  /** Whether the conversation is muted for the authenticated user. */
+  muted: boolean;
+}
+
+
+/**
+ * Schema type for MuteChatUserRequest
+ *
+ * @public
+ */
+export interface MuteChatUserRequest {
+  /** A broadcast whose host's chats the user is muted in. Required with `message_id`. */
+  broadcastId?: string;
+  /** The Unix timestamp in milliseconds when the mute expires. Omit this field to mute indefinitely. */
+  endAtMs?: string;
+  /** A chat message in `broadcast_id` to remove while muting the user. */
+  messageId?: string;
+  /** The user to mute. */
+  userId: string;
+}
+
+
+/**
+ * Schema type for MuteChatUserResponse
+ *
+ * @public
+ */
+export interface MuteChatUserResponse {
+  data?: MuteChatUserResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for MuteChatUserResponseData
+ *
+ * @public
+ */
+export interface MuteChatUserResponseData {
+  /** Whether the user is muted in this broadcast chat. */
+  muted: boolean;
+}
 
 
 /**
@@ -5317,7 +9405,7 @@ export interface PostPublicMetrics {
  *
  * @public
  */
-export type PostReferencedPosts = Array<{ id: string; type: ("retweeted" | "quoted" | "replied_to"); }>;
+export type PostReferencedPosts = Array<{ id: string; type: ("retweeted" | "quoted" | "replied_to" | (string & {})); }>;
 
 
 /**
@@ -5407,7 +9495,7 @@ export interface PostWithheld {
   /** Uppercase ISO 3166-1 alpha-2 country codes where this content is withheld. */
   countryCodes: Array<string>;
   /** Whether the withholding applies to a Post or a User. */
-  scope?: "post" | "user" | null;
+  scope?: "post" | "user" | (string & {}) | null;
 }
 
 
@@ -5426,7 +9514,7 @@ export interface PostWithheldComplianceSchema {
  *
  * @public
  */
-export type Problem = ResourceNotFoundProblem | InvalidRequestProblem | NotAuthorizedForResourceProblem | NotAuthorizedForFieldProblem | FieldUnauthorizedProblem | FieldHydrationFailureProblem | ResourceUnavailableProblem | DisallowedResourceProblem | InternalErrorProblem;
+export type Problem = ResourceNotFoundProblem | InvalidRequestProblem | NotAuthorizedForResourceProblem | NotAuthorizedForFieldProblem | FieldUnauthorizedProblem | FieldHydrationFailureProblem | ResourceUnavailableProblem | DisallowedResourceProblem | RecipientNotMessageableProblem | InternalErrorProblem | ChatPermissionsUnavailableProblem | EncryptionRequiredProblem | MessageRequestNotSupportedProblem | RecipientXchatSetupRequiredProblem | UnencryptedSendNotAllowedProblem | XchatSetupRequiredProblem | DmBadAttachmentProblem | DmBadCtaProblem | DmBadCustomProfileProblem | DmBadMediaProblem | DmBadQuickReplyProblem | DmBadUrlProblem | DmConversationNameTooLongProblem | DmConversationNotFoundProblem | DmDuplicateProblem | DmInactiveDeviceProblem | DmNotDeliveredProblem | DmNotFoundProblem | DmNotOwnerProblem | DmParticipantNotAddedProblem | DmParticipantNotFoundProblem | DmParticipantRestrictedProblem | DmParticipantUnavailableProblem | DmRateLimitedProblem | DmRecipientBlocksSenderProblem | DmRecipientCannotReceiveProblem | DmRecipientEncryptedUnavailableProblem | DmRecipientNotAcceptingProblem | DmRecipientNotFoundProblem | DmRecipientRestrictsGroupsProblem | DmRecipientUnavailableProblem | DmRequestInProgressProblem | DmSafetyLimitedProblem | DmSafetyRejectedProblem | DmSenderBlocksRecipientProblem | DmSenderDeclinedDmsProblem | DmSenderDmsClosedProblem | DmSenderEncryptedUnavailableProblem | DmSenderNotInConversationProblem | DmSenderNotPermittedProblem | DmSenderNotVerifiedProblem | DmSenderPhoneRequiredProblem | DmSenderReadOnlyProblem | DmSenderUnavailableProblem | DmTextEmptyProblem | DmTextTooLongProblem | DmTooFewParticipantsProblem | DmTooManyParticipantsProblem | DmUnsupportedMessageProblem | DuplicateRuleProblem | InvalidRuleProblem;
 
 
 /**
@@ -5451,6 +9539,8 @@ export interface PublicKey {
   publicKey?: string;
   publicKeyVersion?: string;
   signingPublicKey?: string;
+  /** ID of the user the key belongs to. Returned by Get Public Keys for Multiple Users. */
+  userId?: string;
 }
 
 
@@ -5460,6 +9550,446 @@ export interface PublicKey {
  * @public
  */
 export type PublicKeyId = string;
+
+
+/**
+ * Schema type for RecipientNotMessageableProblem
+ *
+ * @public
+ */
+export interface RecipientNotMessageableProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/recipient-not-messageable";
+}
+
+
+/**
+ * Schema type for RecipientXchatSetupRequiredProblem
+ *
+ * @public
+ */
+export interface RecipientXchatSetupRequiredProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/recipient-xchat-setup-required";
+}
+
+
+/**
+ * Schema type for RejectChatGroupAdminRequestActionSignatures
+ *
+ * @public
+ */
+export interface RejectChatGroupAdminRequestActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: RejectChatGroupAdminRequestActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for RejectChatGroupAdminRequestActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface RejectChatGroupAdminRequestActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<RejectChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RejectChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface RejectChatGroupAdminRequestActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RejectChatGroupAdminRequestRequest
+ *
+ * @public
+ */
+export interface RejectChatGroupAdminRequestRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<RejectChatGroupAdminRequestActionSignatures>;
+}
+
+
+/**
+ * Schema type for RejectChatGroupAdminRequestResponse
+ *
+ * @public
+ */
+export interface RejectChatGroupAdminRequestResponse {
+  data?: RejectChatGroupAdminRequestResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RejectChatGroupAdminRequestResponseData
+ *
+ * @public
+ */
+export interface RejectChatGroupAdminRequestResponseData {
+  /** Whether the admin request was rejected. */
+  rejected: boolean;
+}
+
+
+/**
+ * Schema type for RejectChatGroupJoinRequestsActionSignatures
+ *
+ * @public
+ */
+export interface RejectChatGroupJoinRequestsActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: RejectChatGroupJoinRequestsActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for RejectChatGroupJoinRequestsActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface RejectChatGroupJoinRequestsActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<RejectChatGroupJoinRequestsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RejectChatGroupJoinRequestsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface RejectChatGroupJoinRequestsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RejectChatGroupJoinRequestsRequest
+ *
+ * @public
+ */
+export interface RejectChatGroupJoinRequestsRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<RejectChatGroupJoinRequestsActionSignatures>;
+  /** List of user IDs whose join requests to reject. */
+  userIds: Array<string>;
+}
+
+
+/**
+ * Schema type for RejectChatGroupJoinRequestsResponse
+ *
+ * @public
+ */
+export interface RejectChatGroupJoinRequestsResponse {
+  data?: RejectChatGroupJoinRequestsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RejectChatGroupJoinRequestsResponseData
+ *
+ * @public
+ */
+export interface RejectChatGroupJoinRequestsResponseData {
+  /** Whether the join requests were rejected. */
+  rejected: boolean;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupAdminsActionSignatures
+ *
+ * @public
+ */
+export interface RemoveChatGroupAdminsActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: RemoveChatGroupAdminsActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupAdminsActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface RemoveChatGroupAdminsActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<RemoveChatGroupAdminsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupAdminsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface RemoveChatGroupAdminsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupAdminsRequest
+ *
+ * @public
+ */
+export interface RemoveChatGroupAdminsRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<RemoveChatGroupAdminsActionSignatures>;
+  /** List of admin user IDs to revoke admin rights from. */
+  userIds: Array<string>;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupAdminsResponse
+ *
+ * @public
+ */
+export interface RemoveChatGroupAdminsResponse {
+  data?: RemoveChatGroupAdminsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupAdminsResponseData
+ *
+ * @public
+ */
+export interface RemoveChatGroupAdminsResponseData {
+  /** Whether the admins were removed. */
+  removed: boolean;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersActionSignatures
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: RemoveChatGroupMembersActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<RemoveChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersGroupKeyRotationData
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersGroupKeyRotationData {
+  /** Base64-encoded key rotation payload. */
+  base64EncodedKeyRotation?: string;
+  /** Version of the new rotated conversation key. */
+  conversationKeyVersion?: string;
+  /** Encrypted conversation keys for each participant. */
+  conversationParticipantKeys?: Array<RemoveChatGroupMembersGroupKeyRotationDataConversationParticipantKeys>;
+  /** Re-encrypted group avatar with new conversation key. */
+  encryptedAvatar?: string;
+  /** Re-encrypted group description with new conversation key. */
+  encryptedDescription?: string;
+  /** Re-encrypted group title with new conversation key. */
+  encryptedTitle?: string;
+  /** Message keys re-encrypted with the rotated conversation key. */
+  rotatedPmkBundle?: Array<RemoveChatGroupMembersGroupKeyRotationDataRotatedPmkBundle>;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersGroupKeyRotationDataConversationParticipantKeys
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersGroupKeyRotationDataConversationParticipantKeys {
+  /** Conversation key encrypted with this participant's public key. */
+  encryptedConversationKey: string;
+  /** Version of the participant's public key used for encryption. */
+  publicKeyVersion: string;
+  /** Participant user ID. */
+  userId: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersGroupKeyRotationDataRotatedPmkBundle
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersGroupKeyRotationDataRotatedPmkBundle {
+  /** Base64-encoded message key, encrypted with the new conversation key. */
+  base64EncodedEncryptedPmk: string;
+  /** Sequence ID of the message the key belongs to. */
+  messageSequenceId: string;
+  /** Sequence ID of the key's origin event. */
+  pmeSequenceId?: string;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersRequest
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<RemoveChatGroupMembersActionSignatures>;
+  groupKeyRotationData?: RemoveChatGroupMembersGroupKeyRotationData;
+  /** List of user IDs to remove from the group conversation. */
+  userIds: Array<string>;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersResponse
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersResponse {
+  data?: RemoveChatGroupMembersResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RemoveChatGroupMembersResponseData
+ *
+ * @public
+ */
+export interface RemoveChatGroupMembersResponseData {
+  /** Whether the members were removed. */
+  removed: boolean;
+}
+
+
+/**
+ * Schema type for RemoveChatModeratorResponse
+ *
+ * @public
+ */
+export interface RemoveChatModeratorResponse {
+  data?: RemoveChatModeratorResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RemoveChatModeratorResponseData
+ *
+ * @public
+ */
+export interface RemoveChatModeratorResponseData {
+  /** The user IDs currently appointed as chat moderators. */
+  moderatorUserIds: Array<string>;
+}
 
 
 /**
@@ -5481,6 +10011,36 @@ export interface RemoveListsMemberByUserIdResponse {
 export interface RemoveListsMemberByUserIdResponseData {
   /** Indicates whether the user is a member of the List. */
   isMember: boolean;
+}
+
+
+/**
+ * Schema type for RemoveMediaFromLibraryRequest
+ *
+ * @public
+ */
+export type RemoveMediaFromLibraryRequest = Record<string, any>;
+
+
+/**
+ * Schema type for RemoveMediaFromLibraryResponse
+ *
+ * @public
+ */
+export interface RemoveMediaFromLibraryResponse {
+  data?: RemoveMediaFromLibraryResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RemoveMediaFromLibraryResponseData
+ *
+ * @public
+ */
+export interface RemoveMediaFromLibraryResponseData {
+  /** Whether the library item was removed. */
+  deleted: boolean;
 }
 
 
@@ -5551,6 +10111,108 @@ export interface ResourceUnavailableProblem {
 
 
 /**
+ * Schema type for RespondToScheduledCallRequest
+ *
+ * @public
+ */
+export interface RespondToScheduledCallRequest {
+  /** Start of the occurrence that scope this or this_and_following refers to (RFC 3339). */
+  occurrenceStartTime?: string;
+  /** The answer to the invitation. */
+  response: "accepted" | "declined" | "tentative";
+  /** Which occurrences of a recurring call: all (the default without occurrence_start_time), this (the default with it), or this_and_following. */
+  scope?: "all" | "this" | "this_and_following";
+}
+
+
+/**
+ * Schema type for RespondToScheduledCallResponse
+ *
+ * @public
+ */
+export interface RespondToScheduledCallResponse {
+  data?: RespondToScheduledCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RespondToScheduledCallResponseData
+ *
+ * @public
+ */
+export interface RespondToScheduledCallResponseData {
+  /** The answer now on the invitation. */
+  response?: string;
+}
+
+
+/**
+ * Schema type for RevokeBotTokenResponse
+ *
+ * @public
+ */
+export interface RevokeBotTokenResponse {
+  data?: RevokeBotTokenResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RevokeBotTokenResponseData
+ *
+ * @public
+ */
+export interface RevokeBotTokenResponseData {
+  /** Whether the bot's token was revoked. */
+  revoked: boolean;
+}
+
+
+/**
+ * Schema type for RotateBotTokenRequest
+ *
+ * @public
+ */
+export interface RotateBotTokenRequest {
+  /** Scopes for the new bearer token. Broadcast moderation additionally supports broadcast.read and broadcast.write. Defaults to the XChat scope set (dm.read, dm.write, tweet.read, users.read, media.write). */
+  scopes?: Array<string>;
+}
+
+
+/**
+ * Schema type for RotateBotTokenResponse
+ *
+ * @public
+ */
+export interface RotateBotTokenResponse {
+  data?: RotateBotTokenResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for RotateBotTokenResponseData
+ *
+ * @public
+ */
+export interface RotateBotTokenResponseData {
+  /** Unique identifier of the bot's User account. */
+  id: string;
+  /** The bot's display name. May be absent for an org-only bot. */
+  name?: string;
+  /** Scopes granted to the new bearer token. */
+  scopes?: Array<string>;
+  /** The bot's new bearer token. Returned exactly once; store it securely. Every previously issued token for this bot is invalidated. */
+  token: string;
+  /** Expiry of the new bearer token, in epoch milliseconds. */
+  tokenExpiresAtMs?: number;
+  /** The bot's X handle (screen name). May be absent for an org-only bot. */
+  username?: string;
+}
+
+
+/**
  * Unique identifier of this rule.
  *
  * @public
@@ -5600,6 +10262,137 @@ export interface RulesCountClientAppRulesCount {
   /** Number of rules configured for the client application. */
   ruleCount: number;
 }
+
+
+/**
+ * Schema type for ScheduleCallRequest
+ *
+ * @public
+ */
+export interface ScheduleCallRequest {
+  /** What the call is about. */
+  description?: string;
+  /** How long the call lasts, in minutes. Defaults to 30; at most 31 days. */
+  durationMinutes?: number;
+  /** X user ids of the people to invite. */
+  inviteeIds?: Array<string>;
+  /** Whether invitees get an email about the call. Defaults to true. */
+  notifyInvitees?: boolean;
+  /** RFC 5545 RRULE to repeat the call by, such as FREQ=WEEKLY;BYDAY=MO; the RRULE: prefix is optional. */
+  recurrence?: string;
+  /** When the call starts (RFC 3339); not in the past. */
+  startTime: string;
+  /** IANA time zone the recurrence follows, such as America/Los_Angeles. */
+  timeZone?: string;
+  /** Title invitees see. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for ScheduleCallResponse
+ *
+ * @public
+ */
+export interface ScheduleCallResponse {
+  data?: ScheduleCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for ScheduleCallResponseData
+ *
+ * @public
+ */
+export interface ScheduleCallResponseData {
+  /** Where the call lives: x (X Calls), or outlook for a Microsoft Outlook calendar the user linked to X, whose calls are changed there. */
+  calendar?: string;
+  /** The X call people join; also its join secret. */
+  callId?: string;
+  /** What the call is about. */
+  description?: string;
+  /** End of this occurrence (RFC 3339). */
+  endTime?: string;
+  /** Unique identifier of the scheduled call: what PUT, DELETE and rsvp take. Calls on linked calendars have none. */
+  id?: string;
+  /** Everyone invited, except the organizer. Not set for linked calendars. */
+  invitees?: Array<ScheduleCallResponseDataInvitees>;
+  /** Link people open to join the call on X. */
+  joinUrl?: string;
+  /** For a recurring call, this occurrence's original start (RFC 3339): pass it as occurrence_start_time to change, cancel or answer just this occurrence. */
+  occurrenceStartTime?: string;
+  /** X user id of the call's organizer. */
+  organizerId?: string;
+  /** RFC 5545 RRULE the call repeats by, such as FREQ=WEEKLY;BYDAY=MO. */
+  recurrence?: string;
+  /** Start of this occurrence (RFC 3339). */
+  startTime?: string;
+  /** scheduled, or cancelled for a cancelled occurrence. */
+  status?: string;
+  /** IANA time zone the recurrence follows. */
+  timeZone?: string;
+  /** Title of the call. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for ScheduleCallResponseDataInvitees
+ *
+ * @public
+ */
+export interface ScheduleCallResponseDataInvitees {
+  /** X user id of the invitee. */
+  id?: string;
+  /** accepted, declined, tentative, or none for no answer yet. */
+  response?: string;
+}
+
+
+/**
+ * Schema type for ScheduledCall
+ *
+ * @public
+ */
+export interface ScheduledCall {
+  /** Where the call lives: x (X Calls), or outlook for a Microsoft Outlook calendar the user linked to X, whose calls are changed there. */
+  calendar?: string;
+  /** The X call people join; also its join secret. */
+  callId?: string;
+  /** What the call is about. */
+  description?: string;
+  /** End of this occurrence (RFC 3339). */
+  endTime?: string;
+  /** Unique identifier of the scheduled call: what PUT, DELETE and rsvp take. Calls on linked calendars have none. */
+  id?: string;
+  /** Everyone invited, except the organizer. Not set for linked calendars. */
+  invitees?: ScheduledCallInvitees;
+  /** Link people open to join the call on X. */
+  joinUrl?: string;
+  /** For a recurring call, this occurrence's original start (RFC 3339): pass it as occurrence_start_time to change, cancel or answer just this occurrence. */
+  occurrenceStartTime?: string;
+  /** X user id of the call's organizer. */
+  organizerId?: string;
+  /** RFC 5545 RRULE the call repeats by, such as FREQ=WEEKLY;BYDAY=MO. */
+  recurrence?: string;
+  /** Start of this occurrence (RFC 3339). */
+  startTime?: string;
+  /** scheduled, or cancelled for a cancelled occurrence. */
+  status?: string;
+  /** IANA time zone the recurrence follows. */
+  timeZone?: string;
+  /** Title of the call. */
+  title?: string;
+}
+
+
+/**
+ * Everyone invited, except the organizer. Not set for linked calendars.
+ *
+ * @public
+ */
+export type ScheduledCallInvitees = Array<{ id: string; response: string; }>;
 
 
 /**
@@ -5709,6 +10502,10 @@ export interface SearchUsersResponse {
  * @public
  */
 export interface SendBroadcastChatRequest {
+  /** The platform this message was relayed from, shown as that platform's icon next to the message: `youtube`, `twitch`, `kick`, `facebook`, `rumble`, `tiktok` or `instagram`. Only apps approved for chat relay may set it. */
+  relaySource?: string;
+  /** Message id to reply to, returned as timestamp when sent. */
+  replyTo?: string;
   /** The chat message text. */
   text: string;
 }
@@ -5739,19 +10536,71 @@ export interface SendBroadcastChatResponseData {
 
 
 /**
- * Schema type for SendChatMessageRequest
+ * Schema type for SendChatMessageContent
+ *
+ * @public
+ */
+export interface SendChatMessageContent {
+  message?: SendChatMessageContentMessage;
+  reactionAdd?: SendChatMessageContentReactionAdd;
+  reactionRemove?: SendChatMessageContentReactionRemove;
+}
+
+
+/**
+ * Schema type for SendChatMessageContentMessage
+ *
+ * @public
+ */
+export interface SendChatMessageContentMessage {
+  /** Text of the message. */
+  text: string;
+}
+
+
+/**
+ * Schema type for SendChatMessageContentReactionAdd
+ *
+ * @public
+ */
+export interface SendChatMessageContentReactionAdd {
+  /** Emoji of the reaction. */
+  emoji: string;
+  /** ID of the message event the reaction is on. */
+  eventId: string;
+}
+
+
+/**
+ * Schema type for SendChatMessageContentReactionRemove
+ *
+ * @public
+ */
+export interface SendChatMessageContentReactionRemove {
+  /** Emoji of the reaction. */
+  emoji: string;
+  /** ID of the message event the reaction is on. */
+  eventId: string;
+}
+
+
+/**
+ * At least one of `encoded_message_create_event`, `content` is required.
  *
  * @public
  */
 export interface SendChatMessageRequest {
+  content?: SendChatMessageContent;
   /** Optional conversation token. */
   conversationToken?: string;
-  /** Base64-encoded Thrift MessageCreateEvent containing encrypted message contents. */
-  encodedMessageCreateEvent: string;
+  /** Default. The end-to-end encrypted message: a base64 Thrift MessageCreateEvent from the Chat XDK. */
+  encodedMessageCreateEvent?: string;
   /** Base64-encoded Thrift MessageEventSignature for message verification. */
   encodedMessageEventSignature?: string;
   /** Unique identifier for this message. */
   messageId: string;
+  /** Version of the Chat XDK that produced the payload. */
+  xdkVersion?: string;
 }
 
 
@@ -6041,6 +10890,110 @@ export interface Trend {
 
 
 /**
+ * Schema type for TrendLocation
+ *
+ * @public
+ */
+export interface TrendLocation {
+  /** The country the location is in. Omitted for a location that is not in one country, such as Worldwide. */
+  country?: string;
+  /** The two-letter code of the location's country, such as `US`. Omitted when `country` is. */
+  countryCode?: string;
+  /** The location's name. */
+  name?: string;
+  /** The WOEID of the location that contains this one, such as a town's country. Omitted for a location with no parent. */
+  parentId?: number;
+  /** The kind of place: `town`, `country`, or `supername` (Worldwide). Omitted for a location whose kind is not known. */
+  placeType?: string;
+  /** The location's WOEID. Pass it to `GET /2/trends/by/woeid/{woeid}`. */
+  woeid?: number;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationActionSignatures
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UnarchiveChatConversationActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UnarchiveChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationRequest
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<UnarchiveChatConversationActionSignatures>;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationResponse
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationResponse {
+  data?: UnarchiveChatConversationResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationResponseData
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationResponseData {
+  /** Whether the conversation is archived for the authenticated user. */
+  archived: boolean;
+}
+
+
+/**
  * Schema type for UnblockUsersDmsResponse
  *
  * @public
@@ -6059,6 +11012,19 @@ export interface UnblockUsersDmsResponse {
 export interface UnblockUsersDmsResponseData {
   /** Indicates whether the target user is DM-blocked. */
   blocked: boolean;
+}
+
+
+/**
+ * Schema type for UnencryptedSendNotAllowedProblem
+ *
+ * @public
+ */
+export interface UnencryptedSendNotAllowedProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/unencrypted-send-not-allowed";
 }
 
 
@@ -6137,6 +11103,133 @@ export interface UnlikePostResponse {
 export interface UnlikePostResponseData {
   /** Whether the Post is liked. */
   liked: boolean;
+}
+
+
+/**
+ * Schema type for UnmuteBroadcastChatUserResponse
+ *
+ * @public
+ */
+export interface UnmuteBroadcastChatUserResponse {
+  data?: UnmuteBroadcastChatUserResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UnmuteBroadcastChatUserResponseData
+ *
+ * @public
+ */
+export interface UnmuteBroadcastChatUserResponseData {
+  /** Whether the user is muted in this broadcast chat. */
+  muted: boolean;
+}
+
+
+/**
+ * Schema type for UnmuteChatConversationActionSignatures
+ *
+ * @public
+ */
+export interface UnmuteChatConversationActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UnmuteChatConversationActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UnmuteChatConversationActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UnmuteChatConversationActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UnmuteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnmuteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UnmuteChatConversationActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnmuteChatConversationRequest
+ *
+ * @public
+ */
+export interface UnmuteChatConversationRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<UnmuteChatConversationActionSignatures>;
+}
+
+
+/**
+ * Schema type for UnmuteChatConversationResponse
+ *
+ * @public
+ */
+export interface UnmuteChatConversationResponse {
+  data?: UnmuteChatConversationResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UnmuteChatConversationResponseData
+ *
+ * @public
+ */
+export interface UnmuteChatConversationResponseData {
+  /** Whether the conversation is muted for the authenticated user. */
+  muted: boolean;
+}
+
+
+/**
+ * Schema type for UnmuteChatUserResponse
+ *
+ * @public
+ */
+export interface UnmuteChatUserResponse {
+  data?: UnmuteChatUserResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UnmuteChatUserResponseData
+ *
+ * @public
+ */
+export interface UnmuteChatUserResponseData {
+  /** Whether the user is muted in this broadcast chat. */
+  muted: boolean;
 }
 
 
@@ -6252,6 +11345,8 @@ export interface UpdateActivitySubscriptionResponseDataSubscription {
   createdAt?: string;
   /** Activity event type in dot notation. */
   eventType?: string;
+  /** Subscription expiration time. */
+  expiresAt?: string;
   filter?: UpdateActivitySubscriptionResponseDataSubscriptionFilter;
   /** Unique identifier of the subscription. */
   subscriptionId?: string;
@@ -6274,8 +11369,708 @@ export interface UpdateActivitySubscriptionResponseDataSubscriptionFilter {
   direction?: string;
   /** Optional keyword filter. */
   keyword?: string;
+  /** Event-specific string predicates applied to the subscription. */
+  qualifiers?: Record<string, any>;
   /** User the subscription is scoped to. */
   userId?: string;
+}
+
+
+/**
+ * Schema type for UpdateBotRequest
+ *
+ * @public
+ */
+export interface UpdateBotRequest {
+  /** New display name. */
+  displayName?: string;
+  /** Who may send the bot Direct Messages: everyone, or premium for verified senders only. Premium isn't meant for org-only bots, since everyone in an org-only bot's developer account should be able to message it, verified or not; requesting premium for one may be refused with a 400. The no_one value is deprecated and kept only so bots that already use it can keep it; choosing it for any other bot may be refused with a 400. */
+  dmPermission?: "everyone" | "premium" | "no_one";
+  /** New handle (X screen name): 5-15 characters, letters, numbers, or underscores. */
+  handle?: string;
+}
+
+
+/**
+ * Schema type for UpdateBotResponse
+ *
+ * @public
+ */
+export interface UpdateBotResponse {
+  data?: UpdateBotResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateBotResponseData
+ *
+ * @public
+ */
+export interface UpdateBotResponseData {
+  /** Whether the bot was updated. */
+  updated: boolean;
+}
+
+
+/**
+ * Schema type for UpdateBroadcastRequest
+ *
+ * @public
+ */
+export interface UpdateBroadcastRequest {
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** New live category, e.g. `gaming`. Ids come from GET /2/broadcasts/categories; an unknown id is a 400. An empty string removes the broadcast's category. */
+  liveCategoryId?: string;
+  /** New broadcast title. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for UpdateBroadcastResponse
+ *
+ * @public
+ */
+export interface UpdateBroadcastResponse {
+  data?: UpdateBroadcastResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateBroadcastResponseData
+ *
+ * @public
+ */
+export interface UpdateBroadcastResponseData {
+  /** Broadcast id; the same as `id`. */
+  broadcastId: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** Broadcast id. */
+  id: string;
+  /** Broadcast language. */
+  language?: string;
+  /** The broadcast's live category. Missing when it has none. */
+  liveCategoryId?: string;
+  /** Media key of the broadcast. */
+  mediaKey?: string;
+  /** The broadcast's watch page. */
+  shareUrl: string;
+  /** Start time, milliseconds since Unix epoch (decimal string). */
+  startMs?: string;
+  /** Broadcast state, `RUNNING` once live. */
+  state: string;
+  /** Broadcast title. */
+  title?: string;
+  /** Id of the Post announcing the broadcast. Missing when the Post hasn't been created yet, was suppressed with `should_not_tweet`, or could not be created. */
+  tweetId?: string;
+}
+
+
+/**
+ * Schema type for UpdateBroadcastStateRequest
+ *
+ * @public
+ */
+export interface UpdateBroadcastStateRequest {
+  /** Not allowed with `END`. */
+  chatOption?: number;
+  /** Not allowed with `END`. */
+  locale?: string;
+  /** Not allowed with `END`. */
+  shouldNotTweet?: boolean;
+  /** `END`. `PUBLISH` is not supported. */
+  state: string;
+  /** Not allowed with `END`. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for UpdateBroadcastStateResponse
+ *
+ * @public
+ */
+export interface UpdateBroadcastStateResponse {
+  data?: UpdateBroadcastStateResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateBroadcastStateResponseData
+ *
+ * @public
+ */
+export interface UpdateBroadcastStateResponseData {
+  /** Broadcast id. */
+  id: string;
+  /** Always `ENDED`. */
+  state: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationMessageTtlActionSignatures
+ *
+ * @public
+ */
+export interface UpdateChatConversationMessageTtlActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UpdateChatConversationMessageTtlActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationMessageTtlActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UpdateChatConversationMessageTtlActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UpdateChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UpdateChatConversationMessageTtlActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationMessageTtlRequest
+ *
+ * @public
+ */
+export interface UpdateChatConversationMessageTtlRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<UpdateChatConversationMessageTtlActionSignatures>;
+  /** How long new messages last, in milliseconds. */
+  messageTtlMs: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationMessageTtlResponse
+ *
+ * @public
+ */
+export interface UpdateChatConversationMessageTtlResponse {
+  data?: UpdateChatConversationMessageTtlResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationMessageTtlResponseData
+ *
+ * @public
+ */
+export interface UpdateChatConversationMessageTtlResponseData {
+  /** Whether the message lifetime was set. */
+  updated: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureBlockingActionSignatures
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureBlockingActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UpdateChatConversationScreenCaptureBlockingActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureBlockingActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureBlockingActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UpdateChatConversationScreenCaptureBlockingActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureBlockingActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureBlockingActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureDetectionActionSignatures
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureDetectionActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UpdateChatConversationScreenCaptureDetectionActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureDetectionActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureDetectionActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UpdateChatConversationScreenCaptureDetectionActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureDetectionActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureDetectionActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * At least one of `blocking`, `detection` is required.
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureRequest {
+  /** Whether participants are prevented from taking screenshots. */
+  blocking?: boolean;
+  /** Signatures for the screenshot blocking change, forwarded in the order they are sent. */
+  blockingActionSignatures?: Array<UpdateChatConversationScreenCaptureBlockingActionSignatures>;
+  /** Whether participants are notified when someone takes a screenshot. */
+  detection?: boolean;
+  /** Signatures for the screenshot detection change, forwarded in the order they are sent. */
+  detectionActionSignatures?: Array<UpdateChatConversationScreenCaptureDetectionActionSignatures>;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureResponse
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureResponse {
+  data?: UpdateChatConversationScreenCaptureResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateChatConversationScreenCaptureResponseData
+ *
+ * @public
+ */
+export interface UpdateChatConversationScreenCaptureResponseData {
+  /** The screenshot blocking setting, when changed. */
+  blocking?: boolean;
+  /** The screenshot detection setting, when changed. */
+  detection?: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupActionSignatures
+ *
+ * @public
+ */
+export interface UpdateChatGroupActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UpdateChatGroupActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UpdateChatGroupActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UpdateChatGroupActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UpdateChatGroupActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupAdminSettingsActionSignatures
+ *
+ * @public
+ */
+export interface UpdateChatGroupAdminSettingsActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UpdateChatGroupAdminSettingsActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupAdminSettingsActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UpdateChatGroupAdminSettingsActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UpdateChatGroupAdminSettingsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupAdminSettingsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UpdateChatGroupAdminSettingsActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * At least one of `add_member`, `edit_group_info`, `send_message`, `start_call`, `edit_message_ttl`, `block_screen_capture` is required.
+ *
+ * @public
+ */
+export interface UpdateChatGroupAdminSettingsRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<UpdateChatGroupAdminSettingsActionSignatures>;
+  /** When true, only admins can add members. */
+  addMember?: boolean;
+  /** When true, only admins can change screen capture blocking. Through the API, only admins can change screen capture in a group, whatever this setting says. */
+  blockScreenCapture?: boolean;
+  /** When true, only admins can edit the group name, avatar, and description. */
+  editGroupInfo?: boolean;
+  /** When true, only admins can change the disappearing-message timer. */
+  editMessageTtl?: boolean;
+  /** When true, only admins can send messages. */
+  sendMessage?: boolean;
+  /** When true, only admins can start calls. */
+  startCall?: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupAdminSettingsResponse
+ *
+ * @public
+ */
+export interface UpdateChatGroupAdminSettingsResponse {
+  data?: UpdateChatGroupAdminSettingsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupAdminSettingsResponseData
+ *
+ * @public
+ */
+export interface UpdateChatGroupAdminSettingsResponseData {
+  /** Whether the admin settings were updated. */
+  updated: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupConversationParticipantKeys
+ *
+ * @public
+ */
+export interface UpdateChatGroupConversationParticipantKeys {
+  /** Conversation key encrypted with this participant's public key. */
+  encryptedConversationKey: string;
+  /** Version of the participant's public key used for encryption. */
+  publicKeyVersion: string;
+  /** Participant user ID. */
+  userId: string;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupRequest
+ *
+ * @public
+ */
+export interface UpdateChatGroupRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<UpdateChatGroupActionSignatures>;
+  /** Base64-encoded key rotation payload. */
+  base64EncodedKeyRotation?: string;
+  /** Version of the conversation key the values are encrypted with. */
+  conversationKeyVersion: string;
+  /** Encrypted conversation keys for each participant. */
+  conversationParticipantKeys?: Array<UpdateChatGroupConversationParticipantKeys>;
+  /** Encrypted group avatar URL. */
+  groupAvatarUrl?: string;
+  /** Encrypted group description. */
+  groupDescription?: string;
+  /** Encrypted group name. */
+  groupName?: string;
+  /** The group values this request changes. */
+  modifiedFields: Array<"group_name" | "group_avatar_url" | "group_description">;
+  /** Message keys re-encrypted with the rotated conversation key. */
+  rotatedPmkBundle?: Array<UpdateChatGroupRotatedPmkBundle>;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupResponse
+ *
+ * @public
+ */
+export interface UpdateChatGroupResponse {
+  data?: UpdateChatGroupResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupResponseData
+ *
+ * @public
+ */
+export interface UpdateChatGroupResponseData {
+  /** Sequence ID of the key change, when the edit rotated the key. */
+  conversationKeyChangeSequenceId?: string;
+  /** Whether the group was updated. */
+  updated: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatGroupRotatedPmkBundle
+ *
+ * @public
+ */
+export interface UpdateChatGroupRotatedPmkBundle {
+  /** Base64-encoded message key, encrypted with the new conversation key. */
+  base64EncodedEncryptedPmk: string;
+  /** Sequence ID of the message the key belongs to. */
+  messageSequenceId: string;
+  /** Sequence ID of the key's origin event. */
+  pmeSequenceId?: string;
+}
+
+
+/**
+ * Schema type for UpdateChatSettingsAvSettings
+ *
+ * @public
+ */
+export interface UpdateChatSettingsAvSettings {
+  avCallPermissions?: UpdateChatSettingsAvSettingsAvCallPermissions;
+  /** Whether audio and video calls are enabled. */
+  hasAvCallsEnabled?: boolean;
+  /** Whether enhanced call privacy is enabled. */
+  hasEnhancedCallPrivacyEnabled?: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatSettingsAvSettingsAvCallPermissions
+ *
+ * @public
+ */
+export interface UpdateChatSettingsAvSettingsAvCallPermissions {
+  /** Whether the user accepts calls from address-book contacts. */
+  acceptCallsFromAddressbook?: boolean;
+  /** Whether the user accepts calls from anyone. */
+  acceptCallsFromEveryone?: boolean;
+  /** Whether the user accepts calls from accounts they follow. */
+  acceptCallsFromFollowing?: boolean;
+  /** Whether the user accepts calls from verified accounts. */
+  acceptCallsFromVerified?: boolean;
+}
+
+
+/**
+ * At least one of `allow_dms_from`, `always_allow_dms_from_subscribers`, `dm_quality_filter`, `dm_receipt_settings`, `av_settings` is required.
+ *
+ * @public
+ */
+export interface UpdateChatSettingsRequest {
+  /** Who can send the user messages: `all` (anyone), `verified` (verified accounts only), or `following` (accounts the user follows). A bot may get a 400 for choosing `following` when it doesn't already have it, and an org-only bot for choosing `verified`. */
+  allowDmsFrom?: "all" | "verified" | "following";
+  /** Whether the user's subscribers can always message them regardless of allow_dms_from. */
+  alwaysAllowDmsFromSubscribers?: boolean;
+  avSettings?: UpdateChatSettingsAvSettings;
+  /** Low-quality message request filter: `enabled` (low-quality requests go to a separate folder) or `disabled` (all requests stay in the main inbox). */
+  dmQualityFilter?: "enabled" | "disabled";
+  /** Read receipts: `all_enabled` (send and receive read receipts) or `all_disabled` (neither). */
+  dmReceiptSettings?: "all_enabled" | "all_disabled";
+}
+
+
+/**
+ * Schema type for UpdateChatSettingsResponse
+ *
+ * @public
+ */
+export interface UpdateChatSettingsResponse {
+  data?: UpdateChatSettingsResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateChatSettingsResponseData
+ *
+ * @public
+ */
+export interface UpdateChatSettingsResponseData {
+  /** Who can send the user messages: `all` (anyone), `verified` (verified accounts only), or `following` (accounts the user follows). A bot may get a 400 for choosing `following` when it doesn't already have it, and an org-only bot for choosing `verified`. */
+  allowDmsFrom?: "all" | "verified" | "following" | (string & {});
+  /** Whether the user's subscribers can always message them regardless of allow_dms_from. */
+  alwaysAllowDmsFromSubscribers?: boolean;
+  avSettings?: UpdateChatSettingsResponseDataAvSettings;
+  /** Low-quality message request filter: `enabled` (low-quality requests go to a separate folder) or `disabled` (all requests stay in the main inbox). */
+  dmQualityFilter?: "enabled" | "disabled" | (string & {});
+  /** Read receipts: `all_enabled` (send and receive read receipts) or `all_disabled` (neither). */
+  dmReceiptSettings?: "all_enabled" | "all_disabled" | (string & {});
+}
+
+
+/**
+ * Schema type for UpdateChatSettingsResponseDataAvSettings
+ *
+ * @public
+ */
+export interface UpdateChatSettingsResponseDataAvSettings {
+  avCallPermissions?: UpdateChatSettingsResponseDataAvSettingsAvCallPermissions;
+  /** Whether audio and video calls are enabled. */
+  hasAvCallsEnabled?: boolean;
+  /** Whether enhanced call privacy is enabled. */
+  hasEnhancedCallPrivacyEnabled?: boolean;
+}
+
+
+/**
+ * Schema type for UpdateChatSettingsResponseDataAvSettingsAvCallPermissions
+ *
+ * @public
+ */
+export interface UpdateChatSettingsResponseDataAvSettingsAvCallPermissions {
+  /** Whether the user accepts calls from address-book contacts. */
+  acceptCallsFromAddressbook?: boolean;
+  /** Whether the user accepts calls from anyone. */
+  acceptCallsFromEveryone?: boolean;
+  /** Whether the user accepts calls from accounts they follow. */
+  acceptCallsFromFollowing?: boolean;
+  /** Whether the user accepts calls from verified accounts. */
+  acceptCallsFromVerified?: boolean;
 }
 
 
@@ -6317,6 +12112,67 @@ export interface UpdateListsResponseData {
 
 
 /**
+ * Schema type for UpdateMediaInLibraryMonetization
+ *
+ * @public
+ */
+export interface UpdateMediaInLibraryMonetization {
+  /** ISO 3166-1 alpha-2 codes of the only countries the video is monetized in. Omit to monetize everywhere. */
+  allowedCountries?: Array<string>;
+  /** Advertiser categories (from the categories endpoint) whose ads may not run against the video. */
+  blockedAdvertiserCategoryIds?: Array<number>;
+  /** Advertiser account ids whose ads may not run against the video. */
+  blockedAdvertiserIds?: Array<string>;
+  /** Whether ads may run against the video. Requires the account to be enrolled in video monetization. */
+  enabled?: boolean;
+  /** Amplify program to monetize the video through, instead of `video_category_ids`. */
+  programId?: string;
+  /** Video category ids (from the categories endpoint) describing the content; at most one when creating. Required when enabled, unless `program_id` is set. */
+  videoCategoryIds?: Array<number>;
+}
+
+
+/**
+ * Schema type for UpdateMediaInLibraryRequest
+ *
+ * @public
+ */
+export interface UpdateMediaInLibraryRequest {
+  /** Description shown with the video in the player card. */
+  description?: string;
+  /** Label of the item in the library. */
+  label?: string;
+  monetization?: UpdateMediaInLibraryMonetization;
+  /** Name of the item in the library. */
+  name?: string;
+  /** Title shown with the video in the player card. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for UpdateMediaInLibraryResponse
+ *
+ * @public
+ */
+export interface UpdateMediaInLibraryResponse {
+  data?: UpdateMediaInLibraryResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateMediaInLibraryResponseData
+ *
+ * @public
+ */
+export interface UpdateMediaInLibraryResponseData {
+  /** Whether the library item was updated. */
+  updated: boolean;
+}
+
+
+/**
  * Schema type for UpdateRulesAdd
  *
  * @public
@@ -6336,7 +12192,7 @@ export interface UpdateRulesAdd {
  */
 export interface UpdateRulesDelete {
   /** Rule ids (Snowflake external ids) to delete. */
-  ids?: Array<string>;
+  ids?: Array<string | number>;
   /** Rule values to delete. */
   values?: Array<string>;
 }
@@ -6389,7 +12245,7 @@ export interface UpdateRulesResponseData {
 export interface UpdateScheduledBroadcastRequest {
   /** Enable replay. */
   availableForReplay?: boolean;
-  /** Chat permission option (numeric string). */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Description. */
   description?: string;
@@ -6399,7 +12255,7 @@ export interface UpdateScheduledBroadcastRequest {
   locale?: string;
   /** If true, do not auto-publish at start; call POST .../live when ready. */
   manualPublish?: boolean;
-  /** When true, shift the head of a recurring series. */
+  /** Deprecated: recurring schedules are being retired and `true` will be rejected. */
   rollForward?: boolean;
   /** Numeric scheduler id from create/list/get. */
   scheduledBroadcastId: string;
@@ -6407,7 +12263,7 @@ export interface UpdateScheduledBroadcastRequest {
   scheduledEndMs: string;
   /** Start time, ms since Unix epoch (decimal string). */
   scheduledStartMs: string;
-  /** Ingest / source id. */
+  /** Source to bind: a source's `id` from GET /2/sources. A stream key is also accepted but deprecated; stream keys stop being accepted when the /2/users/:id/sources and /2/users/:id/broadcasts routes reach end of life on January 1, 2027. */
   sourceId?: string;
   /** Pre-live slate media id (numeric string). */
   thumbnailMediaId?: string;
@@ -6435,9 +12291,9 @@ export interface UpdateScheduledBroadcastResponse {
 export interface UpdateScheduledBroadcastResponseData {
   /** Whether replay is enabled. */
   availableForReplay?: boolean;
-  /** Alphanumeric UBS broadcast id (path `:id` for get/update/delete/live). */
+  /** Alphanumeric broadcast id (path `:id` for get/update/delete/live). */
   broadcastId?: string;
-  /** Optional chat permission option. */
+  /** Who can chat (numeric string): `0` default, `1` chat off, `2` everyone, `3` verified accounts, `4` accounts the host follows, `5` the host's subscribers, `6` accounts followed by an account the host follows. */
   chatOption?: string;
   /** Optional description. */
   description?: string;
@@ -6445,7 +12301,7 @@ export interface UpdateScheduledBroadcastResponseData {
   locale?: string;
   /** When true, coordinator will not auto-publish; call POST .../live when ready. */
   manualPublish?: boolean;
-  /** Set when this occurrence belongs to a recurrence. */
+  /** Deprecated: always null for new schedules. */
   recurringScheduleId?: string;
   /** Numeric scheduler id. Required in the update request body. */
   scheduledBroadcastId?: string;
@@ -6453,16 +12309,330 @@ export interface UpdateScheduledBroadcastResponseData {
   scheduledEndMs?: string;
   /** Scheduled start, milliseconds since Unix epoch (decimal string). */
   scheduledStartMs?: string;
-  /** Bound ingest / source id (`rtmp_stream_key`). */
+  /** Id of the bound source, as returned by GET /2/sources. Omitted when unknown. */
   sourceId?: string;
-  /** Scheduler state (Created, Scheduled, Running, …). */
+  /** Scheduler state: `Created` or `Scheduled` before start, then `Running`, `Ended`, or `Error`. */
   state?: string;
-  /** Optional telecast association. */
+  /** Deprecated: always null for new schedules. */
   telecastId?: string;
   /** Optional pre-live slate media id. */
   thumbnailMediaId?: string;
   /** Broadcast title / status text. */
   title?: string;
+}
+
+
+/**
+ * At least one of `start_time`, `duration_minutes`, `title`, `description`, `invitee_ids`, `recurrence`, `time_zone` is required.
+ *
+ * @public
+ */
+export interface UpdateScheduledCallRequest {
+  /** What the call is about. */
+  description?: string;
+  /** How long the call lasts, in minutes. */
+  durationMinutes?: number;
+  /** Everyone to invite: replaces the invite list. At most 25 of them may be people not invited yet. */
+  inviteeIds?: Array<string>;
+  /** Whether invitees get an email about the change. Defaults to true. */
+  notifyInvitees?: boolean;
+  /** Start of the occurrence that scope this or this_and_following refers to (RFC 3339). */
+  occurrenceStartTime?: string;
+  /** RFC 5545 RRULE to repeat the call by, such as FREQ=WEEKLY;BYDAY=MO. */
+  recurrence?: string;
+  /** Which occurrences of a recurring call: all (the default without occurrence_start_time), this (the default with it), or this_and_following. */
+  scope?: "all" | "this" | "this_and_following";
+  /** When the call (or the chosen occurrence) starts now (RFC 3339). */
+  startTime?: string;
+  /** IANA time zone the recurrence follows. */
+  timeZone?: string;
+  /** Title invitees see. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for UpdateScheduledCallResponse
+ *
+ * @public
+ */
+export interface UpdateScheduledCallResponse {
+  data?: UpdateScheduledCallResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateScheduledCallResponseData
+ *
+ * @public
+ */
+export interface UpdateScheduledCallResponseData {
+  /** Whether the scheduled call was changed. */
+  updated?: boolean;
+}
+
+
+/**
+ * Schema type for UpdateSourceRequest
+ *
+ * @public
+ */
+export interface UpdateSourceRequest {
+  /** New label for the source. */
+  name: string;
+}
+
+
+/**
+ * Schema type for UpdateSourceResponse
+ *
+ * @public
+ */
+export interface UpdateSourceResponse {
+  data?: UpdateSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateSourceResponseData
+ *
+ * @public
+ */
+export interface UpdateSourceResponseData {
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** Source id, 19 decimal digits; the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Not a credential: read the stream key with GET /2/sources/:id/stream_key. */
+  id: string;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Region of the ingest location serving the source: `us-east-1` or `us-west-2`. Sources created before October 31, 2026 keep the AWS region they were created in. */
+  region?: string;
+  /** Ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). Configure your encoder with this URL and the source's stream key. */
+  rtmpsUrl?: string;
+}
+
+
+/**
+ * Schema type for UpdateUserBroadcastStateRequest
+ *
+ * @public
+ */
+export interface UpdateUserBroadcastStateRequest {
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. A numeric string is also accepted. `PUBLISH` only. */
+  chatOption?: number | string;
+  /** Broadcast language. `PUBLISH` only. */
+  locale?: string;
+  /** Skip the announcing Post. Unset keeps the broadcast's setting, which defaults to posting. `"true"`, `"false"`, `1` and `0` are also accepted. `PUBLISH` only. */
+  shouldNotTweet?: boolean | string | number;
+  /** `PUBLISH` or `END`. */
+  state: string;
+  /** Broadcast title. `PUBLISH` only. */
+  title?: string;
+}
+
+
+/**
+ * Schema type for UpdateUserBroadcastStateResponse
+ *
+ * @public
+ */
+export interface UpdateUserBroadcastStateResponse {
+  data?: UpdateUserBroadcastStateResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateUserBroadcastStateResponseData
+ *
+ * @public
+ */
+export interface UpdateUserBroadcastStateResponseData {
+  broadcast?: UpdateUserBroadcastStateResponseDataBroadcast;
+  /** `true` once `END` succeeds. */
+  success?: boolean;
+  /** Why the announcing Post failed, on `PUBLISH`. Omitted when the Post went out or `should_not_tweet` was true. */
+  tweetError?: string;
+}
+
+
+/**
+ * Schema type for UpdateUserBroadcastStateResponseDataBroadcast
+ *
+ * @public
+ */
+export interface UpdateUserBroadcastStateResponseDataBroadcast {
+  /** Whether a replay is available. */
+  availableForReplay?: boolean;
+  /** Broadcast id. */
+  broadcastId?: string;
+  /** Who can chat: 0 default, 1 chat off, 2 everyone, 3 verified accounts, 4 accounts the host follows, 5 the host's subscribers, 6 accounts followed by an account the host follows. */
+  chatOption?: number;
+  /** Creation time, milliseconds since Unix epoch (decimal string). */
+  createdAtMs?: string;
+  /** End time, milliseconds since Unix epoch (decimal string). */
+  endMs?: string;
+  /** Video height in pixels. */
+  height?: number;
+  /** Broadcast id; equal to `broadcast_id`. */
+  id: string;
+  /** Thumbnail URL. */
+  imageUrl?: string;
+  /** Medium thumbnail URL. */
+  imageUrlMedium?: string;
+  /** Small thumbnail URL. */
+  imageUrlSmall?: string;
+  /** Whether the broadcast is high latency. */
+  isHighLatency?: boolean;
+  /** Broadcast language. */
+  language?: string;
+  /** Numeric media id from `media_key`. */
+  mediaId?: string;
+  /** Media key of the broadcast's video. */
+  mediaKey?: string;
+  /** Scheduled end time, milliseconds since Unix epoch (decimal string). */
+  scheduledEndMs?: string;
+  /** Scheduled start time, milliseconds since Unix epoch (decimal string). */
+  scheduledStartMs?: string;
+  /** Start time, milliseconds since Unix epoch (decimal string). */
+  startMs?: string;
+  /** `NOT_STARTED`, `RUNNING`, `TIMED_OUT`, `ENDED`, `PRE_PUBLISHED` or `CANCELED`. */
+  state?: string;
+  /** Broadcast title. */
+  status?: string;
+  /** Total viewers (decimal string). */
+  totalWatched?: string;
+  /** Current viewers (decimal string). */
+  totalWatching?: string;
+  /** Id of the Post announcing the broadcast. */
+  tweetId?: string;
+  /** Owner's user id. */
+  twitterUserId?: string;
+  /** Last update time, milliseconds since Unix epoch (decimal string). */
+  updatedAtMs?: string;
+  /** Video width in pixels. */
+  width?: number;
+}
+
+
+/**
+ * Schema type for UpdateUserSourceRequest
+ *
+ * @public
+ */
+export interface UpdateUserSourceRequest {
+  /** New label for the source. */
+  name: string;
+}
+
+
+/**
+ * Schema type for UpdateUserSourceResponse
+ *
+ * @public
+ */
+export interface UpdateUserSourceResponse {
+  data?: UpdateUserSourceResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UpdateUserSourceResponseData
+ *
+ * @public
+ */
+export interface UpdateUserSourceResponseData {
+  source: UpdateUserSourceResponseDataSource;
+}
+
+
+/**
+ * Schema type for UpdateUserSourceResponseDataSource
+ *
+ * @public
+ */
+export interface UpdateUserSourceResponseDataSource {
+  creationOrigin?: UpdateUserSourceResponseDataSourceCreationOrigin;
+  /** Creation time, ms since Unix epoch. */
+  creationTime?: number;
+  /** Source id; also the RTMP stream key. */
+  id: string;
+  /** Whether the source streams 360° video. */
+  is360?: boolean;
+  /** Whether an encoder is currently sending video to the source. */
+  isStreamActive?: boolean;
+  /** Label for the source. */
+  name?: string;
+  /** Owner's numeric user id. Exceeds the exact integer range of many JSON parsers. */
+  ownerId?: number;
+  /** Ingest region as an AWS region name, e.g. `us-east-1` or `us-west-2`. Accepted as `region` when creating a source. */
+  rtmpRegion?: string;
+  /** Stream key; equal to `id`. */
+  rtmpStreamKey?: string;
+  /** RTMP ingest URL. */
+  rtmpUrl?: string;
+  /** RTMPS ingest URL (port 443). */
+  rtmpsUrl?: string;
+  videoService?: UpdateUserSourceResponseDataSourceVideoService;
+}
+
+
+/**
+ * Schema type for UpdateUserSourceResponseDataSourceCreationOrigin
+ *
+ * @public
+ */
+export interface UpdateUserSourceResponseDataSourceCreationOrigin {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
+}
+
+
+/**
+ * Schema type for UpdateUserSourceResponseDataSourceVideoService
+ *
+ * @public
+ */
+export interface UpdateUserSourceResponseDataSourceVideoService {
+  /** Name, e.g. `PublicApi`. */
+  name?: string;
+  /** Upper-case name, e.g. `PUBLIC_API`. */
+  originalName?: string;
+  /** Numeric value. */
+  value?: number;
+}
+
+
+/**
+ * Schema type for UploadComplianceJobSubmissionRequest
+ *
+ * @public
+ */
+export interface UploadComplianceJobSubmissionRequest {
+  /** The newline-delimited ID file, forwarded verbatim. */
+  submission: string;
+}
+
+
+/**
+ * Schema type for UploadComplianceJobSubmissionResponse
+ *
+ * @public
+ */
+export interface UploadComplianceJobSubmissionResponse {
+  data?: ComplianceJob;
+  errors?: Array<Problem>;
 }
 
 
@@ -6510,6 +12680,8 @@ export interface UsageDailyProjectUsage {
  * @public
  */
 export interface User {
+  /** The number of followers who were active on X in the last 24 hours. Returned only for the authenticated user when account analytics is enabled. Omitted for accounts with 50 or fewer followers. An estimate for accounts with at least 20,000 followers. */
+  activeFollowerCount?: number;
   /** Metadata about a user's affiliation. */
   affiliation?: UserAffiliation;
   confirmedEmail?: string;
@@ -6531,6 +12703,8 @@ export interface User {
   mostRecentPostId?: string;
   /** The friendly name of this User, as shown on their profile. */
   name?: string;
+  /** Indicates if this User is an org-only bot, which only members of its developer account can add to group chats. Omitted when it can't be determined for you, so it is never reported as false in that case. A bot can read its own value with its own token. */
+  orgOnly?: boolean;
   /** Indicates if this User is a parody account. */
   parody?: boolean;
   /** Unique identifier of this User's pinned Post. */
@@ -6543,8 +12717,12 @@ export interface User {
   protected?: boolean;
   /** A list of metrics for this User. */
   publicMetrics?: UserPublicMetrics;
-  /** Indicates if you can send a DM to this User. */
+  /** How you can send a Chat message to this User: encrypted (end-to-end, the default), unencrypted (X Chat can't encrypt your 1:1 chat, so send plaintext `content` instead), or none (you can't message them). */
+  receivesYourChat?: string;
+  /** Indicates if you can send a DM to this User. Omitted when the DM permission can't be determined, so it is never reported as false in that case. */
   receivesYourDm?: boolean;
+  /** The number of Premium subscribers of this User. */
+  subscriberCount?: number;
   /** Indicates if this User subscribes to you. */
   subscribesToYou?: boolean;
   /** The subscription relationship between this User and you. */
@@ -6608,7 +12786,7 @@ export interface UserComplianceSchema {
  *
  * @public
  */
-export type UserConnectionStatus = Array<"blocking" | "follow_request_received" | "follow_request_sent" | "followed_by" | "following" | "muting">;
+export type UserConnectionStatus = Array<"blocking" | "follow_request_received" | "follow_request_sent" | "followed_by" | "following" | "muting" | (string & {})>;
 
 
 /**
@@ -6809,6 +12987,60 @@ export interface UserWithheldComplianceSchema {
 
 
 /**
+ * Schema type for UsersIdBlockRequest
+ *
+ * @public
+ */
+export interface UsersIdBlockRequest {
+  targetUserId: string;
+}
+
+
+/**
+ * Schema type for UsersIdBlockResponse
+ *
+ * @public
+ */
+export interface UsersIdBlockResponse {
+  data?: UsersIdBlockResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UsersIdBlockResponseData
+ *
+ * @public
+ */
+export interface UsersIdBlockResponseData {
+  /** Indicates whether the user is blocked by the source user. */
+  blocking: boolean;
+}
+
+
+/**
+ * Schema type for UsersIdUnblockResponse
+ *
+ * @public
+ */
+export interface UsersIdUnblockResponse {
+  data?: UsersIdUnblockResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UsersIdUnblockResponseData
+ *
+ * @public
+ */
+export interface UsersIdUnblockResponseData {
+  /** Indicates whether the source User is blocking the target User. */
+  blocking: boolean;
+}
+
+
+/**
  * Schema type for ValidateAccountActivitySubscriptionResponse
  *
  * @public
@@ -6871,4 +13103,17 @@ export interface WebhookConfig {
  * @public
  */
 export type WebhookConfigId = string;
+
+
+/**
+ * Schema type for XchatSetupRequiredProblem
+ *
+ * @public
+ */
+export interface XchatSetupRequiredProblem {
+  detail: string;
+  status?: number;
+  title: string;
+  type: "https://api.x.com/2/problems/xchat-setup-required";
+}
 

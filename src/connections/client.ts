@@ -10,12 +10,6 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
 GetConnectionHistoryResponse,
@@ -124,7 +118,6 @@ export class ConnectionsClient {
         
         return normalized as T;
     }
-
 
 
   /**
@@ -314,10 +307,8 @@ export class ConnectionsClient {
     }
 
 
-
-
   /**
-   * Terminate multiple connections
+   * Terminate Multiple Connections
    * Terminates multiple streaming connections by their UUIDs for the authenticated application.
 
 
@@ -402,10 +393,8 @@ export class ConnectionsClient {
     }
 
 
-
-
   /**
-   * Terminate all connections
+   * Terminate All Connections
    * Terminates all active streaming connections for the authenticated application.
 
 
@@ -480,10 +469,8 @@ export class ConnectionsClient {
     }
 
 
-
-
   /**
-   * Terminate connections by endpoint
+   * Terminate Connections by Endpoint
    * Terminates all streaming connections for a specific endpoint ID for the authenticated application.
 
 
@@ -576,17 +563,6 @@ export class ConnectionsClient {
             finalRequestOptions
         );
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

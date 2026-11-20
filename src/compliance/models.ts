@@ -8,13 +8,6 @@ import type * as Schemas from '../schemas.js';
 
 
 
-/**
- * Response for getJobsById
- *
- * @public
- */
-export type GetJobsByIdResponse = Schemas.GetComplianceJobsByIdResponse;
-
 
 
 /**
@@ -39,4 +32,31 @@ export type CreateJobsRequest = Schemas.CreateComplianceJobsRequest;
  * @public
  */
 export type CreateJobsResponse = Schemas.CreateComplianceJobsResponse;
+
+
+
+/**
+ * Response for getJobsById
+ *
+ * @public
+ */
+export type GetJobsByIdResponse = Schemas.GetComplianceJobsByIdResponse;
+
+
+
+/**
+ * Response for deleteJobsById
+ *
+ * @public
+ */
+export type DeleteJobsByIdResponse = Schemas.DeleteComplianceJobsByIdResponse;
+
+
+
+/**
+ * Response for uploadJobSubmission
+ *
+ * @public
+ */
+export type UploadJobSubmissionResponse = Schemas.UploadComplianceJobSubmissionResponse;
 

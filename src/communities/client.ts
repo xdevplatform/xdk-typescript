@@ -10,12 +10,6 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
 SearchResponse,
@@ -133,9 +127,9 @@ export class CommunitiesClient {
     }
 
 
-
   /**
    * Search Communities
+   * Retrieves a list of Communities matching the specified search query.
 
 
 
@@ -336,10 +330,9 @@ export class CommunitiesClient {
     }
 
 
-
-
   /**
-   * Get Communities by ID
+   * Get Community by ID
+   * Retrieves details of a specific Community by its ID.
 
 
    * @param id id
@@ -480,13 +473,6 @@ export class CommunitiesClient {
             finalRequestOptions
         );
     }
-
-
-
-
-
-
-
 
 
 }

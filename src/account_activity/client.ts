@@ -10,24 +10,18 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
+
+DeleteSubscriptionResponse,
+
+GetSubscriptionsResponse,
+
+GetSubscriptionCountResponse,
 
 ValidateSubscriptionResponse,
 CreateSubscriptionRequest,
 
 CreateSubscriptionResponse,
-
-DeleteSubscriptionResponse,
-
-GetSubscriptionCountResponse,
-
-GetSubscriptionsResponse,
 } from './models.js';
 
 
@@ -85,226 +79,8 @@ export class AccountActivityClient {
     }
 
 
-
   /**
-   * Validate Account Activity Subscription
-
-
-   * @param webhookId webhook_id
-
-
-
-
-   * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    validateSubscription(
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    validateSubscription(
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        
-        
-    ): Promise<ValidateSubscriptionResponse>;
-    // Implementation
-    async validateSubscription(
-        
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<ValidateSubscriptionResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'dm.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ValidateSubscriptionResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Create subscription
-   * Creates an Account Activity subscription for the user and the given webhook.
-
-
-   * @param webhookId webhook_id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createSubscription(
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        
-        body: CreateSubscriptionRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createSubscription(
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        
-        body: CreateSubscriptionRequest,
-        
-        
-    ): Promise<CreateSubscriptionResponse>;
-    // Implementation
-    async createSubscription(
-        
-        
-        
-        webhookId: Schemas.WebhookConfigId,
-        
-        
-        
-        
-        
-        
-        body: CreateSubscriptionRequest,
-        
-        
-        
-    ): Promise<CreateSubscriptionResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.write', 'users.read', 'tweet.read', 'dm.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateSubscriptionResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Delete subscription
+   * Delete Subscription
    * Deletes an Account Activity subscription for the given webhook and user ID.
 
 
@@ -419,87 +195,9 @@ export class AccountActivityClient {
     }
 
 
-
-
   /**
-   * Get Account Activity Subscription Count
-
-
-
-   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getSubscriptionCount(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getSubscriptionCount(
-        
-        
-        
-        
-    ): Promise<GetSubscriptionCountResponse>;
-    // Implementation
-    async getSubscriptionCount(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetSubscriptionCountResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/account_activity/subscriptions/count';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetSubscriptionCountResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Account Activity Subscriptions
+   * Get Subscriptions
+   * Retrieves a list of all active subscriptions for a given webhook.
 
 
    * @param webhookId webhook_id
@@ -593,17 +291,294 @@ export class AccountActivityClient {
     }
 
 
+  /**
+   * Get Subscription Count
+   * Retrieves a count of currently active Account Activity subscriptions.
+
+
+
+   * @returns {Promise<GetSubscriptionCountResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getSubscriptionCount(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSubscriptionCount(
+        
+        
+        
+        
+    ): Promise<GetSubscriptionCountResponse>;
+    // Implementation
+    async getSubscriptionCount(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSubscriptionCountResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/subscriptions/count';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetSubscriptionCountResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Validate Subscription
+   * Checks a user's Account Activity subscription for a given webhook.
+
+
+   * @param webhookId webhook_id
 
 
 
 
+   * @returns {Promise<ValidateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    validateSubscription(
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    validateSubscription(
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        
+        
+    ): Promise<ValidateSubscriptionResponse>;
+    // Implementation
+    async validateSubscription(
+        
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<ValidateSubscriptionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'dm.read', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ValidateSubscriptionResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create Subscription
+   * Creates an Account Activity subscription for the user and the given webhook.
+
+
+   * @param webhookId webhook_id
 
 
 
 
+   * @param body Request body
 
+   * @returns {Promise<CreateSubscriptionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createSubscription(
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        
+        body: CreateSubscriptionRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createSubscription(
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        
+        body: CreateSubscriptionRequest,
+        
+        
+    ): Promise<CreateSubscriptionResponse>;
+    // Implementation
+    async createSubscription(
+        
+        
+        
+        webhookId: Schemas.WebhookConfigId,
+        
+        
+        
+        
+        
+        
+        body: CreateSubscriptionRequest,
+        
+        
+        
+    ): Promise<CreateSubscriptionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
 
+        // Build the path with path parameters
+        let path = '/2/account_activity/webhooks/{webhook_id}/subscriptions/all';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
 
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'dm.read', 'tweet.read', 'dm.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateSubscriptionResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 }

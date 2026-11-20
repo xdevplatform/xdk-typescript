@@ -10,13 +10,36 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
+
+GetPostDraftsResponse,
+CreatePostDraftRequest,
+
+CreatePostDraftResponse,
+
+GetCountsRecentResponse,
+
+GetAnalyticsResponse,
+
+GetCountsAllResponse,
+
+GetLikingUsersResponse,
+
+SearchAllResponse,
+
+GetRepostsResponse,
+
+DeletePostDraftResponse,
+
+GetRepostedByResponse,
+HideReplyRequest,
+
+HideReplyResponse,
+
+GetByIdsResponse,
+CreateRequest,
+
+CreateResponse,
 
 SearchRecentResponse,
 
@@ -24,521 +47,47 @@ GetByIdResponse,
 
 DeleteResponse,
 
-SearchAllResponse,
-
-GetRepostsResponse,
-
-GetByIdsResponse,
-CreateRequest,
-
-CreateResponse,
-
-GetLikingUsersResponse,
-HideReplyRequest,
-
-HideReplyResponse,
-
 GetQuotedResponse,
-
-GetCountsAllResponse,
-
-GetAnalyticsResponse,
-
-GetCountsRecentResponse,
-
-GetRepostedByResponse,
 } from './models.js';
 
 
 /**
- * Options for searchRecent method
+ * Options for getPostDrafts method
  * 
  * @public
  */
-export interface SearchRecentOptions {
+export interface GetPostDraftsOptions {
     
     
-    /** max_results 
+    /** The maximum number of drafts to return. 
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
     
     
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: string;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
+    /** The meta.next_token of the previous page. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
     paginationToken?: string;
     
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+/**
+ * Options for getCountsRecent method
+ * 
+ * @public
+ */
+export interface GetCountsRecentOptions {
     
     
     /** Must be within the last 7 days. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** end_time 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** since_id 
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: string;
-    
-    
-    
-    /** until_id 
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: string;
-    
-    
-    
-    /** sort_order 
-     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
-    sortOrder?: "recency" | "relevancy";
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for getById method
- * 
- * @public
- */
-export interface GetByIdOptions {
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for searchAll method
- * 
- * @public
- */
-export interface SearchAllOptions {
-    
-    
-    /** start_time 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** end_time 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** since_id 
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: string;
-    
-    
-    
-    /** until_id 
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: string;
-    
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: string;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** sort_order 
-     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
-    sortOrder?: "recency" | "relevancy";
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for getReposts method
- * 
- * @public
- */
-export interface GetRepostsOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for getByIds method
- * 
- * @public
- */
-export interface GetByIdsOptions {
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for getLikingUsers method
- * 
- * @public
- */
-export interface GetLikingUsersOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for getQuoted method
- * 
- * @public
- */
-export interface GetQuotedOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** exclude 
-     * Also accepts: exclude or proper camelCase (e.g., exclude) */
-    exclude?: Array<"replies" | "retweets">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for getCountsAll method
- * 
- * @public
- */
-export interface GetCountsAllOptions {
-    
-    
-    /** start_time 
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     
@@ -621,14 +170,14 @@ export interface GetAnalyticsOptions {
 
 
 /**
- * Options for getCountsRecent method
+ * Options for getCountsAll method
  * 
  * @public
  */
-export interface GetCountsRecentOptions {
+export interface GetCountsAllOptions {
     
     
-    /** Must be within the last 7 days. 
+    /** start_time 
      * Also accepts: start_time or proper camelCase (e.g., startTime) */
     startTime?: string;
     
@@ -684,6 +233,214 @@ export interface GetCountsRecentOptions {
 
 
 /**
+ * Options for getLikingUsers method
+ * 
+ * @public
+ */
+export interface GetLikingUsersOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for searchAll method
+ * 
+ * @public
+ */
+export interface SearchAllOptions {
+    
+    
+    /** start_time 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** end_time 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** since_id 
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    
+    
+    
+    /** until_id 
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** sort_order 
+     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
+    sortOrder?: "recency" | "relevancy";
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getReposts method
+ * 
+ * @public
+ */
+export interface GetRepostsOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+/**
  * Options for getRepostedBy method
  * 
  * @public
@@ -705,7 +462,7 @@ export interface GetRepostedByOptions {
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
     
     
     
@@ -718,6 +475,279 @@ export interface GetRepostedByOptions {
     /** A comma separated list of Post fields to display. 
      * Also accepts: post.fields or proper camelCase (e.g., postFields) */
     postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+/**
+ * Options for getByIds method
+ * 
+ * @public
+ */
+export interface GetByIdsOptions {
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+/**
+ * Options for searchRecent method
+ * 
+ * @public
+ */
+export interface SearchRecentOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Must be within the last 7 days. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** end_time 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** since_id 
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    
+    
+    
+    /** until_id 
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    
+    
+    
+    /** sort_order 
+     * Also accepts: sort_order or proper camelCase (e.g., sortOrder) */
+    sortOrder?: "recency" | "relevancy";
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getById method
+ * 
+ * @public
+ */
+export interface GetByIdOptions {
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+/**
+ * Options for getQuoted method
+ * 
+ * @public
+ */
+export interface GetQuotedOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** exclude 
+     * Also accepts: exclude or proper camelCase (e.g., exclude) */
+    exclude?: Array<"replies" | "retweets">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
     
     
     
@@ -777,62 +807,45 @@ export class PostsClient {
     }
 
 
-
   /**
-   * Search Posts Recent
-   * At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
+   * Get Post Drafts
+   * Returns the authenticated user's Post drafts, newest first, in the fields of the Create or Edit Post body. thread holds the Posts after the first. A draft with unsupported_content is not listed in full: do not publish it from this list or delete it unless the user asks. Needs the tweet.write scope.
 
 
 
-   * @param query query
-
-
-
-   * @returns {Promise<SearchRecentResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetPostDraftsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    searchRecent(
-        
-        
-        
-        query: string,
+    getPostDrafts(
         
         
         
         
-        options: SearchRecentOptions & { requestOptions: { raw: true } }
+        options: GetPostDraftsOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    searchRecent(
-        
-        
-        
-        query: string,
+    getPostDrafts(
         
         
         
         
-        options?: SearchRecentOptions
+        options?: GetPostDraftsOptions
         
-    ): Promise<SearchRecentResponse>;
+    ): Promise<GetPostDraftsResponse>;
     // Implementation
-    async searchRecent(
-        
-        
-        
-        
-        
-        query: string,
+    async getPostDrafts(
         
         
         
         
         
         
-        options: SearchRecentOptions = {}
         
-    ): Promise<SearchRecentResponse | Response> {
+        
+        options: GetPostDraftsOptions = {}
+        
+    ): Promise<GetPostDraftsResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -843,12 +856,246 @@ export class PostsClient {
             
             
             
-            'next_token': 'nextToken',
-            
-            
-            
             'pagination_token': 'paginationToken',
             
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/posts/drafts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'tweet.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetPostDraftsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create Post Draft
+   * Saves a Post draft to the authenticated user's X account without publishing it. Takes the body of Create or Edit Post, of which a draft stores text, media with tagged users, a reply and the AI and paid partnership disclosures. Any other field that is set is a 400 that names it.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreatePostDraftResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createPostDraft(
+        
+        
+        
+        body: CreatePostDraftRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createPostDraft(
+        
+        
+        
+        body: CreatePostDraftRequest,
+        
+        
+    ): Promise<CreatePostDraftResponse>;
+    // Implementation
+    async createPostDraft(
+        
+        
+        
+        
+        
+        
+        body: CreatePostDraftRequest,
+        
+        
+        
+    ): Promise<CreatePostDraftResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/posts/drafts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'tweet.write', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreatePostDraftResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Count of Recent Posts
+   * Retrieves the count of Posts from the last 7 days matching a search query.
+
+At most one of `pagination_token`, `next_token` may be provided.
+
+
+
+   * @param query query
+
+
+
+   * @returns {Promise<GetCountsRecentResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getCountsRecent(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options: GetCountsRecentOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getCountsRecent(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options?: GetCountsRecentOptions
+        
+    ): Promise<GetCountsRecentResponse>;
+    // Implementation
+    async getCountsRecent(
+        
+        
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        
+        
+        options: GetCountsRecentOptions = {}
+        
+    ): Promise<GetCountsRecentResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
             
             
             'start_time': 'startTime',
@@ -867,29 +1114,17 @@ export class PostsClient {
             
             
             
-            'sort_order': 'sortOrder',
+            'next_token': 'nextToken',
             
             
             
-            'post.fields': 'postFields',
+            'pagination_token': 'paginationToken',
             
             
             
             
             
-            'user.fields': 'userFields',
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-            
-            'poll.fields': 'pollFields',
-            
-            
-            
-            'place.fields': 'placeFields',
+            'search_count.fields': 'searchCountFields',
             
             
         };
@@ -898,18 +1133,6 @@ export class PostsClient {
         
         // Destructure options (exclude path parameters, they're already function params)
         const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            nextToken = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
             
             
             startTime = undefined,
@@ -928,31 +1151,19 @@ export class PostsClient {
             
             
             
-            sortOrder = undefined,
+            nextToken = undefined,
             
             
             
-            postFields = [],
+            paginationToken = undefined,
             
             
             
-            expansions = [],
+            granularity = undefined,
             
             
             
-            userFields = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            pollFields = [],
-            
-            
-            
-            placeFields = [],
+            searchCountFields = undefined,
             
             
             
@@ -961,7 +1172,7 @@ export class PostsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/search/recent';
+        let path = '/2/tweets/counts/recent';
         
 
         // Build query parameters
@@ -973,39 +1184,6 @@ export class PostsClient {
         if (query !== undefined) {
             
             params.append('query', String(query));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (nextToken !== undefined) {
-            
-            params.append('next_token', String(nextToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
             
         }
         
@@ -1058,22 +1236,9 @@ export class PostsClient {
         
         
         
-        if (sortOrder !== undefined) {
+        if (nextToken !== undefined) {
             
-            params.append('sort_order', String(sortOrder));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            
-            params.append('post.fields', normalizeFields(postFields).join(','));
-            
+            params.append('next_token', String(nextToken));
             
         }
         
@@ -1082,11 +1247,9 @@ export class PostsClient {
         
         
         
-        if (expansions !== undefined && expansions.length > 0) {
+        if (paginationToken !== undefined) {
             
-            
-            params.append('expansions', expansions.join(','));
-            
+            params.append('pagination_token', String(paginationToken));
             
         }
         
@@ -1095,11 +1258,9 @@ export class PostsClient {
         
         
         
-        if (userFields !== undefined && userFields.length > 0) {
+        if (granularity !== undefined) {
             
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
+            params.append('granularity', String(granularity));
             
         }
         
@@ -1108,37 +1269,9 @@ export class PostsClient {
         
         
         
-        if (mediaFields !== undefined && mediaFields.length > 0) {
+        if (searchCountFields !== undefined) {
             
-            
-            params.append('media.fields', normalizeFields(mediaFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (pollFields !== undefined && pollFields.length > 0) {
-            
-            
-            params.append('poll.fields', normalizeFields(pollFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (placeFields !== undefined && placeFields.length > 0) {
-            
-            
-            params.append('place.fields', normalizeFields(placeFields).join(','));
-            
+            params.append('search_count.fields', String(searchCountFields));
             
         }
         
@@ -1154,13 +1287,7 @@ export class PostsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
+                    'OAuth2UserToken': [],
                     
                 },
                 
@@ -1177,7 +1304,7 @@ export class PostsClient {
             
         };
 
-        return this.client.request<SearchRecentResponse>(
+        return this.client.request<GetCountsRecentResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1185,87 +1312,102 @@ export class PostsClient {
     }
 
 
-
-
   /**
-   * Get Posts by ID
-
-
-   * @param id id
-
+   * Get Post Analytics
+   * Retrieves analytics data for specified Posts within a defined time range.
 
 
 
-   * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @param ids ids
+
+
+
+   * @param startTime start_time
+
+
+
+   * @param endTime end_time
+
+
+
+   * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getById(
-        
-        
-        id: Schemas.PostId,
+    getAnalytics(
         
         
         
+        ids: Array<Schemas.AnalyticsId>,
         
         
-        options: GetByIdOptions & { requestOptions: { raw: true } }
+        
+        startTime: string,
+        
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        options: GetAnalyticsOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getById(
-        
-        
-        id: Schemas.PostId,
+    getAnalytics(
         
         
         
+        ids: Array<Schemas.AnalyticsId>,
         
         
-        options?: GetByIdOptions
         
-    ): Promise<GetByIdResponse>;
+        startTime: string,
+        
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        options?: GetAnalyticsOptions
+        
+    ): Promise<GetAnalyticsResponse>;
     // Implementation
-    async getById(
-        
-        
-        
-        id: Schemas.PostId,
+    async getAnalytics(
         
         
         
         
         
+        ids: Array<Schemas.AnalyticsId>,
         
         
         
-        options: GetByIdOptions = {}
+        startTime: string,
         
-    ): Promise<GetByIdResponse | Response> {
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        
+        
+        options: GetAnalyticsOptions = {}
+        
+    ): Promise<GetAnalyticsResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
         const paramMappings: Record<string, string> = {
             
             
-            'post.fields': 'postFields',
             
             
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-            
-            'poll.fields': 'pollFields',
-            
-            
-            
-            'place.fields': 'placeFields',
+            'analytics.fields': 'analyticsFields',
             
             
         };
@@ -1276,27 +1418,11 @@ export class PostsClient {
         const {
             
             
-            postFields = [],
+            granularity = undefined,
             
             
             
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            pollFields = [],
-            
-            
-            
-            placeFields = [],
+            analyticsFields = [],
             
             
             
@@ -1305,11 +1431,7 @@ export class PostsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
+        let path = '/2/tweets/analytics';
         
 
         // Build query parameters
@@ -1318,23 +1440,10 @@ export class PostsClient {
         
         
         
-        if (postFields !== undefined && postFields.length > 0) {
+        if (ids !== undefined && ids.length > 0) {
             
             
-            params.append('post.fields', normalizeFields(postFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
+            params.append('ids', ids.join(','));
             
             
         }
@@ -1344,11 +1453,9 @@ export class PostsClient {
         
         
         
-        if (userFields !== undefined && userFields.length > 0) {
+        if (startTime !== undefined) {
             
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
+            params.append('start_time', String(startTime));
             
         }
         
@@ -1357,11 +1464,9 @@ export class PostsClient {
         
         
         
-        if (mediaFields !== undefined && mediaFields.length > 0) {
+        if (endTime !== undefined) {
             
-            
-            params.append('media.fields', normalizeFields(mediaFields).join(','));
-            
+            params.append('end_time', String(endTime));
             
         }
         
@@ -1370,11 +1475,9 @@ export class PostsClient {
         
         
         
-        if (pollFields !== undefined && pollFields.length > 0) {
+        if (granularity !== undefined) {
             
-            
-            params.append('poll.fields', normalizeFields(pollFields).join(','));
-            
+            params.append('granularity', String(granularity));
             
         }
         
@@ -1383,10 +1486,10 @@ export class PostsClient {
         
         
         
-        if (placeFields !== undefined && placeFields.length > 0) {
+        if (analyticsFields !== undefined && analyticsFields.length > 0) {
             
             
-            params.append('place.fields', normalizeFields(placeFields).join(','));
+            params.append('analytics.fields', normalizeFields(analyticsFields).join(','));
             
             
         }
@@ -1411,7 +1514,272 @@ export class PostsClient {
                     
                     'UserToken': [],
                     
-                },
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetAnalyticsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Count of All Posts
+   * Retrieves the count of Posts matching a search query from the full archive.
+
+At most one of `pagination_token`, `next_token` may be provided.
+
+
+
+   * @param query query
+
+
+
+   * @returns {Promise<GetCountsAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getCountsAll(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options: GetCountsAllOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getCountsAll(
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        options?: GetCountsAllOptions
+        
+    ): Promise<GetCountsAllResponse>;
+    // Implementation
+    async getCountsAll(
+        
+        
+        
+        
+        
+        query: string,
+        
+        
+        
+        
+        
+        
+        options: GetCountsAllOptions = {}
+        
+    ): Promise<GetCountsAllResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+            
+            'since_id': 'sinceId',
+            
+            
+            
+            'until_id': 'untilId',
+            
+            
+            
+            'next_token': 'nextToken',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            
+            
+            'search_count.fields': 'searchCountFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            sinceId = undefined,
+            
+            
+            
+            untilId = undefined,
+            
+            
+            
+            nextToken = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            granularity = undefined,
+            
+            
+            
+            searchCountFields = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/counts/all';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (query !== undefined) {
+            
+            params.append('query', String(query));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (sinceId !== undefined) {
+            
+            params.append('since_id', String(sinceId));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (untilId !== undefined) {
+            
+            params.append('until_id', String(untilId));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (nextToken !== undefined) {
+            
+            params.append('next_token', String(nextToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (granularity !== undefined) {
+            
+            params.append('granularity', String(granularity));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (searchCountFields !== undefined) {
+            
+            params.append('search_count.fields', String(searchCountFields));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
                 
                 {
                     
@@ -1426,7 +1794,7 @@ export class PostsClient {
             
         };
 
-        return this.client.request<GetByIdResponse>(
+        return this.client.request<GetCountsAllResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1434,10 +1802,9 @@ export class PostsClient {
     }
 
 
-
-
   /**
-   * Delete Posts
+   * Get Liking Users
+   * Retrieves a list of Users who liked a specific Post by its ID.
 
 
    * @param id id
@@ -1445,10 +1812,10 @@ export class PostsClient {
 
 
 
-   * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetLikingUsersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    delete(
+    getLikingUsers(
         
         
         id: Schemas.PostId,
@@ -1457,11 +1824,11 @@ export class PostsClient {
         
         
         
-        options: { requestOptions: { raw: true } }
+        options: GetLikingUsersOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    delete(
+    getLikingUsers(
         
         
         id: Schemas.PostId,
@@ -1470,9 +1837,11 @@ export class PostsClient {
         
         
         
-    ): Promise<DeleteResponse>;
+        options?: GetLikingUsersOptions
+        
+    ): Promise<GetLikingUsersResponse>;
     // Implementation
-    async delete(
+    async getLikingUsers(
         
         
         
@@ -1485,14 +1854,66 @@ export class PostsClient {
         
         
         
-    ): Promise<DeleteResponse | Response> {
+        options: GetLikingUsersOptions = {}
+        
+    ): Promise<GetLikingUsersResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        const requestOptions = {};
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/{id}';
+        let path = '/2/tweets/{id}/liking_users';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -1501,6 +1922,67 @@ export class PostsClient {
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            
+            params.append('post.fields', normalizeFields(postFields).join(','));
+            
+            
+        }
+        
+        
         
 
         // Prepare request options
@@ -1512,7 +1994,7 @@ export class PostsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'tweet.write'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'like.read'],
                     
                 },
                 
@@ -1525,23 +2007,23 @@ export class PostsClient {
             ],
             
             
-            // No optional parameters, using empty request options
+            ...requestOptions
             
         };
 
-        return this.client.request<DeleteResponse>(
-            'DELETE',
+        return this.client.request<GetLikingUsersResponse>(
+            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
     }
 
 
-
-
   /**
-   * Search Posts All
-   * At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
+   * Search All Posts
+   * Retrieves Posts from the full archive matching a search query.
+
+At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
 
 
 
@@ -1915,6 +2397,18 @@ export class PostsClient {
                 
                 {
                     
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
                     'BearerToken': [],
                     
                 }
@@ -1934,10 +2428,9 @@ export class PostsClient {
     }
 
 
-
-
   /**
-   * Get Posts Reposts
+   * Get Reposts
+   * Retrieves a list of Posts that repost a specific Post by its ID.
 
 
    * @param id id
@@ -2221,10 +2714,446 @@ export class PostsClient {
     }
 
 
+  /**
+   * Delete Post Draft
+   * Deletes one of the authenticated user's Post drafts by its ID. The whole draft is deleted, including any part Get Post Drafts does not list, and cannot be restored. An ID that is not one of the user's drafts also returns deleted: true.
+
+
+   * @param id The ID of the draft to delete.
+
+
+
+
+   * @returns {Promise<DeletePostDraftResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deletePostDraft(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deletePostDraft(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+    ): Promise<DeletePostDraftResponse>;
+    // Implementation
+    async deletePostDraft(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeletePostDraftResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/posts/drafts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'tweet.write', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeletePostDraftResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Reposted By
+   * Retrieves a list of Users who reposted a specific Post by its ID.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetRepostedByResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getRepostedBy(
+        
+        
+        id: Schemas.PostId,
+        
+        
+        
+        
+        
+        options: GetRepostedByOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getRepostedBy(
+        
+        
+        id: Schemas.PostId,
+        
+        
+        
+        
+        
+        options?: GetRepostedByOptions
+        
+    ): Promise<GetRepostedByResponse>;
+    // Implementation
+    async getRepostedBy(
+        
+        
+        
+        id: Schemas.PostId,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetRepostedByOptions = {}
+        
+    ): Promise<GetRepostedByResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/{id}/retweeted_by';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            
+            params.append('post.fields', normalizeFields(postFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetRepostedByResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Hide Reply
+   * Hides or unhides a reply to a conversation owned by the authenticated user.
+
+
+   * @param tweetId tweet_id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<HideReplyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    hideReply(
+        
+        
+        tweetId: Schemas.PostId,
+        
+        
+        
+        
+        body: HideReplyRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    hideReply(
+        
+        
+        tweetId: Schemas.PostId,
+        
+        
+        
+        
+        body: HideReplyRequest,
+        
+        
+    ): Promise<HideReplyResponse>;
+    // Implementation
+    async hideReply(
+        
+        
+        
+        tweetId: Schemas.PostId,
+        
+        
+        
+        
+        
+        
+        body: HideReplyRequest,
+        
+        
+        
+    ): Promise<HideReplyResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/{tweet_id}/hidden';
+        
+        
+        path = path.replace('{tweet_id}', encodeURIComponent(String(tweetId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'tweet.moderate.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<HideReplyResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
   /**
    * Get Posts by IDs
+   * Retrieves details of multiple Posts by their IDs.
 
 
 
@@ -2479,10 +3408,9 @@ export class PostsClient {
     }
 
 
-
-
   /**
-   * Create Posts
+   * Create or Edit Post
+   * Creates a new Post for the authenticated user, or edits an existing Post when edit_options are provided. Media in media.media_ids is attached in the order given; get the ids by uploading each image with Upload Media, or a video with Initialize Media Upload. Supports paid partnership disclosure via the paid_partnership field. To share a clip of another Post's video, set clip to that Post's id and a range of 5 to 60 seconds.
 
 
 
@@ -2547,7 +3475,7 @@ export class PostsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'tweet.write', 'users.read'],
+                    'OAuth2UserToken': ['tweet.write', 'users.read', 'tweet.read'],
                     
                 },
                 
@@ -2572,62 +3500,63 @@ export class PostsClient {
     }
 
 
-
-
   /**
-   * Get Posts Liking Users
+   * Search Recent Posts
+   * Retrieves Posts from the last 7 days matching a search query.
+
+At most one of `start_time`, `since_id` may be provided. At most one of `end_time`, `until_id` may be provided. At most one of `pagination_token`, `next_token` may be provided.
 
 
-   * @param id id
+
+   * @param query query
 
 
 
-
-   * @returns {Promise<GetLikingUsersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<SearchRecentResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getLikingUsers(
-        
-        
-        id: Schemas.PostId,
+    searchRecent(
         
         
         
+        query: string,
         
         
-        options: GetLikingUsersOptions & { requestOptions: { raw: true } }
+        
+        
+        options: SearchRecentOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getLikingUsers(
-        
-        
-        id: Schemas.PostId,
+    searchRecent(
         
         
         
+        query: string,
         
         
-        options?: GetLikingUsersOptions
         
-    ): Promise<GetLikingUsersResponse>;
+        
+        options?: SearchRecentOptions
+        
+    ): Promise<SearchRecentResponse>;
     // Implementation
-    async getLikingUsers(
-        
-        
-        
-        id: Schemas.PostId,
+    async searchRecent(
         
         
         
         
         
+        query: string,
         
         
         
-        options: GetLikingUsersOptions = {}
         
-    ): Promise<GetLikingUsersResponse | Response> {
+        
+        
+        options: SearchRecentOptions = {}
+        
+    ): Promise<SearchRecentResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -2638,7 +3567,37 @@ export class PostsClient {
             
             
             
+            'next_token': 'nextToken',
+            
+            
+            
             'pagination_token': 'paginationToken',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+            
+            'since_id': 'sinceId',
+            
+            
+            
+            'until_id': 'untilId',
+            
+            
+            
+            'sort_order': 'sortOrder',
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
             
             
             
@@ -2646,9 +3605,15 @@ export class PostsClient {
             
             
             
+            'media.fields': 'mediaFields',
             
             
-            'post.fields': 'postFields',
+            
+            'poll.fields': 'pollFields',
+            
+            
+            
+            'place.fields': 'placeFields',
             
             
         };
@@ -2663,11 +3628,35 @@ export class PostsClient {
             
             
             
+            nextToken = undefined,
+            
+            
+            
             paginationToken = undefined,
             
             
             
-            userFields = [],
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            sinceId = undefined,
+            
+            
+            
+            untilId = undefined,
+            
+            
+            
+            sortOrder = undefined,
+            
+            
+            
+            postFields = [],
             
             
             
@@ -2675,7 +3664,19 @@ export class PostsClient {
             
             
             
-            postFields = [],
+            userFields = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            pollFields = [],
+            
+            
+            
+            placeFields = [],
             
             
             
@@ -2684,11 +3685,7 @@ export class PostsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/{id}/liking_users';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
+        let path = '/2/tweets/search/recent';
         
 
         // Build query parameters
@@ -2697,9 +3694,31 @@ export class PostsClient {
         
         
         
+        if (query !== undefined) {
+            
+            params.append('query', String(query));
+            
+        }
+        
+        
+        
+        
+        
+        
         if (maxResults !== undefined) {
             
             params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (nextToken !== undefined) {
+            
+            params.append('next_token', String(nextToken));
             
         }
         
@@ -2719,10 +3738,65 @@ export class PostsClient {
         
         
         
-        if (userFields !== undefined && userFields.length > 0) {
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (sinceId !== undefined) {
+            
+            params.append('since_id', String(sinceId));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (untilId !== undefined) {
+            
+            params.append('until_id', String(untilId));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (sortOrder !== undefined) {
+            
+            params.append('sort_order', String(sortOrder));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
             
             
-            params.append('user.fields', normalizeFields(userFields).join(','));
+            params.append('post.fields', normalizeFields(postFields).join(','));
             
             
         }
@@ -2745,10 +3819,49 @@ export class PostsClient {
         
         
         
-        if (postFields !== undefined && postFields.length > 0) {
+        if (userFields !== undefined && userFields.length > 0) {
             
             
-            params.append('post.fields', normalizeFields(postFields).join(','));
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            
+            params.append('media.fields', normalizeFields(mediaFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (pollFields !== undefined && pollFields.length > 0) {
+            
+            
+            params.append('poll.fields', normalizeFields(pollFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (placeFields !== undefined && placeFields.length > 0) {
+            
+            
+            params.append('place.fields', normalizeFields(placeFields).join(','));
             
             
         }
@@ -2765,13 +3878,19 @@ export class PostsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'like.read', 'users.read'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
                     
                 },
                 
                 {
                     
                     'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
                     
                 }
                 
@@ -2782,7 +3901,7 @@ export class PostsClient {
             
         };
 
-        return this.client.request<GetLikingUsersResponse>(
+        return this.client.request<SearchRecentResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -2790,77 +3909,315 @@ export class PostsClient {
     }
 
 
+  /**
+   * Get Post by ID
+   * Retrieves details of a specific Post by its ID.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getById(
+        
+        
+        id: Schemas.PostId,
+        
+        
+        
+        
+        
+        options: GetByIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getById(
+        
+        
+        id: Schemas.PostId,
+        
+        
+        
+        
+        
+        options?: GetByIdOptions
+        
+    ): Promise<GetByIdResponse>;
+    // Implementation
+    async getById(
+        
+        
+        
+        id: Schemas.PostId,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetByIdOptions = {}
+        
+    ): Promise<GetByIdResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'post.fields': 'postFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+            
+            'poll.fields': 'pollFields',
+            
+            
+            
+            'place.fields': 'placeFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            postFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            pollFields = [],
+            
+            
+            
+            placeFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            
+            params.append('post.fields', normalizeFields(postFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            
+            params.append('media.fields', normalizeFields(mediaFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (pollFields !== undefined && pollFields.length > 0) {
+            
+            
+            params.append('poll.fields', normalizeFields(pollFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (placeFields !== undefined && placeFields.length > 0) {
+            
+            
+            params.append('place.fields', normalizeFields(placeFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
   /**
-   * Hide reply
-   * Hides or unhides a reply to a conversation owned by the authenticated user.
+   * Delete Post
+   * Deletes a specific Post by its ID, if owned by the authenticated user.
 
 
-   * @param tweetId tweet_id
+   * @param id id
 
 
 
 
-   * @param body Request body
-
-   * @returns {Promise<HideReplyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<DeleteResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    hideReply(
+    delete(
         
         
-        tweetId: Schemas.PostId,
+        id: Schemas.PostId,
         
         
         
-        
-        body: HideReplyRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    hideReply(
+    delete(
         
         
-        tweetId: Schemas.PostId,
+        id: Schemas.PostId,
         
         
         
         
-        body: HideReplyRequest,
         
-        
-    ): Promise<HideReplyResponse>;
+    ): Promise<DeleteResponse>;
     // Implementation
-    async hideReply(
+    async delete(
         
         
         
-        tweetId: Schemas.PostId,
+        id: Schemas.PostId,
         
         
         
         
         
         
-        body: HideReplyRequest,
         
         
-        
-    ): Promise<HideReplyResponse | Response> {
+    ): Promise<DeleteResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/tweets/{tweet_id}/hidden';
+        let path = '/2/tweets/{id}';
         
         
-        path = path.replace('{tweet_id}', encodeURIComponent(String(tweetId)));
+        path = path.replace('{id}', encodeURIComponent(String(id)));
         
         
 
@@ -2871,15 +4228,13 @@ export class PostsClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
             
             // Pass security requirements for smart auth selection
             security: [
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'tweet.moderate.write'],
+                    'OAuth2UserToken': ['tweet.write', 'tweet.read', 'users.read'],
                     
                 },
                 
@@ -2896,18 +4251,17 @@ export class PostsClient {
             
         };
 
-        return this.client.request<HideReplyResponse>(
-            'PUT',
+        return this.client.request<DeleteResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
     }
 
 
-
-
   /**
-   * Get Posts Quoted Posts
+   * Get Quoted Posts
+   * Retrieves a list of Posts that quote a specific Post by its ID.
 
 
    * @param id id
@@ -3208,1029 +4562,6 @@ export class PostsClient {
             finalRequestOptions
         );
     }
-
-
-
-
-  /**
-   * Get Posts Counts All
-   * At most one of `pagination_token`, `next_token` may be provided.
-
-
-
-   * @param query query
-
-
-
-   * @returns {Promise<GetCountsAllResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getCountsAll(
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        options: GetCountsAllOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getCountsAll(
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        options?: GetCountsAllOptions
-        
-    ): Promise<GetCountsAllResponse>;
-    // Implementation
-    async getCountsAll(
-        
-        
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        
-        
-        options: GetCountsAllOptions = {}
-        
-    ): Promise<GetCountsAllResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-            
-            'since_id': 'sinceId',
-            
-            
-            
-            'until_id': 'untilId',
-            
-            
-            
-            'next_token': 'nextToken',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            
-            
-            'search_count.fields': 'searchCountFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            sinceId = undefined,
-            
-            
-            
-            untilId = undefined,
-            
-            
-            
-            nextToken = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            granularity = undefined,
-            
-            
-            
-            searchCountFields = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/counts/all';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (query !== undefined) {
-            
-            params.append('query', String(query));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (sinceId !== undefined) {
-            
-            params.append('since_id', String(sinceId));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (untilId !== undefined) {
-            
-            params.append('until_id', String(untilId));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (nextToken !== undefined) {
-            
-            params.append('next_token', String(nextToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (granularity !== undefined) {
-            
-            params.append('granularity', String(granularity));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (searchCountFields !== undefined) {
-            
-            params.append('search_count.fields', String(searchCountFields));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetCountsAllResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Posts Analytics
-
-
-
-   * @param ids ids
-
-
-
-   * @param startTime start_time
-
-
-
-   * @param endTime end_time
-
-
-
-   * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getAnalytics(
-        
-        
-        
-        ids: Array<Schemas.AnalyticsId>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        options: GetAnalyticsOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getAnalytics(
-        
-        
-        
-        ids: Array<Schemas.AnalyticsId>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        options?: GetAnalyticsOptions
-        
-    ): Promise<GetAnalyticsResponse>;
-    // Implementation
-    async getAnalytics(
-        
-        
-        
-        
-        
-        ids: Array<Schemas.AnalyticsId>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        
-        
-        options: GetAnalyticsOptions = {}
-        
-    ): Promise<GetAnalyticsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-            
-            'analytics.fields': 'analyticsFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            granularity = undefined,
-            
-            
-            
-            analyticsFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/analytics';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (ids !== undefined && ids.length > 0) {
-            
-            
-            params.append('ids', ids.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (granularity !== undefined) {
-            
-            params.append('granularity', String(granularity));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (analyticsFields !== undefined && analyticsFields.length > 0) {
-            
-            
-            params.append('analytics.fields', normalizeFields(analyticsFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetAnalyticsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Posts Counts Recent
-   * At most one of `pagination_token`, `next_token` may be provided.
-
-
-
-   * @param query query
-
-
-
-   * @returns {Promise<GetCountsRecentResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getCountsRecent(
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        options: GetCountsRecentOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getCountsRecent(
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        options?: GetCountsRecentOptions
-        
-    ): Promise<GetCountsRecentResponse>;
-    // Implementation
-    async getCountsRecent(
-        
-        
-        
-        
-        
-        query: string,
-        
-        
-        
-        
-        
-        
-        options: GetCountsRecentOptions = {}
-        
-    ): Promise<GetCountsRecentResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-            
-            'since_id': 'sinceId',
-            
-            
-            
-            'until_id': 'untilId',
-            
-            
-            
-            'next_token': 'nextToken',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            
-            
-            'search_count.fields': 'searchCountFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            sinceId = undefined,
-            
-            
-            
-            untilId = undefined,
-            
-            
-            
-            nextToken = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            granularity = undefined,
-            
-            
-            
-            searchCountFields = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/counts/recent';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (query !== undefined) {
-            
-            params.append('query', String(query));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (sinceId !== undefined) {
-            
-            params.append('since_id', String(sinceId));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (untilId !== undefined) {
-            
-            params.append('until_id', String(untilId));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (nextToken !== undefined) {
-            
-            params.append('next_token', String(nextToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (granularity !== undefined) {
-            
-            params.append('granularity', String(granularity));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (searchCountFields !== undefined) {
-            
-            params.append('search_count.fields', String(searchCountFields));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetCountsRecentResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Posts Reposted by
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<GetRepostedByResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getRepostedBy(
-        
-        
-        id: Schemas.PostId,
-        
-        
-        
-        
-        
-        options: GetRepostedByOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getRepostedBy(
-        
-        
-        id: Schemas.PostId,
-        
-        
-        
-        
-        
-        options?: GetRepostedByOptions
-        
-    ): Promise<GetRepostedByResponse>;
-    // Implementation
-    async getRepostedBy(
-        
-        
-        
-        id: Schemas.PostId,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetRepostedByOptions = {}
-        
-    ): Promise<GetRepostedByResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/{id}/retweeted_by';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            
-            params.append('post.fields', normalizeFields(postFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetRepostedByResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

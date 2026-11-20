@@ -9,18 +9,18 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for search
- *
- * @public
- */
-export type SearchResponse = Schemas.SearchNewsResponse;
-
-
-
-/**
  * Response for get
  *
  * @public
  */
 export type GetResponse = Schemas.GetNewsResponse;
+
+
+
+/**
+ * Response for search
+ *
+ * @public
+ */
+export type SearchResponse = Schemas.SearchNewsResponse;
 

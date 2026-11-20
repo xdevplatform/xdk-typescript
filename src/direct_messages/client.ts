@@ -10,80 +10,28 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
+CreateByConversationIdRequest,
+
+CreateByConversationIdResponse,
+
+GetEventsResponse,
 
 GetEventsByIdResponse,
 
 DeleteEventsResponse,
 
-
-GetEventsResponse,
-CreateByConversationIdRequest,
-
-CreateByConversationIdResponse,
-
-GetEventsByConversationIdResponse,
 CreateByParticipantIdRequest,
 
 CreateByParticipantIdResponse,
 
 GetEventsByParticipantIdResponse,
+
+GetEventsByConversationIdResponse,
 CreateConversationRequest,
 
 CreateConversationResponse,
 } from './models.js';
-
-
-/**
- * Options for getEventsById method
- * 
- * @public
- */
-export interface GetEventsByIdOptions {
-    
-    
-    /** A comma separated list of DmEvent fields to display. 
-     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
-    dmEventFields?: Array<"attachments" | "created_at" | "dm_conversation_id" | "entities" | "event_type" | "id" | "text">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"attachments.media_keys" | "attachments.media_keys" | "participant_ids" | "referenced_posts" | "sender_id">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
 
 
 
@@ -127,7 +75,7 @@ export interface GetEventsOptions {
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
     
     
     
@@ -139,7 +87,7 @@ export interface GetEventsOptions {
     
     /** A comma separated list of Media fields to display. 
      * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
     
     
     
@@ -150,31 +98,12 @@ export interface GetEventsOptions {
 }
 
 
-
 /**
- * Options for getEventsByConversationId method
+ * Options for getEventsById method
  * 
  * @public
  */
-export interface GetEventsByConversationIdOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** event_types 
-     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
-    eventTypes?: Array<"MessageCreate" | "ParticipantsJoin" | "ParticipantsLeave">;
-    
+export interface GetEventsByIdOptions {
     
     
     /** A comma separated list of DmEvent fields to display. 
@@ -191,7 +120,7 @@ export interface GetEventsByConversationIdOptions {
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
     
     
     
@@ -203,7 +132,7 @@ export interface GetEventsByConversationIdOptions {
     
     /** A comma separated list of Media fields to display. 
      * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
     
     
     
@@ -212,6 +141,8 @@ export interface GetEventsByConversationIdOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+
+
 
 
 
@@ -255,7 +186,7 @@ export interface GetEventsByParticipantIdOptions {
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_dm" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
     
     
     
@@ -267,7 +198,70 @@ export interface GetEventsByParticipantIdOptions {
     
     /** A comma separated list of Media fields to display. 
      * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "type" | "url" | "variants" | "width">;
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getEventsByConversationId method
+ * 
+ * @public
+ */
+export interface GetEventsByConversationIdOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** event_types 
+     * Also accepts: event_types or proper camelCase (e.g., eventTypes) */
+    eventTypes?: Array<"MessageCreate" | "ParticipantsJoin" | "ParticipantsLeave">;
+    
+    
+    
+    /** A comma separated list of DmEvent fields to display. 
+     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
+    dmEventFields?: Array<"attachments" | "created_at" | "dm_conversation_id" | "entities" | "event_type" | "id" | "text">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"attachments.media_keys" | "attachments.media_keys" | "participant_ids" | "referenced_posts" | "sender_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
     
     
     
@@ -328,290 +322,75 @@ export class DirectMessagesClient {
     }
 
 
-
   /**
-   * Get Direct Messages Events by ID
+   * Create DM Message by Conversation ID
+   * Sends a new direct message to a specific conversation by its ID.
 
 
-   * @param eventId event_id
+   * @param dmConversationId dm_conversation_id
 
 
 
 
-   * @returns {Promise<GetEventsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @param body At least one of `text`, `attachments` is required.
+
+   * @returns {Promise<CreateByConversationIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getEventsById(
+    createByConversationId(
         
         
-        eventId: string,
+        dmConversationId: string,
         
         
         
         
-        
-        options: GetEventsByIdOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getEventsById(
-        
-        
-        eventId: string,
-        
-        
-        
-        
-        
-        options?: GetEventsByIdOptions
-        
-    ): Promise<GetEventsByIdResponse>;
-    // Implementation
-    async getEventsById(
-        
-        
-        
-        eventId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetEventsByIdOptions = {}
-        
-    ): Promise<GetEventsByIdResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'dm_event.fields': 'dmEventFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            dmEventFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_events/{event_id}';
-        
-        
-        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (dmEventFields !== undefined && dmEventFields.length > 0) {
-            
-            
-            params.append('dm_event.fields', normalizeFields(dmEventFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            
-            params.append('post.fields', normalizeFields(postFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            
-            params.append('media.fields', normalizeFields(mediaFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetEventsByIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Delete DM event
-   * Deletes a specific direct message event by its ID, if owned by the authenticated user.
-
-
-   * @param eventId event_id
-
-
-
-
-   * @returns {Promise<DeleteEventsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteEvents(
-        
-        
-        eventId: string,
-        
-        
-        
+        body: CreateByConversationIdRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    deleteEvents(
+    createByConversationId(
         
         
-        eventId: string,
+        dmConversationId: string,
         
         
         
         
+        body: CreateByConversationIdRequest,
         
-    ): Promise<DeleteEventsResponse>;
+        
+    ): Promise<CreateByConversationIdResponse>;
     // Implementation
-    async deleteEvents(
+    async createByConversationId(
         
         
         
-        eventId: string,
-        
-        
-        
+        dmConversationId: string,
         
         
         
         
         
-    ): Promise<DeleteEventsResponse | Response> {
+        
+        body: CreateByConversationIdRequest,
+        
+        
+        
+    ): Promise<CreateByConversationIdResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/dm_events/{event_id}';
+        let path = '/2/dm_conversations/{dm_conversation_id}/messages';
         
         
-        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
+        path = path.replace('{dm_conversation_id}', encodeURIComponent(String(dmConversationId)));
         
         
 
@@ -622,13 +401,15 @@ export class DirectMessagesClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
             
             // Pass security requirements for smart auth selection
             security: [
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.write', 'dm.read'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'dm.write'],
                     
                 },
                 
@@ -645,156 +426,17 @@ export class DirectMessagesClient {
             
         };
 
-        return this.client.request<DeleteEventsResponse>(
-            'DELETE',
+        return this.client.request<CreateByConversationIdResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
     }
 
 
-
-
   /**
-   * Download DM Media
-   * Downloads media attached to a legacy Direct Message. The requesting user must be a participant in the conversation containing the specified DM event. The response body contains raw binary bytes.
-
-
-   * @param dmId dm_id
-
-
-
-   * @param mediaId media_id
-
-
-
-   * @param resourceId resource_id
-
-
-
-
-   * @returns {Promise<ArrayBuffer>} Promise resolving to the API response as binary ArrayBuffer, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    dmConversationsMediaDownload(
-        
-        
-        dmId: string,
-        
-        
-        
-        mediaId: string,
-        
-        
-        
-        resourceId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    dmConversationsMediaDownload(
-        
-        
-        dmId: string,
-        
-        
-        
-        mediaId: string,
-        
-        
-        
-        resourceId: string,
-        
-        
-        
-        
-        
-    ): Promise<ArrayBuffer>;
-    // Implementation
-    async dmConversationsMediaDownload(
-        
-        
-        
-        dmId: string,
-        
-        
-        
-        mediaId: string,
-        
-        
-        
-        resourceId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<ArrayBuffer | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}';
-        
-        
-        path = path.replace('{dm_id}', encodeURIComponent(String(dmId)));
-        
-        
-        
-        path = path.replace('{media_id}', encodeURIComponent(String(mediaId)));
-        
-        
-        
-        path = path.replace('{resource_id}', encodeURIComponent(String(resourceId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read'],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ArrayBuffer>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            { ...finalRequestOptions, binary: true }
-        );
-    }
-
-
-
-
-  /**
-   * Get Direct Messages Events
+   * Get DM Events
+   * Retrieves a list of recent direct message events across all conversations.
 
 
 
@@ -1027,7 +669,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.read'],
                     
                 },
                 
@@ -1052,164 +694,50 @@ export class DirectMessagesClient {
     }
 
 
-
-
   /**
-   * Create Direct Messages by Conversation ID
+   * Get DM Event by ID
+   * Retrieves details of a specific direct message event by its ID.
 
 
-   * @param dmConversationId dm_conversation_id
+   * @param eventId event_id
 
 
 
 
-   * @param body At least one of `text`, `attachments` is required.
-
-   * @returns {Promise<CreateByConversationIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetEventsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    createByConversationId(
+    getEventsById(
         
         
-        dmConversationId: string,
+        eventId: string,
         
         
         
         
-        body: CreateByConversationIdRequest,
         
-        
-        options: { requestOptions: { raw: true } }
+        options: GetEventsByIdOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    createByConversationId(
+    getEventsById(
         
         
-        dmConversationId: string,
+        eventId: string,
         
         
         
         
-        body: CreateByConversationIdRequest,
         
+        options?: GetEventsByIdOptions
         
-    ): Promise<CreateByConversationIdResponse>;
+    ): Promise<GetEventsByIdResponse>;
     // Implementation
-    async createByConversationId(
+    async getEventsById(
         
         
         
-        dmConversationId: string,
-        
-        
-        
-        
-        
-        
-        body: CreateByConversationIdRequest,
-        
-        
-        
-    ): Promise<CreateByConversationIdResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_conversations/{dm_conversation_id}/messages';
-        
-        
-        path = path.replace('{dm_conversation_id}', encodeURIComponent(String(dmConversationId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'dm.write', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateByConversationIdResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-  /**
-   * Get Direct Messages Events by Conversation ID
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<GetEventsByConversationIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getEventsByConversationId(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: GetEventsByConversationIdOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getEventsByConversationId(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetEventsByConversationIdOptions
-        
-    ): Promise<GetEventsByConversationIdResponse>;
-    // Implementation
-    async getEventsByConversationId(
-        
-        
-        
-        id: string,
+        eventId: string,
         
         
         
@@ -1218,25 +746,13 @@ export class DirectMessagesClient {
         
         
         
-        options: GetEventsByConversationIdOptions = {}
+        options: GetEventsByIdOptions = {}
         
-    ): Promise<GetEventsByConversationIdResponse | Response> {
+    ): Promise<GetEventsByIdResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
         const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'event_types': 'eventTypes',
-            
             
             
             'dm_event.fields': 'dmEventFields',
@@ -1264,18 +780,6 @@ export class DirectMessagesClient {
         const {
             
             
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            eventTypes = [],
-            
-            
-            
             dmEventFields = [],
             
             
@@ -1301,50 +805,15 @@ export class DirectMessagesClient {
         
 
         // Build the path with path parameters
-        let path = '/2/dm_conversations/{id}/dm_events';
+        let path = '/2/dm_events/{event_id}';
         
         
-        path = path.replace('{id}', encodeURIComponent(String(id)));
+        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
         
         
 
         // Build query parameters
         const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (eventTypes !== undefined && eventTypes.length > 0) {
-            
-            
-            params.append('event_types', eventTypes.join(','));
-            
-            
-        }
-        
-        
         
         
         
@@ -1421,7 +890,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['tweet.read', 'dm.read', 'users.read'],
                     
                 },
                 
@@ -1438,7 +907,7 @@ export class DirectMessagesClient {
             
         };
 
-        return this.client.request<GetEventsByConversationIdResponse>(
+        return this.client.request<GetEventsByIdResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1446,10 +915,246 @@ export class DirectMessagesClient {
     }
 
 
+  /**
+   * Delete DM Event
+   * Deletes a specific direct message event by its ID, if owned by the authenticated user.
+
+
+   * @param eventId event_id
+
+
+
+
+   * @returns {Promise<DeleteEventsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteEvents(
+        
+        
+        eventId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteEvents(
+        
+        
+        eventId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteEventsResponse>;
+    // Implementation
+    async deleteEvents(
+        
+        
+        
+        eventId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteEventsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_events/{event_id}';
+        
+        
+        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.write', 'dm.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteEventsResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
   /**
-   * Create DM message by participant ID
+   * Download DM Media
+   * Downloads media attached to a legacy Direct Message. The requesting user must be a participant in the conversation containing the specified DM event. The response body contains raw binary bytes.
+
+
+   * @param dmId dm_id
+
+
+
+   * @param mediaId media_id
+
+
+
+   * @param resourceId resource_id
+
+
+
+
+   * @returns {Promise<ArrayBuffer>} Promise resolving to the API response as binary ArrayBuffer, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    dmConversationsMediaDownload(
+        
+        
+        dmId: string,
+        
+        
+        
+        mediaId: string,
+        
+        
+        
+        resourceId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    dmConversationsMediaDownload(
+        
+        
+        dmId: string,
+        
+        
+        
+        mediaId: string,
+        
+        
+        
+        resourceId: string,
+        
+        
+        
+        
+        
+    ): Promise<ArrayBuffer>;
+    // Implementation
+    async dmConversationsMediaDownload(
+        
+        
+        
+        dmId: string,
+        
+        
+        
+        mediaId: string,
+        
+        
+        
+        resourceId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<ArrayBuffer | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}';
+        
+        
+        path = path.replace('{dm_id}', encodeURIComponent(String(dmId)));
+        
+        
+        
+        path = path.replace('{media_id}', encodeURIComponent(String(mediaId)));
+        
+        
+        
+        path = path.replace('{resource_id}', encodeURIComponent(String(resourceId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.read'],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ArrayBuffer>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            { ...finalRequestOptions, binary: true }
+        );
+    }
+
+
+  /**
+   * Create DM Message by Participant ID
    * Sends a new direct message to a specific participant by their ID.
 
 
@@ -1535,7 +1240,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.write', 'users.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'dm.write'],
                     
                 },
                 
@@ -1560,10 +1265,9 @@ export class DirectMessagesClient {
     }
 
 
-
-
   /**
-   * Get Direct Messages Events by Participant ID
+   * Get DM Events by Participant ID
+   * Retrieves direct message events for the one-to-one conversation between the authenticated user and a specific participant.
 
 
    * @param participantId participant_id
@@ -1816,7 +1520,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.read'],
+                    'OAuth2UserToken': ['users.read', 'dm.read', 'tweet.read'],
                     
                 },
                 
@@ -1841,10 +1545,288 @@ export class DirectMessagesClient {
     }
 
 
+  /**
+   * Get DM Events by Conversation ID
+   * Retrieves direct message events for a specific conversation by its ID.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetEventsByConversationIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getEventsByConversationId(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetEventsByConversationIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getEventsByConversationId(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetEventsByConversationIdOptions
+        
+    ): Promise<GetEventsByConversationIdResponse>;
+    // Implementation
+    async getEventsByConversationId(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetEventsByConversationIdOptions = {}
+        
+    ): Promise<GetEventsByConversationIdResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'event_types': 'eventTypes',
+            
+            
+            
+            'dm_event.fields': 'dmEventFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            eventTypes = [],
+            
+            
+            
+            dmEventFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_conversations/{id}/dm_events';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (eventTypes !== undefined && eventTypes.length > 0) {
+            
+            
+            params.append('event_types', eventTypes.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (dmEventFields !== undefined && dmEventFields.length > 0) {
+            
+            
+            params.append('dm_event.fields', normalizeFields(dmEventFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            
+            params.append('post.fields', normalizeFields(postFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            
+            params.append('media.fields', normalizeFields(mediaFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'dm.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetEventsByConversationIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
   /**
-   * Create DM conversation
+   * Create DM Conversation
    * Initiates a new direct message conversation with specified participants.
 
 
@@ -1910,7 +1892,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.write'],
+                    'OAuth2UserToken': ['dm.write', 'users.read', 'tweet.read'],
                     
                 },
                 
@@ -1933,27 +1915,6 @@ export class DirectMessagesClient {
             finalRequestOptions
         );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -7,7 +7,7 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
@@ -77,7 +77,7 @@ export class GeneralClient {
 
 
     /**
-     * Get OpenAPI Spec.
+     * Get OpenAPI Spec
      * Retrieves the full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md)
      * 
      * @returns Promise with the API response

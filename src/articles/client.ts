@@ -10,12 +10,6 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
 ArticlePublishResponse,
@@ -74,7 +68,6 @@ export class ArticlesClient {
         
         return normalized as T;
     }
-
 
 
   /**
@@ -179,15 +172,13 @@ export class ArticlesClient {
     }
 
 
-
-
   /**
-   * Create draft Article
+   * Create Draft Article
    * Creates a new Article draft that can later be published.
 
 
 
-   * @param body Request body
+   * @param body Create a draft Article.
 
    * @returns {Promise<ArticleCreateDraftResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
@@ -248,7 +239,7 @@ export class ArticlesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.write'],
+                    'OAuth2UserToken': [],
                     
                 },
                 
@@ -271,13 +262,6 @@ export class ArticlesClient {
             finalRequestOptions
         );
     }
-
-
-
-
-
-
-
 
 
 }

@@ -24,3 +24,12 @@ export type GetPersonalizedResponse = Schemas.GetTrendsPersonalizedTrendsRespons
  */
 export type GetByWoeidResponse = Schemas.GetTrendsByWoeidResponse;
 
+
+
+/**
+ * Response for getLocations
+ *
+ * @public
+ */
+export type GetLocationsResponse = Schemas.GetTrendsLocationsResponse;
+

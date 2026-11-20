@@ -10,18 +10,33 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
-SearchResponse,
-
 GetResponse,
+
+SearchResponse,
 } from './models.js';
+
+
+/**
+ * Options for get method
+ * 
+ * @public
+ */
+export interface GetOptions {
+    
+    
+    /** A comma separated list of News fields to display. 
+     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
+    newsFields?: Array<"category" | "cluster_posts_results" | "contexts" | "contexts" | "contexts" | "contexts" | "disclaimer" | "hook" | "id" | "keywords" | "name" | "summary" | "updated_at">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 /**
@@ -42,27 +57,6 @@ export interface SearchOptions {
      * Also accepts: max_age_hours or proper camelCase (e.g., maxAgeHours) */
     maxAgeHours?: number;
     
-    
-    
-    /** A comma separated list of News fields to display. 
-     * Also accepts: news.fields or proper camelCase (e.g., newsFields) */
-    newsFields?: Array<"category" | "cluster_posts_results" | "contexts" | "contexts" | "contexts" | "contexts" | "disclaimer" | "hook" | "id" | "keywords" | "name" | "summary" | "updated_at">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-/**
- * Options for get method
- * 
- * @public
- */
-export interface GetOptions {
     
     
     /** A comma separated list of News fields to display. 
@@ -127,9 +121,154 @@ export class NewsClient {
     }
 
 
+  /**
+   * Get News Stories by ID
+   * Retrieves news story by its ID.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    get(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    get(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetOptions
+        
+    ): Promise<GetResponse>;
+    // Implementation
+    async get(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetOptions = {}
+        
+    ): Promise<GetResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'news.fields': 'newsFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            newsFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/news/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (newsFields !== undefined && newsFields.length > 0) {
+            
+            
+            params.append('news.fields', normalizeFields(newsFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
   /**
    * Search News
+   * Retrieves a list of News stories matching the specified search query.
 
 
 
@@ -315,160 +454,6 @@ export class NewsClient {
             finalRequestOptions
         );
     }
-
-
-
-
-  /**
-   * Get news stories by ID
-   * Retrieves news story by its ID.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<GetResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    get(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: GetOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    get(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetOptions
-        
-    ): Promise<GetResponse>;
-    // Implementation
-    async get(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetOptions = {}
-        
-    ): Promise<GetResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'news.fields': 'newsFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            newsFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/news/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (newsFields !== undefined && newsFields.length > 0) {
-            
-            
-            params.append('news.fields', normalizeFields(newsFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-
-
-
-
 
 
 }

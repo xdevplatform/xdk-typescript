@@ -30,12 +30,12 @@ describe('ComplianceClient Structure', () => {
 
   
   
-  it('should have getJobsById method with correct signature', () => {
+  it('should have downloadJobResults method with correct signature', () => {
     // Check method exists
-    expect(ComplianceClient.prototype).toHaveProperty('getJobsById');
+    expect(ComplianceClient.prototype).toHaveProperty('downloadJobResults');
     
     // Check method is callable
-    const method = complianceClient.getJobsById;
+    const method = complianceClient.downloadJobResults;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -47,6 +47,8 @@ describe('ComplianceClient Structure', () => {
     const requiredParams = [
       
       'id',
+      
+      'token',
       
     ];
     
@@ -61,8 +63,8 @@ describe('ComplianceClient Structure', () => {
     }
   });
 
-  it('should have getJobsById method with return type annotation', () => {
-    const method = complianceClient.getJobsById;
+  it('should have downloadJobResults method with return type annotation', () => {
+    const method = complianceClient.downloadJobResults;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -151,15 +153,146 @@ describe('ComplianceClient Structure', () => {
   
 
   
+  it('should have getJobsById method with correct signature', () => {
+    // Check method exists
+    expect(ComplianceClient.prototype).toHaveProperty('getJobsById');
+    
+    // Check method is callable
+    const method = complianceClient.getJobsById;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getJobsById method with return type annotation', () => {
+    const method = complianceClient.getJobsById;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteJobsById method with correct signature', () => {
+    // Check method exists
+    expect(ComplianceClient.prototype).toHaveProperty('deleteJobsById');
+    
+    // Check method is callable
+    const method = complianceClient.deleteJobsById;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteJobsById method with return type annotation', () => {
+    const method = complianceClient.deleteJobsById;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have uploadJobSubmission method with correct signature', () => {
+    // Check method exists
+    expect(ComplianceClient.prototype).toHaveProperty('uploadJobSubmission');
+    
+    // Check method is callable
+    const method = complianceClient.uploadJobSubmission;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'token',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have uploadJobSubmission method with return type annotation', () => {
+    const method = complianceClient.uploadJobSubmission;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
 
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'getJobsById',
+      'downloadJobResults',
       
       'getJobs',
       
       'createJobs',
+      
+      'getJobsById',
+      
+      'deleteJobsById',
+      
+      'uploadJobSubmission',
       
     ];
 

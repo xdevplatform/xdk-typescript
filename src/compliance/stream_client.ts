@@ -7,13 +7,11 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
-
-  GetJobsByIdResponse,
 
 
 
@@ -23,14 +21,26 @@ import {
 
   CreateJobsResponse,
 
+
+
+  GetJobsByIdResponse,
+
+
+
+  DeleteJobsByIdResponse,
+
+
+
+  UploadJobSubmissionResponse,
+
 } from './models.js';
 
 /**
- * Options for getJobsById method
+ * Options for downloadJobResults method
  * 
  * @public
  */
-export interface GetJobsByIdStreamingOptions {
+export interface DownloadJobResultsStreamingOptions {
     
     
     /** A comma separated list of ComplianceJob fields to display. 
@@ -100,6 +110,75 @@ export interface CreateJobsStreamingOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+/**
+ * Options for getJobsById method
+ * 
+ * @public
+ */
+export interface GetJobsByIdStreamingOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteJobsById method
+ * 
+ * @public
+ */
+export interface DeleteJobsByIdStreamingOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for uploadJobSubmission method
+ * 
+ * @public
+ */
+export interface UploadJobSubmissionStreamingOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 export class ComplianceClient {
@@ -148,13 +227,22 @@ export class ComplianceClient {
 
 
 
+
+
+
+
+
+
+
+
+
     /**
-     * Get Compliance Job by ID
-     * Retrieves details of a specific Compliance Job by its ID.
+     * Download Compliance Job Results
+     * Downloads the results file of a completed Compliance Job using the signed URL returned at job creation.
      * 
      * @returns Promise with the API response
      */
-    async getJobsById(
+    async downloadJobResults(
         
         
         
@@ -164,10 +252,14 @@ export class ComplianceClient {
         
         
         
+        token: string,
         
         
-        options: GetJobsByIdStreamingOptions = {}
-    ): Promise<GetJobsByIdResponse> {
+        
+        
+        
+        options: DownloadJobResultsStreamingOptions = {}
+    ): Promise<any> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -176,7 +268,7 @@ export class ComplianceClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getJobsById');
+        this.client.validateAuthentication(requiredAuthTypes, 'downloadJobResults');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -207,7 +299,7 @@ export class ComplianceClient {
         
 
         // Build the path with path parameters
-        let path = '/2/compliance/jobs/{id}';
+        let path = '/2/compliance/jobs/{id}/download';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -216,6 +308,18 @@ export class ComplianceClient {
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (token !== undefined) {
+            params.append('token', String(token));
+        }
+        
+        
+        
         
         
         
@@ -242,7 +346,7 @@ export class ComplianceClient {
         };
 
         // Make the request
-        return this.client.request<GetJobsByIdResponse>(
+        return this.client.request<any>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -464,7 +568,7 @@ export class ComplianceClient {
             },
             signal: signal,
             
-            body: JSON.stringify(body),
+            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             ...requestOptions,
         };
@@ -472,6 +576,335 @@ export class ComplianceClient {
         // Make the request
         return this.client.request<CreateJobsResponse>(
             'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Compliance Job by ID
+     * Retrieves details of a specific Compliance Job by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getJobsById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetJobsByIdStreamingOptions = {}
+    ): Promise<GetJobsByIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getJobsById');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            params.append('compliance_job.fields', complianceJobFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetJobsByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Cancel Compliance Job
+     * Cancels a Compliance Job that has not finished processing; its status becomes failed and a new job of the same type can be created.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteJobsById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteJobsByIdStreamingOptions = {}
+    ): Promise<DeleteJobsByIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteJobsById');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            params.append('compliance_job.fields', complianceJobFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteJobsByIdResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Upload Compliance Job Submission
+     * Uploads the newline-delimited ID file for a Compliance Job using the signed URL returned at job creation.
+     * 
+     * @returns Promise with the API response
+     */
+    async uploadJobSubmission(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        token: string,
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UploadJobSubmissionStreamingOptions = {}
+    ): Promise<UploadJobSubmissionResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'uploadJobSubmission');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}/upload';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (token !== undefined) {
+            params.append('token', String(token));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            params.append('compliance_job.fields', complianceJobFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UploadJobSubmissionResponse>(
+            'PUT',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

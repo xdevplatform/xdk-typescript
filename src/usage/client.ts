@@ -10,16 +10,13 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
+
+GetCreditsResponse,
 
 GetResponse,
 } from './models.js';
+
 
 
 /**
@@ -98,9 +95,91 @@ export class UsageClient {
     }
 
 
+  /**
+   * Get Usage Credits
+   * Returns the payer's developer-platform credit balance in USD. total_balance is max(0, prepaid_balance + free_balance); prepaid_balance may be negative.
+
+
+
+   * @returns {Promise<GetCreditsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getCredits(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getCredits(
+        
+        
+        
+        
+    ): Promise<GetCreditsResponse>;
+    // Implementation
+    async getCredits(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetCreditsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/usage/credits';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetCreditsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
 
   /**
    * Get Usage
+   * Retrieves usage statistics for Posts over a specified number of days.
 
 
 
@@ -226,11 +305,6 @@ export class UsageClient {
             finalRequestOptions
         );
     }
-
-
-
-
-
 
 
 }

@@ -7,7 +7,7 @@
  * This module provides a client for interacting with the streaming endpoints of the X API.
  */
 
-import { Client, ApiResponse, RequestOptions } from '../client.js';
+import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
 import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
@@ -18,6 +18,10 @@ import {
 
 
   GetByWoeidResponse,
+
+
+
+  GetLocationsResponse,
 
 } from './models.js';
 
@@ -61,6 +65,29 @@ export interface GetByWoeidStreamingOptions {
     /** A comma separated list of Trend fields to display. 
      * Also accepts: trend.fields or proper camelCase (e.g., trendFields) */
     trendFields?: Array<"trend_name" | "tweet_count">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getLocations method
+ * 
+ * @public
+ */
+export interface GetLocationsStreamingOptions {
+    
+    
+    /** A comma separated list of TrendLocation fields to display. 
+     * Also accepts: trend_location.fields or proper camelCase (e.g., trendLocationFields) */
+    trendLocationFields?: Array<"country" | "country_code" | "name" | "parent_id" | "place_type" | "woeid">;
     
     
     
@@ -118,8 +145,12 @@ export class TrendsClient {
 
 
 
+
+
+
     /**
-     * Get Trends Personalized Trends
+     * Get Personalized Trends
+     * Retrieves personalized trending topics for the authenticated user.
      * 
      * @returns Promise with the API response
      */
@@ -217,7 +248,8 @@ export class TrendsClient {
 
 
     /**
-     * Get Trends by Woeid
+     * Get Trends by WOEID
+     * Retrieves trending topics for a specific location identified by its WOEID. `meta.location` describes that location: its `woeid` and `name`, and when they are known its `country`, `country_code`, `place_type` (`town`, `country` or `supername`) and `parent_id`, the WOEID of the place that contains it.
      * 
      * @returns Promise with the API response
      */
@@ -334,6 +366,105 @@ export class TrendsClient {
 
         // Make the request
         return this.client.request<GetByWoeidResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Trend Locations
+     * Retrieves every location that has trends. Each location has a WOEID to pass to `GET /2/trends/by/woeid/{woeid}`. The list is short and is returned whole, so the route takes no paging parameters.
+     * 
+     * @returns Promise with the API response
+     */
+    async getLocations(
+        
+        
+        
+        
+        
+        
+        
+        options: GetLocationsStreamingOptions = {}
+    ): Promise<GetLocationsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getLocations');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'trend_location.fields': 'trendLocationFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            trendLocationFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/trends/locations';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (trendLocationFields !== undefined && trendLocationFields.length > 0) {
+            
+            params.append('trend_location.fields', trendLocationFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetLocationsResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

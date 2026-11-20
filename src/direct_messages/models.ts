@@ -7,35 +7,6 @@
 import type * as Schemas from '../schemas.js';
 
 
-
-/**
- * Response for getEventsById
- *
- * @public
- */
-export type GetEventsByIdResponse = Schemas.GetDirectMessagesEventsByIdResponse;
-
-
-
-/**
- * Response for deleteEvents
- *
- * @public
- */
-export type DeleteEventsResponse = Schemas.DeleteDirectMessagesEventsResponse;
-
-
-
-
-
-/**
- * Response for getEvents
- *
- * @public
- */
-export type GetEventsResponse = Schemas.GetDirectMessagesEventsResponse;
-
-
 /**
  * Request for createByConversationId
  *
@@ -54,11 +25,31 @@ export type CreateByConversationIdResponse = Schemas.CreateDirectMessagesByConve
 
 
 /**
- * Response for getEventsByConversationId
+ * Response for getEvents
  *
  * @public
  */
-export type GetEventsByConversationIdResponse = Schemas.GetDirectMessagesEventsByConversationIdResponse;
+export type GetEventsResponse = Schemas.GetDirectMessagesEventsResponse;
+
+
+
+/**
+ * Response for getEventsById
+ *
+ * @public
+ */
+export type GetEventsByIdResponse = Schemas.GetDirectMessagesEventsByIdResponse;
+
+
+
+/**
+ * Response for deleteEvents
+ *
+ * @public
+ */
+export type DeleteEventsResponse = Schemas.DeleteDirectMessagesEventsResponse;
+
+
 
 
 /**
@@ -84,6 +75,15 @@ export type CreateByParticipantIdResponse = Schemas.CreateDirectMessagesByPartic
  * @public
  */
 export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsByParticipantIdResponse;
+
+
+
+/**
+ * Response for getEventsByConversationId
+ *
+ * @public
+ */
+export type GetEventsByConversationIdResponse = Schemas.GetDirectMessagesEventsByConversationIdResponse;
 
 
 /**

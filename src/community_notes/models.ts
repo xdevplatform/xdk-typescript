@@ -9,20 +9,27 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for delete
- *
- * @public
- */
-export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
-
-
-
-/**
  * Response for searchWritten
  *
  * @public
  */
 export type SearchWrittenResponse = Schemas.SearchCommunityNotesWrittenResponse;
+
+
+/**
+ * Request for evaluate
+ *
+ * @public
+ */
+export type EvaluateRequest = Schemas.EvaluateCommunityNotesRequest;
+
+
+/**
+ * Response for evaluate
+ *
+ * @public
+ */
+export type EvaluateResponse = Schemas.EvaluateCommunityNotesResponse;
 
 
 
@@ -50,18 +57,11 @@ export type CreateRequest = Schemas.CreateCommunityNotesRequest;
 export type CreateResponse = Schemas.CreateCommunityNotesResponse;
 
 
+
 /**
- * Request for evaluate
+ * Response for delete
  *
  * @public
  */
-export type EvaluateRequest = Schemas.EvaluateCommunityNotesRequest;
-
-
-/**
- * Response for evaluate
- *
- * @public
- */
-export type EvaluateResponse = Schemas.EvaluateCommunityNotesResponse;
+export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
 

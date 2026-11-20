@@ -7,6 +7,31 @@
 import type * as Schemas from '../schemas.js';
 
 
+/**
+ * Request for updateSubscription
+ *
+ * @public
+ */
+export type UpdateSubscriptionRequest = Schemas.UpdateActivitySubscriptionRequest;
+
+
+/**
+ * Response for updateSubscription
+ *
+ * @public
+ */
+export type UpdateSubscriptionResponse = Schemas.UpdateActivitySubscriptionResponse;
+
+
+
+/**
+ * Response for deleteSubscription
+ *
+ * @public
+ */
+export type DeleteSubscriptionResponse = Schemas.DeleteActivitySubscriptionResponse;
+
+
 
 /**
  * Response for getSubscriptions
@@ -39,29 +64,4 @@ export type CreateSubscriptionResponse = Schemas.CreateActivitySubscriptionRespo
  * @public
  */
 export type DeleteSubscriptionsByIdsResponse = Schemas.DeleteActivitySubscriptionsByIdsResponse;
-
-
-/**
- * Request for updateSubscription
- *
- * @public
- */
-export type UpdateSubscriptionRequest = Schemas.UpdateActivitySubscriptionRequest;
-
-
-/**
- * Response for updateSubscription
- *
- * @public
- */
-export type UpdateSubscriptionResponse = Schemas.UpdateActivitySubscriptionResponse;
-
-
-
-/**
- * Response for deleteSubscription
- *
- * @public
- */
-export type DeleteSubscriptionResponse = Schemas.DeleteActivitySubscriptionResponse;
 

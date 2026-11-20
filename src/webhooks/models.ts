@@ -25,49 +25,6 @@ export type CreateWebhookReplayJobResponse = Schemas.CreateWebhookReplayJobRespo
 
 
 /**
- * Response for get
- *
- * @public
- */
-export type GetResponse = Schemas.GetWebhooksResponse;
-
-
-/**
- * Request for create
- *
- * @public
- */
-export type CreateRequest = Schemas.CreateWebhooksRequest;
-
-
-/**
- * Response for create
- *
- * @public
- */
-export type CreateResponse = Schemas.CreateWebhooksResponse;
-
-
-
-/**
- * Response for createStreamLink
- *
- * @public
- */
-export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
-
-
-
-/**
- * Response for deleteStreamLink
- *
- * @public
- */
-export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
-
-
-
-/**
  * Response for getStreamLinks
  *
  * @public
@@ -91,4 +48,47 @@ export type ValidateResponse = Schemas.ValidateWebhooksResponse;
  * @public
  */
 export type DeleteResponse = Schemas.DeleteWebhooksResponse;
+
+
+
+/**
+ * Response for createStreamLink
+ *
+ * @public
+ */
+export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
+
+
+
+/**
+ * Response for deleteStreamLink
+ *
+ * @public
+ */
+export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
+
+
+
+/**
+ * Response for get
+ *
+ * @public
+ */
+export type GetResponse = Schemas.GetWebhooksResponse;
+
+
+/**
+ * Request for create
+ *
+ * @public
+ */
+export type CreateRequest = Schemas.CreateWebhooksRequest;
+
+
+/**
+ * Response for create
+ *
+ * @public
+ */
+export type CreateResponse = Schemas.CreateWebhooksResponse;
 

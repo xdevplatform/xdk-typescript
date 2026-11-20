@@ -10,29 +10,28 @@
 
 import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSnake } from '../client.js';
 import type * as Schemas from '../schemas.js';
-import { 
-    Paginator, 
-    PostPaginator, 
-    UserPaginator, 
-    EventPaginator
-} from '../paginator.js';
 import {
 
-GetJobsByIdResponse,
 
 GetJobsResponse,
 CreateJobsRequest,
 
 CreateJobsResponse,
+
+GetJobsByIdResponse,
+
+DeleteJobsByIdResponse,
+
+UploadJobSubmissionResponse,
 } from './models.js';
 
 
 /**
- * Options for getJobsById method
+ * Options for downloadJobResults method
  * 
  * @public
  */
-export interface GetJobsByIdOptions {
+export interface DownloadJobResultsOptions {
     
     
     /** A comma separated list of ComplianceJob fields to display. 
@@ -81,6 +80,69 @@ export interface GetJobsOptions {
  * @public
  */
 export interface CreateJobsOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getJobsById method
+ * 
+ * @public
+ */
+export interface GetJobsByIdOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for deleteJobsById method
+ * 
+ * @public
+ */
+export interface DeleteJobsByIdOptions {
+    
+    
+    /** A comma separated list of ComplianceJob fields to display. 
+     * Also accepts: compliance_job.fields or proper camelCase (e.g., complianceJobFields) */
+    complianceJobFields?: Array<"created_at" | "download_expires_at" | "download_url" | "id" | "name" | "resumable" | "status" | "type" | "upload_expires_at" | "upload_url">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for uploadJobSubmission method
+ * 
+ * @public
+ */
+export interface UploadJobSubmissionOptions {
     
     
     /** A comma separated list of ComplianceJob fields to display. 
@@ -145,10 +207,9 @@ export class ComplianceClient {
     }
 
 
-
   /**
-   * Get Compliance Job by ID
-   * Retrieves details of a specific Compliance Job by its ID.
+   * Download Compliance Job Results
+   * Downloads the results file of a completed Compliance Job using the signed URL returned at job creation.
 
 
    * @param id id
@@ -156,10 +217,14 @@ export class ComplianceClient {
 
 
 
-   * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @param token Signed download token from the job's download_url.
+
+
+
+   * @returns {Promise<ArrayBuffer>} Promise resolving to the API response as binary ArrayBuffer, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getJobsById(
+    downloadJobResults(
         
         
         id: string,
@@ -167,12 +232,16 @@ export class ComplianceClient {
         
         
         
+        token: string,
         
-        options: GetJobsByIdOptions & { requestOptions: { raw: true } }
+        
+        
+        
+        options: DownloadJobResultsOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getJobsById(
+    downloadJobResults(
         
         
         id: string,
@@ -180,12 +249,16 @@ export class ComplianceClient {
         
         
         
+        token: string,
         
-        options?: GetJobsByIdOptions
         
-    ): Promise<GetJobsByIdResponse>;
+        
+        
+        options?: DownloadJobResultsOptions
+        
+    ): Promise<ArrayBuffer>;
     // Implementation
-    async getJobsById(
+    async downloadJobResults(
         
         
         
@@ -195,12 +268,16 @@ export class ComplianceClient {
         
         
         
+        token: string,
         
         
         
-        options: GetJobsByIdOptions = {}
         
-    ): Promise<GetJobsByIdResponse | Response> {
+        
+        
+        options: DownloadJobResultsOptions = {}
+        
+    ): Promise<ArrayBuffer | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
@@ -227,7 +304,7 @@ export class ComplianceClient {
         
 
         // Build the path with path parameters
-        let path = '/2/compliance/jobs/{id}';
+        let path = '/2/compliance/jobs/{id}/download';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -236,6 +313,17 @@ export class ComplianceClient {
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        if (token !== undefined) {
+            
+            params.append('token', String(token));
+            
+        }
+        
+        
         
         
         
@@ -271,14 +359,12 @@ export class ComplianceClient {
             
         };
 
-        return this.client.request<GetJobsByIdResponse>(
+        return this.client.request<ArrayBuffer>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
+            { ...finalRequestOptions, binary: true }
         );
     }
-
-
 
 
   /**
@@ -438,8 +524,6 @@ export class ComplianceClient {
     }
 
 
-
-
   /**
    * Create Compliance Job
    * Creates a new Compliance Job for the specified job type.
@@ -563,13 +647,441 @@ export class ComplianceClient {
     }
 
 
+  /**
+   * Get Compliance Job by ID
+   * Retrieves details of a specific Compliance Job by its ID.
+
+
+   * @param id id
 
 
 
 
+   * @returns {Promise<GetJobsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getJobsById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetJobsByIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getJobsById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetJobsByIdOptions
+        
+    ): Promise<GetJobsByIdResponse>;
+    // Implementation
+    async getJobsById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetJobsByIdOptions = {}
+        
+    ): Promise<GetJobsByIdResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            
+            params.append('compliance_job.fields', normalizeFields(complianceJobFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetJobsByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Cancel Compliance Job
+   * Cancels a Compliance Job that has not finished processing; its status becomes failed and a new job of the same type can be created.
+
+
+   * @param id id
 
 
 
+
+   * @returns {Promise<DeleteJobsByIdResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteJobsById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: DeleteJobsByIdOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteJobsById(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: DeleteJobsByIdOptions
+        
+    ): Promise<DeleteJobsByIdResponse>;
+    // Implementation
+    async deleteJobsById(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteJobsByIdOptions = {}
+        
+    ): Promise<DeleteJobsByIdResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            
+            params.append('compliance_job.fields', normalizeFields(complianceJobFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<DeleteJobsByIdResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Upload Compliance Job Submission
+   * Uploads the newline-delimited ID file for a Compliance Job using the signed URL returned at job creation.
+
+
+   * @param id id
+
+
+
+
+   * @param token Signed upload token from the job's upload_url.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UploadJobSubmissionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    uploadJobSubmission(
+        
+        
+        id: string,
+        
+        
+        
+        
+        token: string,
+        
+        
+        
+        body: any,
+        
+        
+        options: UploadJobSubmissionOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    uploadJobSubmission(
+        
+        
+        id: string,
+        
+        
+        
+        
+        token: string,
+        
+        
+        
+        body: any,
+        
+        
+        options?: UploadJobSubmissionOptions
+        
+    ): Promise<UploadJobSubmissionResponse>;
+    // Implementation
+    async uploadJobSubmission(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        token: string,
+        
+        
+        
+        
+        body: any,
+        
+        
+        
+        options: UploadJobSubmissionOptions = {}
+        
+    ): Promise<UploadJobSubmissionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'compliance_job.fields': 'complianceJobFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            complianceJobFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/compliance/jobs/{id}/upload';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (token !== undefined) {
+            
+            params.append('token', String(token));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (complianceJobFields !== undefined && complianceJobFields.length > 0) {
+            
+            
+            params.append('compliance_job.fields', normalizeFields(complianceJobFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            headers: { 'Content-Type': 'application/octet-stream' },
+            body: body as any,
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<UploadJobSubmissionResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 }

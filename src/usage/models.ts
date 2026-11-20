@@ -9,6 +9,15 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
+ * Response for getCredits
+ *
+ * @public
+ */
+export type GetCreditsResponse = Schemas.GetUsageCreditsResponse;
+
+
+
+/**
  * Response for get
  *
  * @public
