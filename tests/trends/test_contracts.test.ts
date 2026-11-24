@@ -14,21 +14,47 @@
  * Generated automatically - do not edit manually.
  */
 
-import { describe, it, expect, beforeAll, jest } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals';
 import { TrendsClient } from '../../src/trends/client.js';
 import { Client } from '../../src/client.js';
+import { OAuth1 } from '../../src/oauth1_auth.js';
+import { MockXApiServer, MockResponse } from '../../examples/mock_x_api_server.js';
 
 describe('TrendsClient Contracts', () => {
   let client: Client;
   let trendsClient: TrendsClient;
+  let loopbackServer: MockXApiServer;
+  let loopbackClient: Client;
+  let loopbackTrends: TrendsClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new Client({ baseUrl: 'https://api.example.com' });
     trendsClient = client.trends;
+    loopbackServer = await MockXApiServer.start();
+    loopbackClient = new Client({
+      baseUrl: loopbackServer.baseUrl,
+      bearerToken: 'test_bearer_token',
+      accessToken: 'test_access_token',
+      oauth1: new OAuth1({
+        apiKey: 'test_key',
+        apiSecret: 'test_secret',
+        accessToken: 'test_access',
+        accessTokenSecret: 'test_access_secret',
+        baseUrl: loopbackServer.baseUrl,
+      }),
+      maxRetries: 0,
+    });
+    loopbackTrends = loopbackClient.trends;
+  });
+
+  afterAll(async () => {
+    if (loopbackServer) {
+      await loopbackServer.close();
+    }
   });
 
   
-  it('should have correct request structure for getPersonalized', async () => {
+  it('should have correct request structure for getLocations', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -65,7 +91,7 @@ describe('TrendsClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (trendsClient as any)['getPersonalized'];
+      const method = (trendsClient as any)['getLocations'];
       const result = await method.apply(trendsClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -77,7 +103,7 @@ describe('TrendsClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/personalized_trends';
+      const expectedPath = '/2/trends/locations';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -90,7 +116,7 @@ describe('TrendsClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getPersonalized', async () => {
+  it('should handle required parameters correctly for getLocations', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -109,7 +135,7 @@ describe('TrendsClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (trendsClient as any)['getPersonalized'];
+      const method = (trendsClient as any)['getLocations'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -130,7 +156,7 @@ describe('TrendsClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getPersonalized', async () => {
+  it('should validate response structure for getLocations', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -163,7 +189,7 @@ describe('TrendsClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (trendsClient as any)['getPersonalized'];
+      const method = (trendsClient as any)['getLocations'];
       const result = await method.apply(trendsClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -178,6 +204,40 @@ describe('TrendsClient Contracts', () => {
       client.httpClient.request = originalRequest;
       client.validateAuthentication = originalValidateAuth;
     }
+  });
+
+  it('should execute real TCP loopback roundtrip for getLocations', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"country\":\"test_value\",\"country_code\":\"test_value\",\"name\":\"test_value\",\"parent_id\":1,\"place_type\":\"test_value\",\"woeid\":1}]}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackTrends as any)['getLocations'];
+    const result = await method.apply(loopbackTrends, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
   });
 
   
@@ -345,8 +405,46 @@ describe('TrendsClient Contracts', () => {
     }
   });
 
+  it('should execute real TCP loopback roundtrip for getByWoeid', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"trend_name\":\"test_value\",\"tweet_count\":1}],\"meta\":{\"location\":{}}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackTrends as any)['getByWoeid'];
+    const result = await method.apply(loopbackTrends, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
   
-  it('should have correct request structure for getLocations', async () => {
+  it('should have correct request structure for getPersonalized', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -383,7 +481,7 @@ describe('TrendsClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (trendsClient as any)['getLocations'];
+      const method = (trendsClient as any)['getPersonalized'];
       const result = await method.apply(trendsClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -395,7 +493,7 @@ describe('TrendsClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/trends/locations';
+      const expectedPath = '/2/users/personalized_trends';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -408,7 +506,7 @@ describe('TrendsClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getLocations', async () => {
+  it('should handle required parameters correctly for getPersonalized', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -427,7 +525,7 @@ describe('TrendsClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (trendsClient as any)['getLocations'];
+      const method = (trendsClient as any)['getPersonalized'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -448,7 +546,7 @@ describe('TrendsClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getLocations', async () => {
+  it('should validate response structure for getPersonalized', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -481,7 +579,7 @@ describe('TrendsClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (trendsClient as any)['getLocations'];
+      const method = (trendsClient as any)['getPersonalized'];
       const result = await method.apply(trendsClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -496,6 +594,40 @@ describe('TrendsClient Contracts', () => {
       client.httpClient.request = originalRequest;
       client.validateAuthentication = originalValidateAuth;
     }
+  });
+
+  it('should execute real TCP loopback roundtrip for getPersonalized', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"category\":\"test_value\",\"post_count\":\"test_value\",\"trend_name\":\"test_value\",\"trending_since\":\"test_value\"}]}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackTrends as any)['getPersonalized'];
+    const result = await method.apply(loopbackTrends, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
   });
 
   

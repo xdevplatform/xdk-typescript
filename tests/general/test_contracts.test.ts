@@ -14,17 +14,43 @@
  * Generated automatically - do not edit manually.
  */
 
-import { describe, it, expect, beforeAll, jest } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals';
 import { GeneralClient } from '../../src/general/client.js';
 import { Client } from '../../src/client.js';
+import { OAuth1 } from '../../src/oauth1_auth.js';
+import { MockXApiServer, MockResponse } from '../../examples/mock_x_api_server.js';
 
 describe('GeneralClient Contracts', () => {
   let client: Client;
   let generalClient: GeneralClient;
+  let loopbackServer: MockXApiServer;
+  let loopbackClient: Client;
+  let loopbackGeneral: GeneralClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new Client({ baseUrl: 'https://api.example.com' });
     generalClient = client.general;
+    loopbackServer = await MockXApiServer.start();
+    loopbackClient = new Client({
+      baseUrl: loopbackServer.baseUrl,
+      bearerToken: 'test_bearer_token',
+      accessToken: 'test_access_token',
+      oauth1: new OAuth1({
+        apiKey: 'test_key',
+        apiSecret: 'test_secret',
+        accessToken: 'test_access',
+        accessTokenSecret: 'test_access_secret',
+        baseUrl: loopbackServer.baseUrl,
+      }),
+      maxRetries: 0,
+    });
+    loopbackGeneral = loopbackClient.general;
+  });
+
+  afterAll(async () => {
+    if (loopbackServer) {
+      await loopbackServer.close();
+    }
   });
 
   
@@ -168,6 +194,40 @@ describe('GeneralClient Contracts', () => {
       client.httpClient.request = originalRequest;
       client.validateAuthentication = originalValidateAuth;
     }
+  });
+
+  it('should execute real TCP loopback roundtrip for getOpenApiSpec', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackGeneral as any)['getOpenApiSpec'];
+    const result = await method.apply(loopbackGeneral, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeUndefined();
+    
   });
 
   

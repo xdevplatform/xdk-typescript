@@ -30,438 +30,6 @@ describe('ChatClient Structure', () => {
 
   
   
-  it('should have rejectGroupAdminRequest method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('rejectGroupAdminRequest');
-    
-    // Check method is callable
-    const method = chatClient.rejectGroupAdminRequest;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'userId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have rejectGroupAdminRequest method with return type annotation', () => {
-    const method = chatClient.rejectGroupAdminRequest;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have mediaDownload method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('mediaDownload');
-    
-    // Check method is callable
-    const method = chatClient.mediaDownload;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'mediaHashKey',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have mediaDownload method with return type annotation', () => {
-    const method = chatClient.mediaDownload;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have mediaUploadAppend method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('mediaUploadAppend');
-    
-    // Check method is callable
-    const method = chatClient.mediaUploadAppend;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have mediaUploadAppend method with return type annotation', () => {
-    const method = chatClient.mediaUploadAppend;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateConversationScreenCapture method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('updateConversationScreenCapture');
-    
-    // Check method is callable
-    const method = chatClient.updateConversationScreenCapture;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateConversationScreenCapture method with return type annotation', () => {
-    const method = chatClient.updateConversationScreenCapture;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have approveGroupAdminRequest method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('approveGroupAdminRequest');
-    
-    // Check method is callable
-    const method = chatClient.approveGroupAdminRequest;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'userId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have approveGroupAdminRequest method with return type annotation', () => {
-    const method = chatClient.approveGroupAdminRequest;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateGroupAdminSettings method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('updateGroupAdminSettings');
-    
-    // Check method is callable
-    const method = chatClient.updateGroupAdminSettings;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateGroupAdminSettings method with return type annotation', () => {
-    const method = chatClient.updateGroupAdminSettings;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getConversation method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getConversation');
-    
-    // Check method is callable
-    const method = chatClient.getConversation;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getConversation method with return type annotation', () => {
-    const method = chatClient.getConversation;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateGroup method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('updateGroup');
-    
-    // Check method is callable
-    const method = chatClient.updateGroup;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateGroup method with return type annotation', () => {
-    const method = chatClient.updateGroup;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteConversation method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('deleteConversation');
-    
-    // Check method is callable
-    const method = chatClient.deleteConversation;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have deleteConversation method with return type annotation', () => {
-    const method = chatClient.deleteConversation;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getMessageRequests method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getMessageRequests');
-    
-    // Check method is callable
-    const method = chatClient.getMessageRequests;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getMessageRequests method with return type annotation', () => {
-    const method = chatClient.getMessageRequests;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getMessageRequests method with pagination parameters', () => {
-    const method = chatClient.getMessageRequests;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
   it('should have mediaUploadInitialize method with correct signature', () => {
     // Check method exists
     expect(ChatClient.prototype).toHaveProperty('mediaUploadInitialize');
@@ -501,12 +69,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have removeGroupAdmins method with correct signature', () => {
+  it('should have initializeGroup method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('removeGroupAdmins');
+    expect(ChatClient.prototype).toHaveProperty('initializeGroup');
     
     // Check method is callable
-    const method = chatClient.removeGroupAdmins;
+    const method = chatClient.initializeGroup;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -516,8 +84,6 @@ describe('ChatClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
-      
-      'id',
       
     ];
     
@@ -532,8 +98,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have removeGroupAdmins method with return type annotation', () => {
-    const method = chatClient.removeGroupAdmins;
+  it('should have initializeGroup method with return type annotation', () => {
+    const method = chatClient.initializeGroup;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -583,12 +149,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have sendMessage method with correct signature', () => {
+  it('should have addGroupMembers method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('sendMessage');
+    expect(ChatClient.prototype).toHaveProperty('addGroupMembers');
     
     // Check method is callable
-    const method = chatClient.sendMessage;
+    const method = chatClient.addGroupMembers;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -614,8 +180,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have sendMessage method with return type annotation', () => {
-    const method = chatClient.sendMessage;
+  it('should have addGroupMembers method with return type annotation', () => {
+    const method = chatClient.addGroupMembers;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -624,12 +190,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have getConversationEvents method with correct signature', () => {
+  it('should have mediaUploadFinalize method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getConversationEvents');
+    expect(ChatClient.prototype).toHaveProperty('mediaUploadFinalize');
     
     // Check method is callable
-    const method = chatClient.getConversationEvents;
+    const method = chatClient.mediaUploadFinalize;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -655,147 +221,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have getConversationEvents method with return type annotation', () => {
-    const method = chatClient.getConversationEvents;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getConversationEvents method with pagination parameters', () => {
-    const method = chatClient.getConversationEvents;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have addGroupAdmins method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('addGroupAdmins');
-    
-    // Check method is callable
-    const method = chatClient.addGroupAdmins;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have addGroupAdmins method with return type annotation', () => {
-    const method = chatClient.addGroupAdmins;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have initializeGroup method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('initializeGroup');
-    
-    // Check method is callable
-    const method = chatClient.initializeGroup;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have initializeGroup method with return type annotation', () => {
-    const method = chatClient.initializeGroup;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getConversationPinnedMessages method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getConversationPinnedMessages');
-    
-    // Check method is callable
-    const method = chatClient.getConversationPinnedMessages;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getConversationPinnedMessages method with return type annotation', () => {
-    const method = chatClient.getConversationPinnedMessages;
+  it('should have mediaUploadFinalize method with return type annotation', () => {
+    const method = chatClient.mediaUploadFinalize;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -927,12 +354,69 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have markConversationUnread method with correct signature', () => {
+  it('should have getMessageRequests method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('markConversationUnread');
+    expect(ChatClient.prototype).toHaveProperty('getMessageRequests');
     
     // Check method is callable
-    const method = chatClient.markConversationUnread;
+    const method = chatClient.getMessageRequests;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getMessageRequests method with return type annotation', () => {
+    const method = chatClient.getMessageRequests;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getMessageRequests method with pagination parameters', () => {
+    const method = chatClient.getMessageRequests;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have sendTypingIndicator method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('sendTypingIndicator');
+    
+    // Check method is callable
+    const method = chatClient.sendTypingIndicator;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -958,8 +442,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have markConversationUnread method with return type annotation', () => {
-    const method = chatClient.markConversationUnread;
+  it('should have sendTypingIndicator method with return type annotation', () => {
+    const method = chatClient.sendTypingIndicator;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1009,12 +493,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have acceptMessageRequest method with correct signature', () => {
+  it('should have removeGroupMembers method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('acceptMessageRequest');
+    expect(ChatClient.prototype).toHaveProperty('removeGroupMembers');
     
     // Check method is callable
-    const method = chatClient.acceptMessageRequest;
+    const method = chatClient.removeGroupMembers;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1040,8 +524,217 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have acceptMessageRequest method with return type annotation', () => {
-    const method = chatClient.acceptMessageRequest;
+  it('should have removeGroupMembers method with return type annotation', () => {
+    const method = chatClient.removeGroupMembers;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getConversation method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('getConversation');
+    
+    // Check method is callable
+    const method = chatClient.getConversation;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getConversation method with return type annotation', () => {
+    const method = chatClient.getConversation;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have updateGroup method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('updateGroup');
+    
+    // Check method is callable
+    const method = chatClient.updateGroup;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have updateGroup method with return type annotation', () => {
+    const method = chatClient.updateGroup;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteConversation method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('deleteConversation');
+    
+    // Check method is callable
+    const method = chatClient.deleteConversation;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteConversation method with return type annotation', () => {
+    const method = chatClient.deleteConversation;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have approveGroupAdminRequest method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('approveGroupAdminRequest');
+    
+    // Check method is callable
+    const method = chatClient.approveGroupAdminRequest;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'userId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have approveGroupAdminRequest method with return type annotation', () => {
+    const method = chatClient.approveGroupAdminRequest;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have rejectGroupAdminRequest method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('rejectGroupAdminRequest');
+    
+    // Check method is callable
+    const method = chatClient.rejectGroupAdminRequest;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'userId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have rejectGroupAdminRequest method with return type annotation', () => {
+    const method = chatClient.rejectGroupAdminRequest;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1132,12 +825,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have getConversations method with correct signature', () => {
+  it('should have createConversation method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getConversations');
+    expect(ChatClient.prototype).toHaveProperty('createConversation');
     
     // Check method is callable
-    const method = chatClient.getConversations;
+    const method = chatClient.createConversation;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1161,40 +854,22 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have getConversations method with return type annotation', () => {
-    const method = chatClient.getConversations;
+  it('should have createConversation method with return type annotation', () => {
+    const method = chatClient.createConversation;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-  it('should have getConversations method with pagination parameters', () => {
-    const method = chatClient.getConversations;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
 
   
-  it('should have removeGroupMembers method with correct signature', () => {
+  it('should have addGroupAdmins method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('removeGroupMembers');
+    expect(ChatClient.prototype).toHaveProperty('addGroupAdmins');
     
     // Check method is callable
-    const method = chatClient.removeGroupMembers;
+    const method = chatClient.addGroupAdmins;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1220,8 +895,90 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have removeGroupMembers method with return type annotation', () => {
-    const method = chatClient.removeGroupMembers;
+  it('should have addGroupAdmins method with return type annotation', () => {
+    const method = chatClient.addGroupAdmins;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have sendMessage method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('sendMessage');
+    
+    // Check method is callable
+    const method = chatClient.sendMessage;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have sendMessage method with return type annotation', () => {
+    const method = chatClient.sendMessage;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have addUserPublicKey method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('addUserPublicKey');
+    
+    // Check method is callable
+    const method = chatClient.addUserPublicKey;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have addUserPublicKey method with return type annotation', () => {
+    const method = chatClient.addUserPublicKey;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1312,12 +1069,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have addUserPublicKey method with correct signature', () => {
+  it('should have getConversationPinnedMessages method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('addUserPublicKey');
+    expect(ChatClient.prototype).toHaveProperty('getConversationPinnedMessages');
     
     // Check method is callable
-    const method = chatClient.addUserPublicKey;
+    const method = chatClient.getConversationPinnedMessages;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1343,8 +1100,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have addUserPublicKey method with return type annotation', () => {
-    const method = chatClient.addUserPublicKey;
+  it('should have getConversationPinnedMessages method with return type annotation', () => {
+    const method = chatClient.getConversationPinnedMessages;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1353,12 +1110,69 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have rejectGroupJoinRequests method with correct signature', () => {
+  it('should have getConversations method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('rejectGroupJoinRequests');
+    expect(ChatClient.prototype).toHaveProperty('getConversations');
     
     // Check method is callable
-    const method = chatClient.rejectGroupJoinRequests;
+    const method = chatClient.getConversations;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getConversations method with return type annotation', () => {
+    const method = chatClient.getConversations;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getConversations method with pagination parameters', () => {
+    const method = chatClient.getConversations;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have markConversationUnread method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('markConversationUnread');
+    
+    // Check method is callable
+    const method = chatClient.markConversationUnread;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1384,8 +1198,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have rejectGroupJoinRequests method with return type annotation', () => {
-    const method = chatClient.rejectGroupJoinRequests;
+  it('should have markConversationUnread method with return type annotation', () => {
+    const method = chatClient.markConversationUnread;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1394,90 +1208,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have getSettings method with correct signature', () => {
+  it('should have removeGroupAdmins method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getSettings');
+    expect(ChatClient.prototype).toHaveProperty('removeGroupAdmins');
     
     // Check method is callable
-    const method = chatClient.getSettings;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getSettings method with return type annotation', () => {
-    const method = chatClient.getSettings;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateSettings method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('updateSettings');
-    
-    // Check method is callable
-    const method = chatClient.updateSettings;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateSettings method with return type annotation', () => {
-    const method = chatClient.updateSettings;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have mediaUploadFinalize method with correct signature', () => {
-    // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('mediaUploadFinalize');
-    
-    // Check method is callable
-    const method = chatClient.mediaUploadFinalize;
+    const method = chatClient.removeGroupAdmins;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1503,8 +1239,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have mediaUploadFinalize method with return type annotation', () => {
-    const method = chatClient.mediaUploadFinalize;
+  it('should have removeGroupAdmins method with return type annotation', () => {
+    const method = chatClient.removeGroupAdmins;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1513,12 +1249,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have addConversationKeys method with correct signature', () => {
+  it('should have updateGroupAdminSettings method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('addConversationKeys');
+    expect(ChatClient.prototype).toHaveProperty('updateGroupAdminSettings');
     
     // Check method is callable
-    const method = chatClient.addConversationKeys;
+    const method = chatClient.updateGroupAdminSettings;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1544,8 +1280,49 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have addConversationKeys method with return type annotation', () => {
-    const method = chatClient.addConversationKeys;
+  it('should have updateGroupAdminSettings method with return type annotation', () => {
+    const method = chatClient.updateGroupAdminSettings;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getMessageRequest method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('getMessageRequest');
+    
+    // Check method is callable
+    const method = chatClient.getMessageRequest;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getMessageRequest method with return type annotation', () => {
+    const method = chatClient.getMessageRequest;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1597,12 +1374,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have createConversation method with correct signature', () => {
+  it('should have getConversationEvents method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('createConversation');
+    expect(ChatClient.prototype).toHaveProperty('getConversationEvents');
     
     // Check method is callable
-    const method = chatClient.createConversation;
+    const method = chatClient.getConversationEvents;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1612,6 +1389,8 @@ describe('ChatClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
+      
+      'id',
       
     ];
     
@@ -1626,8 +1405,149 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have createConversation method with return type annotation', () => {
-    const method = chatClient.createConversation;
+  it('should have getConversationEvents method with return type annotation', () => {
+    const method = chatClient.getConversationEvents;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getConversationEvents method with pagination parameters', () => {
+    const method = chatClient.getConversationEvents;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have updateConversationScreenCapture method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('updateConversationScreenCapture');
+    
+    // Check method is callable
+    const method = chatClient.updateConversationScreenCapture;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have updateConversationScreenCapture method with return type annotation', () => {
+    const method = chatClient.updateConversationScreenCapture;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have acceptMessageRequest method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('acceptMessageRequest');
+    
+    // Check method is callable
+    const method = chatClient.acceptMessageRequest;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have acceptMessageRequest method with return type annotation', () => {
+    const method = chatClient.acceptMessageRequest;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have rejectGroupJoinRequests method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('rejectGroupJoinRequests');
+    
+    // Check method is callable
+    const method = chatClient.rejectGroupJoinRequests;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have rejectGroupJoinRequests method with return type annotation', () => {
+    const method = chatClient.rejectGroupJoinRequests;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1718,12 +1638,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have getMessageRequest method with correct signature', () => {
+  it('should have getSettings method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('getMessageRequest');
+    expect(ChatClient.prototype).toHaveProperty('getSettings');
     
     // Check method is callable
-    const method = chatClient.getMessageRequest;
+    const method = chatClient.getSettings;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1733,8 +1653,6 @@ describe('ChatClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
-      
-      'id',
       
     ];
     
@@ -1749,8 +1667,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have getMessageRequest method with return type annotation', () => {
-    const method = chatClient.getMessageRequest;
+  it('should have getSettings method with return type annotation', () => {
+    const method = chatClient.getSettings;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1759,12 +1677,51 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have addGroupMembers method with correct signature', () => {
+  it('should have updateSettings method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('addGroupMembers');
+    expect(ChatClient.prototype).toHaveProperty('updateSettings');
     
     // Check method is callable
-    const method = chatClient.addGroupMembers;
+    const method = chatClient.updateSettings;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have updateSettings method with return type annotation', () => {
+    const method = chatClient.updateSettings;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have mediaUploadAppend method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('mediaUploadAppend');
+    
+    // Check method is callable
+    const method = chatClient.mediaUploadAppend;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1790,8 +1747,51 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have addGroupMembers method with return type annotation', () => {
-    const method = chatClient.addGroupMembers;
+  it('should have mediaUploadAppend method with return type annotation', () => {
+    const method = chatClient.mediaUploadAppend;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have mediaDownload method with correct signature', () => {
+    // Check method exists
+    expect(ChatClient.prototype).toHaveProperty('mediaDownload');
+    
+    // Check method is callable
+    const method = chatClient.mediaDownload;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'mediaHashKey',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have mediaDownload method with return type annotation', () => {
+    const method = chatClient.mediaDownload;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1882,12 +1882,12 @@ describe('ChatClient Structure', () => {
   
 
   
-  it('should have sendTypingIndicator method with correct signature', () => {
+  it('should have addConversationKeys method with correct signature', () => {
     // Check method exists
-    expect(ChatClient.prototype).toHaveProperty('sendTypingIndicator');
+    expect(ChatClient.prototype).toHaveProperty('addConversationKeys');
     
     // Check method is callable
-    const method = chatClient.sendTypingIndicator;
+    const method = chatClient.addConversationKeys;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1913,8 +1913,8 @@ describe('ChatClient Structure', () => {
     }
   });
 
-  it('should have sendTypingIndicator method with return type annotation', () => {
-    const method = chatClient.sendTypingIndicator;
+  it('should have addConversationKeys method with return type annotation', () => {
+    const method = chatClient.addConversationKeys;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1927,41 +1927,15 @@ describe('ChatClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'rejectGroupAdminRequest',
-      
-      'mediaDownload',
-      
-      'mediaUploadAppend',
-      
-      'updateConversationScreenCapture',
-      
-      'approveGroupAdminRequest',
-      
-      'updateGroupAdminSettings',
-      
-      'getConversation',
-      
-      'updateGroup',
-      
-      'deleteConversation',
-      
-      'getMessageRequests',
-      
       'mediaUploadInitialize',
-      
-      'removeGroupAdmins',
-      
-      'deleteMessages',
-      
-      'sendMessage',
-      
-      'getConversationEvents',
-      
-      'addGroupAdmins',
       
       'initializeGroup',
       
-      'getConversationPinnedMessages',
+      'deleteMessages',
+      
+      'addGroupMembers',
+      
+      'mediaUploadFinalize',
       
       'muteConversation',
       
@@ -1969,53 +1943,79 @@ describe('ChatClient Structure', () => {
       
       'markConversationRead',
       
-      'markConversationUnread',
+      'getMessageRequests',
+      
+      'sendTypingIndicator',
       
       'createGroupJoinRequest',
       
-      'acceptMessageRequest',
+      'removeGroupMembers',
+      
+      'getConversation',
+      
+      'updateGroup',
+      
+      'deleteConversation',
+      
+      'approveGroupAdminRequest',
+      
+      'rejectGroupAdminRequest',
       
       'enableGroupInvite',
       
       'disableGroupInvite',
       
-      'getConversations',
+      'createConversation',
       
-      'removeGroupMembers',
+      'addGroupAdmins',
+      
+      'sendMessage',
+      
+      'addUserPublicKey',
       
       'archiveConversation',
       
       'unarchiveConversation',
       
-      'addUserPublicKey',
+      'getConversationPinnedMessages',
       
-      'rejectGroupJoinRequests',
+      'getConversations',
       
-      'getSettings',
+      'markConversationUnread',
       
-      'updateSettings',
+      'removeGroupAdmins',
       
-      'mediaUploadFinalize',
+      'updateGroupAdminSettings',
       
-      'addConversationKeys',
+      'getMessageRequest',
       
       'getGroupInvite',
       
-      'createConversation',
+      'getConversationEvents',
+      
+      'updateConversationScreenCapture',
+      
+      'acceptMessageRequest',
+      
+      'rejectGroupJoinRequests',
       
       'updateConversationMessageTtl',
       
       'deleteConversationMessageTtl',
       
-      'getMessageRequest',
+      'getSettings',
       
-      'addGroupMembers',
+      'updateSettings',
+      
+      'mediaUploadAppend',
+      
+      'mediaDownload',
       
       'getGroupAdminRequests',
       
       'createGroupAdminRequest',
       
-      'sendTypingIndicator',
+      'addConversationKeys',
       
     ];
 

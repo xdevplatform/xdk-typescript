@@ -52,24 +52,6 @@ export type DeleteResponse = Schemas.DeleteWebhooksResponse;
 
 
 /**
- * Response for createStreamLink
- *
- * @public
- */
-export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
-
-
-
-/**
- * Response for deleteStreamLink
- *
- * @public
- */
-export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
-
-
-
-/**
  * Response for get
  *
  * @public
@@ -91,4 +73,22 @@ export type CreateRequest = Schemas.CreateWebhooksRequest;
  * @public
  */
 export type CreateResponse = Schemas.CreateWebhooksResponse;
+
+
+
+/**
+ * Response for createStreamLink
+ *
+ * @public
+ */
+export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
+
+
+
+/**
+ * Response for deleteStreamLink
+ *
+ * @public
+ */
+export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
 

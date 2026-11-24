@@ -13,7 +13,7 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  GetPersonalizedResponse,
+  GetLocationsResponse,
 
 
 
@@ -21,21 +21,21 @@ import {
 
 
 
-  GetLocationsResponse,
+  GetPersonalizedResponse,
 
 } from './models.js';
 
 /**
- * Options for getPersonalized method
+ * Options for getLocations method
  * 
  * @public
  */
-export interface GetPersonalizedStreamingOptions {
+export interface GetLocationsStreamingOptions {
     
     
-    /** A comma separated list of PersonalizedTrend fields to display. 
-     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
-    personalizedTrendFields?: Array<"category" | "post_count" | "trend_name" | "trending_since">;
+    /** A comma separated list of TrendLocation fields to display. 
+     * Also accepts: trend_location.fields or proper camelCase (e.g., trendLocationFields) */
+    trendLocationFields?: Array<"country" | "country_code" | "name" | "parent_id" | "place_type" | "woeid">;
     
     
     
@@ -45,6 +45,14 @@ export interface GetPersonalizedStreamingOptions {
     headers?: Record<string, string>;
     /** AbortSignal for cancelling the request */
     signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
@@ -74,20 +82,28 @@ export interface GetByWoeidStreamingOptions {
     headers?: Record<string, string>;
     /** AbortSignal for cancelling the request */
     signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
 /**
- * Options for getLocations method
+ * Options for getPersonalized method
  * 
  * @public
  */
-export interface GetLocationsStreamingOptions {
+export interface GetPersonalizedStreamingOptions {
     
     
-    /** A comma separated list of TrendLocation fields to display. 
-     * Also accepts: trend_location.fields or proper camelCase (e.g., trendLocationFields) */
-    trendLocationFields?: Array<"country" | "country_code" | "name" | "parent_id" | "place_type" | "woeid">;
+    /** A comma separated list of PersonalizedTrend fields to display. 
+     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
+    personalizedTrendFields?: Array<"category" | "post_count" | "trend_name" | "trending_since">;
     
     
     
@@ -97,6 +113,14 @@ export interface GetLocationsStreamingOptions {
     headers?: Record<string, string>;
     /** AbortSignal for cancelling the request */
     signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
@@ -149,12 +173,12 @@ export class TrendsClient {
 
 
     /**
-     * Get Personalized Trends
-     * Retrieves personalized trending topics for the authenticated user.
+     * Get Trend Locations
+     * Retrieves every location that has trends. Each location has a WOEID to pass to `GET /2/trends/by/woeid/{woeid}`. The list is short and is returned whole, so the route takes no paging parameters.
      * 
      * @returns Promise with the API response
      */
-    async getPersonalized(
+    async getLocations(
         
         
         
@@ -162,8 +186,8 @@ export class TrendsClient {
         
         
         
-        options: GetPersonalizedStreamingOptions = {}
-    ): Promise<GetPersonalizedResponse> {
+        options: GetLocationsStreamingOptions = {}
+    ): Promise<GetLocationsResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -173,10 +197,10 @@ export class TrendsClient {
         
         
         
-        requiredAuthTypes.push('UserToken');
+        requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getPersonalized');
+        this.client.validateAuthentication(requiredAuthTypes, 'getLocations');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -184,7 +208,7 @@ export class TrendsClient {
         const paramMappings: Record<string, string> = {
             
             
-            'personalized_trend.fields': 'personalizedTrendFields',
+            'trend_location.fields': 'trendLocationFields',
             
             
         };
@@ -196,7 +220,7 @@ export class TrendsClient {
         const {
             
             
-            personalizedTrendFields = [],
+            trendLocationFields = [],
             
             
             
@@ -207,7 +231,7 @@ export class TrendsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/users/personalized_trends';
+        let path = '/2/trends/locations';
         
 
         // Build query parameters
@@ -217,9 +241,9 @@ export class TrendsClient {
         
         
         
-        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
+        if (trendLocationFields !== undefined && trendLocationFields.length > 0) {
             
-            params.append('personalized_trend.fields', personalizedTrendFields.join(','));
+            params.append('trend_location.fields', trendLocationFields.join(','));
             
         }
         
@@ -234,11 +258,28 @@ export class TrendsClient {
             },
             signal: signal,
             
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<GetPersonalizedResponse>(
+        return this.client.request<GetLocationsResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -361,6 +402,23 @@ export class TrendsClient {
             },
             signal: signal,
             
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
             ...requestOptions,
         };
 
@@ -375,12 +433,12 @@ export class TrendsClient {
 
 
     /**
-     * Get Trend Locations
-     * Retrieves every location that has trends. Each location has a WOEID to pass to `GET /2/trends/by/woeid/{woeid}`. The list is short and is returned whole, so the route takes no paging parameters.
+     * Get Personalized Trends
+     * Retrieves personalized trending topics for the authenticated user.
      * 
      * @returns Promise with the API response
      */
-    async getLocations(
+    async getPersonalized(
         
         
         
@@ -388,8 +446,8 @@ export class TrendsClient {
         
         
         
-        options: GetLocationsStreamingOptions = {}
-    ): Promise<GetLocationsResponse> {
+        options: GetPersonalizedStreamingOptions = {}
+    ): Promise<GetPersonalizedResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -399,10 +457,10 @@ export class TrendsClient {
         
         
         
-        requiredAuthTypes.push('BearerToken');
+        requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getLocations');
+        this.client.validateAuthentication(requiredAuthTypes, 'getPersonalized');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -410,7 +468,7 @@ export class TrendsClient {
         const paramMappings: Record<string, string> = {
             
             
-            'trend_location.fields': 'trendLocationFields',
+            'personalized_trend.fields': 'personalizedTrendFields',
             
             
         };
@@ -422,7 +480,7 @@ export class TrendsClient {
         const {
             
             
-            trendLocationFields = [],
+            personalizedTrendFields = [],
             
             
             
@@ -433,7 +491,7 @@ export class TrendsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/trends/locations';
+        let path = '/2/users/personalized_trends';
         
 
         // Build query parameters
@@ -443,9 +501,9 @@ export class TrendsClient {
         
         
         
-        if (trendLocationFields !== undefined && trendLocationFields.length > 0) {
+        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
             
-            params.append('trend_location.fields', trendLocationFields.join(','));
+            params.append('personalized_trend.fields', personalizedTrendFields.join(','));
             
         }
         
@@ -460,11 +518,28 @@ export class TrendsClient {
             },
             signal: signal,
             
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
             ...requestOptions,
         };
 
         // Make the request
-        return this.client.request<GetLocationsResponse>(
+        return this.client.request<GetPersonalizedResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

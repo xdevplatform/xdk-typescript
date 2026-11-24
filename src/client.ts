@@ -17,47 +17,7 @@ import {
 
 
 
-import { UsersClient } from "./users/index.js";
-
-
-
-import { ActivityClient } from "./activity/index.js";
-
-
-
-import { AccountActivityClient } from "./account_activity/index.js";
-
-
-
-import { AccountClient } from "./account/index.js";
-
-
-
-import { StreamClient } from "./stream/client.js";
-
-
-
-import { SpacesClient } from "./spaces/index.js";
-
-
-
-import { ChatClient } from "./chat/index.js";
-
-
-
-import { CommunitiesClient } from "./communities/index.js";
-
-
-
-import { BotsClient } from "./bots/index.js";
-
-
-
-import { WebhooksClient } from "./webhooks/index.js";
-
-
-
-import { ArticlesClient } from "./articles/index.js";
+import { PostsClient } from "./posts/index.js";
 
 
 
@@ -65,19 +25,11 @@ import { GeneralClient } from "./general/index.js";
 
 
 
-import { DirectMessagesClient } from "./direct_messages/index.js";
+import { NewsClient } from "./news/index.js";
 
 
 
-import { PostsClient } from "./posts/index.js";
-
-
-
-import { MediaClient } from "./media/index.js";
-
-
-
-import { ListsClient } from "./lists/index.js";
+import { UsersClient } from "./users/index.js";
 
 
 
@@ -85,11 +37,35 @@ import { BroadcastsClient } from "./broadcasts/index.js";
 
 
 
-import { ComplianceClient } from "./compliance/index.js";
+import { UsageClient } from "./usage/index.js";
 
 
 
-import { CommunityNotesClient } from "./community_notes/index.js";
+import { AccountClient } from "./account/index.js";
+
+
+
+import { BotsClient } from "./bots/index.js";
+
+
+
+import { ConnectionsClient } from "./connections/index.js";
+
+
+
+import { ActivityClient } from "./activity/index.js";
+
+
+
+import { ListsClient } from "./lists/index.js";
+
+
+
+import { AccountActivityClient } from "./account_activity/index.js";
+
+
+
+import { ArticlesClient } from "./articles/index.js";
 
 
 
@@ -97,7 +73,15 @@ import { CallsClient } from "./calls/index.js";
 
 
 
-import { NewsClient } from "./news/index.js";
+import { ComplianceClient } from "./compliance/index.js";
+
+
+
+import { MediaClient } from "./media/index.js";
+
+
+
+import { CommunitiesClient } from "./communities/index.js";
 
 
 
@@ -105,11 +89,27 @@ import { TrendsClient } from "./trends/index.js";
 
 
 
-import { UsageClient } from "./usage/index.js";
+import { ChatClient } from "./chat/index.js";
 
 
 
-import { ConnectionsClient } from "./connections/index.js";
+import { SpacesClient } from "./spaces/index.js";
+
+
+
+import { StreamClient } from "./stream/client.js";
+
+
+
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { CommunityNotesClient } from "./community_notes/index.js";
+
+
+
+import { WebhooksClient } from "./webhooks/index.js";
 
 
 
@@ -350,77 +350,77 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** users client */
-  readonly users: UsersClient;
-
-  /** activity client */
-  readonly activity: ActivityClient;
-
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
-
-  /** account client */
-  readonly account: AccountClient;
-
-  /** stream client */
-  readonly stream: StreamClient;
-
-  /** spaces client */
-  readonly spaces: SpacesClient;
-
-  /** chat client */
-  readonly chat: ChatClient;
-
-  /** communities client */
-  readonly communities: CommunitiesClient;
-
-  /** bots client */
-  readonly bots: BotsClient;
-
-  /** webhooks client */
-  readonly webhooks: WebhooksClient;
-
-  /** articles client */
-  readonly articles: ArticlesClient;
+  /** posts client */
+  readonly posts: PostsClient;
 
   /** general client */
   readonly general: GeneralClient;
 
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
+  /** news client */
+  readonly news: NewsClient;
 
-  /** posts client */
-  readonly posts: PostsClient;
-
-  /** media client */
-  readonly media: MediaClient;
-
-  /** lists client */
-  readonly lists: ListsClient;
+  /** users client */
+  readonly users: UsersClient;
 
   /** broadcasts client */
   readonly broadcasts: BroadcastsClient;
 
-  /** compliance client */
-  readonly compliance: ComplianceClient;
+  /** usage client */
+  readonly usage: UsageClient;
 
-  /** community notes client */
-  readonly communityNotes: CommunityNotesClient;
+  /** account client */
+  readonly account: AccountClient;
+
+  /** bots client */
+  readonly bots: BotsClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
+
+  /** activity client */
+  readonly activity: ActivityClient;
+
+  /** lists client */
+  readonly lists: ListsClient;
+
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
+
+  /** articles client */
+  readonly articles: ArticlesClient;
 
   /** calls client */
   readonly calls: CallsClient;
 
-  /** news client */
-  readonly news: NewsClient;
+  /** compliance client */
+  readonly compliance: ComplianceClient;
+
+  /** media client */
+  readonly media: MediaClient;
+
+  /** communities client */
+  readonly communities: CommunitiesClient;
 
   /** trends client */
   readonly trends: TrendsClient;
 
-  /** usage client */
-  readonly usage: UsageClient;
+  /** chat client */
+  readonly chat: ChatClient;
 
-  /** connections client */
-  readonly connections: ConnectionsClient;
+  /** spaces client */
+  readonly spaces: SpacesClient;
+
+  /** stream client */
+  readonly stream: StreamClient;
+
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
+  /** community notes client */
+  readonly communityNotes: CommunityNotesClient;
+
+  /** webhooks client */
+  readonly webhooks: WebhooksClient;
 
 
   /**
@@ -446,7 +446,7 @@ export class Client {
    * });
    * ```
    */
-  constructor(config: ClientConfig | any) {
+  constructor(config: ClientConfig | any = {}) {
     // Handle OAuth1 instance passed directly
     if (config && typeof config === 'object' && config.accessToken && config.accessToken.accessToken && config.accessToken.accessTokenSecret) {
       // This is an OAuth1 instance
@@ -454,7 +454,7 @@ export class Client {
       this.baseUrl = "https://api.x.com";
     } else {
       // This is a regular config object
-      const clientConfig = config as ClientConfig;
+      const clientConfig = (config || {}) as ClientConfig;
       this.baseUrl = clientConfig.baseUrl || "https://api.x.com";
       this.bearerToken = clientConfig.bearerToken;
       this.accessToken = clientConfig.accessToken || clientConfig.oauth2?.getToken?.()?.access_token;
@@ -463,67 +463,69 @@ export class Client {
     }
     
     this.timeout = (config as ClientConfig)?.timeout ?? 30000;
-    this.retry = (config as ClientConfig)?.retry ?? false;
+    this.retry =
+      (config as ClientConfig)?.retry ??
+      (((config as ClientConfig)?.maxRetries ?? 0) > 0);
     this.maxRetries = (config as ClientConfig)?.maxRetries ?? 3;
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.7.0',
+      'User-Agent': 'xdk-typescript/0.7.1',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      ...((config as ClientConfig).headers || {}),
+      ...((config as ClientConfig)?.headers || {}),
     };
     
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.users = new UsersClient(this);
-
-    this.activity = new ActivityClient(this);
-
-    this.accountActivity = new AccountActivityClient(this);
-
-    this.account = new AccountClient(this);
-
-    this.stream = new StreamClient(this);
-
-    this.spaces = new SpacesClient(this);
-
-    this.chat = new ChatClient(this);
-
-    this.communities = new CommunitiesClient(this);
-
-    this.bots = new BotsClient(this);
-
-    this.webhooks = new WebhooksClient(this);
-
-    this.articles = new ArticlesClient(this);
+    this.posts = new PostsClient(this);
 
     this.general = new GeneralClient(this);
 
-    this.directMessages = new DirectMessagesClient(this);
+    this.news = new NewsClient(this);
 
-    this.posts = new PostsClient(this);
-
-    this.media = new MediaClient(this);
-
-    this.lists = new ListsClient(this);
+    this.users = new UsersClient(this);
 
     this.broadcasts = new BroadcastsClient(this);
 
-    this.compliance = new ComplianceClient(this);
+    this.usage = new UsageClient(this);
 
-    this.communityNotes = new CommunityNotesClient(this);
+    this.account = new AccountClient(this);
+
+    this.bots = new BotsClient(this);
+
+    this.connections = new ConnectionsClient(this);
+
+    this.activity = new ActivityClient(this);
+
+    this.lists = new ListsClient(this);
+
+    this.accountActivity = new AccountActivityClient(this);
+
+    this.articles = new ArticlesClient(this);
 
     this.calls = new CallsClient(this);
 
-    this.news = new NewsClient(this);
+    this.compliance = new ComplianceClient(this);
+
+    this.media = new MediaClient(this);
+
+    this.communities = new CommunitiesClient(this);
 
     this.trends = new TrendsClient(this);
 
-    this.usage = new UsageClient(this);
+    this.chat = new ChatClient(this);
 
-    this.connections = new ConnectionsClient(this);
+    this.spaces = new SpacesClient(this);
+
+    this.stream = new StreamClient(this);
+
+    this.directMessages = new DirectMessagesClient(this);
+
+    this.communityNotes = new CommunityNotesClient(this);
+
+    this.webhooks = new WebhooksClient(this);
 
   }
 
@@ -656,8 +658,17 @@ export class Client {
             errorData = undefined;
           }
 
+          const extractedMessage =
+            errorData && typeof errorData === 'object'
+              ? errorData.message ||
+                errorData.detail ||
+                errorData.errors?.[0]?.message ||
+                errorData.errors?.[0]?.detail ||
+                errorData.title
+              : undefined;
+
           throw new ApiError(
-            errorData && errorData.message ? errorData.message : `HTTP ${response.status}: ${response.statusText}`,
+            extractedMessage || `HTTP ${response.status}: ${response.statusText}`,
             response.status,
             response.statusText,
             response.headers,
@@ -697,8 +708,18 @@ export class Client {
           });
           continue;
         }
+        const errMsg =
+          error instanceof Error
+            ? error.message
+            : error && typeof (error as any).message === 'string'
+              ? (error as any).message
+              : 'Request failed';
+        const causeMsg =
+          error && typeof (error as any).cause?.message === 'string'
+            ? ` (${(error as any).cause.message})`
+            : '';
         throw new ApiError(
-          error instanceof Error ? error.message : 'Request failed',
+          `${errMsg}${causeMsg}`,
           0,
           'NETWORK_ERROR',
           new Headers(),
@@ -779,9 +800,13 @@ export class Client {
    * @returns Selected auth method: 'bearer_token', 'oauth2_user_context', 'oauth1', or null if none available
    */
   private selectAuthMethod(method: string, securityRequirements?: Array<Record<string, string[]>>): 'bearer_token' | 'oauth2_user_context' | 'oauth1' | null {
-    // If no security requirements, use default priority
+    // Explicit empty security array (`security: []`) means an unauthenticated public endpoint
+    if (Array.isArray(securityRequirements) && securityRequirements.length === 0) {
+      return null;
+    }
+    // If securityRequirements was omitted (e.g. direct `client.request(...)` call), use default priority
     const oauth2AccessToken = this.getEffectiveAccessToken();
-    if (!securityRequirements || securityRequirements.length === 0) {
+    if (!securityRequirements) {
       if (this.bearerToken) return 'bearer_token';
       if (oauth2AccessToken) return 'oauth2_user_context';
       if (this.oauth1 && this.oauth1.accessToken) return 'oauth1';
@@ -895,7 +920,7 @@ export class Client {
   getAvailableAuthTypes(): string[] {
     const authTypes: string[] = [];
     if (this.bearerToken) authTypes.push('bearer_token');
-    if (this.accessToken) authTypes.push('oauth2_user_context');
+    if (this.getEffectiveAccessToken()) authTypes.push('oauth2_user_context');
     if (this.oauth1 && this.oauth1.accessToken) authTypes.push('oauth1');
     return authTypes;
   }

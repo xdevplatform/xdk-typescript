@@ -21,17 +21,15 @@ ValidateResponse,
 
 DeleteResponse,
 
-CreateStreamLinkResponse,
-
-DeleteStreamLinkResponse,
-
 GetResponse,
 CreateRequest,
 
 CreateResponse,
+
+CreateStreamLinkResponse,
+
+DeleteStreamLinkResponse,
 } from './models.js';
-
-
 
 
 
@@ -57,6 +55,8 @@ export interface GetOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+
+
 
 
 
@@ -488,198 +488,6 @@ export class WebhooksClient {
 
 
   /**
-   * Create Stream Link
-   * Creates a link to deliver FilteredStream events to the given webhook.
-
-
-   * @param webhookId webhook_id
-
-
-
-
-   * @returns {Promise<CreateStreamLinkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createStreamLink(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createStreamLink(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-    ): Promise<CreateStreamLinkResponse>;
-    // Implementation
-    async createStreamLink(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<CreateStreamLinkResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/search/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateStreamLinkResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Delete Stream Link
-   * Deletes the link delivering FilteredStream events to the given webhook.
-
-
-   * @param webhookId webhook_id
-
-
-
-
-   * @returns {Promise<DeleteStreamLinkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteStreamLink(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteStreamLink(
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteStreamLinkResponse>;
-    // Implementation
-    async deleteStreamLink(
-        
-        
-        
-        webhookId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteStreamLinkResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/tweets/search/webhooks/{webhook_id}';
-        
-        
-        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteStreamLinkResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
    * Get Webhook
    * Get a list of webhook configs associated with a client app.
 
@@ -896,6 +704,198 @@ export class WebhooksClient {
 
         return this.client.request<CreateResponse>(
             'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create Stream Link
+   * Creates a link to deliver FilteredStream events to the given webhook.
+
+
+   * @param webhookId webhook_id
+
+
+
+
+   * @returns {Promise<CreateStreamLinkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createStreamLink(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createStreamLink(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+    ): Promise<CreateStreamLinkResponse>;
+    // Implementation
+    async createStreamLink(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<CreateStreamLinkResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/search/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateStreamLinkResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Delete Stream Link
+   * Deletes the link delivering FilteredStream events to the given webhook.
+
+
+   * @param webhookId webhook_id
+
+
+
+
+   * @returns {Promise<DeleteStreamLinkResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteStreamLink(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteStreamLink(
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteStreamLinkResponse>;
+    // Implementation
+    async deleteStreamLink(
+        
+        
+        
+        webhookId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteStreamLinkResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/tweets/search/webhooks/{webhook_id}';
+        
+        
+        path = path.replace('{webhook_id}', encodeURIComponent(String(webhookId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteStreamLinkResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

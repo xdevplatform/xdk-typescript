@@ -30,12 +30,12 @@ describe('TrendsClient Structure', () => {
 
   
   
-  it('should have getPersonalized method with correct signature', () => {
+  it('should have getLocations method with correct signature', () => {
     // Check method exists
-    expect(TrendsClient.prototype).toHaveProperty('getPersonalized');
+    expect(TrendsClient.prototype).toHaveProperty('getLocations');
     
     // Check method is callable
-    const method = trendsClient.getPersonalized;
+    const method = trendsClient.getLocations;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -59,8 +59,8 @@ describe('TrendsClient Structure', () => {
     }
   });
 
-  it('should have getPersonalized method with return type annotation', () => {
-    const method = trendsClient.getPersonalized;
+  it('should have getLocations method with return type annotation', () => {
+    const method = trendsClient.getLocations;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -110,12 +110,12 @@ describe('TrendsClient Structure', () => {
   
 
   
-  it('should have getLocations method with correct signature', () => {
+  it('should have getPersonalized method with correct signature', () => {
     // Check method exists
-    expect(TrendsClient.prototype).toHaveProperty('getLocations');
+    expect(TrendsClient.prototype).toHaveProperty('getPersonalized');
     
     // Check method is callable
-    const method = trendsClient.getLocations;
+    const method = trendsClient.getPersonalized;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -139,8 +139,8 @@ describe('TrendsClient Structure', () => {
     }
   });
 
-  it('should have getLocations method with return type annotation', () => {
-    const method = trendsClient.getLocations;
+  it('should have getPersonalized method with return type annotation', () => {
+    const method = trendsClient.getPersonalized;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -153,11 +153,11 @@ describe('TrendsClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'getPersonalized',
+      'getLocations',
       
       'getByWoeid',
       
-      'getLocations',
+      'getPersonalized',
       
     ];
 

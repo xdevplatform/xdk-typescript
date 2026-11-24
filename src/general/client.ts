@@ -118,6 +118,8 @@ export class GeneralClient {
         const finalRequestOptions: RequestOptions = {
             
             
+            security: [],
+            
             
             // No optional parameters, using empty request options
             

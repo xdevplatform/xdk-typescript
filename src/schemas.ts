@@ -55,7 +55,7 @@ export interface ActivityStreamResponse {
  *
  * @public
  */
-export type ActivityStreamingResponsePayload = ProfileUpdateActivityResponsePayload | NewsActivityResponsePayload | FollowActivityResponsePayload | Post | PostDeleteActivityResponsePayload | LikeWithPostAuthor;
+export type ActivityStreamingResponsePayload = ProfileUpdateActivityResponsePayload | NewsActivityResponsePayload | TrendActivityResponsePayload | FollowActivityResponsePayload | Post | PostDeleteActivityResponsePayload | LikeWithPostAuthor;
 
 
 /**
@@ -68,6 +68,8 @@ export interface ActivitySubscriptionFilter {
   direction?: "inbound" | "outbound" | (string & {});
   /** A keyword to filter on. */
   keyword?: Keyword;
+  /** Event-specific string predicates applied to the subscription. */
+  qualifiers?: Record<string, string>;
   /** Unique identifier of a User */
   userId?: UserId;
 }
@@ -1177,6 +1179,7 @@ export interface BroadcastChatMessage {
   createdAtMs?: string;
   id?: string;
   relaySource?: string;
+  relayUser?: string;
   replyTo?: string;
   text?: string;
 }
@@ -1764,7 +1767,7 @@ export interface CreateActivitySubscriptionFilter {
  */
 export interface CreateActivitySubscriptionRequest {
   /** Activity event type in dot notation. `chat.conversation_join` is a deprecated alias of `chat.conversation.join`; responses always use the canonical name. */
-  eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "news.new" | "follow.follow" | "follow.unfollow" | "subscriptions.subscribe" | "subscriptions.unsubscribe" | "spaces.start" | "spaces.end" | "broadcast.start" | "broadcast.end" | "broadcast.chat" | "broadcast.chat.remove" | "chat.received" | "chat.sent" | "chat.conversation.join" | "chat.conversation_join" | "chat.conversation.member_added" | "chat.conversation.member_removed" | "chat.conversation.admin_added" | "chat.conversation.admin_removed" | "chat.update.group_name" | "chat.update.restrictions" | "dm.sent" | "dm.received" | "dm.indicate_typing" | "dm.read" | "post.create" | "post.delete" | "post.mention.create" | "post.reply.create" | "post.quote.create" | "post.repost.create" | "like.create" | "mute.mute" | "mute.unmute" | "block.block" | "block.unblock";
+  eventType: "profile.update.bio" | "profile.update.profile_picture" | "profile.update.banner_picture" | "profile.update.screenname" | "profile.update.geo" | "profile.update.url" | "profile.update.verified_badge" | "profile.update.affiliate_badge" | "profile.update.handle" | "trends.new" | "news.new" | "follow.follow" | "follow.unfollow" | "subscriptions.subscribe" | "subscriptions.unsubscribe" | "spaces.start" | "spaces.end" | "broadcast.start" | "broadcast.end" | "broadcast.chat" | "broadcast.chat.remove" | "chat.received" | "chat.sent" | "chat.conversation.join" | "chat.conversation_join" | "chat.conversation.member_added" | "chat.conversation.member_removed" | "chat.conversation.admin_added" | "chat.conversation.admin_removed" | "chat.update.group_name" | "chat.update.restrictions" | "dm.sent" | "dm.received" | "dm.indicate_typing" | "dm.read" | "post.create" | "post.delete" | "post.mention.create" | "post.reply.create" | "post.quote.create" | "post.repost.create" | "like.create" | "mute.mute" | "mute.unmute" | "block.block" | "block.unblock";
   /** Optional RFC 3339 expiration time. Re-creating the same subscription refreshes this value; omitting it makes the subscription permanent. */
   expiresAt?: string;
   filter: CreateActivitySubscriptionFilter;
@@ -10504,6 +10507,8 @@ export interface SearchUsersResponse {
 export interface SendBroadcastChatRequest {
   /** The platform this message was relayed from, shown as that platform's icon next to the message: `youtube`, `twitch`, `kick`, `facebook`, `rumble`, `tiktok` or `instagram`. Only apps approved for chat relay may set it. */
   relaySource?: string;
+  /** The name of the person who wrote this message on the platform it was relayed from, shown next to that platform's icon. Display text only, not an X account. Requires `relay_source`. Links are not allowed. */
+  relayUser?: string;
   /** Message id to reply to, returned as timestamp when sent. */
   replyTo?: string;
   /** The chat message text. */
@@ -10885,6 +10890,34 @@ export interface Topic {
  */
 export interface Trend {
   trendName?: string;
+  tweetCount?: number;
+}
+
+
+/**
+ * The location where the trend surfaced.
+ *
+ * @public
+ */
+export interface TrendActivityLocation {
+  country?: string;
+  countryCode?: string;
+  name: string;
+  parentId?: number;
+  placeType?: "town" | "country" | "supername" | (string & {});
+  woeid: number;
+}
+
+
+/**
+ * A newly surfaced trend in a WOEID location.
+ *
+ * @public
+ */
+export interface TrendActivityResponsePayload {
+  /** The location where the trend surfaced. */
+  location: TrendActivityLocation;
+  trendName: string;
   tweetCount?: number;
 }
 

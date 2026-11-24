@@ -32,31 +32,6 @@ export type RotateBotTokenResponse = Schemas.RotateBotTokenResponse;
 export type RevokeBotTokenResponse = Schemas.RevokeBotTokenResponse;
 
 
-/**
- * Request for updateBot
- *
- * @public
- */
-export type UpdateBotRequest = Schemas.UpdateBotRequest;
-
-
-/**
- * Response for updateBot
- *
- * @public
- */
-export type UpdateBotResponse = Schemas.UpdateBotResponse;
-
-
-
-/**
- * Response for deleteBot
- *
- * @public
- */
-export type DeleteBotResponse = Schemas.DeleteBotResponse;
-
-
 
 /**
  * Response for get
@@ -80,4 +55,29 @@ export type CreateBotRequest = Schemas.CreateBotRequest;
  * @public
  */
 export type CreateBotResponse = Schemas.CreateBotResponse;
+
+
+/**
+ * Request for updateBot
+ *
+ * @public
+ */
+export type UpdateBotRequest = Schemas.UpdateBotRequest;
+
+
+/**
+ * Response for updateBot
+ *
+ * @public
+ */
+export type UpdateBotResponse = Schemas.UpdateBotResponse;
+
+
+
+/**
+ * Response for deleteBot
+ *
+ * @public
+ */
+export type DeleteBotResponse = Schemas.DeleteBotResponse;
 

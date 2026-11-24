@@ -9,58 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for removeMemberByUserId
- *
- * @public
- */
-export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
-
-
-
-/**
- * Response for getPosts
- *
- * @public
- */
-export type GetPostsResponse = Schemas.GetListsPostsResponse;
-
-
-
-/**
- * Response for getMembers
- *
- * @public
- */
-export type GetMembersResponse = Schemas.GetListsMembersResponse;
-
-
-/**
- * Request for addMember
- *
- * @public
- */
-export type AddMemberRequest = Schemas.AddListsMemberRequest;
-
-
-/**
- * Response for addMember
- *
- * @public
- */
-export type AddMemberResponse = Schemas.AddListsMemberResponse;
-
-
-
-/**
- * Response for getFollowers
- *
- * @public
- */
-export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
-
-
-
-/**
  * Response for getById
  *
  * @public
@@ -93,6 +41,40 @@ export type UpdateResponse = Schemas.UpdateListsResponse;
 export type DeleteResponse = Schemas.DeleteListsResponse;
 
 
+
+/**
+ * Response for getFollowers
+ *
+ * @public
+ */
+export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
+
+
+
+/**
+ * Response for getMembers
+ *
+ * @public
+ */
+export type GetMembersResponse = Schemas.GetListsMembersResponse;
+
+
+/**
+ * Request for addMember
+ *
+ * @public
+ */
+export type AddMemberRequest = Schemas.AddListsMemberRequest;
+
+
+/**
+ * Response for addMember
+ *
+ * @public
+ */
+export type AddMemberResponse = Schemas.AddListsMemberResponse;
+
+
 /**
  * Request for create
  *
@@ -107,4 +89,22 @@ export type CreateRequest = Schemas.CreateListsRequest;
  * @public
  */
 export type CreateResponse = Schemas.CreateListsResponse;
+
+
+
+/**
+ * Response for getPosts
+ *
+ * @public
+ */
+export type GetPostsResponse = Schemas.GetListsPostsResponse;
+
+
+
+/**
+ * Response for removeMemberByUserId
+ *
+ * @public
+ */
+export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
 

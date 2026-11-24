@@ -14,17 +14,43 @@
  * Generated automatically - do not edit manually.
  */
 
-import { describe, it, expect, beforeAll, jest } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals';
 import { AccountClient } from '../../src/account/client.js';
 import { Client } from '../../src/client.js';
+import { OAuth1 } from '../../src/oauth1_auth.js';
+import { MockXApiServer, MockResponse } from '../../examples/mock_x_api_server.js';
 
 describe('AccountClient Contracts', () => {
   let client: Client;
   let accountClient: AccountClient;
+  let loopbackServer: MockXApiServer;
+  let loopbackClient: Client;
+  let loopbackAccount: AccountClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new Client({ baseUrl: 'https://api.example.com' });
     accountClient = client.account;
+    loopbackServer = await MockXApiServer.start();
+    loopbackClient = new Client({
+      baseUrl: loopbackServer.baseUrl,
+      bearerToken: 'test_bearer_token',
+      accessToken: 'test_access_token',
+      oauth1: new OAuth1({
+        apiKey: 'test_key',
+        apiSecret: 'test_secret',
+        accessToken: 'test_access',
+        accessTokenSecret: 'test_access_secret',
+        baseUrl: loopbackServer.baseUrl,
+      }),
+      maxRetries: 0,
+    });
+    loopbackAccount = loopbackClient.account;
+  });
+
+  afterAll(async () => {
+    if (loopbackServer) {
+      await loopbackServer.close();
+    }
   });
 
   
@@ -180,6 +206,40 @@ describe('AccountClient Contracts', () => {
     }
   });
 
+  it('should execute real TCP loopback roundtrip for getDeveloper', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"account_id\":\"test_value\",\"created_at\":\"test_value\",\"name\":\"test_value\"}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackAccount as any)['getDeveloper'];
+    const result = await method.apply(loopbackAccount, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
   
   it('should have correct request structure for ensure', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
@@ -331,6 +391,44 @@ describe('AccountClient Contracts', () => {
       client.httpClient.request = originalRequest;
       client.validateAuthentication = originalValidateAuth;
     }
+  });
+
+  it('should execute real TCP loopback roundtrip for ensure', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"account_id\":\"test_value\",\"created\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"metadata\":\"test_value\"}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackAccount as any)['ensure'];
+    const result = await method.apply(loopbackAccount, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
   });
 
   

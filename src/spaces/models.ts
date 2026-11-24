@@ -9,15 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getBuyers
- *
- * @public
- */
-export type GetBuyersResponse = Schemas.GetSpacesBuyersResponse;
-
-
-
-/**
  * Response for getById
  *
  * @public
@@ -45,18 +36,27 @@ export type SearchResponse = Schemas.SearchSpacesResponse;
 
 
 /**
- * Response for getByCreatorIds
- *
- * @public
- */
-export type GetByCreatorIdsResponse = Schemas.GetSpacesByCreatorIdsResponse;
-
-
-
-/**
  * Response for getPosts
  *
  * @public
  */
 export type GetPostsResponse = Schemas.GetSpacesPostsResponse;
+
+
+
+/**
+ * Response for getBuyers
+ *
+ * @public
+ */
+export type GetBuyersResponse = Schemas.GetSpacesBuyersResponse;
+
+
+
+/**
+ * Response for getByCreatorIds
+ *
+ * @public
+ */
+export type GetByCreatorIdsResponse = Schemas.GetSpacesByCreatorIdsResponse;
 

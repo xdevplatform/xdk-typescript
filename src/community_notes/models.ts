@@ -9,11 +9,11 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for searchWritten
+ * Response for delete
  *
  * @public
  */
-export type SearchWrittenResponse = Schemas.SearchCommunityNotesWrittenResponse;
+export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
 
 
 /**
@@ -30,15 +30,6 @@ export type EvaluateRequest = Schemas.EvaluateCommunityNotesRequest;
  * @public
  */
 export type EvaluateResponse = Schemas.EvaluateCommunityNotesResponse;
-
-
-
-/**
- * Response for searchEligiblePosts
- *
- * @public
- */
-export type SearchEligiblePostsResponse = Schemas.SearchEligiblePostsResponse;
 
 
 /**
@@ -59,9 +50,18 @@ export type CreateResponse = Schemas.CreateCommunityNotesResponse;
 
 
 /**
- * Response for delete
+ * Response for searchWritten
  *
  * @public
  */
-export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
+export type SearchWrittenResponse = Schemas.SearchCommunityNotesWrittenResponse;
+
+
+
+/**
+ * Response for searchEligiblePosts
+ *
+ * @public
+ */
+export type SearchEligiblePostsResponse = Schemas.SearchEligiblePostsResponse;
 

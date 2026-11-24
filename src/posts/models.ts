@@ -9,94 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getPostDrafts
- *
- * @public
- */
-export type GetPostDraftsResponse = Schemas.GetPostDraftsResponse;
-
-
-/**
- * Request for createPostDraft
- *
- * @public
- */
-export type CreatePostDraftRequest = Schemas.CreatePostDraftRequest;
-
-
-/**
- * Response for createPostDraft
- *
- * @public
- */
-export type CreatePostDraftResponse = Schemas.CreatePostDraftResponse;
-
-
-
-/**
- * Response for getCountsRecent
- *
- * @public
- */
-export type GetCountsRecentResponse = Schemas.GetPostsCountsRecentResponse;
-
-
-
-/**
- * Response for getAnalytics
- *
- * @public
- */
-export type GetAnalyticsResponse = Schemas.GetPostsAnalyticsResponse;
-
-
-
-/**
- * Response for getCountsAll
- *
- * @public
- */
-export type GetCountsAllResponse = Schemas.GetPostsCountsAllResponse;
-
-
-
-/**
- * Response for getLikingUsers
- *
- * @public
- */
-export type GetLikingUsersResponse = Schemas.GetPostsLikingUsersResponse;
-
-
-
-/**
- * Response for searchAll
- *
- * @public
- */
-export type SearchAllResponse = Schemas.SearchPostsAllResponse;
-
-
-
-/**
- * Response for getReposts
- *
- * @public
- */
-export type GetRepostsResponse = Schemas.GetPostsRepostsResponse;
-
-
-
-/**
- * Response for deletePostDraft
- *
- * @public
- */
-export type DeletePostDraftResponse = Schemas.DeletePostDraftResponse;
-
-
-
-/**
  * Response for getRepostedBy
  *
  * @public
@@ -118,6 +30,112 @@ export type HideReplyRequest = Schemas.HidePostsReplyRequest;
  * @public
  */
 export type HideReplyResponse = Schemas.HidePostsReplyResponse;
+
+
+
+/**
+ * Response for getById
+ *
+ * @public
+ */
+export type GetByIdResponse = Schemas.GetPostsByIdResponse;
+
+
+
+/**
+ * Response for delete
+ *
+ * @public
+ */
+export type DeleteResponse = Schemas.DeletePostsResponse;
+
+
+
+/**
+ * Response for getCountsAll
+ *
+ * @public
+ */
+export type GetCountsAllResponse = Schemas.GetPostsCountsAllResponse;
+
+
+
+/**
+ * Response for getCountsRecent
+ *
+ * @public
+ */
+export type GetCountsRecentResponse = Schemas.GetPostsCountsRecentResponse;
+
+
+
+/**
+ * Response for searchAll
+ *
+ * @public
+ */
+export type SearchAllResponse = Schemas.SearchPostsAllResponse;
+
+
+
+/**
+ * Response for getQuoted
+ *
+ * @public
+ */
+export type GetQuotedResponse = Schemas.GetPostsQuotedPostsResponse;
+
+
+
+/**
+ * Response for getLikingUsers
+ *
+ * @public
+ */
+export type GetLikingUsersResponse = Schemas.GetPostsLikingUsersResponse;
+
+
+
+/**
+ * Response for deletePostDraft
+ *
+ * @public
+ */
+export type DeletePostDraftResponse = Schemas.DeletePostDraftResponse;
+
+
+
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+export type GetAnalyticsResponse = Schemas.GetPostsAnalyticsResponse;
+
+
+
+/**
+ * Response for getPostDrafts
+ *
+ * @public
+ */
+export type GetPostDraftsResponse = Schemas.GetPostDraftsResponse;
+
+
+/**
+ * Request for createPostDraft
+ *
+ * @public
+ */
+export type CreatePostDraftRequest = Schemas.CreatePostDraftRequest;
+
+
+/**
+ * Response for createPostDraft
+ *
+ * @public
+ */
+export type CreatePostDraftResponse = Schemas.CreatePostDraftResponse;
 
 
 
@@ -147,36 +165,18 @@ export type CreateResponse = Schemas.CreatePostsResponse;
 
 
 /**
+ * Response for getReposts
+ *
+ * @public
+ */
+export type GetRepostsResponse = Schemas.GetPostsRepostsResponse;
+
+
+
+/**
  * Response for searchRecent
  *
  * @public
  */
 export type SearchRecentResponse = Schemas.SearchPostsRecentResponse;
-
-
-
-/**
- * Response for getById
- *
- * @public
- */
-export type GetByIdResponse = Schemas.GetPostsByIdResponse;
-
-
-
-/**
- * Response for delete
- *
- * @public
- */
-export type DeleteResponse = Schemas.DeletePostsResponse;
-
-
-
-/**
- * Response for getQuoted
- *
- * @public
- */
-export type GetQuotedResponse = Schemas.GetPostsQuotedPostsResponse;
 

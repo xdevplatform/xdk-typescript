@@ -9,52 +9,11 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getAnalytics
- *
- * @public
- */
-export type GetAnalyticsResponse = Schemas.GetMediaAnalyticsResponse;
-
-
-
-/**
  * Response for finalizeUpload
  *
  * @public
  */
 export type FinalizeUploadResponse = Schemas.FinalizeMediaUploadResponse;
-
-
-/**
- * Request for createSubtitles
- *
- * @public
- */
-export type CreateSubtitlesRequest = Schemas.CreateMediaSubtitlesRequest;
-
-
-/**
- * Response for createSubtitles
- *
- * @public
- */
-export type CreateSubtitlesResponse = Schemas.CreateMediaSubtitlesResponse;
-
-
-/**
- * Request for deleteSubtitles
- *
- * @public
- */
-export type DeleteSubtitlesRequest = Schemas.DeleteMediaSubtitlesRequest;
-
-
-/**
- * Response for deleteSubtitles
- *
- * @public
- */
-export type DeleteSubtitlesResponse = Schemas.DeleteMediaSubtitlesResponse;
 
 
 /**
@@ -75,61 +34,63 @@ export type InitializeUploadResponse = Schemas.InitializeMediaUploadResponse;
 
 
 /**
+ * Response for getByKey
+ *
+ * @public
+ */
+export type GetByKeyResponse = Schemas.GetMediaByMediaKeyResponse;
+
+
+
+/**
+ * Response for getAmplifyProgramPosts
+ *
+ * @public
+ */
+export type GetAmplifyProgramPostsResponse = Schemas.GetAmplifyProgramPostsResponse;
+
+
+
+/**
+ * Response for getAnalytics
+ *
+ * @public
+ */
+export type GetAnalyticsResponse = Schemas.GetMediaAnalyticsResponse;
+
+
+
+/**
+ * Response for getLibraryCategories
+ *
+ * @public
+ */
+export type GetLibraryCategoriesResponse = Schemas.GetMediaLibraryCategoriesResponse;
+
+
+/**
+ * Request for createMetadata
+ *
+ * @public
+ */
+export type CreateMetadataRequest = Schemas.CreateMediaMetadataRequest;
+
+
+/**
+ * Response for createMetadata
+ *
+ * @public
+ */
+export type CreateMetadataResponse = Schemas.CreateMediaMetadataResponse;
+
+
+
+/**
  * Response for getByKeys
  *
  * @public
  */
 export type GetByKeysResponse = Schemas.GetMediaByMediaKeysResponse;
-
-
-/**
- * Request for addToLibrary
- *
- * @public
- */
-export type AddToLibraryRequest = Schemas.AddMediaToLibraryRequest;
-
-
-/**
- * Response for addToLibrary
- *
- * @public
- */
-export type AddToLibraryResponse = Schemas.AddMediaToLibraryResponse;
-
-
-
-/**
- * Response for getAmplifyProgram
- *
- * @public
- */
-export type GetAmplifyProgramResponse = Schemas.GetAmplifyProgramResponse;
-
-
-
-/**
- * Response for getUploadStatus
- *
- * @public
- */
-export type GetUploadStatusResponse = Schemas.GetMediaUploadStatusResponse;
-
-
-/**
- * Request for upload
- *
- * @public
- */
-export type UploadRequest = Schemas.MediaUploadRequest;
-
-
-/**
- * Response for upload
- *
- * @public
- */
-export type UploadResponse = Schemas.MediaUploadResponse;
 
 
 /**
@@ -166,29 +127,11 @@ export type RemoveFromLibraryResponse = Schemas.RemoveMediaFromLibraryResponse;
 
 
 /**
- * Response for getLibraryCategories
- *
- * @public
- */
-export type GetLibraryCategoriesResponse = Schemas.GetMediaLibraryCategoriesResponse;
-
-
-
-/**
  * Response for getAmplifyPrograms
  *
  * @public
  */
 export type GetAmplifyProgramsResponse = Schemas.GetAmplifyProgramsResponse;
-
-
-
-/**
- * Response for getByKey
- *
- * @public
- */
-export type GetByKeyResponse = Schemas.GetMediaByMediaKeyResponse;
 
 
 /**
@@ -207,20 +150,54 @@ export type AddPostToAmplifyProgramsRequest = Schemas.AddPostToAmplifyProgramsRe
 export type AddPostToAmplifyProgramsResponse = Schemas.AddPostToAmplifyProgramsResponse;
 
 
+
 /**
- * Request for createMetadata
+ * Response for getUploadStatus
  *
  * @public
  */
-export type CreateMetadataRequest = Schemas.CreateMediaMetadataRequest;
+export type GetUploadStatusResponse = Schemas.GetMediaUploadStatusResponse;
 
 
 /**
- * Response for createMetadata
+ * Request for upload
  *
  * @public
  */
-export type CreateMetadataResponse = Schemas.CreateMediaMetadataResponse;
+export type UploadRequest = Schemas.MediaUploadRequest;
+
+
+/**
+ * Response for upload
+ *
+ * @public
+ */
+export type UploadResponse = Schemas.MediaUploadResponse;
+
+
+
+/**
+ * Response for getAmplifyProgram
+ *
+ * @public
+ */
+export type GetAmplifyProgramResponse = Schemas.GetAmplifyProgramResponse;
+
+
+/**
+ * Request for addToLibrary
+ *
+ * @public
+ */
+export type AddToLibraryRequest = Schemas.AddMediaToLibraryRequest;
+
+
+/**
+ * Response for addToLibrary
+ *
+ * @public
+ */
+export type AddToLibraryResponse = Schemas.AddMediaToLibraryResponse;
 
 
 /**
@@ -239,11 +216,34 @@ export type AppendUploadRequest = Schemas.AppendMediaUploadRequest;
 export type AppendUploadResponse = Schemas.AppendMediaUploadResponse;
 
 
-
 /**
- * Response for getAmplifyProgramPosts
+ * Request for createSubtitles
  *
  * @public
  */
-export type GetAmplifyProgramPostsResponse = Schemas.GetAmplifyProgramPostsResponse;
+export type CreateSubtitlesRequest = Schemas.CreateMediaSubtitlesRequest;
+
+
+/**
+ * Response for createSubtitles
+ *
+ * @public
+ */
+export type CreateSubtitlesResponse = Schemas.CreateMediaSubtitlesResponse;
+
+
+/**
+ * Request for deleteSubtitles
+ *
+ * @public
+ */
+export type DeleteSubtitlesRequest = Schemas.DeleteMediaSubtitlesRequest;
+
+
+/**
+ * Response for deleteSubtitles
+ *
+ * @public
+ */
+export type DeleteSubtitlesResponse = Schemas.DeleteMediaSubtitlesResponse;
 

@@ -14,17 +14,43 @@
  * Generated automatically - do not edit manually.
  */
 
-import { describe, it, expect, beforeAll, jest } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll, jest } from '@jest/globals';
 import { ActivityClient } from '../../src/activity/client.js';
 import { Client } from '../../src/client.js';
+import { OAuth1 } from '../../src/oauth1_auth.js';
+import { MockXApiServer, MockResponse } from '../../examples/mock_x_api_server.js';
 
 describe('ActivityClient Contracts', () => {
   let client: Client;
   let activityClient: ActivityClient;
+  let loopbackServer: MockXApiServer;
+  let loopbackClient: Client;
+  let loopbackActivity: ActivityClient;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     client = new Client({ baseUrl: 'https://api.example.com' });
     activityClient = client.activity;
+    loopbackServer = await MockXApiServer.start();
+    loopbackClient = new Client({
+      baseUrl: loopbackServer.baseUrl,
+      bearerToken: 'test_bearer_token',
+      accessToken: 'test_access_token',
+      oauth1: new OAuth1({
+        apiKey: 'test_key',
+        apiSecret: 'test_secret',
+        accessToken: 'test_access',
+        accessTokenSecret: 'test_access_secret',
+        baseUrl: loopbackServer.baseUrl,
+      }),
+      maxRetries: 0,
+    });
+    loopbackActivity = loopbackClient.activity;
+  });
+
+  afterAll(async () => {
+    if (loopbackServer) {
+      await loopbackServer.close();
+    }
   });
 
   
@@ -192,6 +218,48 @@ describe('ActivityClient Contracts', () => {
     }
   });
 
+  it('should execute real TCP loopback roundtrip for updateSubscription', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"subscription\":{\"created_at\":\"test_value\",\"event_type\":\"test_value\",\"expires_at\":\"test_value\",\"filter\":{},\"subscription_id\":\"test_value\",\"tag\":\"test_value\",\"updated_at\":\"test_value\",\"webhook_id\":\"test_value\"},\"total_subscriptions\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_subscriptionId',
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"tag\":\"test_value\",\"webhook_id\":\"test_value\"}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackActivity as any)['updateSubscription'];
+    const result = await method.apply(loopbackActivity, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('PUT');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
   
   it('should have correct request structure for deleteSubscription', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
@@ -357,6 +425,44 @@ describe('ActivityClient Contracts', () => {
     }
   });
 
+  it('should execute real TCP loopback roundtrip for deleteSubscription', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"deleted\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_subscriptionId',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackActivity as any)['deleteSubscription'];
+    const result = await method.apply(loopbackActivity, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
   
   it('should have correct request structure for getSubscriptions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
@@ -510,6 +616,40 @@ describe('ActivityClient Contracts', () => {
     }
   });
 
+  it('should execute real TCP loopback roundtrip for getSubscriptions', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"event_type\":\"test_value\",\"expires_at\":\"test_value\",\"filter\":{},\"subscription_id\":\"test_value\",\"tag\":\"test_value\",\"updated_at\":\"test_value\",\"webhook_id\":\"test_value\"}]}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackActivity as any)['getSubscriptions'];
+    const result = await method.apply(loopbackActivity, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
   
   it('should have correct request structure for createSubscription', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
@@ -661,6 +801,44 @@ describe('ActivityClient Contracts', () => {
       client.httpClient.request = originalRequest;
       client.validateAuthentication = originalValidateAuth;
     }
+  });
+
+  it('should execute real TCP loopback roundtrip for createSubscription', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"subscription\":{\"created_at\":\"test_value\",\"event_type\":\"test_value\",\"expires_at\":\"test_value\",\"filter\":{},\"subscription_id\":\"test_value\",\"tag\":\"test_value\",\"updated_at\":\"test_value\",\"webhook_id\":\"test_value\"}}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"event_type\":\"profile.update.bio\",\"expires_at\":\"test_value\",\"filter\":{\"direction\":\"inbound\",\"keyword\":\"test_value\",\"qualifiers\":{},\"user_id\":\"1234567890\"},\"tag\":\"test_value\",\"webhook_id\":\"test_value\"}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackActivity as any)['createSubscription'];
+    const result = await method.apply(loopbackActivity, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
   });
 
   
@@ -826,6 +1004,44 @@ describe('ActivityClient Contracts', () => {
       client.httpClient.request = originalRequest;
       client.validateAuthentication = originalValidateAuth;
     }
+  });
+
+  it('should execute real TCP loopback roundtrip for deleteSubscriptionsByIds', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"deleted\":true,\"subscription_id\":\"test_value\"}],\"meta\":{\"total_subscriptions\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      ['test_item'],
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackActivity as any)['deleteSubscriptionsByIds'];
+    const result = await method.apply(loopbackActivity, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
   });
 
   

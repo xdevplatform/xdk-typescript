@@ -19,6 +19,10 @@ export interface OAuth2Config {
   redirectUri: string;
   /** Scopes to request */
   scope?: string[];
+  /** Base URL for token endpoints (defaults to https://api.x.com) */
+  baseUrl?: string;
+  /** Base URL for authorization redirect (defaults to https://x.com/i) */
+  authorizationBaseUrl?: string;
 }
 
 /**
@@ -50,6 +54,8 @@ export class OAuth2 {
   constructor(config: OAuth2Config) {
     this.config = {
       scope: ['tweet.read', 'users.read'],
+      baseUrl: 'https://api.x.com',
+      authorizationBaseUrl: 'https://x.com/i',
       ...config
     };
   }
@@ -79,7 +85,8 @@ export class OAuth2 {
       params.append('code_challenge_method', 'S256');
     }
 
-    return `https://x.com/i/oauth2/authorize?${params.toString()}`;
+    const authBase = (this.config.authorizationBaseUrl || 'https://x.com/i').replace(/\/+$/, '');
+    return `${authBase}/oauth2/authorize?${params.toString()}`;
   }
 
   /**
@@ -115,7 +122,8 @@ export class OAuth2 {
       params.append('client_id', this.config.clientId);
     }
     
-    const response = await fetch('https://api.x.com/2/oauth2/token', {
+    const apiBase = (this.config.baseUrl || 'https://api.x.com').replace(/\/+$/, '');
+    const response = await fetch(`${apiBase}/2/oauth2/token`, {
       method: 'POST',
       headers,
       body: params.toString()
@@ -176,7 +184,8 @@ export class OAuth2 {
       params.append('client_id', this.config.clientId);
     }
 
-    const response = await fetch('https://api.x.com/2/oauth2/token', {
+    const apiBase = (this.config.baseUrl || 'https://api.x.com').replace(/\/+$/, '');
+    const response = await fetch(`${apiBase}/2/oauth2/token`, {
       method: 'POST',
       headers,
       body: params.toString()
@@ -190,13 +199,15 @@ export class OAuth2 {
       throw new Error(`Failed to refresh token: ${response.status}, body: ${errorText}`);
     }
 
+    const previousRefreshToken = this.token?.refresh_token;
+    const previousScope = this.token?.scope;
     const data = await response.json();
     this.token = {
       access_token: data.access_token,
       token_type: data.token_type,
       expires_in: data.expires_in,
-      refresh_token: data.refresh_token,
-      scope: data.scope
+      refresh_token: data.refresh_token ?? previousRefreshToken ?? tokenToUse,
+      scope: data.scope ?? previousScope
     };
     // Track when the token expires
     if (data.expires_in) {
