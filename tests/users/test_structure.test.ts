@@ -30,12 +30,12 @@ describe('UsersClient Structure', () => {
 
   
   
-  it('should have getByUsername method with correct signature', () => {
+  it('should have getById method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getByUsername');
+    expect(UsersClient.prototype).toHaveProperty('getById');
     
     // Check method is callable
-    const method = usersClient.getByUsername;
+    const method = usersClient.getById;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -46,7 +46,7 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'username',
+      'id',
       
     ];
     
@@ -61,8 +61,8 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getByUsername method with return type annotation', () => {
-    const method = usersClient.getByUsername;
+  it('should have getById method with return type annotation', () => {
+    const method = usersClient.getById;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -71,12 +71,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have getByIds method with correct signature', () => {
+  it('should have unfollowList method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getByIds');
+    expect(UsersClient.prototype).toHaveProperty('unfollowList');
     
     // Check method is callable
-    const method = usersClient.getByIds;
+    const method = usersClient.unfollowList;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -87,7 +87,9 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'ids',
+      'id',
+      
+      'listId',
       
     ];
     
@@ -102,8 +104,8 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getByIds method with return type annotation', () => {
-    const method = usersClient.getByIds;
+  it('should have unfollowList method with return type annotation', () => {
+    const method = usersClient.unfollowList;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -112,12 +114,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have unfollowUser method with correct signature', () => {
+  it('should have likePost method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('unfollowUser');
+    expect(UsersClient.prototype).toHaveProperty('likePost');
     
     // Check method is callable
-    const method = usersClient.unfollowUser;
+    const method = usersClient.likePost;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -128,9 +130,7 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'sourceUserId',
-      
-      'targetUserId',
+      'id',
       
     ];
     
@@ -145,8 +145,349 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have unfollowUser method with return type annotation', () => {
-    const method = usersClient.unfollowUser;
+  it('should have likePost method with return type annotation', () => {
+    const method = usersClient.likePost;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getFollowedLists method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getFollowedLists');
+    
+    // Check method is callable
+    const method = usersClient.getFollowedLists;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getFollowedLists method with return type annotation', () => {
+    const method = usersClient.getFollowedLists;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getFollowedLists method with pagination parameters', () => {
+    const method = usersClient.getFollowedLists;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have followList method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('followList');
+    
+    // Check method is callable
+    const method = usersClient.followList;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have followList method with return type annotation', () => {
+    const method = usersClient.followList;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getListMemberships method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getListMemberships');
+    
+    // Check method is callable
+    const method = usersClient.getListMemberships;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getListMemberships method with return type annotation', () => {
+    const method = usersClient.getListMemberships;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getListMemberships method with pagination parameters', () => {
+    const method = usersClient.getListMemberships;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have getMuting method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getMuting');
+    
+    // Check method is callable
+    const method = usersClient.getMuting;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getMuting method with return type annotation', () => {
+    const method = usersClient.getMuting;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getMuting method with pagination parameters', () => {
+    const method = usersClient.getMuting;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have muteUser method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('muteUser');
+    
+    // Check method is callable
+    const method = usersClient.muteUser;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have muteUser method with return type annotation', () => {
+    const method = usersClient.muteUser;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getMe method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getMe');
+    
+    // Check method is callable
+    const method = usersClient.getMe;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getMe method with return type annotation', () => {
+    const method = usersClient.getMe;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have unrepostPost method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('unrepostPost');
+    
+    // Check method is callable
+    const method = usersClient.unrepostPost;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'sourceTweetId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have unrepostPost method with return type annotation', () => {
+    const method = usersClient.unrepostPost;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -196,65 +537,6 @@ describe('UsersClient Structure', () => {
   
   it('should have getLikedPosts method with pagination parameters', () => {
     const method = usersClient.getLikedPosts;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have getAffiliates method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getAffiliates');
-    
-    // Check method is callable
-    const method = usersClient.getAffiliates;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getAffiliates method with return type annotation', () => {
-    const method = usersClient.getAffiliates;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getAffiliates method with pagination parameters', () => {
-    const method = usersClient.getAffiliates;
     const methodString = method.toString();
     const paramsMatch = methodString.match(/\(([^)]*)\)/);
     const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
@@ -330,12 +612,55 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have getPinnedLists method with correct signature', () => {
+  it('should have deleteBookmark method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getPinnedLists');
+    expect(UsersClient.prototype).toHaveProperty('deleteBookmark');
     
     // Check method is callable
-    const method = usersClient.getPinnedLists;
+    const method = usersClient.deleteBookmark;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'tweetId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteBookmark method with return type annotation', () => {
+    const method = usersClient.deleteBookmark;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getMentions method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getMentions');
+    
+    // Check method is callable
+    const method = usersClient.getMentions;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -361,22 +686,40 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getPinnedLists method with return type annotation', () => {
-    const method = usersClient.getPinnedLists;
+  it('should have getMentions method with return type annotation', () => {
+    const method = usersClient.getMentions;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
+  it('should have getMentions method with pagination parameters', () => {
+    const method = usersClient.getMentions;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
 
   
-  it('should have pinList method with correct signature', () => {
+  it('should have repostPost method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('pinList');
+    expect(UsersClient.prototype).toHaveProperty('repostPost');
     
     // Check method is callable
-    const method = usersClient.pinList;
+    const method = usersClient.repostPost;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -402,8 +745,8 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have pinList method with return type annotation', () => {
-    const method = usersClient.pinList;
+  it('should have repostPost method with return type annotation', () => {
+    const method = usersClient.repostPost;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -412,12 +755,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have likePost method with correct signature', () => {
+  it('should have getMeFollowing method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('likePost');
+    expect(UsersClient.prototype).toHaveProperty('getMeFollowing');
     
     // Check method is callable
-    const method = usersClient.likePost;
+    const method = usersClient.getMeFollowing;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -427,8 +770,6 @@ describe('UsersClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
-      
-      'id',
       
     ];
     
@@ -443,22 +784,40 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have likePost method with return type annotation', () => {
-    const method = usersClient.likePost;
+  it('should have getMeFollowing method with return type annotation', () => {
+    const method = usersClient.getMeFollowing;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
+  it('should have getMeFollowing method with pagination parameters', () => {
+    const method = usersClient.getMeFollowing;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
 
   
-  it('should have getFollowers method with correct signature', () => {
+  it('should have getBookmarksByFolderId method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getFollowers');
+    expect(UsersClient.prototype).toHaveProperty('getBookmarksByFolderId');
     
     // Check method is callable
-    const method = usersClient.getFollowers;
+    const method = usersClient.getBookmarksByFolderId;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -470,6 +829,8 @@ describe('UsersClient Structure', () => {
     const requiredParams = [
       
       'id',
+      
+      'folderId',
       
     ];
     
@@ -484,16 +845,16 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getFollowers method with return type annotation', () => {
-    const method = usersClient.getFollowers;
+  it('should have getBookmarksByFolderId method with return type annotation', () => {
+    const method = usersClient.getBookmarksByFolderId;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-  it('should have getFollowers method with pagination parameters', () => {
-    const method = usersClient.getFollowers;
+  it('should have getBookmarksByFolderId method with pagination parameters', () => {
+    const method = usersClient.getBookmarksByFolderId;
     const methodString = method.toString();
     const paramsMatch = methodString.match(/\(([^)]*)\)/);
     const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
@@ -609,6 +970,167 @@ describe('UsersClient Structure', () => {
     // This test ensures the method exists and is callable
   });
 
+  
+
+  
+  it('should have idUnblock method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('idUnblock');
+    
+    // Check method is callable
+    const method = usersClient.idUnblock;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'sourceUserId',
+      
+      'targetUserId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have idUnblock method with return type annotation', () => {
+    const method = usersClient.idUnblock;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getTimeline method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getTimeline');
+    
+    // Check method is callable
+    const method = usersClient.getTimeline;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getTimeline method with return type annotation', () => {
+    const method = usersClient.getTimeline;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getTimeline method with pagination parameters', () => {
+    const method = usersClient.getTimeline;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have getOwnedLists method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getOwnedLists');
+    
+    // Check method is callable
+    const method = usersClient.getOwnedLists;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getOwnedLists method with return type annotation', () => {
+    const method = usersClient.getOwnedLists;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getOwnedLists method with pagination parameters', () => {
+    const method = usersClient.getOwnedLists;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
   
 
   
@@ -753,55 +1275,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have unlikePost method with correct signature', () => {
+  it('should have getBookmarks method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('unlikePost');
+    expect(UsersClient.prototype).toHaveProperty('getBookmarks');
     
     // Check method is callable
-    const method = usersClient.unlikePost;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'tweetId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have unlikePost method with return type annotation', () => {
-    const method = usersClient.unlikePost;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getOwnedLists method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getOwnedLists');
-    
-    // Check method is callable
-    const method = usersClient.getOwnedLists;
+    const method = usersClient.getBookmarks;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -827,16 +1306,155 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getOwnedLists method with return type annotation', () => {
-    const method = usersClient.getOwnedLists;
+  it('should have getBookmarks method with return type annotation', () => {
+    const method = usersClient.getBookmarks;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-  it('should have getOwnedLists method with pagination parameters', () => {
-    const method = usersClient.getOwnedLists;
+  it('should have getBookmarks method with pagination parameters', () => {
+    const method = usersClient.getBookmarks;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have createBookmark method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('createBookmark');
+    
+    // Check method is callable
+    const method = usersClient.createBookmark;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have createBookmark method with return type annotation', () => {
+    const method = usersClient.createBookmark;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have unblockDms method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('unblockDms');
+    
+    // Check method is callable
+    const method = usersClient.unblockDms;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have unblockDms method with return type annotation', () => {
+    const method = usersClient.unblockDms;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getMeFollowers method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getMeFollowers');
+    
+    // Check method is callable
+    const method = usersClient.getMeFollowers;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getMeFollowers method with return type annotation', () => {
+    const method = usersClient.getMeFollowers;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getMeFollowers method with pagination parameters', () => {
+    const method = usersClient.getMeFollowers;
     const methodString = method.toString();
     const paramsMatch = methodString.match(/\(([^)]*)\)/);
     const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
@@ -898,12 +1516,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have idUnblock method with correct signature', () => {
+  it('should have search method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('idUnblock');
+    expect(UsersClient.prototype).toHaveProperty('search');
     
     // Check method is callable
-    const method = usersClient.idUnblock;
+    const method = usersClient.search;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -914,9 +1532,7 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'sourceUserId',
-      
-      'targetUserId',
+      'query',
       
     ];
     
@@ -931,57 +1547,16 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have idUnblock method with return type annotation', () => {
-    const method = usersClient.idUnblock;
+  it('should have search method with return type annotation', () => {
+    const method = usersClient.search;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-
-  
-  it('should have getFollowedLists method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getFollowedLists');
-    
-    // Check method is callable
-    const method = usersClient.getFollowedLists;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getFollowedLists method with return type annotation', () => {
-    const method = usersClient.getFollowedLists;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getFollowedLists method with pagination parameters', () => {
-    const method = usersClient.getFollowedLists;
+  it('should have search method with pagination parameters', () => {
+    const method = usersClient.search;
     const methodString = method.toString();
     const paramsMatch = methodString.match(/\(([^)]*)\)/);
     const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
@@ -1000,12 +1575,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have followList method with correct signature', () => {
+  it('should have getFollowers method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('followList');
+    expect(UsersClient.prototype).toHaveProperty('getFollowers');
     
     // Check method is callable
-    const method = usersClient.followList;
+    const method = usersClient.getFollowers;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1031,22 +1606,40 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have followList method with return type annotation', () => {
-    const method = usersClient.followList;
+  it('should have getFollowers method with return type annotation', () => {
+    const method = usersClient.getFollowers;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
+  it('should have getFollowers method with pagination parameters', () => {
+    const method = usersClient.getFollowers;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
 
   
-  it('should have getMe method with correct signature', () => {
+  it('should have getPinnedLists method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getMe');
+    expect(UsersClient.prototype).toHaveProperty('getPinnedLists');
     
     // Check method is callable
-    const method = usersClient.getMe;
+    const method = usersClient.getPinnedLists;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1056,6 +1649,8 @@ describe('UsersClient Structure', () => {
     
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
+      
+      'id',
       
     ];
     
@@ -1070,13 +1665,113 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getMe method with return type annotation', () => {
-    const method = usersClient.getMe;
+  it('should have getPinnedLists method with return type annotation', () => {
+    const method = usersClient.getPinnedLists;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
+  
+
+  
+  it('should have pinList method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('pinList');
+    
+    // Check method is callable
+    const method = usersClient.pinList;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have pinList method with return type annotation', () => {
+    const method = usersClient.pinList;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getAffiliates method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getAffiliates');
+    
+    // Check method is callable
+    const method = usersClient.getAffiliates;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getAffiliates method with return type annotation', () => {
+    const method = usersClient.getAffiliates;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getAffiliates method with pagination parameters', () => {
+    const method = usersClient.getAffiliates;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
   
 
   
@@ -1180,12 +1875,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have getMentions method with correct signature', () => {
+  it('should have unfollowUser method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getMentions');
+    expect(UsersClient.prototype).toHaveProperty('unfollowUser');
     
     // Check method is callable
-    const method = usersClient.getMentions;
+    const method = usersClient.unfollowUser;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1196,7 +1891,9 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'id',
+      'sourceUserId',
+      
+      'targetUserId',
       
     ];
     
@@ -1211,40 +1908,22 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getMentions method with return type annotation', () => {
-    const method = usersClient.getMentions;
+  it('should have unfollowUser method with return type annotation', () => {
+    const method = usersClient.unfollowUser;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-  it('should have getMentions method with pagination parameters', () => {
-    const method = usersClient.getMentions;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
 
   
-  it('should have unpinList method with correct signature', () => {
+  it('should have getByIds method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('unpinList');
+    expect(UsersClient.prototype).toHaveProperty('getByIds');
     
     // Check method is callable
-    const method = usersClient.unpinList;
+    const method = usersClient.getByIds;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1255,9 +1934,7 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'id',
-      
-      'listId',
+      'ids',
       
     ];
     
@@ -1272,8 +1949,8 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have unpinList method with return type annotation', () => {
-    const method = usersClient.unpinList;
+  it('should have getByIds method with return type annotation', () => {
+    const method = usersClient.getByIds;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1282,12 +1959,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have repostPost method with correct signature', () => {
+  it('should have getByUsername method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('repostPost');
+    expect(UsersClient.prototype).toHaveProperty('getByUsername');
     
     // Check method is callable
-    const method = usersClient.repostPost;
+    const method = usersClient.getByUsername;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1298,7 +1975,7 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'id',
+      'username',
       
     ];
     
@@ -1313,8 +1990,8 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have repostPost method with return type annotation', () => {
-    const method = usersClient.repostPost;
+  it('should have getByUsername method with return type annotation', () => {
+    const method = usersClient.getByUsername;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1323,294 +2000,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have unblockDms method with correct signature', () => {
+  it('should have unlikePost method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('unblockDms');
+    expect(UsersClient.prototype).toHaveProperty('unlikePost');
     
     // Check method is callable
-    const method = usersClient.unblockDms;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have unblockDms method with return type annotation', () => {
-    const method = usersClient.unblockDms;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getBookmarks method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getBookmarks');
-    
-    // Check method is callable
-    const method = usersClient.getBookmarks;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getBookmarks method with return type annotation', () => {
-    const method = usersClient.getBookmarks;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getBookmarks method with pagination parameters', () => {
-    const method = usersClient.getBookmarks;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have createBookmark method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('createBookmark');
-    
-    // Check method is callable
-    const method = usersClient.createBookmark;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have createBookmark method with return type annotation', () => {
-    const method = usersClient.createBookmark;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getListMemberships method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getListMemberships');
-    
-    // Check method is callable
-    const method = usersClient.getListMemberships;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getListMemberships method with return type annotation', () => {
-    const method = usersClient.getListMemberships;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getListMemberships method with pagination parameters', () => {
-    const method = usersClient.getListMemberships;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have getPublicKey method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getPublicKey');
-    
-    // Check method is callable
-    const method = usersClient.getPublicKey;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getPublicKey method with return type annotation', () => {
-    const method = usersClient.getPublicKey;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getById method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getById');
-    
-    // Check method is callable
-    const method = usersClient.getById;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getById method with return type annotation', () => {
-    const method = usersClient.getById;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteBookmark method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('deleteBookmark');
-    
-    // Check method is callable
-    const method = usersClient.deleteBookmark;
+    const method = usersClient.unlikePost;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1638,451 +2033,8 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have deleteBookmark method with return type annotation', () => {
-    const method = usersClient.deleteBookmark;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getByUsernames method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getByUsernames');
-    
-    // Check method is callable
-    const method = usersClient.getByUsernames;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'usernames',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getByUsernames method with return type annotation', () => {
-    const method = usersClient.getByUsernames;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getBookmarksByFolderId method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getBookmarksByFolderId');
-    
-    // Check method is callable
-    const method = usersClient.getBookmarksByFolderId;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'folderId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getBookmarksByFolderId method with return type annotation', () => {
-    const method = usersClient.getBookmarksByFolderId;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getBookmarksByFolderId method with pagination parameters', () => {
-    const method = usersClient.getBookmarksByFolderId;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have unfollowList method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('unfollowList');
-    
-    // Check method is callable
-    const method = usersClient.unfollowList;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'listId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have unfollowList method with return type annotation', () => {
-    const method = usersClient.unfollowList;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getMeFollowing method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getMeFollowing');
-    
-    // Check method is callable
-    const method = usersClient.getMeFollowing;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getMeFollowing method with return type annotation', () => {
-    const method = usersClient.getMeFollowing;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getMeFollowing method with pagination parameters', () => {
-    const method = usersClient.getMeFollowing;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have getMuting method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getMuting');
-    
-    // Check method is callable
-    const method = usersClient.getMuting;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getMuting method with return type annotation', () => {
-    const method = usersClient.getMuting;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getMuting method with pagination parameters', () => {
-    const method = usersClient.getMuting;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have muteUser method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('muteUser');
-    
-    // Check method is callable
-    const method = usersClient.muteUser;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have muteUser method with return type annotation', () => {
-    const method = usersClient.muteUser;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have unrepostPost method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('unrepostPost');
-    
-    // Check method is callable
-    const method = usersClient.unrepostPost;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'sourceTweetId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have unrepostPost method with return type annotation', () => {
-    const method = usersClient.unrepostPost;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getMeFollowers method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getMeFollowers');
-    
-    // Check method is callable
-    const method = usersClient.getMeFollowers;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getMeFollowers method with return type annotation', () => {
-    const method = usersClient.getMeFollowers;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getMeFollowers method with pagination parameters', () => {
-    const method = usersClient.getMeFollowers;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have blockDms method with correct signature', () => {
-    // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('blockDms');
-    
-    // Check method is callable
-    const method = usersClient.blockDms;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have blockDms method with return type annotation', () => {
-    const method = usersClient.blockDms;
+  it('should have unlikePost method with return type annotation', () => {
+    const method = usersClient.unlikePost;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -2150,12 +2102,12 @@ describe('UsersClient Structure', () => {
   
 
   
-  it('should have getTimeline method with correct signature', () => {
+  it('should have blockDms method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('getTimeline');
+    expect(UsersClient.prototype).toHaveProperty('blockDms');
     
     // Check method is callable
-    const method = usersClient.getTimeline;
+    const method = usersClient.blockDms;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -2181,40 +2133,22 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have getTimeline method with return type annotation', () => {
-    const method = usersClient.getTimeline;
+  it('should have blockDms method with return type annotation', () => {
+    const method = usersClient.blockDms;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-  it('should have getTimeline method with pagination parameters', () => {
-    const method = usersClient.getTimeline;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
 
   
-  it('should have search method with correct signature', () => {
+  it('should have getByUsernames method with correct signature', () => {
     // Check method exists
-    expect(UsersClient.prototype).toHaveProperty('search');
+    expect(UsersClient.prototype).toHaveProperty('getByUsernames');
     
     // Check method is callable
-    const method = usersClient.search;
+    const method = usersClient.getByUsernames;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -2225,7 +2159,7 @@ describe('UsersClient Structure', () => {
     // Check required parameters exist (convert to camelCase for TypeScript)
     const requiredParams = [
       
-      'query',
+      'usernames',
       
     ];
     
@@ -2240,31 +2174,97 @@ describe('UsersClient Structure', () => {
     }
   });
 
-  it('should have search method with return type annotation', () => {
-    const method = usersClient.search;
+  it('should have getByUsernames method with return type annotation', () => {
+    const method = usersClient.getByUsernames;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
   });
 
   
-  it('should have search method with pagination parameters', () => {
-    const method = usersClient.search;
+
+  
+  it('should have unpinList method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('unpinList');
+    
+    // Check method is callable
+    const method = usersClient.unpinList;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
     const methodString = method.toString();
     const paramsMatch = methodString.match(/\(([^)]*)\)/);
     const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
     
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'listId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
     }
   });
+
+  it('should have unpinList method with return type annotation', () => {
+    const method = usersClient.unpinList;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getPublicKey method with correct signature', () => {
+    // Check method exists
+    expect(UsersClient.prototype).toHaveProperty('getPublicKey');
+    
+    // Check method is callable
+    const method = usersClient.getPublicKey;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getPublicKey method with return type annotation', () => {
+    const method = usersClient.getPublicKey;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
   
 
   
@@ -2272,29 +2272,49 @@ describe('UsersClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'getByUsername',
+      'getById',
       
-      'getByIds',
-      
-      'unfollowUser',
-      
-      'getLikedPosts',
-      
-      'getAffiliates',
-      
-      'getRepostsOfMe',
-      
-      'getPinnedLists',
-      
-      'pinList',
+      'unfollowList',
       
       'likePost',
       
-      'getFollowers',
+      'getFollowedLists',
+      
+      'followList',
+      
+      'getListMemberships',
+      
+      'getMuting',
+      
+      'muteUser',
+      
+      'getMe',
+      
+      'unrepostPost',
+      
+      'getLikedPosts',
+      
+      'getRepostsOfMe',
+      
+      'deleteBookmark',
+      
+      'getMentions',
+      
+      'repostPost',
+      
+      'getMeFollowing',
+      
+      'getBookmarksByFolderId',
       
       'getFollowing',
       
       'followUser',
+      
+      'idUnblock',
+      
+      'getTimeline',
+      
+      'getOwnedLists',
       
       'getPublicKeys',
       
@@ -2302,67 +2322,47 @@ describe('UsersClient Structure', () => {
       
       'idBlock',
       
-      'unlikePost',
+      'getBookmarks',
       
-      'getOwnedLists',
+      'createBookmark',
+      
+      'unblockDms',
+      
+      'getMeFollowers',
       
       'unmuteUser',
       
-      'idUnblock',
+      'search',
       
-      'getFollowedLists',
+      'getFollowers',
       
-      'followList',
+      'getPinnedLists',
       
-      'getMe',
+      'pinList',
+      
+      'getAffiliates',
       
       'getBookmarkFolders',
       
       'createBookmarkFolder',
       
-      'getMentions',
+      'unfollowUser',
       
-      'unpinList',
+      'getByIds',
       
-      'repostPost',
+      'getByUsername',
       
-      'unblockDms',
-      
-      'getBookmarks',
-      
-      'createBookmark',
-      
-      'getListMemberships',
-      
-      'getPublicKey',
-      
-      'getById',
-      
-      'deleteBookmark',
-      
-      'getByUsernames',
-      
-      'getBookmarksByFolderId',
-      
-      'unfollowList',
-      
-      'getMeFollowing',
-      
-      'getMuting',
-      
-      'muteUser',
-      
-      'unrepostPost',
-      
-      'getMeFollowers',
-      
-      'blockDms',
+      'unlikePost',
       
       'getPosts',
       
-      'getTimeline',
+      'blockDms',
       
-      'search',
+      'getByUsernames',
+      
+      'unpinList',
+      
+      'getPublicKey',
       
     ];
 

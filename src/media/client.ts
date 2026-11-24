@@ -12,23 +12,13 @@ import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSn
 import type * as Schemas from '../schemas.js';
 import {
 
-FinalizeUploadResponse,
+GetUploadStatusResponse,
+UploadRequest,
+
+UploadResponse,
 InitializeUploadRequest,
 
 InitializeUploadResponse,
-
-GetByKeyResponse,
-
-GetAmplifyProgramPostsResponse,
-
-GetAnalyticsResponse,
-
-GetLibraryCategoriesResponse,
-CreateMetadataRequest,
-
-CreateMetadataResponse,
-
-GetByKeysResponse,
 UpdateInLibraryRequest,
 
 UpdateInLibraryResponse,
@@ -36,30 +26,65 @@ RemoveFromLibraryRequest,
 
 RemoveFromLibraryResponse,
 
-GetAmplifyProgramsResponse,
-AddPostToAmplifyProgramsRequest,
-
-AddPostToAmplifyProgramsResponse,
-
-GetUploadStatusResponse,
-UploadRequest,
-
-UploadResponse,
-
 GetAmplifyProgramResponse,
-AddToLibraryRequest,
 
-AddToLibraryResponse,
-AppendUploadRequest,
+GetAmplifyProgramPostsResponse,
 
-AppendUploadResponse,
+GetByKeyResponse,
+
+FinalizeUploadResponse,
 CreateSubtitlesRequest,
 
 CreateSubtitlesResponse,
 DeleteSubtitlesRequest,
 
 DeleteSubtitlesResponse,
+
+GetAnalyticsResponse,
+CreateMetadataRequest,
+
+CreateMetadataResponse,
+
+GetLibraryCategoriesResponse,
+
+GetAmplifyProgramsResponse,
+
+GetByKeysResponse,
+AppendUploadRequest,
+
+AppendUploadResponse,
+AddToLibraryRequest,
+
+AddToLibraryResponse,
+AddPostToAmplifyProgramsRequest,
+
+AddPostToAmplifyProgramsResponse,
 } from './models.js';
+
+
+/**
+ * Options for getUploadStatus method
+ * 
+ * @public
+ */
+export interface GetUploadStatusOptions {
+    
+    
+    /** Always STATUS; can be left out. 
+     * Also accepts: command or proper camelCase (e.g., command) */
+    command?: "STATUS";
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+
 
 
 
@@ -83,6 +108,8 @@ export interface GetByKeyOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+
+
 
 
 
@@ -111,6 +138,7 @@ export interface GetAnalyticsOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+
 
 
 /**
@@ -154,34 +182,6 @@ export interface GetByKeysOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-
-
-
-
-
-
-/**
- * Options for getUploadStatus method
- * 
- * @public
- */
-export interface GetUploadStatusOptions {
-    
-    
-    /** Always STATUS; can be left out. 
-     * Also accepts: command or proper camelCase (e.g., command) */
-    command?: "STATUS";
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
 
 
 
@@ -233,1425 +233,6 @@ export class MediaClient {
         }
         
         return normalized as T;
-    }
-
-
-  /**
-   * Finalize Media Upload
-   * Completes a chunked upload once every segment is appended. For video the result carries processing_info: the media can go on a Post only when its state is succeeded, so call Get Media Upload Status until it is. A result without processing_info is ready to use.
-
-
-   * @param id The upload id from Initialize Media Upload.
-
-
-
-
-   * @returns {Promise<FinalizeUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    finalizeUpload(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    finalizeUpload(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-    ): Promise<FinalizeUploadResponse>;
-    // Implementation
-    async finalizeUpload(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<FinalizeUploadResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload/{id}/finalize';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<FinalizeUploadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Initialize Media Upload
-   * Starts a chunked media upload and returns its id. Use it for video and for other files too large for one request. For a video on a Post, set media_category to tweet_video, media_type to the file's type (for example video/mp4) and total_bytes to the file's size. Send the file with Append Media Upload, call Finalize Media Upload, then pass the id in media.media_ids on Create or Edit Post.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<InitializeUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    initializeUpload(
-        
-        
-        
-        body: InitializeUploadRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    initializeUpload(
-        
-        
-        
-        body: InitializeUploadRequest,
-        
-        
-    ): Promise<InitializeUploadResponse>;
-    // Implementation
-    async initializeUpload(
-        
-        
-        
-        
-        
-        
-        body: InitializeUploadRequest,
-        
-        
-        
-    ): Promise<InitializeUploadResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload/initialize';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<InitializeUploadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Media by Media Key
-   * Retrieves details of a specific Media file by its media key.
-
-
-   * @param mediaKey media_key
-
-
-
-
-   * @returns {Promise<GetByKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getByKey(
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        options: GetByKeyOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getByKey(
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        options?: GetByKeyOptions
-        
-    ): Promise<GetByKeyResponse>;
-    // Implementation
-    async getByKey(
-        
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetByKeyOptions = {}
-        
-    ): Promise<GetByKeyResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            mediaFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            
-            params.append('media.fields', normalizeFields(mediaFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetByKeyResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Amplify Program Posts
-   * Returns the posts published into an Amplify pre-roll program the authenticated user is enrolled in as a publisher.
-
-
-   * @param programId Identifier of the program.
-
-
-
-
-   * @returns {Promise<GetAmplifyProgramPostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getAmplifyProgramPosts(
-        
-        
-        programId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getAmplifyProgramPosts(
-        
-        
-        programId: string,
-        
-        
-        
-        
-        
-    ): Promise<GetAmplifyProgramPostsResponse>;
-    // Implementation
-    async getAmplifyProgramPosts(
-        
-        
-        
-        programId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetAmplifyProgramPostsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/amplify/programs/{program_id}/posts';
-        
-        
-        path = path.replace('{program_id}', encodeURIComponent(String(programId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetAmplifyProgramPostsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Media Analytics
-   * Retrieves analytics data for media.
-
-
-
-   * @param mediaKeys media_keys
-
-
-
-   * @param startTime start_time
-
-
-
-   * @param endTime end_time
-
-
-
-   * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getAnalytics(
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        options: GetAnalyticsOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getAnalytics(
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        options?: GetAnalyticsOptions
-        
-    ): Promise<GetAnalyticsResponse>;
-    // Implementation
-    async getAnalytics(
-        
-        
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        
-        
-        options: GetAnalyticsOptions = {}
-        
-    ): Promise<GetAnalyticsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-            
-            'media_analytics.fields': 'mediaAnalyticsFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            granularity = undefined,
-            
-            
-            
-            mediaAnalyticsFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/analytics';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (mediaKeys !== undefined && mediaKeys.length > 0) {
-            
-            
-            params.append('media_keys', mediaKeys.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (granularity !== undefined) {
-            
-            params.append('granularity', String(granularity));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (mediaAnalyticsFields !== undefined && mediaAnalyticsFields.length > 0) {
-            
-            
-            params.append('media_analytics.fields', normalizeFields(mediaAnalyticsFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetAnalyticsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Media Library Categories
-   * Returns the video categories a publisher can assign to a media library item and the advertiser categories whose ads can be blocked from running against it.
-
-
-
-   * @returns {Promise<GetLibraryCategoriesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getLibraryCategories(
-        
-        
-        
-        
-        options: GetLibraryCategoriesOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getLibraryCategories(
-        
-        
-        
-        
-        options?: GetLibraryCategoriesOptions
-        
-    ): Promise<GetLibraryCategoriesResponse>;
-    // Implementation
-    async getLibraryCategories(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetLibraryCategoriesOptions = {}
-        
-    ): Promise<GetLibraryCategoriesResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            lang = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/library/categories';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (lang !== undefined) {
-            
-            params.append('lang', String(lang));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetLibraryCategoriesResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Create Media Metadata
-   * Creates metadata for a Media file.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateMetadataResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createMetadata(
-        
-        
-        
-        body: CreateMetadataRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createMetadata(
-        
-        
-        
-        body: CreateMetadataRequest,
-        
-        
-    ): Promise<CreateMetadataResponse>;
-    // Implementation
-    async createMetadata(
-        
-        
-        
-        
-        
-        
-        body: CreateMetadataRequest,
-        
-        
-        
-    ): Promise<CreateMetadataResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/metadata';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateMetadataResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Media by Media Keys
-   * Retrieves details of Media files by their media keys.
-
-
-
-   * @param mediaKeys media_keys
-
-
-
-   * @returns {Promise<GetByKeysResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getByKeys(
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        
-        options: GetByKeysOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getByKeys(
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        
-        options?: GetByKeysOptions
-        
-    ): Promise<GetByKeysResponse>;
-    // Implementation
-    async getByKeys(
-        
-        
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        
-        
-        
-        options: GetByKeysOptions = {}
-        
-    ): Promise<GetByKeysResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            mediaFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (mediaKeys !== undefined && mediaKeys.length > 0) {
-            
-            
-            params.append('media_keys', mediaKeys.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            
-            params.append('media.fields', normalizeFields(mediaFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetByKeysResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Update Media Library Item
-   * Updates the library metadata of an item in the authenticated user's Media Library. Only the fields sent are changed; the others keep their values. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
-
-
-   * @param mediaKey The media key of the library item to update.
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<UpdateInLibraryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    updateInLibrary(
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        body: UpdateInLibraryRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    updateInLibrary(
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        body: UpdateInLibraryRequest,
-        
-        
-    ): Promise<UpdateInLibraryResponse>;
-    // Implementation
-    async updateInLibrary(
-        
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        
-        body: UpdateInLibraryRequest,
-        
-        
-        
-    ): Promise<UpdateInLibraryResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/library/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UpdateInLibraryResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Remove Media Library Item
-   * Removes an item from the authenticated user's Media Library. Posts scheduled through the API that have not yet been published and still use the media are cancelled. Published posts and the underlying media are not affected.
-
-
-   * @param mediaKey The media key of the library item to remove.
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<RemoveFromLibraryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    removeFromLibrary(
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        body: RemoveFromLibraryRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    removeFromLibrary(
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        body: RemoveFromLibraryRequest,
-        
-        
-    ): Promise<RemoveFromLibraryResponse>;
-    // Implementation
-    async removeFromLibrary(
-        
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        
-        body: RemoveFromLibraryRequest,
-        
-        
-        
-    ): Promise<RemoveFromLibraryResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/library/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<RemoveFromLibraryResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Amplify Programs
-   * Returns the Amplify pre-roll programs the authenticated user is enrolled in as a publisher.
-
-
-
-   * @returns {Promise<GetAmplifyProgramsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getAmplifyPrograms(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getAmplifyPrograms(
-        
-        
-        
-        
-    ): Promise<GetAmplifyProgramsResponse>;
-    // Implementation
-    async getAmplifyPrograms(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetAmplifyProgramsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/amplify/programs';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetAmplifyProgramsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Add Post to Amplify Programs
-   * Publishes one of the authenticated user's video posts into one or more active Amplify pre-roll programs the user is enrolled in as a publisher.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<AddPostToAmplifyProgramsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    addPostToAmplifyPrograms(
-        
-        
-        
-        body: AddPostToAmplifyProgramsRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    addPostToAmplifyPrograms(
-        
-        
-        
-        body: AddPostToAmplifyProgramsRequest,
-        
-        
-    ): Promise<AddPostToAmplifyProgramsResponse>;
-    // Implementation
-    async addPostToAmplifyPrograms(
-        
-        
-        
-        
-        
-        
-        body: AddPostToAmplifyProgramsRequest,
-        
-        
-        
-    ): Promise<AddPostToAmplifyProgramsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/amplify/posts';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<AddPostToAmplifyProgramsResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
     }
 
 
@@ -1890,6 +471,322 @@ export class MediaClient {
 
 
   /**
+   * Initialize Media Upload
+   * Starts a chunked media upload and returns its id. Use it for video and for other files too large for one request. For a video on a Post, set media_category to tweet_video, media_type to the file's type (for example video/mp4) and total_bytes to the file's size. Send the file with Append Media Upload, call Finalize Media Upload, then pass the id in media.media_ids on Create or Edit Post.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<InitializeUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    initializeUpload(
+        
+        
+        
+        body: InitializeUploadRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    initializeUpload(
+        
+        
+        
+        body: InitializeUploadRequest,
+        
+        
+    ): Promise<InitializeUploadResponse>;
+    // Implementation
+    async initializeUpload(
+        
+        
+        
+        
+        
+        
+        body: InitializeUploadRequest,
+        
+        
+        
+    ): Promise<InitializeUploadResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload/initialize';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<InitializeUploadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Update Media Library Item
+   * Updates the library metadata of an item in the authenticated user's Media Library. Only the fields sent are changed; the others keep their values. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
+
+
+   * @param mediaKey The media key of the library item to update.
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UpdateInLibraryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    updateInLibrary(
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        body: UpdateInLibraryRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    updateInLibrary(
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        body: UpdateInLibraryRequest,
+        
+        
+    ): Promise<UpdateInLibraryResponse>;
+    // Implementation
+    async updateInLibrary(
+        
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        
+        body: UpdateInLibraryRequest,
+        
+        
+        
+    ): Promise<UpdateInLibraryResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UpdateInLibraryResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Remove Media Library Item
+   * Removes an item from the authenticated user's Media Library. Posts scheduled through the API that have not yet been published and still use the media are cancelled. Published posts and the underlying media are not affected.
+
+
+   * @param mediaKey The media key of the library item to remove.
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<RemoveFromLibraryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    removeFromLibrary(
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        body: RemoveFromLibraryRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    removeFromLibrary(
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        body: RemoveFromLibraryRequest,
+        
+        
+    ): Promise<RemoveFromLibraryResponse>;
+    // Implementation
+    async removeFromLibrary(
+        
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        
+        body: RemoveFromLibraryRequest,
+        
+        
+        
+    ): Promise<RemoveFromLibraryResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<RemoveFromLibraryResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
    * Get Amplify Program
    * Returns one Amplify pre-roll program the authenticated user is enrolled in as a publisher. A program the user is not enrolled in is reported as not found.
 
@@ -1992,55 +889,67 @@ export class MediaClient {
 
 
   /**
-   * Add Media to Library
-   * Adds previously uploaded media to the authenticated user's Media Library with its library metadata. The user must own the media. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
+   * Get Amplify Program Posts
+   * Returns the posts published into an Amplify pre-roll program the authenticated user is enrolled in as a publisher.
+
+
+   * @param programId Identifier of the program.
 
 
 
-   * @param body Request body
 
-   * @returns {Promise<AddToLibraryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetAmplifyProgramPostsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    addToLibrary(
+    getAmplifyProgramPosts(
+        
+        
+        programId: string,
         
         
         
-        body: AddToLibraryRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    addToLibrary(
+    getAmplifyProgramPosts(
+        
+        
+        programId: string,
         
         
         
-        body: AddToLibraryRequest,
         
         
-    ): Promise<AddToLibraryResponse>;
+    ): Promise<GetAmplifyProgramPostsResponse>;
     // Implementation
-    async addToLibrary(
+    async getAmplifyProgramPosts(
+        
+        
+        
+        programId: string,
         
         
         
         
         
         
-        body: AddToLibraryRequest,
         
         
-        
-    ): Promise<AddToLibraryResponse | Response> {
+    ): Promise<GetAmplifyProgramPostsResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/media/library';
+        let path = '/2/media/amplify/programs/{program_id}/posts';
+        
+        
+        path = path.replace('{program_id}', encodeURIComponent(String(programId)));
+        
         
 
         // Build query parameters
@@ -2050,15 +959,13 @@ export class MediaClient {
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
             
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
             
             // Pass security requirements for smart auth selection
             security: [
                 
                 {
                     
-                    'OAuth2UserToken': ['media.library.write'],
+                    'OAuth2UserToken': ['media.library.read'],
                     
                 },
                 
@@ -2075,8 +982,8 @@ export class MediaClient {
             
         };
 
-        return this.client.request<AddToLibraryResponse>(
-            'POST',
+        return this.client.request<GetAmplifyProgramPostsResponse>(
+            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -2084,8 +991,153 @@ export class MediaClient {
 
 
   /**
-   * Append Media Upload
-   * Appends one segment of the file to a chunked upload. Send the segment base64-encoded in media (raw bytes in multipart bodies) and its position in the file in segment_index, counting from 0. A segment can be up to 8 MB; in a JSON body keep it to 4 MB or less, because base64 adds a third. After the last segment, call Finalize Media Upload.
+   * Get Media by Media Key
+   * Retrieves details of a specific Media file by its media key.
+
+
+   * @param mediaKey media_key
+
+
+
+
+   * @returns {Promise<GetByKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getByKey(
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        options: GetByKeyOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getByKey(
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        options?: GetByKeyOptions
+        
+    ): Promise<GetByKeyResponse>;
+    // Implementation
+    async getByKey(
+        
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetByKeyOptions = {}
+        
+    ): Promise<GetByKeyResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            mediaFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            
+            params.append('media.fields', normalizeFields(mediaFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetByKeyResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Finalize Media Upload
+   * Completes a chunked upload once every segment is appended. For video the result carries processing_info: the media can go on a Post only when its state is succeeded, so call Get Media Upload Status until it is. A result without processing_info is ready to use.
 
 
    * @param id The upload id from Initialize Media Upload.
@@ -2093,27 +1145,23 @@ export class MediaClient {
 
 
 
-   * @param body Request body
-
-   * @returns {Promise<AppendUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<FinalizeUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    appendUpload(
+    finalizeUpload(
         
         
         id: string,
         
         
         
-        
-        body: AppendUploadRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    appendUpload(
+    finalizeUpload(
         
         
         id: string,
@@ -2121,12 +1169,10 @@ export class MediaClient {
         
         
         
-        body: AppendUploadRequest,
         
-        
-    ): Promise<AppendUploadResponse>;
+    ): Promise<FinalizeUploadResponse>;
     // Implementation
-    async appendUpload(
+    async finalizeUpload(
         
         
         
@@ -2137,18 +1183,16 @@ export class MediaClient {
         
         
         
-        body: AppendUploadRequest,
         
         
-        
-    ): Promise<AppendUploadResponse | Response> {
+    ): Promise<FinalizeUploadResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/media/upload/{id}/append';
+        let path = '/2/media/upload/{id}/finalize';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -2161,8 +1205,6 @@ export class MediaClient {
 
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             
             // Pass security requirements for smart auth selection
@@ -2187,7 +1229,7 @@ export class MediaClient {
             
         };
 
-        return this.client.request<AppendUploadResponse>(
+        return this.client.request<FinalizeUploadResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -2373,6 +1415,964 @@ export class MediaClient {
 
         return this.client.request<DeleteSubtitlesResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Media Analytics
+   * Retrieves analytics data for media.
+
+
+
+   * @param mediaKeys media_keys
+
+
+
+   * @param startTime start_time
+
+
+
+   * @param endTime end_time
+
+
+
+   * @returns {Promise<GetAnalyticsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getAnalytics(
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        startTime: string,
+        
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        options: GetAnalyticsOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getAnalytics(
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        startTime: string,
+        
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        options?: GetAnalyticsOptions
+        
+    ): Promise<GetAnalyticsResponse>;
+    // Implementation
+    async getAnalytics(
+        
+        
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        startTime: string,
+        
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        
+        
+        options: GetAnalyticsOptions = {}
+        
+    ): Promise<GetAnalyticsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+            
+            'media_analytics.fields': 'mediaAnalyticsFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            granularity = undefined,
+            
+            
+            
+            mediaAnalyticsFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/analytics';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (mediaKeys !== undefined && mediaKeys.length > 0) {
+            
+            
+            params.append('media_keys', mediaKeys.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (granularity !== undefined) {
+            
+            params.append('granularity', String(granularity));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (mediaAnalyticsFields !== undefined && mediaAnalyticsFields.length > 0) {
+            
+            
+            params.append('media_analytics.fields', normalizeFields(mediaAnalyticsFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetAnalyticsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create Media Metadata
+   * Creates metadata for a Media file.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateMetadataResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createMetadata(
+        
+        
+        
+        body: CreateMetadataRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createMetadata(
+        
+        
+        
+        body: CreateMetadataRequest,
+        
+        
+    ): Promise<CreateMetadataResponse>;
+    // Implementation
+    async createMetadata(
+        
+        
+        
+        
+        
+        
+        body: CreateMetadataRequest,
+        
+        
+        
+    ): Promise<CreateMetadataResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/metadata';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateMetadataResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Media Library Categories
+   * Returns the video categories a publisher can assign to a media library item and the advertiser categories whose ads can be blocked from running against it.
+
+
+
+   * @returns {Promise<GetLibraryCategoriesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getLibraryCategories(
+        
+        
+        
+        
+        options: GetLibraryCategoriesOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getLibraryCategories(
+        
+        
+        
+        
+        options?: GetLibraryCategoriesOptions
+        
+    ): Promise<GetLibraryCategoriesResponse>;
+    // Implementation
+    async getLibraryCategories(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetLibraryCategoriesOptions = {}
+        
+    ): Promise<GetLibraryCategoriesResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            lang = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library/categories';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (lang !== undefined) {
+            
+            params.append('lang', String(lang));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetLibraryCategoriesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Amplify Programs
+   * Returns the Amplify pre-roll programs the authenticated user is enrolled in as a publisher.
+
+
+
+   * @returns {Promise<GetAmplifyProgramsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getAmplifyPrograms(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getAmplifyPrograms(
+        
+        
+        
+        
+    ): Promise<GetAmplifyProgramsResponse>;
+    // Implementation
+    async getAmplifyPrograms(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetAmplifyProgramsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/amplify/programs';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetAmplifyProgramsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Media by Media Keys
+   * Retrieves details of Media files by their media keys.
+
+
+
+   * @param mediaKeys media_keys
+
+
+
+   * @returns {Promise<GetByKeysResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getByKeys(
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        
+        options: GetByKeysOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getByKeys(
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        
+        options?: GetByKeysOptions
+        
+    ): Promise<GetByKeysResponse>;
+    // Implementation
+    async getByKeys(
+        
+        
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        
+        
+        
+        options: GetByKeysOptions = {}
+        
+    ): Promise<GetByKeysResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            mediaFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (mediaKeys !== undefined && mediaKeys.length > 0) {
+            
+            
+            params.append('media_keys', mediaKeys.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            
+            params.append('media.fields', normalizeFields(mediaFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetByKeysResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Append Media Upload
+   * Appends one segment of the file to a chunked upload. Send the segment base64-encoded in media (raw bytes in multipart bodies) and its position in the file in segment_index, counting from 0. A segment can be up to 8 MB; in a JSON body keep it to 4 MB or less, because base64 adds a third. After the last segment, call Finalize Media Upload.
+
+
+   * @param id The upload id from Initialize Media Upload.
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AppendUploadResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    appendUpload(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: AppendUploadRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    appendUpload(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: AppendUploadRequest,
+        
+        
+    ): Promise<AppendUploadResponse>;
+    // Implementation
+    async appendUpload(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: AppendUploadRequest,
+        
+        
+        
+    ): Promise<AppendUploadResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload/{id}/append';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AppendUploadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Add Media to Library
+   * Adds previously uploaded media to the authenticated user's Media Library with its library metadata. The user must own the media. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AddToLibraryResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    addToLibrary(
+        
+        
+        
+        body: AddToLibraryRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    addToLibrary(
+        
+        
+        
+        body: AddToLibraryRequest,
+        
+        
+    ): Promise<AddToLibraryResponse>;
+    // Implementation
+    async addToLibrary(
+        
+        
+        
+        
+        
+        
+        body: AddToLibraryRequest,
+        
+        
+        
+    ): Promise<AddToLibraryResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AddToLibraryResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Add Post to Amplify Programs
+   * Publishes one of the authenticated user's video posts into one or more active Amplify pre-roll programs the user is enrolled in as a publisher.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AddPostToAmplifyProgramsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    addPostToAmplifyPrograms(
+        
+        
+        
+        body: AddPostToAmplifyProgramsRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    addPostToAmplifyPrograms(
+        
+        
+        
+        body: AddPostToAmplifyProgramsRequest,
+        
+        
+    ): Promise<AddPostToAmplifyProgramsResponse>;
+    // Implementation
+    async addPostToAmplifyPrograms(
+        
+        
+        
+        
+        
+        
+        body: AddPostToAmplifyProgramsRequest,
+        
+        
+        
+    ): Promise<AddPostToAmplifyProgramsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/amplify/posts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AddPostToAmplifyProgramsResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

@@ -13,35 +13,11 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  GetByUsernameResponse,
+  GetByIdResponse,
 
 
 
-  GetByIdsResponse,
-
-
-
-  UnfollowUserResponse,
-
-
-
-  GetLikedPostsResponse,
-
-
-
-  GetAffiliatesResponse,
-
-
-
-  GetRepostsOfMeResponse,
-
-
-
-  GetPinnedListsResponse,
-
-
-
-  PinListResponse,
+  UnfollowListResponse,
 
 
 
@@ -49,7 +25,59 @@ import {
 
 
 
-  GetFollowersResponse,
+  GetFollowedListsResponse,
+
+
+
+  FollowListResponse,
+
+
+
+  GetListMembershipsResponse,
+
+
+
+  GetMutingResponse,
+
+
+
+  MuteUserResponse,
+
+
+
+  GetMeResponse,
+
+
+
+  UnrepostPostResponse,
+
+
+
+  GetLikedPostsResponse,
+
+
+
+  GetRepostsOfMeResponse,
+
+
+
+  DeleteBookmarkResponse,
+
+
+
+  GetMentionsResponse,
+
+
+
+  RepostPostResponse,
+
+
+
+  GetMeFollowingResponse,
+
+
+
+  GetBookmarksByFolderIdResponse,
 
 
 
@@ -58,6 +86,18 @@ import {
 
 
   FollowUserResponse,
+
+
+
+  IdUnblockResponse,
+
+
+
+  GetTimelineResponse,
+
+
+
+  GetOwnedListsResponse,
 
 
 
@@ -73,11 +113,19 @@ import {
 
 
 
-  UnlikePostResponse,
+  GetBookmarksResponse,
 
 
 
-  GetOwnedListsResponse,
+  CreateBookmarkResponse,
+
+
+
+  UnblockDmsResponse,
+
+
+
+  GetMeFollowersResponse,
 
 
 
@@ -85,19 +133,23 @@ import {
 
 
 
-  IdUnblockResponse,
+  SearchResponse,
 
 
 
-  GetFollowedListsResponse,
+  GetFollowersResponse,
 
 
 
-  FollowListResponse,
+  GetPinnedListsResponse,
 
 
 
-  GetMeResponse,
+  PinListResponse,
+
+
+
+  GetAffiliatesResponse,
 
 
 
@@ -109,79 +161,19 @@ import {
 
 
 
-  GetMentionsResponse,
+  UnfollowUserResponse,
 
 
 
-  UnpinListResponse,
+  GetByIdsResponse,
 
 
 
-  RepostPostResponse,
+  GetByUsernameResponse,
 
 
 
-  UnblockDmsResponse,
-
-
-
-  GetBookmarksResponse,
-
-
-
-  CreateBookmarkResponse,
-
-
-
-  GetListMembershipsResponse,
-
-
-
-  GetPublicKeyResponse,
-
-
-
-  GetByIdResponse,
-
-
-
-  DeleteBookmarkResponse,
-
-
-
-  GetByUsernamesResponse,
-
-
-
-  GetBookmarksByFolderIdResponse,
-
-
-
-  UnfollowListResponse,
-
-
-
-  GetMeFollowingResponse,
-
-
-
-  GetMutingResponse,
-
-
-
-  MuteUserResponse,
-
-
-
-  UnrepostPostResponse,
-
-
-
-  GetMeFollowersResponse,
-
-
-
-  BlockDmsResponse,
+  UnlikePostResponse,
 
 
 
@@ -189,20 +181,28 @@ import {
 
 
 
-  GetTimelineResponse,
+  BlockDmsResponse,
 
 
 
-  SearchResponse,
+  GetByUsernamesResponse,
+
+
+
+  UnpinListResponse,
+
+
+
+  GetPublicKeyResponse,
 
 } from './models.js';
 
 /**
- * Options for getByUsername method
+ * Options for getById method
  * 
  * @public
  */
-export interface GetByUsernameStreamingOptions {
+export interface GetByIdStreamingOptions {
     
     
     /** A comma separated list of User fields to display. 
@@ -241,11 +241,208 @@ export interface GetByUsernameStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getByIds method
+ * Options for unfollowList method
  * 
  * @public
  */
-export interface GetByIdsStreamingOptions {
+export interface UnfollowListStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for likePost method
+ * 
+ * @public
+ */
+export interface LikePostStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getFollowedLists method
+ * 
+ * @public
+ */
+export interface GetFollowedListsStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A 64-bit signed integer. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of List fields to display. 
+     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
+    listFields?: Array<"created_at" | "description" | "follower_count" | "id" | "member_count" | "name" | "private">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"owner_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for followList method
+ * 
+ * @public
+ */
+export interface FollowListStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getListMemberships method
+ * 
+ * @public
+ */
+export interface GetListMembershipsStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** pagination_token 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of List fields to display. 
+     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
+    listFields?: Array<"created_at" | "description" | "follower_count" | "id" | "member_count" | "name" | "private">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"owner_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getMuting method
+ * 
+ * @public
+ */
+export interface GetMutingStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** pagination_token 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
     
     
     /** A comma separated list of User fields to display. 
@@ -284,11 +481,79 @@ export interface GetByIdsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for unfollowUser method
+ * Options for muteUser method
  * 
  * @public
  */
-export interface UnfollowUserStreamingOptions {
+export interface MuteUserStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getMe method
+ * 
+ * @public
+ */
+export interface GetMeStreamingOptions {
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for unrepostPost method
+ * 
+ * @public
+ */
+export interface UnrepostPostStreamingOptions {
     
     
     /** Additional request options */
@@ -361,61 +626,6 @@ export interface GetLikedPostsStreamingOptions {
     /** A comma separated list of Place fields to display. 
      * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
     placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getAffiliates method
- * 
- * @public
- */
-export interface GetAffiliatesStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A 64-bit signed integer. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
     
     
     
@@ -510,22 +720,83 @@ export interface GetRepostsOfMeStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getPinnedLists method
+ * Options for deleteBookmark method
  * 
  * @public
  */
-export interface GetPinnedListsStreamingOptions {
+export interface DeleteBookmarkStreamingOptions {
     
     
-    /** A comma separated list of List fields to display. 
-     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
-    listFields?: Array<"created_at" | "description" | "follower_count" | "id" | "member_count" | "name" | "private">;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getMentions method
+ * 
+ * @public
+ */
+export interface GetMentionsStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Must be on or after 2010-11-06. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** Must be on or after 2010-11-06. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** since_id 
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    
+    
+    
+    /** until_id 
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
     
     
     
     /** A comma separated list of fields to expand. 
      * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"owner_id">;
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
     
     
     
@@ -535,29 +806,22 @@ export interface GetPinnedListsStreamingOptions {
     
     
     
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for pinList method
- * 
- * @public
- */
-export interface PinListStreamingOptions {
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
     
     
     /** Additional request options */
@@ -578,11 +842,11 @@ export interface PinListStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for likePost method
+ * Options for repostPost method
  * 
  * @public
  */
-export interface LikePostStreamingOptions {
+export interface RepostPostStreamingOptions {
     
     
     /** Additional request options */
@@ -603,11 +867,11 @@ export interface LikePostStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getFollowers method
+ * Options for getMeFollowing method
  * 
  * @public
  */
-export interface GetFollowersStreamingOptions {
+export interface GetMeFollowingStreamingOptions {
     
     
     /** The maximum number of users to return. 
@@ -637,6 +901,43 @@ export interface GetFollowersStreamingOptions {
     /** A comma separated list of Post fields to display. 
      * Also accepts: post.fields or proper camelCase (e.g., postFields) */
     postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getBookmarksByFolderId method
+ * 
+ * @public
+ */
+export interface GetBookmarksByFolderIdStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
     
     
     
@@ -718,6 +1019,189 @@ export interface GetFollowingStreamingOptions {
  * @public
  */
 export interface FollowUserStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for idUnblock method
+ * 
+ * @public
+ */
+export interface IdUnblockStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getTimeline method
+ * 
+ * @public
+ */
+export interface GetTimelineStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** Must be on or after 2010-11-06. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** Must be on or after 2010-11-06. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** since_id 
+     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
+    sinceId?: string;
+    
+    
+    
+    /** until_id 
+     * Also accepts: until_id or proper camelCase (e.g., untilId) */
+    untilId?: string;
+    
+    
+    
+    /** exclude 
+     * Also accepts: exclude or proper camelCase (e.g., exclude) */
+    exclude?: Array<"replies" | "retweets">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getOwnedLists method
+ * 
+ * @public
+ */
+export interface GetOwnedListsStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A 64-bit signed integer. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of List fields to display. 
+     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
+    listFields?: Array<"created_at" | "description" | "follower_count" | "id" | "member_count" | "name" | "private">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"owner_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
     
     
     /** Additional request options */
@@ -849,11 +1333,59 @@ export interface IdBlockStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for unlikePost method
+ * Options for getBookmarks method
  * 
  * @public
  */
-export interface UnlikePostStreamingOptions {
+export interface GetBookmarksStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A base32hex-encoded pagination token. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** A comma separated list of Poll fields to display. 
+     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
+    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
+    
+    
+    
+    /** A comma separated list of Place fields to display. 
+     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
+    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    
     
     
     /** Additional request options */
@@ -874,40 +1406,90 @@ export interface UnlikePostStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getOwnedLists method
+ * Options for createBookmark method
  * 
  * @public
  */
-export interface GetOwnedListsStreamingOptions {
+export interface CreateBookmarkStreamingOptions {
     
     
-    /** max_results 
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for unblockDms method
+ * 
+ * @public
+ */
+export interface UnblockDmsStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getMeFollowers method
+ * 
+ * @public
+ */
+export interface GetMeFollowersStreamingOptions {
+    
+    
+    /** The maximum number of users to return. 
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
     
     
-    /** A 64-bit signed integer. 
+    /** The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
     paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of List fields to display. 
-     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
-    listFields?: Array<"created_at" | "description" | "follower_count" | "id" | "member_count" | "name" | "private">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"owner_id">;
     
     
     
     /** A comma separated list of User fields to display. 
      * Also accepts: user.fields or proper camelCase (e.g., userFields) */
     userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
     
     
     
@@ -954,11 +1536,41 @@ export interface UnmuteUserStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for idUnblock method
+ * Options for search method
  * 
  * @public
  */
-export interface IdUnblockStreamingOptions {
+export interface SearchStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** next_token 
+     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
+    nextToken?: string;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
     
     
     /** Additional request options */
@@ -979,23 +1591,66 @@ export interface IdUnblockStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getFollowedLists method
+ * Options for getFollowers method
  * 
  * @public
  */
-export interface GetFollowedListsStreamingOptions {
+export interface GetFollowersStreamingOptions {
     
     
-    /** max_results 
+    /** The maximum number of users to return. 
      * Also accepts: max_results or proper camelCase (e.g., maxResults) */
     maxResults?: number;
     
     
     
-    /** A 64-bit signed integer. 
+    /** The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. 
      * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
     paginationToken?: string;
     
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getPinnedLists method
+ * 
+ * @public
+ */
+export interface GetPinnedListsStreamingOptions {
     
     
     /** A comma separated list of List fields to display. 
@@ -1034,11 +1689,11 @@ export interface GetFollowedListsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for followList method
+ * Options for pinList method
  * 
  * @public
  */
-export interface FollowListStreamingOptions {
+export interface PinListStreamingOptions {
     
     
     /** Additional request options */
@@ -1059,11 +1714,23 @@ export interface FollowListStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getMe method
+ * Options for getAffiliates method
  * 
  * @public
  */
-export interface GetMeStreamingOptions {
+export interface GetAffiliatesStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A 64-bit signed integer. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
     
     
     /** A comma separated list of User fields to display. 
@@ -1164,83 +1831,11 @@ export interface CreateBookmarkFolderStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getMentions method
+ * Options for unfollowUser method
  * 
  * @public
  */
-export interface GetMentionsStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** Must be on or after 2010-11-06. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** Must be on or after 2010-11-06. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** since_id 
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: string;
-    
-    
-    
-    /** until_id 
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: string;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
+export interface UnfollowUserStreamingOptions {
     
     
     /** Additional request options */
@@ -1261,270 +1856,11 @@ export interface GetMentionsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for unpinList method
+ * Options for getByIds method
  * 
  * @public
  */
-export interface UnpinListStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for repostPost method
- * 
- * @public
- */
-export interface RepostPostStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for unblockDms method
- * 
- * @public
- */
-export interface UnblockDmsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getBookmarks method
- * 
- * @public
- */
-export interface GetBookmarksStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createBookmark method
- * 
- * @public
- */
-export interface CreateBookmarkStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getListMemberships method
- * 
- * @public
- */
-export interface GetListMembershipsStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** pagination_token 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of List fields to display. 
-     * Also accepts: list.fields or proper camelCase (e.g., listFields) */
-    listFields?: Array<"created_at" | "description" | "follower_count" | "id" | "member_count" | "name" | "private">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"owner_id">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getPublicKey method
- * 
- * @public
- */
-export interface GetPublicKeyStreamingOptions {
-    
-    
-    /** A comma separated list of PublicKey fields to display. 
-     * Also accepts: public_key.fields or proper camelCase (e.g., publicKeyFields) */
-    publicKeyFields?: Array<"identity_public_key_signature" | "juicebox_config" | "public_key" | "public_key_version" | "signing_public_key" | "user_id">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getById method
- * 
- * @public
- */
-export interface GetByIdStreamingOptions {
+export interface GetByIdsStreamingOptions {
     
     
     /** A comma separated list of User fields to display. 
@@ -1563,36 +1899,11 @@ export interface GetByIdStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for deleteBookmark method
+ * Options for getByUsername method
  * 
  * @public
  */
-export interface DeleteBookmarkStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByUsernames method
- * 
- * @public
- */
-export interface GetByUsernamesStreamingOptions {
+export interface GetByUsernameStreamingOptions {
     
     
     /** A comma separated list of User fields to display. 
@@ -1631,288 +1942,11 @@ export interface GetByUsernamesStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getBookmarksByFolderId method
+ * Options for unlikePost method
  * 
  * @public
  */
-export interface GetBookmarksByFolderIdStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for unfollowList method
- * 
- * @public
- */
-export interface UnfollowListStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getMeFollowing method
- * 
- * @public
- */
-export interface GetMeFollowingStreamingOptions {
-    
-    
-    /** The maximum number of users to return. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getMuting method
- * 
- * @public
- */
-export interface GetMutingStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** pagination_token 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for muteUser method
- * 
- * @public
- */
-export interface MuteUserStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for unrepostPost method
- * 
- * @public
- */
-export interface UnrepostPostStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getMeFollowers method
- * 
- * @public
- */
-export interface GetMeFollowersStreamingOptions {
-    
-    
-    /** The maximum number of users to return. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** The next_token or previous_token from a previous response, to fetch that page. A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for blockDms method
- * 
- * @public
- */
-export interface BlockDmsStreamingOptions {
+export interface UnlikePostStreamingOptions {
     
     
     /** Additional request options */
@@ -2036,65 +2070,36 @@ export interface GetPostsStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getTimeline method
+ * Options for blockDms method
  * 
  * @public
  */
-export interface GetTimelineStreamingOptions {
+export interface BlockDmsStreamingOptions {
     
     
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A base32hex-encoded pagination token. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** Must be on or after 2010-11-06. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** Must be on or after 2010-11-06. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** since_id 
-     * Also accepts: since_id or proper camelCase (e.g., sinceId) */
-    sinceId?: string;
-    
-    
-    
-    /** until_id 
-     * Also accepts: until_id or proper camelCase (e.g., untilId) */
-    untilId?: string;
-    
-    
-    
-    /** exclude 
-     * Also accepts: exclude or proper camelCase (e.g., exclude) */
-    exclude?: Array<"replies" | "retweets">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"article.cover_media" | "article.media_entities" | "attachments.media_keys" | "attachments.media_source_tweet" | "attachments.poll_ids" | "author_id" | "edit_history_post_ids" | "entities.mentions.username" | "geo.place_id" | "in_reply_to_user_id" | "referenced_posts" | "username">;
-    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByUsernames method
+ * 
+ * @public
+ */
+export interface GetByUsernamesStreamingOptions {
     
     
     /** A comma separated list of User fields to display. 
@@ -2103,21 +2108,15 @@ export interface GetTimelineStreamingOptions {
     
     
     
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
     
     
     
-    /** A comma separated list of Poll fields to display. 
-     * Also accepts: poll.fields or proper camelCase (e.g., pollFields) */
-    pollFields?: Array<"duration_minutes" | "end_datetime" | "id" | "options" | "voting_status">;
-    
-    
-    
-    /** A comma separated list of Place fields to display. 
-     * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
-    placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
     
     
     
@@ -2139,40 +2138,41 @@ export interface GetTimelineStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for search method
+ * Options for unpinList method
  * 
  * @public
  */
-export interface SearchStreamingOptions {
+export interface UnpinListStreamingOptions {
     
     
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getPublicKey method
+ * 
+ * @public
+ */
+export interface GetPublicKeyStreamingOptions {
     
     
-    
-    /** next_token 
-     * Also accepts: next_token or proper camelCase (e.g., nextToken) */
-    nextToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    /** A comma separated list of PublicKey fields to display. 
+     * Also accepts: public_key.fields or proper camelCase (e.g., publicKeyFields) */
+    publicKeyFields?: Array<"identity_public_key_signature" | "juicebox_config" | "public_key" | "public_key_version" | "signing_public_key" | "user_id">;
     
     
     
@@ -2371,16 +2371,16 @@ export class UsersClient {
 
 
     /**
-     * Get User by Username
-     * Retrieves details of a specific User by their username.
+     * Get User by ID
+     * Retrieves details of a specific User by their ID.
      * 
      * @returns Promise with the API response
      */
-    async getByUsername(
+    async getById(
         
         
         
-        username: string,
+        id: Schemas.UserId,
         
         
         
@@ -2388,8 +2388,8 @@ export class UsersClient {
         
         
         
-        options: GetByUsernameStreamingOptions = {}
-    ): Promise<GetByUsernameResponse> {
+        options: GetByIdStreamingOptions = {}
+    ): Promise<GetByIdResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -2406,7 +2406,7 @@ export class UsersClient {
         requiredAuthTypes.push('BearerToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getByUsername');
+        this.client.validateAuthentication(requiredAuthTypes, 'getById');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -2451,10 +2451,10 @@ export class UsersClient {
         
 
         // Build the path with path parameters
-        let path = '/2/users/by/username/{username}';
+        let path = '/2/users/{id}';
         
         
-        path = path.replace('{username}', encodeURIComponent(String(username)));
+        path = path.replace('{id}', encodeURIComponent(String(id)));
         
         
 
@@ -2511,7 +2511,7 @@ export class UsersClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
                     
                 },
                 
@@ -2533,7 +2533,7 @@ export class UsersClient {
         };
 
         // Make the request
-        return this.client.request<GetByUsernameResponse>(
+        return this.client.request<GetByIdResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -2543,25 +2543,29 @@ export class UsersClient {
 
 
     /**
-     * Get Users by IDs
-     * Retrieves details of multiple Users by their IDs.
+     * Unfollow List
+     * Causes the authenticated user to unfollow a List by its ID.
      * 
      * @returns Promise with the API response
      */
-    async getByIds(
+    async unfollowList(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        listId: Schemas.ListId,
         
         
         
         
         
-        ids: Array<Schemas.UserId>,
         
         
-        
-        
-        
-        options: GetByIdsStreamingOptions = {}
-    ): Promise<GetByIdsResponse> {
+        options: UnfollowListStreamingOptions = {}
+    ): Promise<UnfollowListResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -2574,191 +2578,7 @@ export class UsersClient {
         requiredAuthTypes.push('UserToken');
         
         
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getByIds');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (ids !== undefined && ids.length > 0) {
-            params.append('ids', ids.join(','));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByIdsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Unfollow User
-     * Causes the authenticated user to unfollow a specific user by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async unfollowUser(
-        
-        
-        
-        sourceUserId: Schemas.UserId,
-        
-        
-        
-        targetUserId: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: UnfollowUserStreamingOptions = {}
-    ): Promise<UnfollowUserResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'unfollowUser');
+        this.client.validateAuthentication(requiredAuthTypes, 'unfollowList');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -2772,14 +2592,14 @@ export class UsersClient {
         
 
         // Build the path with path parameters
-        let path = '/2/users/{source_user_id}/following/{target_user_id}';
+        let path = '/2/users/{id}/followed_lists/{list_id}';
         
         
-        path = path.replace('{source_user_id}', encodeURIComponent(String(sourceUserId)));
+        path = path.replace('{id}', encodeURIComponent(String(id)));
         
         
         
-        path = path.replace('{target_user_id}', encodeURIComponent(String(targetUserId)));
+        path = path.replace('{list_id}', encodeURIComponent(String(listId)));
         
         
 
@@ -2800,7 +2620,7 @@ export class UsersClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'follows.write'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'list.write'],
                     
                 },
                 
@@ -2816,7 +2636,1187 @@ export class UsersClient {
         };
 
         // Make the request
-        return this.client.request<UnfollowUserResponse>(
+        return this.client.request<UnfollowListResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Like Post
+     * Causes the authenticated user to like a specific Post by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async likePost(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: LikePostStreamingOptions = {}
+    ): Promise<LikePostResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'likePost');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/likes';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['like.write', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<LikePostResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Followed Lists
+     * Retrieves a list of Lists followed by a specific User by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getFollowedLists(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetFollowedListsStreamingOptions = {}
+    ): Promise<GetFollowedListsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getFollowedLists');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'list.fields': 'listFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            listFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/followed_lists';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (listFields !== undefined && listFields.length > 0) {
+            
+            params.append('list.fields', listFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'list.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetFollowedListsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Follow List
+     * Causes the authenticated user to follow a specific List by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async followList(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: FollowListStreamingOptions = {}
+    ): Promise<FollowListResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'followList');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/followed_lists';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['list.write', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<FollowListResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get List Memberships
+     * Retrieves a list of Lists that a specific User is a member of by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getListMemberships(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetListMembershipsStreamingOptions = {}
+    ): Promise<GetListMembershipsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getListMemberships');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'list.fields': 'listFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            listFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/list_memberships';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (listFields !== undefined && listFields.length > 0) {
+            
+            params.append('list.fields', listFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['list.read', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetListMembershipsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Muting
+     * Retrieves a list of Users muted by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getMuting(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetMutingStreamingOptions = {}
+    ): Promise<GetMutingResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getMuting');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/muting';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'mute.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetMutingResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Mute User
+     * Causes the authenticated user to mute a specific User by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async muteUser(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: MuteUserStreamingOptions = {}
+    ): Promise<MuteUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'muteUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/muting';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['mute.write', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<MuteUserResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get My User
+     * Retrieves details of the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getMe(
+        
+        
+        
+        
+        
+        
+        
+        options: GetMeStreamingOptions = {}
+    ): Promise<GetMeResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getMe');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/me';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetMeResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unrepost Post
+     * Causes the authenticated user to unrepost a specific Post by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async unrepostPost(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        sourceTweetId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: UnrepostPostStreamingOptions = {}
+    ): Promise<UnrepostPostResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unrepostPost');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/retweets/{source_tweet_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{source_tweet_id}', encodeURIComponent(String(sourceTweetId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'tweet.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnrepostPostResponse>(
             'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -3062,7 +4062,7 @@ export class UsersClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'users.read', 'like.read'],
+                    'OAuth2UserToken': ['users.read', 'like.read', 'tweet.read'],
                     
                 },
                 
@@ -3079,218 +4079,6 @@ export class UsersClient {
 
         // Make the request
         return this.client.request<GetLikedPostsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Affiliates
-     * Retrieves a list of Users who are affiliated with a specific organization User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getAffiliates(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetAffiliatesStreamingOptions = {}
-    ): Promise<GetAffiliatesResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getAffiliates');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/affiliates';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetAffiliatesResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -3528,7 +4316,7 @@ export class UsersClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['timeline.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'timeline.read'],
                     
                 },
                 
@@ -3554,1330 +4342,12 @@ export class UsersClient {
 
 
     /**
-     * Get Pinned Lists
-     * Retrieves a list of Lists pinned by the authenticated user.
+     * Delete Bookmark
+     * Removes a Post from the authenticated user's Bookmarks by its ID.
      * 
      * @returns Promise with the API response
      */
-    async getPinnedLists(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetPinnedListsStreamingOptions = {}
-    ): Promise<GetPinnedListsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getPinnedLists');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'list.fields': 'listFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            listFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/pinned_lists';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (listFields !== undefined && listFields.length > 0) {
-            
-            params.append('list.fields', listFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'list.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetPinnedListsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Pin List
-     * Causes the authenticated user to pin a specific List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async pinList(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: PinListStreamingOptions = {}
-    ): Promise<PinListResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'pinList');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/pinned_lists';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read', 'list.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<PinListResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Like Post
-     * Causes the authenticated user to like a specific Post by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async likePost(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: LikePostStreamingOptions = {}
-    ): Promise<LikePostResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'likePost');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/likes';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'like.write', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<LikePostResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Followers
-     * Retrieves a list of Users who follow a specific User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getFollowers(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetFollowersStreamingOptions = {}
-    ): Promise<GetFollowersResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getFollowers');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/followers';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'follows.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetFollowersResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Following
-     * Retrieves a list of Users followed by a specific User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getFollowing(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetFollowingStreamingOptions = {}
-    ): Promise<GetFollowingResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getFollowing');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/following';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['follows.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetFollowingResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Follow User
-     * Causes the authenticated user to follow a specific User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async followUser(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: FollowUserStreamingOptions = {}
-    ): Promise<FollowUserResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'followUser');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/following';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read', 'follows.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<FollowUserResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Public Keys for Multiple Users
-     * Returns the public keys that up to 100 users registered for X Chat encryption, looked up by numeric user ID. Each key carries the user_id of the user it belongs to.
-
-Every key field is returned by default, so public_key.fields can be left out. It takes public_key, signing_public_key, identity_public_key_signature, public_key_version, juicebox_config and user_id.
-     * 
-     * @returns Promise with the API response
-     */
-    async getPublicKeys(
-        
-        
-        
-        
-        
-        ids: Array<Schemas.PublicKeyId>,
-        
-        
-        
-        
-        
-        options: GetPublicKeysStreamingOptions = {}
-    ): Promise<GetPublicKeysResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getPublicKeys');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'public_key.fields': 'publicKeyFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            publicKeyFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/public_keys';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (ids !== undefined && ids.length > 0) {
-            params.append('ids', ids.join(','));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (publicKeyFields !== undefined && publicKeyFields.length > 0) {
-            
-            params.append('public_key.fields', publicKeyFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read', 'dm.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetPublicKeysResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Blocked Users
-     * Returns the Users that the given User is blocking.
-     * 
-     * @returns Promise with the API response
-     */
-    async getBlocking(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetBlockingStreamingOptions = {}
-    ): Promise<GetBlockingResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getBlocking');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/blocking';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['block.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetBlockingResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Block User
-     * Causes the source User to block the target User. A block also removes any follow between the two Users, in both directions, and unblocking does not restore it. Each call blocks one account: block only accounts the authenticated User named or approved, because finding or reviewing accounts is not approval to block them.
-     * 
-     * @returns Promise with the API response
-     */
-    async idBlock(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: IdBlockStreamingOptions = {}
-    ): Promise<IdBlockResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'idBlock');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/blocking';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'block.write', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<IdBlockResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Unlike Post
-     * Causes the authenticated user to unlike a specific Post by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async unlikePost(
+    async deleteBookmark(
         
         
         
@@ -4893,8 +4363,8 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
         
         
-        options: UnlikePostStreamingOptions = {}
-    ): Promise<UnlikePostResponse> {
+        options: DeleteBookmarkStreamingOptions = {}
+    ): Promise<DeleteBookmarkResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -4903,11 +4373,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         requiredAuthTypes.push('OAuth2UserToken');
         
         
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'unlikePost');
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteBookmark');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -4921,7 +4387,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
 
         // Build the path with path parameters
-        let path = '/2/users/{id}/likes/{tweet_id}';
+        let path = '/2/users/{id}/bookmarks/{tweet_id}';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -4949,13 +4415,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
                 
                 {
                     
-                    'OAuth2UserToken': ['like.write', 'users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'bookmark.write'],
                     
                 }
                 
@@ -4965,1124 +4425,8 @@ Every key field is returned by default, so public_key.fields can be left out. It
         };
 
         // Make the request
-        return this.client.request<UnlikePostResponse>(
+        return this.client.request<DeleteBookmarkResponse>(
             'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Owned Lists
-     * Retrieves a list of Lists owned by a specific User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getOwnedLists(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetOwnedListsStreamingOptions = {}
-    ): Promise<GetOwnedListsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getOwnedLists');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'list.fields': 'listFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            listFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/owned_lists';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (listFields !== undefined && listFields.length > 0) {
-            
-            params.append('list.fields', listFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'list.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetOwnedListsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Unmute User
-     * Causes the authenticated user to unmute the target user.
-     * 
-     * @returns Promise with the API response
-     */
-    async unmuteUser(
-        
-        
-        
-        sourceUserId: Schemas.UserId,
-        
-        
-        
-        targetUserId: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: UnmuteUserStreamingOptions = {}
-    ): Promise<UnmuteUserResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'unmuteUser');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{source_user_id}/muting/{target_user_id}';
-        
-        
-        path = path.replace('{source_user_id}', encodeURIComponent(String(sourceUserId)));
-        
-        
-        
-        path = path.replace('{target_user_id}', encodeURIComponent(String(targetUserId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['mute.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UnmuteUserResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Unblock User
-     * Causes the source User to unblock the target User. Unblocking does not restore any follow the block removed, so blocking and then unblocking a follower removes them as a follower: do that only for followers the authenticated User approved removing.
-     * 
-     * @returns Promise with the API response
-     */
-    async idUnblock(
-        
-        
-        
-        sourceUserId: Schemas.UserId,
-        
-        
-        
-        targetUserId: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: IdUnblockStreamingOptions = {}
-    ): Promise<IdUnblockResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'idUnblock');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{source_user_id}/blocking/{target_user_id}';
-        
-        
-        path = path.replace('{source_user_id}', encodeURIComponent(String(sourceUserId)));
-        
-        
-        
-        path = path.replace('{target_user_id}', encodeURIComponent(String(targetUserId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['block.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<IdUnblockResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Followed Lists
-     * Retrieves a list of Lists followed by a specific User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getFollowedLists(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetFollowedListsStreamingOptions = {}
-    ): Promise<GetFollowedListsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getFollowedLists');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'list.fields': 'listFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            listFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/followed_lists';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (listFields !== undefined && listFields.length > 0) {
-            
-            params.append('list.fields', listFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['list.read', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetFollowedListsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Follow List
-     * Causes the authenticated user to follow a specific List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async followList(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: FollowListStreamingOptions = {}
-    ): Promise<FollowListResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'followList');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/followed_lists';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'list.write', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<FollowListResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get My User
-     * Retrieves details of the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async getMe(
-        
-        
-        
-        
-        
-        
-        
-        options: GetMeStreamingOptions = {}
-    ): Promise<GetMeResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getMe');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/me';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetMeResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Bookmark Folders
-     * Retrieves a list of Bookmark folders created by the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async getBookmarkFolders(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetBookmarkFoldersStreamingOptions = {}
-    ): Promise<GetBookmarkFoldersResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getBookmarkFolders');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/bookmarks/folders';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'bookmark.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetBookmarkFoldersResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create Bookmark Folder
-     * Creates a new Bookmark folder for the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async createBookmarkFolder(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateBookmarkFolderStreamingOptions = {}
-    ): Promise<CreateBookmarkFolderResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createBookmarkFolder');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/bookmarks/folders';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'bookmark.write'],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateBookmarkFolderResponse>(
-            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -6445,109 +4789,6 @@ When both are provided, `start_time` must be earlier than `end_time`. When both 
 
 
     /**
-     * Unpin List
-     * Causes the authenticated user to unpin a List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async unpinList(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        listId: Schemas.ListId,
-        
-        
-        
-        
-        
-        
-        
-        options: UnpinListStreamingOptions = {}
-    ): Promise<UnpinListResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'unpinList');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/pinned_lists/{list_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{list_id}', encodeURIComponent(String(listId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'list.write', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UnpinListResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
      * Repost Post
      * Causes the authenticated user to repost a specific Post by its ID.
      * 
@@ -6621,7 +4862,7 @@ When both are provided, `start_time` must be earlier than `end_time`. When both 
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.write', 'tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.write', 'tweet.read'],
                     
                 },
                 
@@ -6639,1490 +4880,6 @@ When both are provided, `start_time` must be earlier than `end_time`. When both 
         // Make the request
         return this.client.request<RepostPostResponse>(
             'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Unblock DMs
-     * Unblocks direct messages to or from a specific User by their ID for the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async unblockDms(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: UnblockDmsStreamingOptions = {}
-    ): Promise<UnblockDmsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'unblockDms');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/dm/unblock';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'dm.write', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UnblockDmsResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Bookmarks
-     * Retrieves a list of Posts bookmarked by the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async getBookmarks(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetBookmarksStreamingOptions = {}
-    ): Promise<GetBookmarksResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getBookmarks');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-            
-            'poll.fields': 'pollFields',
-            
-            
-            
-            'place.fields': 'placeFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            pollFields = [],
-            
-            
-            
-            placeFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/bookmarks';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (pollFields !== undefined && pollFields.length > 0) {
-            
-            params.append('poll.fields', pollFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (placeFields !== undefined && placeFields.length > 0) {
-            
-            params.append('place.fields', placeFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'bookmark.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetBookmarksResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create Bookmark
-     * Adds one or more Posts to the authenticated user's Bookmarks. Supply `tweet_id` for a single Post, or `tweet_ids` (at most 25) to bookmark several in one request. Optional `folder_id` applies to every Post in the request. Billing and rate limits still apply per HTTP request.
-     * 
-     * @returns Promise with the API response
-     */
-    async createBookmark(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateBookmarkStreamingOptions = {}
-    ): Promise<CreateBookmarkResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createBookmark');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/bookmarks';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'bookmark.write', 'tweet.read'],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateBookmarkResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get List Memberships
-     * Retrieves a list of Lists that a specific User is a member of by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getListMemberships(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetListMembershipsStreamingOptions = {}
-    ): Promise<GetListMembershipsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getListMemberships');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'list.fields': 'listFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            listFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/list_memberships';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (listFields !== undefined && listFields.length > 0) {
-            
-            params.append('list.fields', listFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['list.read', 'users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetListMembershipsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get User Public Keys
-     * Returns a user's registered public keys for X Chat encryption.
-
-Every key field is returned by default, so public_key.fields can be left out. It takes public_key, signing_public_key, identity_public_key_signature, public_key_version and juicebox_config.
-     * 
-     * @returns Promise with the API response
-     */
-    async getPublicKey(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetPublicKeyStreamingOptions = {}
-    ): Promise<GetPublicKeyResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getPublicKey');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'public_key.fields': 'publicKeyFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            publicKeyFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/public_keys';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (publicKeyFields !== undefined && publicKeyFields.length > 0) {
-            
-            params.append('public_key.fields', publicKeyFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'dm.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetPublicKeyResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get User by ID
-     * Retrieves details of a specific User by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getById(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetByIdStreamingOptions = {}
-    ): Promise<GetByIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getById');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete Bookmark
-     * Removes a Post from the authenticated user's Bookmarks by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteBookmark(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        tweetId: Schemas.PostId,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteBookmarkStreamingOptions = {}
-    ): Promise<DeleteBookmarkResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteBookmark');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/bookmarks/{tweet_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{tweet_id}', encodeURIComponent(String(tweetId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'bookmark.write'],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteBookmarkResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Users by Usernames
-     * Retrieves details of multiple Users by their usernames.
-     * 
-     * @returns Promise with the API response
-     */
-    async getByUsernames(
-        
-        
-        
-        
-        
-        usernames: Array<string>,
-        
-        
-        
-        
-        
-        options: GetByUsernamesStreamingOptions = {}
-    ): Promise<GetByUsernamesResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getByUsernames');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/by';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (usernames !== undefined && usernames.length > 0) {
-            params.append('usernames', usernames.join(','));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByUsernamesResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Bookmarks by Folder ID
-     * Retrieves Posts in a specific Bookmark folder by its ID for the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async getBookmarksByFolderId(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        folderId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetBookmarksByFolderIdStreamingOptions = {}
-    ): Promise<GetBookmarksByFolderIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getBookmarksByFolderId');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/bookmarks/folders/{folder_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{folder_id}', encodeURIComponent(String(folderId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'bookmark.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetBookmarksByFolderIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Unfollow List
-     * Causes the authenticated user to unfollow a List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async unfollowList(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        listId: Schemas.ListId,
-        
-        
-        
-        
-        
-        
-        
-        options: UnfollowListStreamingOptions = {}
-    ): Promise<UnfollowListResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'unfollowList');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/followed_lists/{list_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{list_id}', encodeURIComponent(String(listId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'list.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UnfollowListResponse>(
-            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -8299,7 +5056,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
                 
                 {
                     
-                    'OAuth2UserToken': ['follows.read', 'users.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'follows.read', 'users.read'],
                     
                 },
                 
@@ -8325,12 +5082,12 @@ Every key field is returned by default, so public_key.fields can be left out. It
 
 
     /**
-     * Get Muting
-     * Retrieves a list of Users muted by the authenticated user.
+     * Get Bookmarks by Folder ID
+     * Retrieves Posts in a specific Bookmark folder by its ID for the authenticated user.
      * 
      * @returns Promise with the API response
      */
-    async getMuting(
+    async getBookmarksByFolderId(
         
         
         
@@ -8338,12 +5095,16 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
         
         
+        folderId: string,
         
         
         
         
-        options: GetMutingStreamingOptions = {}
-    ): Promise<GetMutingResponse> {
+        
+        
+        
+        options: GetBookmarksByFolderIdStreamingOptions = {}
+    ): Promise<GetBookmarksByFolderIdResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -8356,7 +5117,159 @@ Every key field is returned by default, so public_key.fields can be left out. It
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'getMuting');
+        this.client.validateAuthentication(requiredAuthTypes, 'getBookmarksByFolderId');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/bookmarks/folders/{folder_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{folder_id}', encodeURIComponent(String(folderId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['bookmark.read', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetBookmarksByFolderIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Following
+     * Retrieves a list of Users followed by a specific User by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getFollowing(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetFollowingStreamingOptions = {}
+    ): Promise<GetFollowingResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getFollowing');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -8417,7 +5330,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
 
         // Build the path with path parameters
-        let path = '/2/users/{id}/muting';
+        let path = '/2/users/{id}/following';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -8501,13 +5414,19 @@ Every key field is returned by default, so public_key.fields can be left out. It
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'mute.read'],
+                    'OAuth2UserToken': ['follows.read', 'tweet.read', 'users.read'],
                     
                 },
                 
                 {
                     
                     'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
                     
                 }
                 
@@ -8517,7 +5436,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         };
 
         // Make the request
-        return this.client.request<GetMutingResponse>(
+        return this.client.request<GetFollowingResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -8527,12 +5446,12 @@ Every key field is returned by default, so public_key.fields can be left out. It
 
 
     /**
-     * Mute User
-     * Causes the authenticated user to mute a specific User by their ID.
+     * Follow User
+     * Causes the authenticated user to follow a specific User by their ID.
      * 
      * @returns Promise with the API response
      */
-    async muteUser(
+    async followUser(
         
         
         
@@ -8546,8 +5465,8 @@ Every key field is returned by default, so public_key.fields can be left out. It
         body: any,
         
         
-        options: MuteUserStreamingOptions = {}
-    ): Promise<MuteUserResponse> {
+        options: FollowUserStreamingOptions = {}
+    ): Promise<FollowUserResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -8560,7 +5479,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'muteUser');
+        this.client.validateAuthentication(requiredAuthTypes, 'followUser');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -8574,7 +5493,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
 
         // Build the path with path parameters
-        let path = '/2/users/{id}/muting';
+        let path = '/2/users/{id}/following';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -8600,7 +5519,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'mute.write'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'follows.write'],
                     
                 },
                 
@@ -8616,7 +5535,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         };
 
         // Make the request
-        return this.client.request<MuteUserResponse>(
+        return this.client.request<FollowUserResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -8626,20 +5545,20 @@ Every key field is returned by default, so public_key.fields can be left out. It
 
 
     /**
-     * Unrepost Post
-     * Causes the authenticated user to unrepost a specific Post by its ID.
+     * Unblock User
+     * Causes the source User to unblock the target User. Unblocking does not restore any follow the block removed, so blocking and then unblocking a follower removes them as a follower: do that only for followers the authenticated User approved removing.
      * 
      * @returns Promise with the API response
      */
-    async unrepostPost(
+    async idUnblock(
         
         
         
-        id: Schemas.UserId,
+        sourceUserId: Schemas.UserId,
         
         
         
-        sourceTweetId: string,
+        targetUserId: Schemas.UserId,
         
         
         
@@ -8647,8 +5566,8 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
         
         
-        options: UnrepostPostStreamingOptions = {}
-    ): Promise<UnrepostPostResponse> {
+        options: IdUnblockStreamingOptions = {}
+    ): Promise<IdUnblockResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -8661,7 +5580,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'unrepostPost');
+        this.client.validateAuthentication(requiredAuthTypes, 'idUnblock');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -8675,14 +5594,14 @@ Every key field is returned by default, so public_key.fields can be left out. It
         
 
         // Build the path with path parameters
-        let path = '/2/users/{id}/retweets/{source_tweet_id}';
+        let path = '/2/users/{source_user_id}/blocking/{target_user_id}';
         
         
-        path = path.replace('{id}', encodeURIComponent(String(id)));
+        path = path.replace('{source_user_id}', encodeURIComponent(String(sourceUserId)));
         
         
         
-        path = path.replace('{source_tweet_id}', encodeURIComponent(String(sourceTweetId)));
+        path = path.replace('{target_user_id}', encodeURIComponent(String(targetUserId)));
         
         
 
@@ -8703,7 +5622,7 @@ Every key field is returned by default, so public_key.fields can be left out. It
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'tweet.write'],
+                    'OAuth2UserToken': ['users.read', 'block.write', 'tweet.read'],
                     
                 },
                 
@@ -8719,669 +5638,8 @@ Every key field is returned by default, so public_key.fields can be left out. It
         };
 
         // Make the request
-        return this.client.request<UnrepostPostResponse>(
+        return this.client.request<IdUnblockResponse>(
             'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get the Authenticated User's Followers
-     * Returns the Users who follow the authenticated user. Same results as `GET /2/users/{id}/followers` with your own user ID, without looking it up.
-     * 
-     * @returns Promise with the API response
-     */
-    async getMeFollowers(
-        
-        
-        
-        
-        
-        
-        
-        options: GetMeFollowersStreamingOptions = {}
-    ): Promise<GetMeFollowersResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getMeFollowers');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/me/followers';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'follows.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetMeFollowersResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Block DMs
-     * Blocks direct messages to or from a specific User by their ID for the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async blockDms(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: BlockDmsStreamingOptions = {}
-    ): Promise<BlockDmsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'blockDms');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/dm/block';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'dm.write', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<BlockDmsResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Posts
-     * Retrieves a list of Posts authored by a specific User by their ID.
-
-When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.
-     * 
-     * @returns Promise with the API response
-     */
-    async getPosts(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetPostsStreamingOptions = {}
-    ): Promise<GetPostsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getPosts');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-            
-            'since_id': 'sinceId',
-            
-            
-            
-            'until_id': 'untilId',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-            
-            'poll.fields': 'pollFields',
-            
-            
-            
-            'place.fields': 'placeFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            sinceId = undefined,
-            
-            
-            
-            untilId = undefined,
-            
-            
-            
-            exclude = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            pollFields = [],
-            
-            
-            
-            placeFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/tweets';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (sinceId !== undefined) {
-            
-            params.append('since_id', String(sinceId));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (untilId !== undefined) {
-            
-            params.append('until_id', String(untilId));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (exclude !== undefined && exclude.length > 0) {
-            
-            params.append('exclude', exclude.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (pollFields !== undefined && pollFields.length > 0) {
-            
-            params.append('poll.fields', pollFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (placeFields !== undefined && placeFields.length > 0) {
-            
-            params.append('place.fields', placeFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetPostsResponse>(
-            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -9752,6 +6010,1396 @@ When both are provided, `start_time` must be earlier than `end_time`. When both 
 
 
     /**
+     * Get Owned Lists
+     * Retrieves a list of Lists owned by a specific User by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getOwnedLists(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetOwnedListsStreamingOptions = {}
+    ): Promise<GetOwnedListsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getOwnedLists');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'list.fields': 'listFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            listFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/owned_lists';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (listFields !== undefined && listFields.length > 0) {
+            
+            params.append('list.fields', listFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['list.read', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetOwnedListsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Public Keys for Multiple Users
+     * Returns the public keys that up to 100 users registered for X Chat encryption, looked up by numeric user ID. Each key carries the user_id of the user it belongs to.
+
+Every key field is returned by default, so public_key.fields can be left out. It takes public_key, signing_public_key, identity_public_key_signature, public_key_version, juicebox_config and user_id.
+     * 
+     * @returns Promise with the API response
+     */
+    async getPublicKeys(
+        
+        
+        
+        
+        
+        ids: Array<Schemas.PublicKeyId>,
+        
+        
+        
+        
+        
+        options: GetPublicKeysStreamingOptions = {}
+    ): Promise<GetPublicKeysResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getPublicKeys');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'public_key.fields': 'publicKeyFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            publicKeyFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/public_keys';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (ids !== undefined && ids.length > 0) {
+            params.append('ids', ids.join(','));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (publicKeyFields !== undefined && publicKeyFields.length > 0) {
+            
+            params.append('public_key.fields', publicKeyFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.read', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetPublicKeysResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Blocked Users
+     * Returns the Users that the given User is blocking.
+     * 
+     * @returns Promise with the API response
+     */
+    async getBlocking(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetBlockingStreamingOptions = {}
+    ): Promise<GetBlockingResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getBlocking');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/blocking';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'block.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetBlockingResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Block User
+     * Causes the source User to block the target User. A block also removes any follow between the two Users, in both directions, and unblocking does not restore it. Each call blocks one account: block only accounts the authenticated User named or approved, because finding or reviewing accounts is not approval to block them.
+     * 
+     * @returns Promise with the API response
+     */
+    async idBlock(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: IdBlockStreamingOptions = {}
+    ): Promise<IdBlockResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'idBlock');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/blocking';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'block.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<IdBlockResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Bookmarks
+     * Retrieves a list of Posts bookmarked by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getBookmarks(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetBookmarksStreamingOptions = {}
+    ): Promise<GetBookmarksResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getBookmarks');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+            
+            'poll.fields': 'pollFields',
+            
+            
+            
+            'place.fields': 'placeFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            pollFields = [],
+            
+            
+            
+            placeFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/bookmarks';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (pollFields !== undefined && pollFields.length > 0) {
+            
+            params.append('poll.fields', pollFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (placeFields !== undefined && placeFields.length > 0) {
+            
+            params.append('place.fields', placeFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'bookmark.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetBookmarksResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create Bookmark
+     * Adds one or more Posts to the authenticated user's Bookmarks. Supply `tweet_id` for a single Post, or `tweet_ids` (at most 25) to bookmark several in one request. Optional `folder_id` applies to every Post in the request. Billing and rate limits still apply per HTTP request.
+     * 
+     * @returns Promise with the API response
+     */
+    async createBookmark(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateBookmarkStreamingOptions = {}
+    ): Promise<CreateBookmarkResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createBookmark');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/bookmarks';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'bookmark.write'],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateBookmarkResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unblock DMs
+     * Unblocks direct messages to or from a specific User by their ID for the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async unblockDms(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: UnblockDmsStreamingOptions = {}
+    ): Promise<UnblockDmsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unblockDms');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/dm/unblock';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnblockDmsResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get the Authenticated User's Followers
+     * Returns the Users who follow the authenticated user. Same results as `GET /2/users/{id}/followers` with your own user ID, without looking it up.
+     * 
+     * @returns Promise with the API response
+     */
+    async getMeFollowers(
+        
+        
+        
+        
+        
+        
+        
+        options: GetMeFollowersStreamingOptions = {}
+    ): Promise<GetMeFollowersResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getMeFollowers');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/me/followers';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'follows.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetMeFollowersResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unmute User
+     * Causes the authenticated user to unmute the target user.
+     * 
+     * @returns Promise with the API response
+     */
+    async unmuteUser(
+        
+        
+        
+        sourceUserId: Schemas.UserId,
+        
+        
+        
+        targetUserId: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: UnmuteUserStreamingOptions = {}
+    ): Promise<UnmuteUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unmuteUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{source_user_id}/muting/{target_user_id}';
+        
+        
+        path = path.replace('{source_user_id}', encodeURIComponent(String(sourceUserId)));
+        
+        
+        
+        path = path.replace('{target_user_id}', encodeURIComponent(String(targetUserId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['mute.write', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnmuteUserResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Search Users
      * Retrieves a list of Users matching a search query.
      * 
@@ -9940,7 +7588,7 @@ When both are provided, `start_time` must be earlier than `end_time`. When both 
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
                     
                 },
                 
@@ -9963,6 +7611,2358 @@ When both are provided, `start_time` must be earlier than `end_time`. When both 
 
         // Make the request
         return this.client.request<SearchResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Followers
+     * Retrieves a list of Users who follow a specific User by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getFollowers(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetFollowersStreamingOptions = {}
+    ): Promise<GetFollowersResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getFollowers');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/followers';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'follows.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetFollowersResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Pinned Lists
+     * Retrieves a list of Lists pinned by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getPinnedLists(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetPinnedListsStreamingOptions = {}
+    ): Promise<GetPinnedListsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getPinnedLists');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'list.fields': 'listFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            listFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/pinned_lists';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (listFields !== undefined && listFields.length > 0) {
+            
+            params.append('list.fields', listFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'list.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetPinnedListsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Pin List
+     * Causes the authenticated user to pin a specific List by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async pinList(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: PinListStreamingOptions = {}
+    ): Promise<PinListResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'pinList');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/pinned_lists';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['list.write', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<PinListResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Affiliates
+     * Retrieves a list of Users who are affiliated with a specific organization User by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getAffiliates(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetAffiliatesStreamingOptions = {}
+    ): Promise<GetAffiliatesResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getAffiliates');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/affiliates';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetAffiliatesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Bookmark Folders
+     * Retrieves a list of Bookmark folders created by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async getBookmarkFolders(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetBookmarkFoldersStreamingOptions = {}
+    ): Promise<GetBookmarkFoldersResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getBookmarkFolders');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/bookmarks/folders';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'bookmark.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetBookmarkFoldersResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create Bookmark Folder
+     * Creates a new Bookmark folder for the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async createBookmarkFolder(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateBookmarkFolderStreamingOptions = {}
+    ): Promise<CreateBookmarkFolderResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createBookmarkFolder');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/bookmarks/folders';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'bookmark.write'],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateBookmarkFolderResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unfollow User
+     * Causes the authenticated user to unfollow a specific user by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async unfollowUser(
+        
+        
+        
+        sourceUserId: Schemas.UserId,
+        
+        
+        
+        targetUserId: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: UnfollowUserStreamingOptions = {}
+    ): Promise<UnfollowUserResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unfollowUser');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{source_user_id}/following/{target_user_id}';
+        
+        
+        path = path.replace('{source_user_id}', encodeURIComponent(String(sourceUserId)));
+        
+        
+        
+        path = path.replace('{target_user_id}', encodeURIComponent(String(targetUserId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'follows.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnfollowUserResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Users by IDs
+     * Retrieves details of multiple Users by their IDs.
+     * 
+     * @returns Promise with the API response
+     */
+    async getByIds(
+        
+        
+        
+        
+        
+        ids: Array<Schemas.UserId>,
+        
+        
+        
+        
+        
+        options: GetByIdsStreamingOptions = {}
+    ): Promise<GetByIdsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByIds');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (ids !== undefined && ids.length > 0) {
+            params.append('ids', ids.join(','));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByIdsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get User by Username
+     * Retrieves details of a specific User by their username.
+     * 
+     * @returns Promise with the API response
+     */
+    async getByUsername(
+        
+        
+        
+        username: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetByUsernameStreamingOptions = {}
+    ): Promise<GetByUsernameResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByUsername');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/by/username/{username}';
+        
+        
+        path = path.replace('{username}', encodeURIComponent(String(username)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByUsernameResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unlike Post
+     * Causes the authenticated user to unlike a specific Post by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async unlikePost(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        tweetId: Schemas.PostId,
+        
+        
+        
+        
+        
+        
+        
+        options: UnlikePostStreamingOptions = {}
+    ): Promise<UnlikePostResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unlikePost');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/likes/{tweet_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{tweet_id}', encodeURIComponent(String(tweetId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'like.write', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnlikePostResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Posts
+     * Retrieves a list of Posts authored by a specific User by their ID.
+
+When both are provided, `start_time` must be earlier than `end_time`. When both are provided, `since_id` must be less than `until_id`.
+     * 
+     * @returns Promise with the API response
+     */
+    async getPosts(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetPostsStreamingOptions = {}
+    ): Promise<GetPostsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getPosts');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+            
+            'since_id': 'sinceId',
+            
+            
+            
+            'until_id': 'untilId',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+            
+            'poll.fields': 'pollFields',
+            
+            
+            
+            'place.fields': 'placeFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            sinceId = undefined,
+            
+            
+            
+            untilId = undefined,
+            
+            
+            
+            exclude = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            pollFields = [],
+            
+            
+            
+            placeFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/tweets';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (sinceId !== undefined) {
+            
+            params.append('since_id', String(sinceId));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (untilId !== undefined) {
+            
+            params.append('until_id', String(untilId));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (exclude !== undefined && exclude.length > 0) {
+            
+            params.append('exclude', exclude.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (pollFields !== undefined && pollFields.length > 0) {
+            
+            params.append('poll.fields', pollFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (placeFields !== undefined && placeFields.length > 0) {
+            
+            params.append('place.fields', placeFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetPostsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Block DMs
+     * Blocks direct messages to or from a specific User by their ID for the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async blockDms(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: BlockDmsStreamingOptions = {}
+    ): Promise<BlockDmsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'blockDms');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/dm/block';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'dm.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<BlockDmsResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Users by Usernames
+     * Retrieves details of multiple Users by their usernames.
+     * 
+     * @returns Promise with the API response
+     */
+    async getByUsernames(
+        
+        
+        
+        
+        
+        usernames: Array<string>,
+        
+        
+        
+        
+        
+        options: GetByUsernamesStreamingOptions = {}
+    ): Promise<GetByUsernamesResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByUsernames');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/by';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (usernames !== undefined && usernames.length > 0) {
+            params.append('usernames', usernames.join(','));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByUsernamesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Unpin List
+     * Causes the authenticated user to unpin a List by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async unpinList(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        listId: Schemas.ListId,
+        
+        
+        
+        
+        
+        
+        
+        options: UnpinListStreamingOptions = {}
+    ): Promise<UnpinListResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'unpinList');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/pinned_lists/{list_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{list_id}', encodeURIComponent(String(listId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'list.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UnpinListResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get User Public Keys
+     * Returns a user's registered public keys for X Chat encryption.
+
+Every key field is returned by default, so public_key.fields can be left out. It takes public_key, signing_public_key, identity_public_key_signature, public_key_version and juicebox_config.
+     * 
+     * @returns Promise with the API response
+     */
+    async getPublicKey(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetPublicKeyStreamingOptions = {}
+    ): Promise<GetPublicKeyResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getPublicKey');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'public_key.fields': 'publicKeyFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            publicKeyFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/public_keys';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (publicKeyFields !== undefined && publicKeyFields.length > 0) {
+            
+            params.append('public_key.fields', publicKeyFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetPublicKeyResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

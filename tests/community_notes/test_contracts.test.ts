@@ -54,209 +54,6 @@ describe('CommunityNotesClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for delete', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (communityNotesClient as any)['delete'];
-      const result = await method.apply(communityNotesClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/notes/{id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for delete', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (communityNotesClient as any)['delete'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(communityNotesClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for delete', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (communityNotesClient as any)['delete'];
-      const result = await method.apply(communityNotesClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for delete', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"deleted\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackCommunityNotes as any)['delete'];
-    const result = await method.apply(loopbackCommunityNotes, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
   it('should have correct request structure for evaluate', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
@@ -639,7 +436,7 @@ describe('CommunityNotesClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for searchWritten', async () => {
+  it('should have correct request structure for delete', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -671,7 +468,7 @@ describe('CommunityNotesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      true,
+      'test_value',
       
       
       ];
@@ -680,7 +477,7 @@ describe('CommunityNotesClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (communityNotesClient as any)['searchWritten'];
+      const method = (communityNotesClient as any)['delete'];
       const result = await method.apply(communityNotesClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -692,7 +489,7 @@ describe('CommunityNotesClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/notes/search/notes_written';
+      const expectedPath = '/2/notes/{id}';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -705,7 +502,7 @@ describe('CommunityNotesClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for searchWritten', async () => {
+  it('should handle required parameters correctly for delete', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -724,7 +521,7 @@ describe('CommunityNotesClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (communityNotesClient as any)['searchWritten'];
+      const method = (communityNotesClient as any)['delete'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -732,7 +529,7 @@ describe('CommunityNotesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      true,
+      'test_value',
       
       
       ];
@@ -749,7 +546,7 @@ describe('CommunityNotesClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for searchWritten', async () => {
+  it('should validate response structure for delete', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -780,13 +577,13 @@ describe('CommunityNotesClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      true,
+      'test_value',
       
       
       ];
       const options: any = {};
 
-      const method = (communityNotesClient as any)['searchWritten'];
+      const method = (communityNotesClient as any)['delete'];
       const result = await method.apply(communityNotesClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -803,9 +600,9 @@ describe('CommunityNotesClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for searchWritten', async () => {
+  it('should execute real TCP loopback roundtrip for delete', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"id\":\"1234567890\",\"info\":{\"text\":\"Hello from XDK!\"},\"scoring_status\":{},\"status\":\"test_value\",\"test_result\":{}}],\"meta\":{\"result_count\":1}}";
+    const fullMockJson = "{\"data\":{\"deleted\":true}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -816,9 +613,9 @@ describe('CommunityNotesClient Contracts', () => {
       
       
       
+      'test_id',
       
       
-      true,
       
       
       
@@ -827,7 +624,7 @@ describe('CommunityNotesClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackCommunityNotes as any)['searchWritten'];
+    const method = (loopbackCommunityNotes as any)['delete'];
     const result = await method.apply(loopbackCommunityNotes, callArgs);
     expect(result).toBeDefined();
 
@@ -835,7 +632,7 @@ describe('CommunityNotesClient Contracts', () => {
 
     const recorded = loopbackServer.lastRequest();
     expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
+    expect(recorded!.method).toBe('DELETE');
     
     expect(recorded!.firstHeader('authorization')).toBeTruthy();
     
@@ -1031,6 +828,209 @@ describe('CommunityNotesClient Contracts', () => {
     ];
 
     const method = (loopbackCommunityNotes as any)['searchEligiblePosts'];
+    const result = await method.apply(loopbackCommunityNotes, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for searchWritten', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      true,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (communityNotesClient as any)['searchWritten'];
+      const result = await method.apply(communityNotesClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/notes/search/notes_written';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for searchWritten', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (communityNotesClient as any)['searchWritten'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      true,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(communityNotesClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for searchWritten', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      true,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (communityNotesClient as any)['searchWritten'];
+      const result = await method.apply(communityNotesClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for searchWritten', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"id\":\"1234567890\",\"info\":{\"text\":\"Hello from XDK!\"},\"scoring_status\":{},\"status\":\"test_value\",\"test_result\":{}}],\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      true,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackCommunityNotes as any)['searchWritten'];
     const result = await method.apply(loopbackCommunityNotes, callArgs);
     expect(result).toBeDefined();
 

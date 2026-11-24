@@ -12,25 +12,25 @@ import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSn
 import type * as Schemas from '../schemas.js';
 import {
 
-GetLocationsResponse,
+GetPersonalizedResponse,
 
 GetByWoeidResponse,
 
-GetPersonalizedResponse,
+GetLocationsResponse,
 } from './models.js';
 
 
 /**
- * Options for getLocations method
+ * Options for getPersonalized method
  * 
  * @public
  */
-export interface GetLocationsOptions {
+export interface GetPersonalizedOptions {
     
     
-    /** A comma separated list of TrendLocation fields to display. 
-     * Also accepts: trend_location.fields or proper camelCase (e.g., trendLocationFields) */
-    trendLocationFields?: Array<"country" | "country_code" | "name" | "parent_id" | "place_type" | "woeid">;
+    /** A comma separated list of PersonalizedTrend fields to display. 
+     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
+    personalizedTrendFields?: Array<"category" | "post_count" | "trend_name" | "trending_since">;
     
     
     
@@ -69,16 +69,16 @@ export interface GetByWoeidOptions {
 
 
 /**
- * Options for getPersonalized method
+ * Options for getLocations method
  * 
  * @public
  */
-export interface GetPersonalizedOptions {
+export interface GetLocationsOptions {
     
     
-    /** A comma separated list of PersonalizedTrend fields to display. 
-     * Also accepts: personalized_trend.fields or proper camelCase (e.g., personalizedTrendFields) */
-    personalizedTrendFields?: Array<"category" | "post_count" | "trend_name" | "trending_since">;
+    /** A comma separated list of TrendLocation fields to display. 
+     * Also accepts: trend_location.fields or proper camelCase (e.g., trendLocationFields) */
+    trendLocationFields?: Array<"country" | "country_code" | "name" | "parent_id" | "place_type" | "woeid">;
     
     
     
@@ -139,33 +139,33 @@ export class TrendsClient {
 
 
   /**
-   * Get Trend Locations
-   * Retrieves every location that has trends. Each location has a WOEID to pass to `GET /2/trends/by/woeid/{woeid}`. The list is short and is returned whole, so the route takes no paging parameters.
+   * Get Personalized Trends
+   * Retrieves personalized trending topics for the authenticated user.
 
 
 
-   * @returns {Promise<GetLocationsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getLocations(
+    getPersonalized(
         
         
         
         
-        options: GetLocationsOptions & { requestOptions: { raw: true } }
+        options: GetPersonalizedOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getLocations(
+    getPersonalized(
         
         
         
         
-        options?: GetLocationsOptions
+        options?: GetPersonalizedOptions
         
-    ): Promise<GetLocationsResponse>;
+    ): Promise<GetPersonalizedResponse>;
     // Implementation
-    async getLocations(
+    async getPersonalized(
         
         
         
@@ -174,16 +174,16 @@ export class TrendsClient {
         
         
         
-        options: GetLocationsOptions = {}
+        options: GetPersonalizedOptions = {}
         
-    ): Promise<GetLocationsResponse | Response> {
+    ): Promise<GetPersonalizedResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
         const paramMappings: Record<string, string> = {
             
             
-            'trend_location.fields': 'trendLocationFields',
+            'personalized_trend.fields': 'personalizedTrendFields',
             
             
         };
@@ -194,7 +194,7 @@ export class TrendsClient {
         const {
             
             
-            trendLocationFields = [],
+            personalizedTrendFields = [],
             
             
             
@@ -203,7 +203,7 @@ export class TrendsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/trends/locations';
+        let path = '/2/users/personalized_trends';
         
 
         // Build query parameters
@@ -212,10 +212,10 @@ export class TrendsClient {
         
         
         
-        if (trendLocationFields !== undefined && trendLocationFields.length > 0) {
+        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
             
             
-            params.append('trend_location.fields', normalizeFields(trendLocationFields).join(','));
+            params.append('personalized_trend.fields', normalizeFields(personalizedTrendFields).join(','));
             
             
         }
@@ -232,13 +232,13 @@ export class TrendsClient {
                 
                 {
                     
-                    'OAuth2UserToken': [],
+                    'OAuth2UserToken': ['users.read', 'tweet.read'],
                     
                 },
                 
                 {
                     
-                    'BearerToken': [],
+                    'UserToken': [],
                     
                 }
                 
@@ -249,7 +249,7 @@ export class TrendsClient {
             
         };
 
-        return this.client.request<GetLocationsResponse>(
+        return this.client.request<GetPersonalizedResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -416,33 +416,33 @@ export class TrendsClient {
 
 
   /**
-   * Get Personalized Trends
-   * Retrieves personalized trending topics for the authenticated user.
+   * Get Trend Locations
+   * Retrieves every location that has trends. Each location has a WOEID to pass to `GET /2/trends/by/woeid/{woeid}`. The list is short and is returned whole, so the route takes no paging parameters.
 
 
 
-   * @returns {Promise<GetPersonalizedResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetLocationsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getPersonalized(
+    getLocations(
         
         
         
         
-        options: GetPersonalizedOptions & { requestOptions: { raw: true } }
+        options: GetLocationsOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    getPersonalized(
+    getLocations(
         
         
         
         
-        options?: GetPersonalizedOptions
+        options?: GetLocationsOptions
         
-    ): Promise<GetPersonalizedResponse>;
+    ): Promise<GetLocationsResponse>;
     // Implementation
-    async getPersonalized(
+    async getLocations(
         
         
         
@@ -451,16 +451,16 @@ export class TrendsClient {
         
         
         
-        options: GetPersonalizedOptions = {}
+        options: GetLocationsOptions = {}
         
-    ): Promise<GetPersonalizedResponse | Response> {
+    ): Promise<GetLocationsResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         
         const paramMappings: Record<string, string> = {
             
             
-            'personalized_trend.fields': 'personalizedTrendFields',
+            'trend_location.fields': 'trendLocationFields',
             
             
         };
@@ -471,7 +471,7 @@ export class TrendsClient {
         const {
             
             
-            personalizedTrendFields = [],
+            trendLocationFields = [],
             
             
             
@@ -480,7 +480,7 @@ export class TrendsClient {
         
 
         // Build the path with path parameters
-        let path = '/2/users/personalized_trends';
+        let path = '/2/trends/locations';
         
 
         // Build query parameters
@@ -489,10 +489,10 @@ export class TrendsClient {
         
         
         
-        if (personalizedTrendFields !== undefined && personalizedTrendFields.length > 0) {
+        if (trendLocationFields !== undefined && trendLocationFields.length > 0) {
             
             
-            params.append('personalized_trend.fields', normalizeFields(personalizedTrendFields).join(','));
+            params.append('trend_location.fields', normalizeFields(trendLocationFields).join(','));
             
             
         }
@@ -509,13 +509,13 @@ export class TrendsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'users.read'],
+                    'OAuth2UserToken': [],
                     
                 },
                 
                 {
                     
-                    'UserToken': [],
+                    'BearerToken': [],
                     
                 }
                 
@@ -526,7 +526,7 @@ export class TrendsClient {
             
         };
 
-        return this.client.request<GetPersonalizedResponse>(
+        return this.client.request<GetLocationsResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

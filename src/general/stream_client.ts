@@ -130,6 +130,8 @@ export class GeneralClient {
             signal: signal,
             
             
+            security: [],
+            
             ...requestOptions,
         };
 

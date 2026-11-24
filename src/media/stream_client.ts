@@ -13,35 +13,15 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  FinalizeUploadResponse,
+  GetUploadStatusResponse,
+
+
+
+  UploadResponse,
 
 
 
   InitializeUploadResponse,
-
-
-
-  GetByKeyResponse,
-
-
-
-  GetAmplifyProgramPostsResponse,
-
-
-
-  GetAnalyticsResponse,
-
-
-
-  GetLibraryCategoriesResponse,
-
-
-
-  CreateMetadataResponse,
-
-
-
-  GetByKeysResponse,
 
 
 
@@ -53,31 +33,19 @@ import {
 
 
 
-  GetAmplifyProgramsResponse,
-
-
-
-  AddPostToAmplifyProgramsResponse,
-
-
-
-  GetUploadStatusResponse,
-
-
-
-  UploadResponse,
-
-
-
   GetAmplifyProgramResponse,
 
 
 
-  AddToLibraryResponse,
+  GetAmplifyProgramPostsResponse,
 
 
 
-  AppendUploadResponse,
+  GetByKeyResponse,
+
+
+
+  FinalizeUploadResponse,
 
 
 
@@ -87,14 +55,77 @@ import {
 
   DeleteSubtitlesResponse,
 
+
+
+  GetAnalyticsResponse,
+
+
+
+  CreateMetadataResponse,
+
+
+
+  GetLibraryCategoriesResponse,
+
+
+
+  GetAmplifyProgramsResponse,
+
+
+
+  GetByKeysResponse,
+
+
+
+  AppendUploadResponse,
+
+
+
+  AddToLibraryResponse,
+
+
+
+  AddPostToAmplifyProgramsResponse,
+
 } from './models.js';
 
 /**
- * Options for finalizeUpload method
+ * Options for getUploadStatus method
  * 
  * @public
  */
-export interface FinalizeUploadStreamingOptions {
+export interface GetUploadStatusStreamingOptions {
+    
+    
+    /** Always STATUS; can be left out. 
+     * Also accepts: command or proper camelCase (e.g., command) */
+    command?: "STATUS";
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for upload method
+ * 
+ * @public
+ */
+export interface UploadStreamingOptions {
     
     
     /** Additional request options */
@@ -120,186 +151,6 @@ export interface FinalizeUploadStreamingOptions {
  * @public
  */
 export interface InitializeUploadStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByKey method
- * 
- * @public
- */
-export interface GetByKeyStreamingOptions {
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getAmplifyProgramPosts method
- * 
- * @public
- */
-export interface GetAmplifyProgramPostsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getAnalytics method
- * 
- * @public
- */
-export interface GetAnalyticsStreamingOptions {
-    
-    
-    /** granularity 
-     * Also accepts: granularity or proper camelCase (e.g., granularity) */
-    granularity?: "hourly" | "daily" | "total";
-    
-    
-    
-    /** A comma separated list of MediaAnalytics fields to display. 
-     * Also accepts: media_analytics.fields or proper camelCase (e.g., mediaAnalyticsFields) */
-    mediaAnalyticsFields?: Array<"cta_url_clicks" | "cta_watch_clicks" | "media_key" | "play_from_tap" | "playback25" | "playback50" | "playback75" | "playback_complete" | "playback_start" | "timestamp" | "timestamped_metrics" | "video_views" | "watch_time_ms">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getLibraryCategories method
- * 
- * @public
- */
-export interface GetLibraryCategoriesStreamingOptions {
-    
-    
-    /** Language tag for category descriptions, e.g. `en` or `pt-BR`. 
-     * Also accepts: lang or proper camelCase (e.g., lang) */
-    lang?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createMetadata method
- * 
- * @public
- */
-export interface CreateMetadataStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getByKeys method
- * 
- * @public
- */
-export interface GetByKeysStreamingOptions {
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
-    
     
     
     /** Additional request options */
@@ -370,112 +221,6 @@ export interface RemoveFromLibraryStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getAmplifyPrograms method
- * 
- * @public
- */
-export interface GetAmplifyProgramsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for addPostToAmplifyPrograms method
- * 
- * @public
- */
-export interface AddPostToAmplifyProgramsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for getUploadStatus method
- * 
- * @public
- */
-export interface GetUploadStatusStreamingOptions {
-    
-    
-    /** Always STATUS; can be left out. 
-     * Also accepts: command or proper camelCase (e.g., command) */
-    command?: "STATUS";
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for upload method
- * 
- * @public
- */
-export interface UploadStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
  * Options for getAmplifyProgram method
  * 
  * @public
@@ -501,11 +246,11 @@ export interface GetAmplifyProgramStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for addToLibrary method
+ * Options for getAmplifyProgramPosts method
  * 
  * @public
  */
-export interface AddToLibraryStreamingOptions {
+export interface GetAmplifyProgramPostsStreamingOptions {
     
     
     /** Additional request options */
@@ -526,11 +271,42 @@ export interface AddToLibraryStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for appendUpload method
+ * Options for getByKey method
  * 
  * @public
  */
-export interface AppendUploadStreamingOptions {
+export interface GetByKeyStreamingOptions {
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for finalizeUpload method
+ * 
+ * @public
+ */
+export interface FinalizeUploadStreamingOptions {
     
     
     /** Additional request options */
@@ -581,6 +357,230 @@ export interface CreateSubtitlesStreamingOptions {
  * @public
  */
 export interface DeleteSubtitlesStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getAnalytics method
+ * 
+ * @public
+ */
+export interface GetAnalyticsStreamingOptions {
+    
+    
+    /** granularity 
+     * Also accepts: granularity or proper camelCase (e.g., granularity) */
+    granularity?: "hourly" | "daily" | "total";
+    
+    
+    
+    /** A comma separated list of MediaAnalytics fields to display. 
+     * Also accepts: media_analytics.fields or proper camelCase (e.g., mediaAnalyticsFields) */
+    mediaAnalyticsFields?: Array<"cta_url_clicks" | "cta_watch_clicks" | "media_key" | "play_from_tap" | "playback25" | "playback50" | "playback75" | "playback_complete" | "playback_start" | "timestamp" | "timestamped_metrics" | "video_views" | "watch_time_ms">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createMetadata method
+ * 
+ * @public
+ */
+export interface CreateMetadataStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getLibraryCategories method
+ * 
+ * @public
+ */
+export interface GetLibraryCategoriesStreamingOptions {
+    
+    
+    /** Language tag for category descriptions, e.g. `en` or `pt-BR`. 
+     * Also accepts: lang or proper camelCase (e.g., lang) */
+    lang?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getAmplifyPrograms method
+ * 
+ * @public
+ */
+export interface GetAmplifyProgramsStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getByKeys method
+ * 
+ * @public
+ */
+export interface GetByKeysStreamingOptions {
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for appendUpload method
+ * 
+ * @public
+ */
+export interface AppendUploadStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for addToLibrary method
+ * 
+ * @public
+ */
+export interface AddToLibraryStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for addPostToAmplifyPrograms method
+ * 
+ * @public
+ */
+export interface AddPostToAmplifyProgramsStreamingOptions {
     
     
     /** Additional request options */
@@ -693,1326 +693,6 @@ export class MediaClient {
 
 
 
-
-
-
-    /**
-     * Finalize Media Upload
-     * Completes a chunked upload once every segment is appended. For video the result carries processing_info: the media can go on a Post only when its state is succeeded, so call Get Media Upload Status until it is. A result without processing_info is ready to use.
-     * 
-     * @returns Promise with the API response
-     */
-    async finalizeUpload(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: FinalizeUploadStreamingOptions = {}
-    ): Promise<FinalizeUploadResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'finalizeUpload');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload/{id}/finalize';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<FinalizeUploadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Initialize Media Upload
-     * Starts a chunked media upload and returns its id. Use it for video and for other files too large for one request. For a video on a Post, set media_category to tweet_video, media_type to the file's type (for example video/mp4) and total_bytes to the file's size. Send the file with Append Media Upload, call Finalize Media Upload, then pass the id in media.media_ids on Create or Edit Post.
-     * 
-     * @returns Promise with the API response
-     */
-    async initializeUpload(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: InitializeUploadStreamingOptions = {}
-    ): Promise<InitializeUploadResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'initializeUpload');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/upload/initialize';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<InitializeUploadResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Media by Media Key
-     * Retrieves details of a specific Media file by its media key.
-     * 
-     * @returns Promise with the API response
-     */
-    async getByKey(
-        
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetByKeyStreamingOptions = {}
-    ): Promise<GetByKeyResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getByKey');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            mediaFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByKeyResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Amplify Program Posts
-     * Returns the posts published into an Amplify pre-roll program the authenticated user is enrolled in as a publisher.
-     * 
-     * @returns Promise with the API response
-     */
-    async getAmplifyProgramPosts(
-        
-        
-        
-        programId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetAmplifyProgramPostsStreamingOptions = {}
-    ): Promise<GetAmplifyProgramPostsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getAmplifyProgramPosts');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/amplify/programs/{program_id}/posts';
-        
-        
-        path = path.replace('{program_id}', encodeURIComponent(String(programId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetAmplifyProgramPostsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Media Analytics
-     * Retrieves analytics data for media.
-     * 
-     * @returns Promise with the API response
-     */
-    async getAnalytics(
-        
-        
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        startTime: string,
-        
-        
-        
-        endTime: string,
-        
-        
-        
-        
-        
-        options: GetAnalyticsStreamingOptions = {}
-    ): Promise<GetAnalyticsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getAnalytics');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-            
-            'media_analytics.fields': 'mediaAnalyticsFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            granularity = undefined,
-            
-            
-            
-            mediaAnalyticsFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/analytics';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (mediaKeys !== undefined && mediaKeys.length > 0) {
-            params.append('media_keys', mediaKeys.join(','));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            params.append('start_time', String(startTime));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            params.append('end_time', String(endTime));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (granularity !== undefined) {
-            
-            params.append('granularity', String(granularity));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (mediaAnalyticsFields !== undefined && mediaAnalyticsFields.length > 0) {
-            
-            params.append('media_analytics.fields', mediaAnalyticsFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetAnalyticsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Media Library Categories
-     * Returns the video categories a publisher can assign to a media library item and the advertiser categories whose ads can be blocked from running against it.
-     * 
-     * @returns Promise with the API response
-     */
-    async getLibraryCategories(
-        
-        
-        
-        
-        
-        
-        
-        options: GetLibraryCategoriesStreamingOptions = {}
-    ): Promise<GetLibraryCategoriesResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getLibraryCategories');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            lang = undefined,
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/library/categories';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (lang !== undefined) {
-            
-            params.append('lang', String(lang));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetLibraryCategoriesResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create Media Metadata
-     * Creates metadata for a Media file.
-     * 
-     * @returns Promise with the API response
-     */
-    async createMetadata(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateMetadataStreamingOptions = {}
-    ): Promise<CreateMetadataResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createMetadata');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/metadata';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateMetadataResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Media by Media Keys
-     * Retrieves details of Media files by their media keys.
-     * 
-     * @returns Promise with the API response
-     */
-    async getByKeys(
-        
-        
-        
-        
-        
-        mediaKeys: Array<string>,
-        
-        
-        
-        
-        
-        options: GetByKeysStreamingOptions = {}
-    ): Promise<GetByKeysResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getByKeys');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            mediaFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        
-        if (mediaKeys !== undefined && mediaKeys.length > 0) {
-            params.append('media_keys', mediaKeys.join(','));
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByKeysResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Update Media Library Item
-     * Updates the library metadata of an item in the authenticated user's Media Library. Only the fields sent are changed; the others keep their values. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
-     * 
-     * @returns Promise with the API response
-     */
-    async updateInLibrary(
-        
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: UpdateInLibraryStreamingOptions = {}
-    ): Promise<UpdateInLibraryResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'updateInLibrary');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/library/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UpdateInLibraryResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Remove Media Library Item
-     * Removes an item from the authenticated user's Media Library. Posts scheduled through the API that have not yet been published and still use the media are cancelled. Published posts and the underlying media are not affected.
-     * 
-     * @returns Promise with the API response
-     */
-    async removeFromLibrary(
-        
-        
-        
-        mediaKey: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: RemoveFromLibraryStreamingOptions = {}
-    ): Promise<RemoveFromLibraryResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'removeFromLibrary');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/library/{media_key}';
-        
-        
-        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<RemoveFromLibraryResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Amplify Programs
-     * Returns the Amplify pre-roll programs the authenticated user is enrolled in as a publisher.
-     * 
-     * @returns Promise with the API response
-     */
-    async getAmplifyPrograms(
-        
-        
-        
-        
-        
-        
-        
-        options: GetAmplifyProgramsStreamingOptions = {}
-    ): Promise<GetAmplifyProgramsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getAmplifyPrograms');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/amplify/programs';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetAmplifyProgramsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Add Post to Amplify Programs
-     * Publishes one of the authenticated user's video posts into one or more active Amplify pre-roll programs the user is enrolled in as a publisher.
-     * 
-     * @returns Promise with the API response
-     */
-    async addPostToAmplifyPrograms(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: AddPostToAmplifyProgramsStreamingOptions = {}
-    ): Promise<AddPostToAmplifyProgramsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'addPostToAmplifyPrograms');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/media/amplify/posts';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['media.library.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<AddPostToAmplifyProgramsResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
@@ -2238,6 +918,295 @@ export class MediaClient {
 
 
     /**
+     * Initialize Media Upload
+     * Starts a chunked media upload and returns its id. Use it for video and for other files too large for one request. For a video on a Post, set media_category to tweet_video, media_type to the file's type (for example video/mp4) and total_bytes to the file's size. Send the file with Append Media Upload, call Finalize Media Upload, then pass the id in media.media_ids on Create or Edit Post.
+     * 
+     * @returns Promise with the API response
+     */
+    async initializeUpload(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: InitializeUploadStreamingOptions = {}
+    ): Promise<InitializeUploadResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'initializeUpload');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload/initialize';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<InitializeUploadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Update Media Library Item
+     * Updates the library metadata of an item in the authenticated user's Media Library. Only the fields sent are changed; the others keep their values. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateInLibrary(
+        
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateInLibraryStreamingOptions = {}
+    ): Promise<UpdateInLibraryResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateInLibrary');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateInLibraryResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Remove Media Library Item
+     * Removes an item from the authenticated user's Media Library. Posts scheduled through the API that have not yet been published and still use the media are cancelled. Published posts and the underlying media are not affected.
+     * 
+     * @returns Promise with the API response
+     */
+    async removeFromLibrary(
+        
+        
+        
+        mediaKey: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: RemoveFromLibraryStreamingOptions = {}
+    ): Promise<RemoveFromLibraryResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'removeFromLibrary');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<RemoveFromLibraryResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Get Amplify Program
      * Returns one Amplify pre-roll program the authenticated user is enrolled in as a publisher. A program the user is not enrolled in is reported as not found.
      * 
@@ -2333,23 +1302,25 @@ export class MediaClient {
 
 
     /**
-     * Add Media to Library
-     * Adds previously uploaded media to the authenticated user's Media Library with its library metadata. The user must own the media. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
+     * Get Amplify Program Posts
+     * Returns the posts published into an Amplify pre-roll program the authenticated user is enrolled in as a publisher.
      * 
      * @returns Promise with the API response
      */
-    async addToLibrary(
+    async getAmplifyProgramPosts(
+        
+        
+        
+        programId: string,
         
         
         
         
         
         
-        body: any,
         
-        
-        options: AddToLibraryStreamingOptions = {}
-    ): Promise<AddToLibraryResponse> {
+        options: GetAmplifyProgramPostsStreamingOptions = {}
+    ): Promise<GetAmplifyProgramPostsResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -2362,7 +1333,7 @@ export class MediaClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'addToLibrary');
+        this.client.validateAuthentication(requiredAuthTypes, 'getAmplifyProgramPosts');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -2376,7 +1347,11 @@ export class MediaClient {
         
 
         // Build the path with path parameters
-        let path = '/2/media/library';
+        let path = '/2/media/amplify/programs/{program_id}/posts';
+        
+        
+        path = path.replace('{program_id}', encodeURIComponent(String(programId)));
+        
         
 
         // Build query parameters
@@ -2391,14 +1366,12 @@ export class MediaClient {
             },
             signal: signal,
             
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
             
             security: [
                 
                 {
                     
-                    'OAuth2UserToken': ['media.library.write'],
+                    'OAuth2UserToken': ['media.library.read'],
                     
                 },
                 
@@ -2414,8 +1387,8 @@ export class MediaClient {
         };
 
         // Make the request
-        return this.client.request<AddToLibraryResponse>(
-            'POST',
+        return this.client.request<GetAmplifyProgramPostsResponse>(
+            'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -2424,27 +1397,25 @@ export class MediaClient {
 
 
     /**
-     * Append Media Upload
-     * Appends one segment of the file to a chunked upload. Send the segment base64-encoded in media (raw bytes in multipart bodies) and its position in the file in segment_index, counting from 0. A segment can be up to 8 MB; in a JSON body keep it to 4 MB or less, because base64 adds a third. After the last segment, call Finalize Media Upload.
+     * Get Media by Media Key
+     * Retrieves details of a specific Media file by its media key.
      * 
      * @returns Promise with the API response
      */
-    async appendUpload(
+    async getByKey(
         
         
         
-        id: string,
+        mediaKey: string,
         
         
         
         
         
         
-        body: any,
         
-        
-        options: AppendUploadStreamingOptions = {}
-    ): Promise<AppendUploadResponse> {
+        options: GetByKeyStreamingOptions = {}
+    ): Promise<GetByKeyResponse> {
         // Validate authentication requirements
         
         const requiredAuthTypes = [];
@@ -2457,7 +1428,141 @@ export class MediaClient {
         requiredAuthTypes.push('UserToken');
         
         
-        this.client.validateAuthentication(requiredAuthTypes, 'appendUpload');
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByKey');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            mediaFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/{media_key}';
+        
+        
+        path = path.replace('{media_key}', encodeURIComponent(String(mediaKey)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByKeyResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Finalize Media Upload
+     * Completes a chunked upload once every segment is appended. For video the result carries processing_info: the media can go on a Post only when its state is succeeded, so call Get Media Upload Status until it is. A result without processing_info is ready to use.
+     * 
+     * @returns Promise with the API response
+     */
+    async finalizeUpload(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: FinalizeUploadStreamingOptions = {}
+    ): Promise<FinalizeUploadResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'finalizeUpload');
         
 
         // Normalize options to handle both camelCase and original API parameter names
@@ -2471,7 +1576,7 @@ export class MediaClient {
         
 
         // Build the path with path parameters
-        let path = '/2/media/upload/{id}/append';
+        let path = '/2/media/upload/{id}/finalize';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -2489,8 +1594,6 @@ export class MediaClient {
                 ...headers,
             },
             signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             
             security: [
@@ -2513,7 +1616,7 @@ export class MediaClient {
         };
 
         // Make the request
-        return this.client.request<AppendUploadResponse>(
+        return this.client.request<FinalizeUploadResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -2697,6 +1800,903 @@ export class MediaClient {
         // Make the request
         return this.client.request<DeleteSubtitlesResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Media Analytics
+     * Retrieves analytics data for media.
+     * 
+     * @returns Promise with the API response
+     */
+    async getAnalytics(
+        
+        
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        startTime: string,
+        
+        
+        
+        endTime: string,
+        
+        
+        
+        
+        
+        options: GetAnalyticsStreamingOptions = {}
+    ): Promise<GetAnalyticsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getAnalytics');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+            
+            'media_analytics.fields': 'mediaAnalyticsFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            granularity = undefined,
+            
+            
+            
+            mediaAnalyticsFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/analytics';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (mediaKeys !== undefined && mediaKeys.length > 0) {
+            params.append('media_keys', mediaKeys.join(','));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            params.append('start_time', String(startTime));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            params.append('end_time', String(endTime));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (granularity !== undefined) {
+            
+            params.append('granularity', String(granularity));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (mediaAnalyticsFields !== undefined && mediaAnalyticsFields.length > 0) {
+            
+            params.append('media_analytics.fields', mediaAnalyticsFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetAnalyticsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create Media Metadata
+     * Creates metadata for a Media file.
+     * 
+     * @returns Promise with the API response
+     */
+    async createMetadata(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateMetadataStreamingOptions = {}
+    ): Promise<CreateMetadataResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createMetadata');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/metadata';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateMetadataResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Media Library Categories
+     * Returns the video categories a publisher can assign to a media library item and the advertiser categories whose ads can be blocked from running against it.
+     * 
+     * @returns Promise with the API response
+     */
+    async getLibraryCategories(
+        
+        
+        
+        
+        
+        
+        
+        options: GetLibraryCategoriesStreamingOptions = {}
+    ): Promise<GetLibraryCategoriesResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getLibraryCategories');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            lang = undefined,
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library/categories';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (lang !== undefined) {
+            
+            params.append('lang', String(lang));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetLibraryCategoriesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Amplify Programs
+     * Returns the Amplify pre-roll programs the authenticated user is enrolled in as a publisher.
+     * 
+     * @returns Promise with the API response
+     */
+    async getAmplifyPrograms(
+        
+        
+        
+        
+        
+        
+        
+        options: GetAmplifyProgramsStreamingOptions = {}
+    ): Promise<GetAmplifyProgramsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getAmplifyPrograms');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/amplify/programs';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetAmplifyProgramsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get Media by Media Keys
+     * Retrieves details of Media files by their media keys.
+     * 
+     * @returns Promise with the API response
+     */
+    async getByKeys(
+        
+        
+        
+        
+        
+        mediaKeys: Array<string>,
+        
+        
+        
+        
+        
+        options: GetByKeysStreamingOptions = {}
+    ): Promise<GetByKeysResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getByKeys');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            mediaFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        
+        if (mediaKeys !== undefined && mediaKeys.length > 0) {
+            params.append('media_keys', mediaKeys.join(','));
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByKeysResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Append Media Upload
+     * Appends one segment of the file to a chunked upload. Send the segment base64-encoded in media (raw bytes in multipart bodies) and its position in the file in segment_index, counting from 0. A segment can be up to 8 MB; in a JSON body keep it to 4 MB or less, because base64 adds a third. After the last segment, call Finalize Media Upload.
+     * 
+     * @returns Promise with the API response
+     */
+    async appendUpload(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: AppendUploadStreamingOptions = {}
+    ): Promise<AppendUploadResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'appendUpload');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/upload/{id}/append';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<AppendUploadResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Add Media to Library
+     * Adds previously uploaded media to the authenticated user's Media Library with its library metadata. The user must own the media. Geo restrictions, content expiry, the preview image and the audience policy are set with the Media metadata endpoint.
+     * 
+     * @returns Promise with the API response
+     */
+    async addToLibrary(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: AddToLibraryStreamingOptions = {}
+    ): Promise<AddToLibraryResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'addToLibrary');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/library';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<AddToLibraryResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Add Post to Amplify Programs
+     * Publishes one of the authenticated user's video posts into one or more active Amplify pre-roll programs the user is enrolled in as a publisher.
+     * 
+     * @returns Promise with the API response
+     */
+    async addPostToAmplifyPrograms(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: AddPostToAmplifyProgramsStreamingOptions = {}
+    ): Promise<AddPostToAmplifyProgramsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'addPostToAmplifyPrograms');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/media/amplify/posts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['media.library.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<AddPostToAmplifyProgramsResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

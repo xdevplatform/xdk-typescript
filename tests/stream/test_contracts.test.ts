@@ -54,7 +54,7 @@ describe('StreamClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for postsFirehoseEn', async () => {
+  it('should have correct request structure for usersCompliance', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -103,7 +103,7 @@ describe('StreamClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (streamClient as any)['postsFirehoseEn'];
+      const method = (streamClient as any)['usersCompliance'];
       const result = await method.apply(streamClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -115,7 +115,7 @@ describe('StreamClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/firehose/stream/lang/en';
+      const expectedPath = '/2/users/compliance/stream';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -128,7 +128,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for postsFirehoseEn', async () => {
+  it('should handle required parameters correctly for usersCompliance', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -154,7 +154,7 @@ describe('StreamClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (streamClient as any)['postsFirehoseEn'];
+      const method = (streamClient as any)['usersCompliance'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -179,7 +179,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for postsFirehoseEn', async () => {
+  it('should validate response structure for usersCompliance', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -223,7 +223,7 @@ describe('StreamClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (streamClient as any)['postsFirehoseEn'];
+      const method = (streamClient as any)['usersCompliance'];
       const result = await method.apply(streamClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -248,7 +248,246 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for postsFirehoseEn', async () => {
+  it('should execute real TCP loopback roundtrip for usersCompliance', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"user_protect\":{\"event_at\":\"2025-01-15T12:00:00.000Z\",\"user\":{\"id\":\"1234567890\"}}}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['usersCompliance'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for postsFirehosePt', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['postsFirehosePt'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/firehose/stream/lang/pt';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for postsFirehosePt', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['postsFirehosePt'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for postsFirehosePt', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['postsFirehosePt'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for postsFirehosePt', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
     
@@ -272,1371 +511,7 @@ describe('StreamClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackStream as any)['postsFirehoseEn'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for posts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['posts'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/search/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for posts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['posts'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for posts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['posts'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for posts', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"matching_rules\":[{\"id\":\"1234567890\",\"tag\":\"test_value\"}]}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['posts'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for likesSample10', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['likesSample10'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/likes/sample10/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for likesSample10', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['likesSample10'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for likesSample10', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['likesSample10'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for likesSample10', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"created_at\":\"2025-01-15T12:00:00.000Z\",\"id\":\"1234567890\",\"liked_tweet_id\":\"test_value\",\"timestamp_ms\":1,\"tweet_author_id\":\"test_value\"},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      42,
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['likesSample10'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getRuleCounts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['getRuleCounts'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/search/stream/rules/counts';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getRuleCounts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['getRuleCounts'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getRuleCounts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['getRuleCounts'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getRuleCounts', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"all_project_client_apps\":[{\"rule_count\":1}],\"cap_per_client_app\":\"test_value\",\"cap_per_project\":\"test_value\",\"client_app_rules_count\":{\"client_app_id\":\"test_value\",\"rule_count\":1},\"project_rules_count\":\"test_value\"}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['getRuleCounts'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for postsSample', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['postsSample'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/sample/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for postsSample', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['postsSample'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for postsSample', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['postsSample'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for postsSample', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['postsSample'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for labelsCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['labelsCompliance'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/label/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for labelsCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['labelsCompliance'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for labelsCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['labelsCompliance'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for labelsCompliance', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"public_tweet_notice\":{\"application\":\"test_value\",\"event_at\":\"2025-01-15T12:00:00.000Z\",\"event_type\":\"test_value\",\"tweet\":{\"author_id\":\"test_value\",\"id\":\"1234567890\"}}}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['labelsCompliance'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for postsCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['postsCompliance'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/compliance/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for postsCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['postsCompliance'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for postsCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['postsCompliance'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for postsCompliance', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"delete\":{\"event_at\":\"2025-01-15T12:00:00.000Z\",\"tweet\":{\"author_id\":\"test_value\",\"id\":\"1234567890\"}}}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      42,
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['postsCompliance'];
+    const method = (loopbackStream as any)['postsFirehosePt'];
     const result = await method.apply(loopbackStream, callArgs);
     expect(result).toBeDefined();
 
@@ -2095,7 +970,7 @@ describe('StreamClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for postsFirehoseJa', async () => {
+  it('should have correct request structure for postsFirehoseEn', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2144,7 +1019,7 @@ describe('StreamClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (streamClient as any)['postsFirehoseJa'];
+      const method = (streamClient as any)['postsFirehoseEn'];
       const result = await method.apply(streamClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -2156,7 +1031,7 @@ describe('StreamClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/firehose/stream/lang/ja';
+      const expectedPath = '/2/tweets/firehose/stream/lang/en';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -2169,7 +1044,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for postsFirehoseJa', async () => {
+  it('should handle required parameters correctly for postsFirehoseEn', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2195,7 +1070,7 @@ describe('StreamClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (streamClient as any)['postsFirehoseJa'];
+      const method = (streamClient as any)['postsFirehoseEn'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -2220,7 +1095,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for postsFirehoseJa', async () => {
+  it('should validate response structure for postsFirehoseEn', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2264,7 +1139,7 @@ describe('StreamClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (streamClient as any)['postsFirehoseJa'];
+      const method = (streamClient as any)['postsFirehoseEn'];
       const result = await method.apply(streamClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -2289,7 +1164,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for postsFirehoseJa', async () => {
+  it('should execute real TCP loopback roundtrip for postsFirehoseEn', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
     
@@ -2313,7 +1188,2311 @@ describe('StreamClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackStream as any)['postsFirehoseJa'];
+    const method = (loopbackStream as any)['postsFirehoseEn'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for likesFirehose', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['likesFirehose'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/likes/firehose/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for likesFirehose', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['likesFirehose'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for likesFirehose', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['likesFirehose'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for likesFirehose', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"created_at\":\"2025-01-15T12:00:00.000Z\",\"id\":\"1234567890\",\"liked_tweet_id\":\"test_value\",\"timestamp_ms\":1,\"tweet_author_id\":\"test_value\"},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['likesFirehose'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for labelsCompliance', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['labelsCompliance'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/label/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for labelsCompliance', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['labelsCompliance'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for labelsCompliance', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['labelsCompliance'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for labelsCompliance', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"public_tweet_notice\":{\"application\":\"test_value\",\"event_at\":\"2025-01-15T12:00:00.000Z\",\"event_type\":\"test_value\",\"tweet\":{\"author_id\":\"test_value\",\"id\":\"1234567890\"}}}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['labelsCompliance'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for postsSample10', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['postsSample10'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/sample10/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for postsSample10', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['postsSample10'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for postsSample10', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['postsSample10'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for postsSample10', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['postsSample10'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getRuleCounts', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['getRuleCounts'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/search/stream/rules/counts';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getRuleCounts', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['getRuleCounts'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getRuleCounts', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['getRuleCounts'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getRuleCounts', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"all_project_client_apps\":[{\"rule_count\":1}],\"cap_per_client_app\":\"test_value\",\"cap_per_project\":\"test_value\",\"client_app_rules_count\":{\"client_app_id\":\"test_value\",\"rule_count\":1},\"project_rules_count\":\"test_value\"}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['getRuleCounts'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for postsCompliance', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['postsCompliance'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/compliance/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for postsCompliance', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['postsCompliance'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for postsCompliance', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['postsCompliance'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for postsCompliance', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"delete\":{\"event_at\":\"2025-01-15T12:00:00.000Z\",\"tweet\":{\"author_id\":\"test_value\",\"id\":\"1234567890\"}}}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['postsCompliance'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for posts', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['posts'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/search/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for posts', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['posts'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for posts', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['posts'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for posts', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"matching_rules\":[{\"id\":\"1234567890\",\"tag\":\"test_value\"}]}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['posts'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for activity', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['activity'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/activity/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for activity', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['activity'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for activity', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['activity'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for activity', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"created_at\":\"2025-01-15T12:00:00.000Z\",\"event_type\":\"test_value\",\"event_uuid\":\"test_value\",\"filter\":{\"direction\":\"inbound\",\"keyword\":\"test_value\",\"qualifiers\":{},\"user_id\":\"1234567890\"},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"payload\":{},\"tag\":\"test_value\"}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['activity'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for postsFirehoseKo', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['postsFirehoseKo'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/firehose/stream/lang/ko';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for postsFirehoseKo', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['postsFirehoseKo'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for postsFirehoseKo', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['postsFirehoseKo'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for postsFirehoseKo', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['postsFirehoseKo'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for postsSample', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['postsSample'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/tweets/sample/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for postsSample', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['postsSample'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for postsSample', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['postsSample'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for postsSample', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['postsSample'];
+    const result = await method.apply(loopbackStream, callArgs);
+    expect(result).toBeDefined();
+
+    
+    const events: any[] = [];
+    for await (const evt of result) {
+      events.push(evt);
+    }
+    expect(events.length).toBeGreaterThanOrEqual(1);
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for likesSample10', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      // For streaming responses, provide a mock ReadableStream body
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (streamClient as any)['likesSample10'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/likes/sample10/stream';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for likesSample10', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{}'));
+          controller.close();
+        }
+      }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (streamClient as any)['likesSample10'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for likesSample10', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      body: new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
+          controller.close();
+        }
+      }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      42,
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (streamClient as any)['likesSample10'];
+      const result = await method.apply(streamClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
+      // Streaming methods return EventDrivenStream, not JSON responses
+      // Check if result has stream properties (isConnected) vs JSON properties (data)
+      if (result.hasOwnProperty('isConnected')) {
+        // It's an EventDrivenStream - verify stream properties
+        expect(result).toHaveProperty('isConnected');
+      } else {
+        // It's a regular JSON response - check for expected fields
+        
+        expect(result).toHaveProperty('data');
+        
+      }
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for likesSample10', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"created_at\":\"2025-01-15T12:00:00.000Z\",\"id\":\"1234567890\",\"liked_tweet_id\":\"test_value\",\"timestamp_ms\":1,\"tweet_author_id\":\"test_value\"},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      42,
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackStream as any)['likesSample10'];
     const result = await method.apply(loopbackStream, callArgs);
     expect(result).toBeDefined();
 
@@ -2796,7 +3975,7 @@ describe('StreamClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for postsFirehoseKo', async () => {
+  it('should have correct request structure for postsFirehoseJa', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2845,7 +4024,7 @@ describe('StreamClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (streamClient as any)['postsFirehoseKo'];
+      const method = (streamClient as any)['postsFirehoseJa'];
       const result = await method.apply(streamClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -2857,7 +4036,7 @@ describe('StreamClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/firehose/stream/lang/ko';
+      const expectedPath = '/2/tweets/firehose/stream/lang/ja';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -2870,7 +4049,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for postsFirehoseKo', async () => {
+  it('should handle required parameters correctly for postsFirehoseJa', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2896,7 +4075,7 @@ describe('StreamClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (streamClient as any)['postsFirehoseKo'];
+      const method = (streamClient as any)['postsFirehoseJa'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -2921,7 +4100,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for postsFirehoseKo', async () => {
+  it('should validate response structure for postsFirehoseJa', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2965,7 +4144,7 @@ describe('StreamClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (streamClient as any)['postsFirehoseKo'];
+      const method = (streamClient as any)['postsFirehoseJa'];
       const result = await method.apply(streamClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -2990,7 +4169,7 @@ describe('StreamClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for postsFirehoseKo', async () => {
+  it('should execute real TCP loopback roundtrip for postsFirehoseJa', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
     
@@ -3014,1186 +4193,7 @@ describe('StreamClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackStream as any)['postsFirehoseKo'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for usersCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['usersCompliance'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/compliance/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for usersCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['usersCompliance'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for usersCompliance', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['usersCompliance'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for usersCompliance', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"user_protect\":{\"event_at\":\"2025-01-15T12:00:00.000Z\",\"user\":{\"id\":\"1234567890\"}}}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      42,
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['usersCompliance'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for activity', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['activity'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/activity/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for activity', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['activity'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for activity', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['activity'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for activity', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"created_at\":\"2025-01-15T12:00:00.000Z\",\"event_type\":\"test_value\",\"event_uuid\":\"test_value\",\"filter\":{\"direction\":\"inbound\",\"keyword\":\"test_value\",\"qualifiers\":{},\"user_id\":\"1234567890\"},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"payload\":{},\"tag\":\"test_value\"}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['activity'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for postsFirehosePt', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['postsFirehosePt'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/firehose/stream/lang/pt';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for postsFirehosePt', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['postsFirehosePt'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for postsFirehosePt', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['postsFirehosePt'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for postsFirehosePt', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      42,
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['postsFirehosePt'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for likesFirehose', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['likesFirehose'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/likes/firehose/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for likesFirehose', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['likesFirehose'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for likesFirehose', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['likesFirehose'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for likesFirehose', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"created_at\":\"2025-01-15T12:00:00.000Z\",\"id\":\"1234567890\",\"liked_tweet_id\":\"test_value\",\"timestamp_ms\":1,\"tweet_author_id\":\"test_value\"},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      42,
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['likesFirehose'];
-    const result = await method.apply(loopbackStream, callArgs);
-    expect(result).toBeDefined();
-
-    
-    const events: any[] = [];
-    for await (const evt of result) {
-      events.push(evt);
-    }
-    expect(events.length).toBeGreaterThanOrEqual(1);
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for postsSample10', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      // For streaming responses, provide a mock ReadableStream body
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (streamClient as any)['postsSample10'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/tweets/sample10/stream';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for postsSample10', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode('{}'));
-          controller.close();
-        }
-      }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (streamClient as any)['postsSample10'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(streamClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for postsSample10', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      body: new ReadableStream({
-        start(controller) {
-          controller.enqueue(new TextEncoder().encode(JSON.stringify(mockResponseData)));
-          controller.close();
-        }
-      }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      42,
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (streamClient as any)['postsSample10'];
-      const result = await method.apply(streamClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // For StreamClient methods, check if it's a streaming method (returns EventDrivenStream)
-      // Streaming methods return EventDrivenStream, not JSON responses
-      // Check if result has stream properties (isConnected) vs JSON properties (data)
-      if (result.hasOwnProperty('isConnected')) {
-        // It's an EventDrivenStream - verify stream properties
-        expect(result).toHaveProperty('isConnected');
-      } else {
-        // It's a regular JSON response - check for expected fields
-        
-        expect(result).toHaveProperty('data');
-        
-      }
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for postsSample10', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"article\":{},\"article_title\":{},\"attachments\":{\"media_keys\":[\"test_value\"],\"media_source_tweet_id\":[\"test_value\"],\"poll_ids\":[\"test_value\"]},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"1234567890\",\"name\":\"test_value\"},\"entity\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{\"editable_until\":\"test_value\",\"edits_remaining\":1,\"is_edit_eligible\":true},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{\"cashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"hashtags\":[{\"end\":1,\"start\":1,\"tag\":\"test_value\"}],\"mentions\":[{\"end\":1,\"id\":\"1234567890\",\"start\":1,\"username\":\"XDevelopers\"}],\"urls\":[{\"end\":1,\"start\":1}]},\"geo\":{\"coordinates\":{\"coordinates\":[1.5],\"type\":\"Point\"},\"place_id\":\"test_value\"},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"entities\":{},\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"],\"scope\":\"post\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.chunkedStream(['{}\r\n', `${fullMockJson}\n`], false)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      42,
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackStream as any)['postsSample10'];
+    const method = (loopbackStream as any)['postsFirehoseJa'];
     const result = await method.apply(loopbackStream, callArgs);
     expect(result).toBeDefined();
 

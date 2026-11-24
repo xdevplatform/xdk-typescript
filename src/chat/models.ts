@@ -8,19 +8,78 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Request for mediaUploadInitialize
+ * Request for approveGroupAdminRequest
  *
  * @public
  */
-export type MediaUploadInitializeRequest = Schemas.ChatMediaUploadInitializeRequest;
+export type ApproveGroupAdminRequestRequest = Schemas.ApproveChatGroupAdminRequestRequest;
 
 
 /**
- * Response for mediaUploadInitialize
+ * Response for approveGroupAdminRequest
  *
  * @public
  */
-export type MediaUploadInitializeResponse = Schemas.ChatMediaUploadInitializeResponse;
+export type ApproveGroupAdminRequestResponse = Schemas.ApproveChatGroupAdminRequestResponse;
+
+
+/**
+ * Request for mediaUploadAppend
+ *
+ * @public
+ */
+export type MediaUploadAppendRequest = Schemas.ChatMediaUploadAppendRequest;
+
+
+/**
+ * Response for mediaUploadAppend
+ *
+ * @public
+ */
+export type MediaUploadAppendResponse = Schemas.ChatMediaUploadAppendResponse;
+
+
+/**
+ * Request for removeGroupMembers
+ *
+ * @public
+ */
+export type RemoveGroupMembersRequest = Schemas.RemoveChatGroupMembersRequest;
+
+
+/**
+ * Response for removeGroupMembers
+ *
+ * @public
+ */
+export type RemoveGroupMembersResponse = Schemas.RemoveChatGroupMembersResponse;
+
+
+
+
+
+/**
+ * Response for getSettings
+ *
+ * @public
+ */
+export type GetSettingsResponse = Schemas.GetChatSettingsResponse;
+
+
+/**
+ * Request for updateSettings
+ *
+ * @public
+ */
+export type UpdateSettingsRequest = Schemas.UpdateChatSettingsRequest;
+
+
+/**
+ * Response for updateSettings
+ *
+ * @public
+ */
+export type UpdateSettingsResponse = Schemas.UpdateChatSettingsResponse;
 
 
 
@@ -33,51 +92,51 @@ export type InitializeGroupResponse = Schemas.InitializeChatGroupResponse;
 
 
 /**
- * Request for deleteMessages
+ * Request for createGroupJoinRequest
  *
  * @public
  */
-export type DeleteMessagesRequest = Schemas.DeleteChatMessagesRequest;
+export type CreateGroupJoinRequestRequest = Schemas.CreateChatGroupJoinRequestRequest;
 
 
 /**
- * Response for deleteMessages
+ * Response for createGroupJoinRequest
  *
  * @public
  */
-export type DeleteMessagesResponse = Schemas.DeleteChatMessagesResponse;
+export type CreateGroupJoinRequestResponse = Schemas.CreateChatGroupJoinRequestResponse;
 
 
 /**
- * Request for addGroupMembers
+ * Request for archiveConversation
  *
  * @public
  */
-export type AddGroupMembersRequest = Schemas.AddChatGroupMembersRequest;
+export type ArchiveConversationRequest = Schemas.ArchiveChatConversationRequest;
 
 
 /**
- * Response for addGroupMembers
+ * Response for archiveConversation
  *
  * @public
  */
-export type AddGroupMembersResponse = Schemas.AddChatGroupMembersResponse;
+export type ArchiveConversationResponse = Schemas.ArchiveChatConversationResponse;
 
 
 /**
- * Request for mediaUploadFinalize
+ * Request for unarchiveConversation
  *
  * @public
  */
-export type MediaUploadFinalizeRequest = Schemas.ChatMediaUploadFinalizeRequest;
+export type UnarchiveConversationRequest = Schemas.UnarchiveChatConversationRequest;
 
 
 /**
- * Response for mediaUploadFinalize
+ * Response for unarchiveConversation
  *
  * @public
  */
-export type MediaUploadFinalizeResponse = Schemas.ChatMediaUploadFinalizeResponse;
+export type UnarchiveConversationResponse = Schemas.UnarchiveChatConversationResponse;
 
 
 /**
@@ -113,69 +172,19 @@ export type UnmuteConversationResponse = Schemas.UnmuteChatConversationResponse;
 
 
 /**
- * Request for markConversationRead
+ * Request for updateConversationScreenCapture
  *
  * @public
  */
-export type MarkConversationReadRequest = Schemas.MarkChatConversationReadRequest;
+export type UpdateConversationScreenCaptureRequest = Schemas.UpdateChatConversationScreenCaptureRequest;
 
 
 /**
- * Response for markConversationRead
+ * Response for updateConversationScreenCapture
  *
  * @public
  */
-export type MarkConversationReadResponse = Schemas.MarkChatConversationReadResponse;
-
-
-
-/**
- * Response for getMessageRequests
- *
- * @public
- */
-export type GetMessageRequestsResponse = Schemas.GetChatMessageRequestsResponse;
-
-
-
-/**
- * Response for sendTypingIndicator
- *
- * @public
- */
-export type SendTypingIndicatorResponse = Schemas.SendChatTypingIndicatorResponse;
-
-
-/**
- * Request for createGroupJoinRequest
- *
- * @public
- */
-export type CreateGroupJoinRequestRequest = Schemas.CreateChatGroupJoinRequestRequest;
-
-
-/**
- * Response for createGroupJoinRequest
- *
- * @public
- */
-export type CreateGroupJoinRequestResponse = Schemas.CreateChatGroupJoinRequestResponse;
-
-
-/**
- * Request for removeGroupMembers
- *
- * @public
- */
-export type RemoveGroupMembersRequest = Schemas.RemoveChatGroupMembersRequest;
-
-
-/**
- * Response for removeGroupMembers
- *
- * @public
- */
-export type RemoveGroupMembersResponse = Schemas.RemoveChatGroupMembersResponse;
+export type UpdateConversationScreenCaptureResponse = Schemas.UpdateChatConversationScreenCaptureResponse;
 
 
 
@@ -220,22 +229,6 @@ export type DeleteConversationResponse = Schemas.DeleteChatConversationResponse;
 
 
 /**
- * Request for approveGroupAdminRequest
- *
- * @public
- */
-export type ApproveGroupAdminRequestRequest = Schemas.ApproveChatGroupAdminRequestRequest;
-
-
-/**
- * Response for approveGroupAdminRequest
- *
- * @public
- */
-export type ApproveGroupAdminRequestResponse = Schemas.ApproveChatGroupAdminRequestResponse;
-
-
-/**
  * Request for rejectGroupAdminRequest
  *
  * @public
@@ -251,52 +244,13 @@ export type RejectGroupAdminRequestRequest = Schemas.RejectChatGroupAdminRequest
 export type RejectGroupAdminRequestResponse = Schemas.RejectChatGroupAdminRequestResponse;
 
 
+
 /**
- * Request for enableGroupInvite
+ * Response for markConversationUnread
  *
  * @public
  */
-export type EnableGroupInviteRequest = Schemas.EnableChatGroupInviteRequest;
-
-
-/**
- * Response for enableGroupInvite
- *
- * @public
- */
-export type EnableGroupInviteResponse = Schemas.EnableChatGroupInviteResponse;
-
-
-/**
- * Request for disableGroupInvite
- *
- * @public
- */
-export type DisableGroupInviteRequest = Schemas.DisableChatGroupInviteRequest;
-
-
-/**
- * Response for disableGroupInvite
- *
- * @public
- */
-export type DisableGroupInviteResponse = Schemas.DisableChatGroupInviteResponse;
-
-
-/**
- * Request for createConversation
- *
- * @public
- */
-export type CreateConversationRequest = Schemas.CreateChatConversationRequest;
-
-
-/**
- * Response for createConversation
- *
- * @public
- */
-export type CreateConversationResponse = Schemas.CreateChatConversationResponse;
+export type MarkConversationUnreadResponse = Schemas.MarkChatConversationUnreadResponse;
 
 
 /**
@@ -315,6 +269,15 @@ export type AddGroupAdminsRequest = Schemas.AddChatGroupAdminsRequest;
 export type AddGroupAdminsResponse = Schemas.AddChatGroupAdminsResponse;
 
 
+
+/**
+ * Response for getMessageRequest
+ *
+ * @public
+ */
+export type GetMessageRequestResponse = Schemas.GetChatMessageRequestResponse;
+
+
 /**
  * Request for sendMessage
  *
@@ -331,54 +294,6 @@ export type SendMessageRequest = Schemas.SendChatMessageRequest;
 export type SendMessageResponse = Schemas.SendChatMessageResponse;
 
 
-/**
- * Request for addUserPublicKey
- *
- * @public
- */
-export type AddUserPublicKeyRequest = Schemas.AddUserPublicKeyRequest;
-
-
-/**
- * Response for addUserPublicKey
- *
- * @public
- */
-export type AddUserPublicKeyResponse = Schemas.AddUserPublicKeyResponse;
-
-
-/**
- * Request for archiveConversation
- *
- * @public
- */
-export type ArchiveConversationRequest = Schemas.ArchiveChatConversationRequest;
-
-
-/**
- * Response for archiveConversation
- *
- * @public
- */
-export type ArchiveConversationResponse = Schemas.ArchiveChatConversationResponse;
-
-
-/**
- * Request for unarchiveConversation
- *
- * @public
- */
-export type UnarchiveConversationRequest = Schemas.UnarchiveChatConversationRequest;
-
-
-/**
- * Response for unarchiveConversation
- *
- * @public
- */
-export type UnarchiveConversationResponse = Schemas.UnarchiveChatConversationResponse;
-
-
 
 /**
  * Response for getConversationPinnedMessages
@@ -386,108 +301,6 @@ export type UnarchiveConversationResponse = Schemas.UnarchiveChatConversationRes
  * @public
  */
 export type GetConversationPinnedMessagesResponse = Schemas.GetChatConversationPinnedMessagesResponse;
-
-
-
-/**
- * Response for getConversations
- *
- * @public
- */
-export type GetConversationsResponse = Schemas.GetChatConversationsResponse;
-
-
-
-/**
- * Response for markConversationUnread
- *
- * @public
- */
-export type MarkConversationUnreadResponse = Schemas.MarkChatConversationUnreadResponse;
-
-
-/**
- * Request for removeGroupAdmins
- *
- * @public
- */
-export type RemoveGroupAdminsRequest = Schemas.RemoveChatGroupAdminsRequest;
-
-
-/**
- * Response for removeGroupAdmins
- *
- * @public
- */
-export type RemoveGroupAdminsResponse = Schemas.RemoveChatGroupAdminsResponse;
-
-
-/**
- * Request for updateGroupAdminSettings
- *
- * @public
- */
-export type UpdateGroupAdminSettingsRequest = Schemas.UpdateChatGroupAdminSettingsRequest;
-
-
-/**
- * Response for updateGroupAdminSettings
- *
- * @public
- */
-export type UpdateGroupAdminSettingsResponse = Schemas.UpdateChatGroupAdminSettingsResponse;
-
-
-
-/**
- * Response for getMessageRequest
- *
- * @public
- */
-export type GetMessageRequestResponse = Schemas.GetChatMessageRequestResponse;
-
-
-
-/**
- * Response for getGroupInvite
- *
- * @public
- */
-export type GetGroupInviteResponse = Schemas.GetChatGroupInviteResponse;
-
-
-
-/**
- * Response for getConversationEvents
- *
- * @public
- */
-export type GetConversationEventsResponse = Schemas.GetChatConversationEventsResponse;
-
-
-/**
- * Request for updateConversationScreenCapture
- *
- * @public
- */
-export type UpdateConversationScreenCaptureRequest = Schemas.UpdateChatConversationScreenCaptureRequest;
-
-
-/**
- * Response for updateConversationScreenCapture
- *
- * @public
- */
-export type UpdateConversationScreenCaptureResponse = Schemas.UpdateChatConversationScreenCaptureResponse;
-
-
-
-/**
- * Response for acceptMessageRequest
- *
- * @public
- */
-export type AcceptMessageRequestResponse = Schemas.AcceptChatMessageRequestResponse;
 
 
 /**
@@ -540,45 +353,223 @@ export type DeleteConversationMessageTtlResponse = Schemas.DeleteChatConversatio
 
 
 /**
- * Response for getSettings
+ * Response for acceptMessageRequest
  *
  * @public
  */
-export type GetSettingsResponse = Schemas.GetChatSettingsResponse;
+export type AcceptMessageRequestResponse = Schemas.AcceptChatMessageRequestResponse;
+
 
 
 /**
- * Request for updateSettings
+ * Response for getMessageRequests
  *
  * @public
  */
-export type UpdateSettingsRequest = Schemas.UpdateChatSettingsRequest;
+export type GetMessageRequestsResponse = Schemas.GetChatMessageRequestsResponse;
 
 
 /**
- * Response for updateSettings
+ * Request for markConversationRead
  *
  * @public
  */
-export type UpdateSettingsResponse = Schemas.UpdateChatSettingsResponse;
+export type MarkConversationReadRequest = Schemas.MarkChatConversationReadRequest;
 
 
 /**
- * Request for mediaUploadAppend
+ * Response for markConversationRead
  *
  * @public
  */
-export type MediaUploadAppendRequest = Schemas.ChatMediaUploadAppendRequest;
+export type MarkConversationReadResponse = Schemas.MarkChatConversationReadResponse;
+
 
 
 /**
- * Response for mediaUploadAppend
+ * Response for getGroupInvite
  *
  * @public
  */
-export type MediaUploadAppendResponse = Schemas.ChatMediaUploadAppendResponse;
+export type GetGroupInviteResponse = Schemas.GetChatGroupInviteResponse;
 
 
+/**
+ * Request for deleteMessages
+ *
+ * @public
+ */
+export type DeleteMessagesRequest = Schemas.DeleteChatMessagesRequest;
+
+
+/**
+ * Response for deleteMessages
+ *
+ * @public
+ */
+export type DeleteMessagesResponse = Schemas.DeleteChatMessagesResponse;
+
+
+/**
+ * Request for addConversationKeys
+ *
+ * @public
+ */
+export type AddConversationKeysRequest = Schemas.AddConversationKeysRequest;
+
+
+/**
+ * Response for addConversationKeys
+ *
+ * @public
+ */
+export type AddConversationKeysResponse = Schemas.AddConversationKeysResponse;
+
+
+/**
+ * Request for addGroupMembers
+ *
+ * @public
+ */
+export type AddGroupMembersRequest = Schemas.AddChatGroupMembersRequest;
+
+
+/**
+ * Response for addGroupMembers
+ *
+ * @public
+ */
+export type AddGroupMembersResponse = Schemas.AddChatGroupMembersResponse;
+
+
+/**
+ * Request for mediaUploadFinalize
+ *
+ * @public
+ */
+export type MediaUploadFinalizeRequest = Schemas.ChatMediaUploadFinalizeRequest;
+
+
+/**
+ * Response for mediaUploadFinalize
+ *
+ * @public
+ */
+export type MediaUploadFinalizeResponse = Schemas.ChatMediaUploadFinalizeResponse;
+
+
+/**
+ * Request for updateGroupAdminSettings
+ *
+ * @public
+ */
+export type UpdateGroupAdminSettingsRequest = Schemas.UpdateChatGroupAdminSettingsRequest;
+
+
+/**
+ * Response for updateGroupAdminSettings
+ *
+ * @public
+ */
+export type UpdateGroupAdminSettingsResponse = Schemas.UpdateChatGroupAdminSettingsResponse;
+
+
+
+/**
+ * Response for getConversationEvents
+ *
+ * @public
+ */
+export type GetConversationEventsResponse = Schemas.GetChatConversationEventsResponse;
+
+
+/**
+ * Request for removeGroupAdmins
+ *
+ * @public
+ */
+export type RemoveGroupAdminsRequest = Schemas.RemoveChatGroupAdminsRequest;
+
+
+/**
+ * Response for removeGroupAdmins
+ *
+ * @public
+ */
+export type RemoveGroupAdminsResponse = Schemas.RemoveChatGroupAdminsResponse;
+
+
+/**
+ * Request for createConversation
+ *
+ * @public
+ */
+export type CreateConversationRequest = Schemas.CreateChatConversationRequest;
+
+
+/**
+ * Response for createConversation
+ *
+ * @public
+ */
+export type CreateConversationResponse = Schemas.CreateChatConversationResponse;
+
+
+/**
+ * Request for mediaUploadInitialize
+ *
+ * @public
+ */
+export type MediaUploadInitializeRequest = Schemas.ChatMediaUploadInitializeRequest;
+
+
+/**
+ * Response for mediaUploadInitialize
+ *
+ * @public
+ */
+export type MediaUploadInitializeResponse = Schemas.ChatMediaUploadInitializeResponse;
+
+
+/**
+ * Request for enableGroupInvite
+ *
+ * @public
+ */
+export type EnableGroupInviteRequest = Schemas.EnableChatGroupInviteRequest;
+
+
+/**
+ * Response for enableGroupInvite
+ *
+ * @public
+ */
+export type EnableGroupInviteResponse = Schemas.EnableChatGroupInviteResponse;
+
+
+/**
+ * Request for disableGroupInvite
+ *
+ * @public
+ */
+export type DisableGroupInviteRequest = Schemas.DisableChatGroupInviteRequest;
+
+
+/**
+ * Response for disableGroupInvite
+ *
+ * @public
+ */
+export type DisableGroupInviteResponse = Schemas.DisableChatGroupInviteResponse;
+
+
+
+/**
+ * Response for sendTypingIndicator
+ *
+ * @public
+ */
+export type SendTypingIndicatorResponse = Schemas.SendChatTypingIndicatorResponse;
 
 
 
@@ -606,18 +597,27 @@ export type CreateGroupAdminRequestRequest = Schemas.CreateChatGroupAdminRequest
 export type CreateGroupAdminRequestResponse = Schemas.CreateChatGroupAdminRequestResponse;
 
 
+
 /**
- * Request for addConversationKeys
+ * Response for getConversations
  *
  * @public
  */
-export type AddConversationKeysRequest = Schemas.AddConversationKeysRequest;
+export type GetConversationsResponse = Schemas.GetChatConversationsResponse;
 
 
 /**
- * Response for addConversationKeys
+ * Request for addUserPublicKey
  *
  * @public
  */
-export type AddConversationKeysResponse = Schemas.AddConversationKeysResponse;
+export type AddUserPublicKeyRequest = Schemas.AddUserPublicKeyRequest;
+
+
+/**
+ * Response for addUserPublicKey
+ *
+ * @public
+ */
+export type AddUserPublicKeyResponse = Schemas.AddUserPublicKeyResponse;
 

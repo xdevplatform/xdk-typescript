@@ -13,6 +13,14 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
+  UpdateBotResponse,
+
+
+
+  DeleteBotResponse,
+
+
+
   RotateBotTokenResponse,
 
 
@@ -27,16 +35,58 @@ import {
 
   CreateBotResponse,
 
-
-
-  UpdateBotResponse,
-
-
-
-  DeleteBotResponse,
-
 } from './models.js';
 
+/**
+ * Options for updateBot method
+ * 
+ * @public
+ */
+export interface UpdateBotStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteBot method
+ * 
+ * @public
+ */
+export interface DeleteBotStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for rotateBotToken method
  * 
@@ -155,56 +205,6 @@ export interface CreateBotStreamingOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
-/**
- * Options for updateBot method
- * 
- * @public
- */
-export interface UpdateBotStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for deleteBot method
- * 
- * @public
- */
-export interface DeleteBotStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 export class BotsClient {
@@ -259,6 +259,190 @@ export class BotsClient {
 
 
 
+
+
+
+    /**
+     * Update Bot
+     * Updates a bot's handle, display name, or who may send it Direct Messages.
+     * 
+     * @returns Promise with the API response
+     */
+    async updateBot(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateBotStreamingOptions = {}
+    ): Promise<UpdateBotResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'updateBot');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/bots/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateBotResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete Bot
+     * Deletes a bot account from the calling app's project. With an OAuth 2.0 user token, the user must be an admin of the project's developer account. On API Connect, where the request bills the user's own account, the bot is deleted from the user's project instead.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteBot(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteBotStreamingOptions = {}
+    ): Promise<DeleteBotResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteBot');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/bots/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteBotResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 
@@ -674,190 +858,6 @@ export class BotsClient {
         // Make the request
         return this.client.request<CreateBotResponse>(
             'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Update Bot
-     * Updates a bot's handle, display name, or who may send it Direct Messages.
-     * 
-     * @returns Promise with the API response
-     */
-    async updateBot(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: UpdateBotStreamingOptions = {}
-    ): Promise<UpdateBotResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'updateBot');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/bots/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UpdateBotResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete Bot
-     * Deletes a bot account from the calling app's project. With an OAuth 2.0 user token, the user must be an admin of the project's developer account. On API Connect, where the request bills the user's own account, the bot is deleted from the user's project instead.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteBot(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteBotStreamingOptions = {}
-    ): Promise<DeleteBotResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteBot');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/bots/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteBotResponse>(
-            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

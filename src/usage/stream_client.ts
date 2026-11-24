@@ -13,32 +13,20 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  GetResponse,
-
-
-
   GetCreditsResponse,
+
+
+
+  GetResponse,
 
 } from './models.js';
 
 /**
- * Options for get method
+ * Options for getCredits method
  * 
  * @public
  */
-export interface GetStreamingOptions {
-    
-    
-    /** days 
-     * Also accepts: days or proper camelCase (e.g., days) */
-    days?: number;
-    
-    
-    
-    /** A comma separated list of Usage fields to display. 
-     * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
-    usageFields?: Array<"cap_reset_day" | "daily_client_app_usage" | "daily_project_usage" | "project_cap" | "project_id" | "project_usage">;
-    
+export interface GetCreditsStreamingOptions {
     
     
     /** Additional request options */
@@ -59,11 +47,23 @@ export interface GetStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getCredits method
+ * Options for get method
  * 
  * @public
  */
-export interface GetCreditsStreamingOptions {
+export interface GetStreamingOptions {
+    
+    
+    /** days 
+     * Also accepts: days or proper camelCase (e.g., days) */
+    days?: number;
+    
+    
+    
+    /** A comma separated list of Usage fields to display. 
+     * Also accepts: usage.fields or proper camelCase (e.g., usageFields) */
+    usageFields?: Array<"cap_reset_day" | "daily_client_app_usage" | "daily_project_usage" | "project_cap" | "project_id" | "project_usage">;
+    
     
     
     /** Additional request options */
@@ -125,6 +125,93 @@ export class UsageClient {
 
 
 
+
+
+
+    /**
+     * Get Usage Credits
+     * Returns the payer's developer-platform credit balance in USD. total_balance is max(0, prepaid_balance + free_balance); prepaid_balance may be negative.
+     * 
+     * @returns Promise with the API response
+     */
+    async getCredits(
+        
+        
+        
+        
+        
+        
+        
+        options: GetCreditsStreamingOptions = {}
+    ): Promise<GetCreditsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getCredits');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/usage/credits';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetCreditsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
 
 
 
@@ -244,93 +331,6 @@ export class UsageClient {
 
         // Make the request
         return this.client.request<GetResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Get Usage Credits
-     * Returns the payer's developer-platform credit balance in USD. total_balance is max(0, prepaid_balance + free_balance); prepaid_balance may be negative.
-     * 
-     * @returns Promise with the API response
-     */
-    async getCredits(
-        
-        
-        
-        
-        
-        
-        
-        options: GetCreditsStreamingOptions = {}
-    ): Promise<GetCreditsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getCredits');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/usage/credits';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetCreditsResponse>(
             'GET',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

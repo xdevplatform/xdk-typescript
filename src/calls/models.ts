@@ -9,11 +9,36 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for leaveCall
+ * Response for getCall
  *
  * @public
  */
-export type LeaveCallResponse = Schemas.LeaveCallResponse;
+export type GetCallResponse = Schemas.GetCallResponse;
+
+
+
+/**
+ * Response for listScheduled
+ *
+ * @public
+ */
+export type ListScheduledResponse = Schemas.ListScheduledCallsResponse;
+
+
+/**
+ * Request for scheduleCall
+ *
+ * @public
+ */
+export type ScheduleCallRequest = Schemas.ScheduleCallRequest;
+
+
+/**
+ * Response for scheduleCall
+ *
+ * @public
+ */
+export type ScheduleCallResponse = Schemas.ScheduleCallResponse;
 
 
 /**
@@ -30,6 +55,38 @@ export type RespondToScheduledCallRequest = Schemas.RespondToScheduledCallReques
  * @public
  */
 export type RespondToScheduledCallResponse = Schemas.RespondToScheduledCallResponse;
+
+
+/**
+ * Request for createCall
+ *
+ * @public
+ */
+export type CreateCallRequest = Schemas.CreateCallRequest;
+
+
+/**
+ * Response for createCall
+ *
+ * @public
+ */
+export type CreateCallResponse = Schemas.CreateCallResponse;
+
+
+/**
+ * Request for joinCall
+ *
+ * @public
+ */
+export type JoinCallRequest = Schemas.JoinCallRequest;
+
+
+/**
+ * Response for joinCall
+ *
+ * @public
+ */
+export type JoinCallResponse = Schemas.JoinCallResponse;
 
 
 
@@ -66,68 +123,11 @@ export type UpdateScheduledCallResponse = Schemas.UpdateScheduledCallResponse;
 export type CancelScheduledCallResponse = Schemas.CancelScheduledCallResponse;
 
 
+
 /**
- * Request for createCall
+ * Response for leaveCall
  *
  * @public
  */
-export type CreateCallRequest = Schemas.CreateCallRequest;
-
-
-/**
- * Response for createCall
- *
- * @public
- */
-export type CreateCallResponse = Schemas.CreateCallResponse;
-
-
-
-/**
- * Response for listScheduled
- *
- * @public
- */
-export type ListScheduledResponse = Schemas.ListScheduledCallsResponse;
-
-
-/**
- * Request for scheduleCall
- *
- * @public
- */
-export type ScheduleCallRequest = Schemas.ScheduleCallRequest;
-
-
-/**
- * Response for scheduleCall
- *
- * @public
- */
-export type ScheduleCallResponse = Schemas.ScheduleCallResponse;
-
-
-
-/**
- * Response for getCall
- *
- * @public
- */
-export type GetCallResponse = Schemas.GetCallResponse;
-
-
-/**
- * Request for joinCall
- *
- * @public
- */
-export type JoinCallRequest = Schemas.JoinCallRequest;
-
-
-/**
- * Response for joinCall
- *
- * @public
- */
-export type JoinCallResponse = Schemas.JoinCallResponse;
+export type LeaveCallResponse = Schemas.LeaveCallResponse;
 

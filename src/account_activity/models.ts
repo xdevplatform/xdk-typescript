@@ -9,6 +9,24 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
+ * Response for getSubscriptions
+ *
+ * @public
+ */
+export type GetSubscriptionsResponse = Schemas.GetAccountActivitySubscriptionsResponse;
+
+
+
+/**
+ * Response for getSubscriptionCount
+ *
+ * @public
+ */
+export type GetSubscriptionCountResponse = Schemas.GetAccountActivitySubscriptionCountResponse;
+
+
+
+/**
  * Response for validateSubscription
  *
  * @public
@@ -34,27 +52,9 @@ export type CreateSubscriptionResponse = Schemas.CreateAccountActivitySubscripti
 
 
 /**
- * Response for getSubscriptionCount
- *
- * @public
- */
-export type GetSubscriptionCountResponse = Schemas.GetAccountActivitySubscriptionCountResponse;
-
-
-
-/**
  * Response for deleteSubscription
  *
  * @public
  */
 export type DeleteSubscriptionResponse = Schemas.DeleteAccountActivitySubscriptionResponse;
-
-
-
-/**
- * Response for getSubscriptions
- *
- * @public
- */
-export type GetSubscriptionsResponse = Schemas.GetAccountActivitySubscriptionsResponse;
 

@@ -13,6 +13,14 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
+  GetFollowersResponse,
+
+
+
+  CreateResponse,
+
+
+
   GetByIdResponse,
 
 
@@ -25,7 +33,7 @@ import {
 
 
 
-  GetFollowersResponse,
+  RemoveMemberByUserIdResponse,
 
 
 
@@ -37,18 +45,90 @@ import {
 
 
 
-  CreateResponse,
-
-
-
   GetPostsResponse,
-
-
-
-  RemoveMemberByUserIdResponse,
 
 } from './models.js';
 
+/**
+ * Options for getFollowers method
+ * 
+ * @public
+ */
+export interface GetFollowersStreamingOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A 64-bit signed integer. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for create method
+ * 
+ * @public
+ */
+export interface CreateStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 /**
  * Options for getById method
  * 
@@ -143,41 +223,11 @@ export interface DeleteStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for getFollowers method
+ * Options for removeMemberByUserId method
  * 
  * @public
  */
-export interface GetFollowersStreamingOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A 64-bit signed integer. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
+export interface RemoveMemberByUserIdStreamingOptions {
     
     
     /** Additional request options */
@@ -278,31 +328,6 @@ export interface AddMemberStreamingOptions {
     [key: string]: any;
 }
 /**
- * Options for create method
- * 
- * @public
- */
-export interface CreateStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
  * Options for getPosts method
  * 
  * @public
@@ -356,31 +381,6 @@ export interface GetPostsStreamingOptions {
      * Also accepts: place.fields or proper camelCase (e.g., placeFields) */
     placeFields?: Array<"contained_within" | "country" | "country_code" | "full_name" | "geo" | "id" | "name" | "place_type">;
     
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for removeMemberByUserId method
- * 
- * @public
- */
-export interface RemoveMemberByUserIdStreamingOptions {
     
     
     /** Additional request options */
@@ -463,372 +463,6 @@ export class ListsClient {
 
 
 
-
-
-
-    /**
-     * Get List by ID
-     * Retrieves details of a specific List by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getById(
-        
-        
-        
-        id: Schemas.ListId,
-        
-        
-        
-        
-        
-        
-        
-        options: GetByIdStreamingOptions = {}
-    ): Promise<GetByIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        
-        requiredAuthTypes.push('BearerToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getById');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'list.fields': 'listFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            listFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (listFields !== undefined && listFields.length > 0) {
-            
-            params.append('list.fields', listFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'tweet.read', 'list.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetByIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Update List
-     * Updates the details of a specific List owned by the authenticated user by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async update(
-        
-        
-        
-        id: Schemas.ListId,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: UpdateStreamingOptions = {}
-    ): Promise<UpdateResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'update');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['list.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<UpdateResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete List
-     * Deletes a specific List owned by the authenticated user by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async delete(
-        
-        
-        
-        id: Schemas.ListId,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteStreamingOptions = {}
-    ): Promise<DeleteResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'delete');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['list.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
@@ -1013,7 +647,7 @@ export class ListsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'list.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'list.read'],
                     
                 },
                 
@@ -1037,6 +671,566 @@ export class ListsClient {
         // Make the request
         return this.client.request<GetFollowersResponse>(
             'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create List
+     * Creates a new List for the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async create(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateStreamingOptions = {}
+    ): Promise<CreateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'create');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['list.read', 'list.write', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get List by ID
+     * Retrieves details of a specific List by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getById(
+        
+        
+        
+        id: Schemas.ListId,
+        
+        
+        
+        
+        
+        
+        
+        options: GetByIdStreamingOptions = {}
+    ): Promise<GetByIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        
+        requiredAuthTypes.push('BearerToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getById');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'list.fields': 'listFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            listFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (listFields !== undefined && listFields.length > 0) {
+            
+            params.append('list.fields', listFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'list.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Update List
+     * Updates the details of a specific List owned by the authenticated user by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async update(
+        
+        
+        
+        id: Schemas.ListId,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: UpdateStreamingOptions = {}
+    ): Promise<UpdateResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'update');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'list.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<UpdateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete List
+     * Deletes a specific List owned by the authenticated user by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async delete(
+        
+        
+        
+        id: Schemas.ListId,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteStreamingOptions = {}
+    ): Promise<DeleteResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'delete');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'list.write', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Remove List Member
+     * Removes a User from a List by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async removeMemberByUserId(
+        
+        
+        
+        id: Schemas.ListId,
+        
+        
+        
+        userId: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        options: RemoveMemberByUserIdStreamingOptions = {}
+    ): Promise<RemoveMemberByUserIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'removeMemberByUserId');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/lists/{id}/members/{user_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'users.read', 'list.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<RemoveMemberByUserIdResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -1330,7 +1524,7 @@ export class ListsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['list.write', 'tweet.read', 'users.read'],
+                    'OAuth2UserToken': ['list.write', 'users.read', 'tweet.read'],
                     
                 },
                 
@@ -1347,97 +1541,6 @@ export class ListsClient {
 
         // Make the request
         return this.client.request<AddMemberResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create List
-     * Creates a new List for the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async create(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateStreamingOptions = {}
-    ): Promise<CreateResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'create');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['list.read', 'list.write', 'tweet.read', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1687,7 +1790,7 @@ export class ListsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'list.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'list.read', 'users.read'],
                     
                 },
                 
@@ -1711,109 +1814,6 @@ export class ListsClient {
         // Make the request
         return this.client.request<GetPostsResponse>(
             'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Remove List Member
-     * Removes a User from a List by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async removeMemberByUserId(
-        
-        
-        
-        id: Schemas.ListId,
-        
-        
-        
-        userId: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        options: RemoveMemberByUserIdStreamingOptions = {}
-    ): Promise<RemoveMemberByUserIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'removeMemberByUserId');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/lists/{id}/members/{user_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['users.read', 'list.write', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<RemoveMemberByUserIdResponse>(
-            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

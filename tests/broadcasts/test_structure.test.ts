@@ -30,580 +30,6 @@ describe('BroadcastsClient Structure', () => {
 
   
   
-  it('should have unmuteChatUser method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('unmuteChatUser');
-    
-    // Check method is callable
-    const method = broadcastsClient.unmuteChatUser;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'userId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have unmuteChatUser method with return type annotation', () => {
-    const method = broadcastsClient.unmuteChatUser;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteBroadcastChatMessage method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('deleteBroadcastChatMessage');
-    
-    // Check method is callable
-    const method = broadcastsClient.deleteBroadcastChatMessage;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'messageId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have deleteBroadcastChatMessage method with return type annotation', () => {
-    const method = broadcastsClient.deleteBroadcastChatMessage;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have listLiveCategories method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('listLiveCategories');
-    
-    // Check method is callable
-    const method = broadcastsClient.listLiveCategories;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have listLiveCategories method with return type annotation', () => {
-    const method = broadcastsClient.listLiveCategories;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have removeChatModerator method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('removeChatModerator');
-    
-    // Check method is callable
-    const method = broadcastsClient.removeChatModerator;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'userId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have removeChatModerator method with return type annotation', () => {
-    const method = broadcastsClient.removeChatModerator;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have muteBroadcastChatUser method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('muteBroadcastChatUser');
-    
-    // Check method is callable
-    const method = broadcastsClient.muteBroadcastChatUser;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have muteBroadcastChatUser method with return type annotation', () => {
-    const method = broadcastsClient.muteBroadcastChatUser;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getUserBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getUserBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.getUserBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'broadcastId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getUserBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.getUserBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteUserBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('deleteUserBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.deleteUserBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'broadcastId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have deleteUserBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.deleteUserBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateUserBroadcastState method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('updateUserBroadcastState');
-    
-    // Check method is callable
-    const method = broadcastsClient.updateUserBroadcastState;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-      'broadcastId',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateUserBroadcastState method with return type annotation', () => {
-    const method = broadcastsClient.updateUserBroadcastState;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getChatModerators method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getChatModerators');
-    
-    // Check method is callable
-    const method = broadcastsClient.getChatModerators;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getChatModerators method with return type annotation', () => {
-    const method = broadcastsClient.getChatModerators;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have addChatModerator method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('addChatModerator');
-    
-    // Check method is callable
-    const method = broadcastsClient.addChatModerator;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have addChatModerator method with return type annotation', () => {
-    const method = broadcastsClient.addChatModerator;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.getBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.getBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('updateBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.updateBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.updateBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('deleteBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.deleteBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have deleteBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.deleteBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getRegion method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getRegion');
-    
-    // Check method is callable
-    const method = broadcastsClient.getRegion;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getRegion method with return type annotation', () => {
-    const method = broadcastsClient.getRegion;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
   it('should have getUserSource method with correct signature', () => {
     // Check method exists
     expect(BroadcastsClient.prototype).toHaveProperty('getUserSource');
@@ -815,6 +241,129 @@ describe('BroadcastsClient Structure', () => {
   
 
   
+  it('should have getScheduledBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getScheduledBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.getScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getScheduledBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.getScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have updateScheduledBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('updateScheduledBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.updateScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have updateScheduledBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.updateScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteScheduledBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('deleteScheduledBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.deleteScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteScheduledBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.deleteScheduledBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
   it('should have listScheduled method with correct signature', () => {
     // Check method exists
     expect(BroadcastsClient.prototype).toHaveProperty('listScheduled');
@@ -911,12 +460,12 @@ describe('BroadcastsClient Structure', () => {
   
 
   
-  it('should have getBroadcastChat method with correct signature', () => {
+  it('should have updateUserBroadcastState method with correct signature', () => {
     // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getBroadcastChat');
+    expect(BroadcastsClient.prototype).toHaveProperty('updateUserBroadcastState');
     
     // Check method is callable
-    const method = broadcastsClient.getBroadcastChat;
+    const method = broadcastsClient.updateUserBroadcastState;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -928,6 +477,8 @@ describe('BroadcastsClient Structure', () => {
     const requiredParams = [
       
       'id',
+      
+      'broadcastId',
       
     ];
     
@@ -942,67 +493,8 @@ describe('BroadcastsClient Structure', () => {
     }
   });
 
-  it('should have getBroadcastChat method with return type annotation', () => {
-    const method = broadcastsClient.getBroadcastChat;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-  it('should have getBroadcastChat method with pagination parameters', () => {
-    const method = broadcastsClient.getBroadcastChat;
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Should have pagination-related parameters (check for common pagination param names)
-    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
-    const hasPaginationParam = paginationKeywords.some(keyword => 
-      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
-    );
-    // Note: Some pagination methods may use options object instead of individual params
-    // This test is lenient to account for different pagination patterns
-    if (params.length > 0) {
-      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
-    }
-  });
-  
-
-  
-  it('should have sendBroadcastChat method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('sendBroadcastChat');
-    
-    // Check method is callable
-    const method = broadcastsClient.sendBroadcastChat;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have sendBroadcastChat method with return type annotation', () => {
-    const method = broadcastsClient.sendBroadcastChat;
+  it('should have updateUserBroadcastState method with return type annotation', () => {
+    const method = broadcastsClient.updateUserBroadcastState;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1011,12 +503,12 @@ describe('BroadcastsClient Structure', () => {
   
 
   
-  it('should have listUserSources method with correct signature', () => {
+  it('should have updateBroadcastState method with correct signature', () => {
     // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('listUserSources');
+    expect(BroadcastsClient.prototype).toHaveProperty('updateBroadcastState');
     
     // Check method is callable
-    const method = broadcastsClient.listUserSources;
+    const method = broadcastsClient.updateBroadcastState;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1042,8 +534,8 @@ describe('BroadcastsClient Structure', () => {
     }
   });
 
-  it('should have listUserSources method with return type annotation', () => {
-    const method = broadcastsClient.listUserSources;
+  it('should have updateBroadcastState method with return type annotation', () => {
+    const method = broadcastsClient.updateBroadcastState;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1052,12 +544,12 @@ describe('BroadcastsClient Structure', () => {
   
 
   
-  it('should have createUserSource method with correct signature', () => {
+  it('should have unmuteBroadcastChatUser method with correct signature', () => {
     // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('createUserSource');
+    expect(BroadcastsClient.prototype).toHaveProperty('unmuteBroadcastChatUser');
     
     // Check method is callable
-    const method = broadcastsClient.createUserSource;
+    const method = broadcastsClient.unmuteBroadcastChatUser;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1069,6 +561,8 @@ describe('BroadcastsClient Structure', () => {
     const requiredParams = [
       
       'id',
+      
+      'userId',
       
     ];
     
@@ -1083,8 +577,8 @@ describe('BroadcastsClient Structure', () => {
     }
   });
 
-  it('should have createUserSource method with return type annotation', () => {
-    const method = broadcastsClient.createUserSource;
+  it('should have unmuteBroadcastChatUser method with return type annotation', () => {
+    const method = broadcastsClient.unmuteBroadcastChatUser;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1257,6 +751,45 @@ describe('BroadcastsClient Structure', () => {
   
 
   
+  it('should have listLiveCategories method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('listLiveCategories');
+    
+    // Check method is callable
+    const method = broadcastsClient.listLiveCategories;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have listLiveCategories method with return type annotation', () => {
+    const method = broadcastsClient.listLiveCategories;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
   it('should have getChatMutedUsers method with correct signature', () => {
     // Check method exists
     expect(BroadcastsClient.prototype).toHaveProperty('getChatMutedUsers');
@@ -1353,12 +886,12 @@ describe('BroadcastsClient Structure', () => {
   
 
   
-  it('should have unmuteBroadcastChatUser method with correct signature', () => {
+  it('should have listUserSources method with correct signature', () => {
     // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('unmuteBroadcastChatUser');
+    expect(BroadcastsClient.prototype).toHaveProperty('listUserSources');
     
     // Check method is callable
-    const method = broadcastsClient.unmuteBroadcastChatUser;
+    const method = broadcastsClient.listUserSources;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -1370,6 +903,596 @@ describe('BroadcastsClient Structure', () => {
     const requiredParams = [
       
       'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have listUserSources method with return type annotation', () => {
+    const method = broadcastsClient.listUserSources;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have createUserSource method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('createUserSource');
+    
+    // Check method is callable
+    const method = broadcastsClient.createUserSource;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have createUserSource method with return type annotation', () => {
+    const method = broadcastsClient.createUserSource;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have listSources method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('listSources');
+    
+    // Check method is callable
+    const method = broadcastsClient.listSources;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have listSources method with return type annotation', () => {
+    const method = broadcastsClient.listSources;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have createSource method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('createSource');
+    
+    // Check method is callable
+    const method = broadcastsClient.createSource;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have createSource method with return type annotation', () => {
+    const method = broadcastsClient.createSource;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have muteBroadcastChatUser method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('muteBroadcastChatUser');
+    
+    // Check method is callable
+    const method = broadcastsClient.muteBroadcastChatUser;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have muteBroadcastChatUser method with return type annotation', () => {
+    const method = broadcastsClient.muteBroadcastChatUser;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getBroadcastChat method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getBroadcastChat');
+    
+    // Check method is callable
+    const method = broadcastsClient.getBroadcastChat;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getBroadcastChat method with return type annotation', () => {
+    const method = broadcastsClient.getBroadcastChat;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+  it('should have getBroadcastChat method with pagination parameters', () => {
+    const method = broadcastsClient.getBroadcastChat;
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Should have pagination-related parameters (check for common pagination param names)
+    const paginationKeywords = ['pagination', 'token', 'max', 'results', 'next', 'cursor', 'limit', 'page'];
+    const hasPaginationParam = paginationKeywords.some(keyword => 
+      params.some(p => p.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    // Note: Some pagination methods may use options object instead of individual params
+    // This test is lenient to account for different pagination patterns
+    if (params.length > 0) {
+      expect(hasPaginationParam || params.some(p => p.includes('options'))).toBe(true);
+    }
+  });
+  
+
+  
+  it('should have sendBroadcastChat method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('sendBroadcastChat');
+    
+    // Check method is callable
+    const method = broadcastsClient.sendBroadcastChat;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have sendBroadcastChat method with return type annotation', () => {
+    const method = broadcastsClient.sendBroadcastChat;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getUserBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getUserBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.getUserBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'broadcastId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getUserBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.getUserBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteUserBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('deleteUserBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.deleteUserBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'broadcastId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteUserBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.deleteUserBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getRegion method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getRegion');
+    
+    // Check method is callable
+    const method = broadcastsClient.getRegion;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getRegion method with return type annotation', () => {
+    const method = broadcastsClient.getRegion;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteBroadcastChatMessage method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('deleteBroadcastChatMessage');
+    
+    // Check method is callable
+    const method = broadcastsClient.deleteBroadcastChatMessage;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+      'messageId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteBroadcastChatMessage method with return type annotation', () => {
+    const method = broadcastsClient.deleteBroadcastChatMessage;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.getBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.getBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have updateBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('updateBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.updateBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have updateBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.updateBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have deleteBroadcast method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('deleteBroadcast');
+    
+    // Check method is callable
+    const method = broadcastsClient.deleteBroadcast;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have deleteBroadcast method with return type annotation', () => {
+    const method = broadcastsClient.deleteBroadcast;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have removeChatModerator method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('removeChatModerator');
+    
+    // Check method is callable
+    const method = broadcastsClient.removeChatModerator;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
       
       'userId',
       
@@ -1386,8 +1509,168 @@ describe('BroadcastsClient Structure', () => {
     }
   });
 
-  it('should have unmuteBroadcastChatUser method with return type annotation', () => {
-    const method = broadcastsClient.unmuteBroadcastChatUser;
+  it('should have removeChatModerator method with return type annotation', () => {
+    const method = broadcastsClient.removeChatModerator;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getSourceStreamKey method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getSourceStreamKey');
+    
+    // Check method is callable
+    const method = broadcastsClient.getSourceStreamKey;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getSourceStreamKey method with return type annotation', () => {
+    const method = broadcastsClient.getSourceStreamKey;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have unmuteChatUser method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('unmuteChatUser');
+    
+    // Check method is callable
+    const method = broadcastsClient.unmuteChatUser;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'userId',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have unmuteChatUser method with return type annotation', () => {
+    const method = broadcastsClient.unmuteChatUser;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have getChatModerators method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('getChatModerators');
+    
+    // Check method is callable
+    const method = broadcastsClient.getChatModerators;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have getChatModerators method with return type annotation', () => {
+    const method = broadcastsClient.getChatModerators;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have addChatModerator method with correct signature', () => {
+    // Check method exists
+    expect(BroadcastsClient.prototype).toHaveProperty('addChatModerator');
+    
+    // Check method is callable
+    const method = broadcastsClient.addChatModerator;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have addChatModerator method with return type annotation', () => {
+    const method = broadcastsClient.addChatModerator;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -1492,320 +1775,9 @@ describe('BroadcastsClient Structure', () => {
   
 
   
-  it('should have updateBroadcastState method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('updateBroadcastState');
-    
-    // Check method is callable
-    const method = broadcastsClient.updateBroadcastState;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateBroadcastState method with return type annotation', () => {
-    const method = broadcastsClient.updateBroadcastState;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have listSources method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('listSources');
-    
-    // Check method is callable
-    const method = broadcastsClient.listSources;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have listSources method with return type annotation', () => {
-    const method = broadcastsClient.listSources;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have createSource method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('createSource');
-    
-    // Check method is callable
-    const method = broadcastsClient.createSource;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have createSource method with return type annotation', () => {
-    const method = broadcastsClient.createSource;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getSourceStreamKey method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getSourceStreamKey');
-    
-    // Check method is callable
-    const method = broadcastsClient.getSourceStreamKey;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getSourceStreamKey method with return type annotation', () => {
-    const method = broadcastsClient.getSourceStreamKey;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have getScheduledBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('getScheduledBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.getScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have getScheduledBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.getScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have updateScheduledBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('updateScheduledBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.updateScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have updateScheduledBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.updateScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have deleteScheduledBroadcast method with correct signature', () => {
-    // Check method exists
-    expect(BroadcastsClient.prototype).toHaveProperty('deleteScheduledBroadcast');
-    
-    // Check method is callable
-    const method = broadcastsClient.deleteScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have deleteScheduledBroadcast method with return type annotation', () => {
-    const method = broadcastsClient.deleteScheduledBroadcast;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
 
   it('should have all expected methods', () => {
     const expectedMethods = [
-      
-      'unmuteChatUser',
-      
-      'deleteBroadcastChatMessage',
-      
-      'listLiveCategories',
-      
-      'removeChatModerator',
-      
-      'muteBroadcastChatUser',
-      
-      'getUserBroadcast',
-      
-      'deleteUserBroadcast',
-      
-      'updateUserBroadcastState',
-      
-      'getChatModerators',
-      
-      'addChatModerator',
-      
-      'getBroadcast',
-      
-      'updateBroadcast',
-      
-      'deleteBroadcast',
-      
-      'getRegion',
       
       'getUserSource',
       
@@ -1817,17 +1789,21 @@ describe('BroadcastsClient Structure', () => {
       
       'createUserBroadcast',
       
+      'getScheduledBroadcast',
+      
+      'updateScheduledBroadcast',
+      
+      'deleteScheduledBroadcast',
+      
       'listScheduled',
       
       'createScheduledBroadcast',
       
-      'getBroadcastChat',
+      'updateUserBroadcastState',
       
-      'sendBroadcastChat',
+      'updateBroadcastState',
       
-      'listUserSources',
-      
-      'createUserSource',
+      'unmuteBroadcastChatUser',
       
       'goLiveScheduledBroadcast',
       
@@ -1837,29 +1813,53 @@ describe('BroadcastsClient Structure', () => {
       
       'deleteSource',
       
+      'listLiveCategories',
+      
       'getChatMutedUsers',
       
       'muteChatUser',
       
-      'unmuteBroadcastChatUser',
+      'listUserSources',
       
-      'list',
-      
-      'createBroadcast',
-      
-      'updateBroadcastState',
+      'createUserSource',
       
       'listSources',
       
       'createSource',
       
+      'muteBroadcastChatUser',
+      
+      'getBroadcastChat',
+      
+      'sendBroadcastChat',
+      
+      'getUserBroadcast',
+      
+      'deleteUserBroadcast',
+      
+      'getRegion',
+      
+      'deleteBroadcastChatMessage',
+      
+      'getBroadcast',
+      
+      'updateBroadcast',
+      
+      'deleteBroadcast',
+      
+      'removeChatModerator',
+      
       'getSourceStreamKey',
       
-      'getScheduledBroadcast',
+      'unmuteChatUser',
       
-      'updateScheduledBroadcast',
+      'getChatModerators',
       
-      'deleteScheduledBroadcast',
+      'addChatModerator',
+      
+      'list',
+      
+      'createBroadcast',
       
     ];
 

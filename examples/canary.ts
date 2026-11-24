@@ -49,7 +49,7 @@ export interface CanarySnapshot {
 
 export class XdkTypeScriptCanaryApp {
   public static readonly SDK_NAME = 'typescript';
-  public static readonly SDK_VERSION = '0.7.1';
+  public static readonly SDK_VERSION = '0.7.2';
 
   private totalCycles = 0;
   private totalProbeFailures = 0;
@@ -129,11 +129,13 @@ export class XdkTypeScriptCanaryApp {
         ];
         if (snap) {
           lines.push('# TYPE xdk_canary_probe_duration_ms gauge');
-          lines.push('# TYPE xdk_canary_probe_success gauge');
           for (const p of snap.probes) {
             lines.push(
               `xdk_canary_probe_duration_ms{sdk="${sdk}",probe="${p.name}",mode="${p.mode}"} ${p.durationMs}`
             );
+          }
+          lines.push('# TYPE xdk_canary_probe_success gauge');
+          for (const p of snap.probes) {
             lines.push(
               `xdk_canary_probe_success{sdk="${sdk}",probe="${p.name}",mode="${p.mode}"} ${p.passed ? 1 : 0}`
             );

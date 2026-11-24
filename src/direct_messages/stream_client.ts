@@ -13,25 +13,7 @@ import { EventDrivenStream, StreamEvent } from './event_driven_stream.js';
 import {
 
 
-  GetEventsByIdResponse,
-
-
-
-  DeleteEventsResponse,
-
-
-
-
-
   CreateByConversationIdResponse,
-
-
-
-  CreateByParticipantIdResponse,
-
-
-
-  CreateConversationResponse,
 
 
 
@@ -39,175 +21,38 @@ import {
 
 
 
+
+
   GetEventsResponse,
+
+
+
+  CreateConversationResponse,
 
 
 
   GetEventsByConversationIdResponse,
 
+
+
+  CreateByParticipantIdResponse,
+
+
+
+  GetEventsByIdResponse,
+
+
+
+  DeleteEventsResponse,
+
 } from './models.js';
 
-/**
- * Options for getEventsById method
- * 
- * @public
- */
-export interface GetEventsByIdStreamingOptions {
-    
-    
-    /** A comma separated list of DmEvent fields to display. 
-     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
-    dmEventFields?: Array<"attachments" | "created_at" | "dm_conversation_id" | "entities" | "event_type" | "id" | "text">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"attachments.media_keys" | "attachments.media_keys" | "participant_ids" | "referenced_posts" | "sender_id">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** A comma separated list of Media fields to display. 
-     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
-    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for deleteEvents method
- * 
- * @public
- */
-export interface DeleteEventsStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for dmConversationsMediaDownload method
- * 
- * @public
- */
-export interface DmConversationsMediaDownloadStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 /**
  * Options for createByConversationId method
  * 
  * @public
  */
 export interface CreateByConversationIdStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createByParticipantId method
- * 
- * @public
- */
-export interface CreateByParticipantIdStreamingOptions {
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Additional headers */
-    headers?: Record<string, string>;
-    /** AbortSignal for cancelling the request */
-    signal?: AbortSignal;
-    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
-    autoReconnect?: boolean;
-    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
-    reconnectOnClose?: boolean;
-    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
-    maxReconnectAttempts?: number;
-    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
-    reconnectDelayMs?: number;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-/**
- * Options for createConversation method
- * 
- * @public
- */
-export interface CreateConversationStreamingOptions {
     
     
     /** Additional request options */
@@ -301,6 +146,31 @@ export interface GetEventsByParticipantIdStreamingOptions {
     [key: string]: any;
 }
 /**
+ * Options for dmConversationsMediaDownload method
+ * 
+ * @public
+ */
+export interface DmConversationsMediaDownloadStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
  * Options for getEvents method
  * 
  * @public
@@ -354,6 +224,31 @@ export interface GetEventsStreamingOptions {
      * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
     mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
     
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for createConversation method
+ * 
+ * @public
+ */
+export interface CreateConversationStreamingOptions {
     
     
     /** Additional request options */
@@ -446,6 +341,111 @@ export interface GetEventsByConversationIdStreamingOptions {
     /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
     [key: string]: any;
 }
+/**
+ * Options for createByParticipantId method
+ * 
+ * @public
+ */
+export interface CreateByParticipantIdStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for getEventsById method
+ * 
+ * @public
+ */
+export interface GetEventsByIdStreamingOptions {
+    
+    
+    /** A comma separated list of DmEvent fields to display. 
+     * Also accepts: dm_event.fields or proper camelCase (e.g., dmEventFields) */
+    dmEventFields?: Array<"attachments" | "created_at" | "dm_conversation_id" | "entities" | "event_type" | "id" | "text">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"attachments.media_keys" | "attachments.media_keys" | "participant_ids" | "referenced_posts" | "sender_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** A comma separated list of Media fields to display. 
+     * Also accepts: media.fields or proper camelCase (e.g., mediaFields) */
+    mediaFields?: Array<"alt_text" | "duration_ms" | "height" | "media_key" | "non_public_metrics" | "organic_metrics" | "preview_image_url" | "promoted_metrics" | "public_metrics" | "revenue" | "type" | "url" | "variants" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+/**
+ * Options for deleteEvents method
+ * 
+ * @public
+ */
+export interface DeleteEventsStreamingOptions {
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Additional headers */
+    headers?: Record<string, string>;
+    /** AbortSignal for cancelling the request */
+    signal?: AbortSignal;
+    /** Automatically reconnect on mid-stream disconnects (defaults to false) */
+    autoReconnect?: boolean;
+    /** Automatically reconnect when server closes the stream cleanly (defaults to false) */
+    reconnectOnClose?: boolean;
+    /** Maximum automatic reconnect attempts (defaults to 5; set -1 for unlimited) */
+    maxReconnectAttempts?: number;
+    /** Initial backoff delay in milliseconds between reconnect attempts (defaults to 1000) */
+    reconnectDelayMs?: number;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 export class DirectMessagesClient {
@@ -509,404 +509,6 @@ export class DirectMessagesClient {
 
 
 
-
-
-
-    /**
-     * Get DM Event by ID
-     * Retrieves details of a specific direct message event by its ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async getEventsById(
-        
-        
-        
-        eventId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: GetEventsByIdStreamingOptions = {}
-    ): Promise<GetEventsByIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'getEventsById');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'dm_event.fields': 'dmEventFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-            
-            'media.fields': 'mediaFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const {
-            
-            
-            dmEventFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            mediaFields = [],
-            
-            
-            
-            headers = {},
-            signal,
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_events/{event_id}';
-        
-        
-        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        
-        if (dmEventFields !== undefined && dmEventFields.length > 0) {
-            
-            params.append('dm_event.fields', dmEventFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            params.append('expansions', expansions.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            params.append('user.fields', userFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            params.append('post.fields', postFields.join(','));
-            
-        }
-        
-        
-        
-        
-        
-        
-        
-        if (mediaFields !== undefined && mediaFields.length > 0) {
-            
-            params.append('media.fields', mediaFields.join(','));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read', 'users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<GetEventsByIdResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Delete DM Event
-     * Deletes a specific direct message event by its ID, if owned by the authenticated user.
-     * 
-     * @returns Promise with the API response
-     */
-    async deleteEvents(
-        
-        
-        
-        eventId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DeleteEventsStreamingOptions = {}
-    ): Promise<DeleteEventsResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'deleteEvents');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_events/{event_id}';
-        
-        
-        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read', 'dm.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<DeleteEventsResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Download DM Media
-     * Downloads media attached to a legacy Direct Message. The requesting user must be a participant in the conversation containing the specified DM event. The response body contains raw binary bytes.
-     * 
-     * @returns Promise with the API response
-     */
-    async dmConversationsMediaDownload(
-        
-        
-        
-        dmId: string,
-        
-        
-        
-        mediaId: string,
-        
-        
-        
-        resourceId: string,
-        
-        
-        
-        
-        
-        
-        
-        options: DmConversationsMediaDownloadStreamingOptions = {}
-    ): Promise<any> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'dmConversationsMediaDownload');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}';
-        
-        
-        path = path.replace('{dm_id}', encodeURIComponent(String(dmId)));
-        
-        
-        
-        path = path.replace('{media_id}', encodeURIComponent(String(mediaId)));
-        
-        
-        
-        path = path.replace('{resource_id}', encodeURIComponent(String(resourceId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['dm.read'],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<any>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
 
 
 
@@ -984,105 +586,6 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.write', 'users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateByConversationIdResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create DM Message by Participant ID
-     * Sends a new direct message to a specific participant by their ID.
-     * 
-     * @returns Promise with the API response
-     */
-    async createByParticipantId(
-        
-        
-        
-        participantId: string,
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateByParticipantIdStreamingOptions = {}
-    ): Promise<CreateByParticipantIdResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createByParticipantId');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_conversations/with/{participant_id}/messages';
-        
-        
-        path = path.replace('{participant_id}', encodeURIComponent(String(participantId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
                     'OAuth2UserToken': ['users.read', 'dm.write', 'tweet.read'],
                     
                 },
@@ -1099,98 +602,7 @@ export class DirectMessagesClient {
         };
 
         // Make the request
-        return this.client.request<CreateByParticipantIdResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-
-    /**
-     * Create DM Conversation
-     * Initiates a new direct message conversation with specified participants.
-     * 
-     * @returns Promise with the API response
-     */
-    async createConversation(
-        
-        
-        
-        
-        
-        
-        body: any,
-        
-        
-        options: CreateConversationStreamingOptions = {}
-    ): Promise<CreateConversationResponse> {
-        // Validate authentication requirements
-        
-        const requiredAuthTypes = [];
-        
-        
-        requiredAuthTypes.push('OAuth2UserToken');
-        
-        
-        
-        requiredAuthTypes.push('UserToken');
-        
-        
-        this.client.validateAuthentication(requiredAuthTypes, 'createConversation');
-        
-
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const normalizedOptions = options || {};
-        
-
-        // Destructure options (exclude path parameters, they're already function params)
-        
-        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/dm_conversations';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            headers: {
-                'Content-Type': 'application/json',
-                ...headers,
-            },
-            signal: signal,
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['tweet.read', 'dm.write', 'users.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            ...requestOptions,
-        };
-
-        // Make the request
-        return this.client.request<CreateConversationResponse>(
+        return this.client.request<CreateByConversationIdResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -1462,6 +874,107 @@ export class DirectMessagesClient {
 
 
     /**
+     * Download DM Media
+     * Downloads media attached to a legacy Direct Message. The requesting user must be a participant in the conversation containing the specified DM event. The response body contains raw binary bytes.
+     * 
+     * @returns Promise with the API response
+     */
+    async dmConversationsMediaDownload(
+        
+        
+        
+        dmId: string,
+        
+        
+        
+        mediaId: string,
+        
+        
+        
+        resourceId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DmConversationsMediaDownloadStreamingOptions = {}
+    ): Promise<any> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'dmConversationsMediaDownload');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_conversations/media/{dm_id}/{media_id}/{resource_id}';
+        
+        
+        path = path.replace('{dm_id}', encodeURIComponent(String(dmId)));
+        
+        
+        
+        path = path.replace('{media_id}', encodeURIComponent(String(mediaId)));
+        
+        
+        
+        path = path.replace('{resource_id}', encodeURIComponent(String(resourceId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.read'],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<any>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
      * Get DM Events
      * Retrieves a list of recent direct message events across all conversations.
      * 
@@ -1690,7 +1203,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'dm.read', 'users.read'],
+                    'OAuth2UserToken': ['dm.read', 'tweet.read', 'users.read'],
                     
                 },
                 
@@ -1708,6 +1221,97 @@ export class DirectMessagesClient {
         // Make the request
         return this.client.request<GetEventsResponse>(
             'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create DM Conversation
+     * Initiates a new direct message conversation with specified participants.
+     * 
+     * @returns Promise with the API response
+     */
+    async createConversation(
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateConversationStreamingOptions = {}
+    ): Promise<CreateConversationResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createConversation');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_conversations';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'dm.write', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateConversationResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );
@@ -1952,7 +1556,7 @@ export class DirectMessagesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['dm.read', 'users.read', 'tweet.read'],
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.read'],
                     
                 },
                 
@@ -1970,6 +1574,402 @@ export class DirectMessagesClient {
         // Make the request
         return this.client.request<GetEventsByConversationIdResponse>(
             'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Create DM Message by Participant ID
+     * Sends a new direct message to a specific participant by their ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async createByParticipantId(
+        
+        
+        
+        participantId: string,
+        
+        
+        
+        
+        
+        
+        body: any,
+        
+        
+        options: CreateByParticipantIdStreamingOptions = {}
+    ): Promise<CreateByParticipantIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'createByParticipantId');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_conversations/with/{participant_id}/messages';
+        
+        
+        path = path.replace('{participant_id}', encodeURIComponent(String(participantId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['users.read', 'tweet.read', 'dm.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<CreateByParticipantIdResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Get DM Event by ID
+     * Retrieves details of a specific direct message event by its ID.
+     * 
+     * @returns Promise with the API response
+     */
+    async getEventsById(
+        
+        
+        
+        eventId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: GetEventsByIdStreamingOptions = {}
+    ): Promise<GetEventsByIdResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'getEventsById');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'dm_event.fields': 'dmEventFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+            
+            'media.fields': 'mediaFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const {
+            
+            
+            dmEventFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            mediaFields = [],
+            
+            
+            
+            headers = {},
+            signal,
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_events/{event_id}';
+        
+        
+        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        
+        if (dmEventFields !== undefined && dmEventFields.length > 0) {
+            
+            params.append('dm_event.fields', dmEventFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            params.append('expansions', expansions.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            params.append('user.fields', userFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            params.append('post.fields', postFields.join(','));
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        if (mediaFields !== undefined && mediaFields.length > 0) {
+            
+            params.append('media.fields', mediaFields.join(','));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['tweet.read', 'dm.read', 'users.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<GetEventsByIdResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+
+    /**
+     * Delete DM Event
+     * Deletes a specific direct message event by its ID, if owned by the authenticated user.
+     * 
+     * @returns Promise with the API response
+     */
+    async deleteEvents(
+        
+        
+        
+        eventId: string,
+        
+        
+        
+        
+        
+        
+        
+        options: DeleteEventsStreamingOptions = {}
+    ): Promise<DeleteEventsResponse> {
+        // Validate authentication requirements
+        
+        const requiredAuthTypes = [];
+        
+        
+        requiredAuthTypes.push('OAuth2UserToken');
+        
+        
+        
+        requiredAuthTypes.push('UserToken');
+        
+        
+        this.client.validateAuthentication(requiredAuthTypes, 'deleteEvents');
+        
+
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const normalizedOptions = options || {};
+        
+
+        // Destructure options (exclude path parameters, they're already function params)
+        
+        const { headers = {}, signal, requestOptions = {} } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/dm_events/{event_id}';
+        
+        
+        path = path.replace('{event_id}', encodeURIComponent(String(eventId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...headers,
+            },
+            signal: signal,
+            
+            
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['dm.read', 'dm.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            ...requestOptions,
+        };
+
+        // Make the request
+        return this.client.request<DeleteEventsResponse>(
+            'DELETE',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

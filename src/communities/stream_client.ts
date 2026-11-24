@@ -313,7 +313,7 @@ export class CommunitiesClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['users.read', 'tweet.read'],
+                    'OAuth2UserToken': ['tweet.read', 'users.read'],
                     
                 },
                 

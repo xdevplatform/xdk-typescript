@@ -17,59 +17,7 @@ import {
 
 
 
-import { PostsClient } from "./posts/index.js";
-
-
-
-import { GeneralClient } from "./general/index.js";
-
-
-
-import { NewsClient } from "./news/index.js";
-
-
-
-import { UsersClient } from "./users/index.js";
-
-
-
-import { BroadcastsClient } from "./broadcasts/index.js";
-
-
-
-import { UsageClient } from "./usage/index.js";
-
-
-
-import { AccountClient } from "./account/index.js";
-
-
-
-import { BotsClient } from "./bots/index.js";
-
-
-
-import { ConnectionsClient } from "./connections/index.js";
-
-
-
-import { ActivityClient } from "./activity/index.js";
-
-
-
-import { ListsClient } from "./lists/index.js";
-
-
-
 import { AccountActivityClient } from "./account_activity/index.js";
-
-
-
-import { ArticlesClient } from "./articles/index.js";
-
-
-
-import { CallsClient } from "./calls/index.js";
 
 
 
@@ -77,11 +25,7 @@ import { ComplianceClient } from "./compliance/index.js";
 
 
 
-import { MediaClient } from "./media/index.js";
-
-
-
-import { CommunitiesClient } from "./communities/index.js";
+import { GeneralClient } from "./general/index.js";
 
 
 
@@ -89,11 +33,15 @@ import { TrendsClient } from "./trends/index.js";
 
 
 
-import { ChatClient } from "./chat/index.js";
+import { CommunitiesClient } from "./communities/index.js";
 
 
 
-import { SpacesClient } from "./spaces/index.js";
+import { BotsClient } from "./bots/index.js";
+
+
+
+import { AccountClient } from "./account/index.js";
 
 
 
@@ -101,7 +49,27 @@ import { StreamClient } from "./stream/client.js";
 
 
 
-import { DirectMessagesClient } from "./direct_messages/index.js";
+import { MediaClient } from "./media/index.js";
+
+
+
+import { UsageClient } from "./usage/index.js";
+
+
+
+import { UsersClient } from "./users/index.js";
+
+
+
+import { ConnectionsClient } from "./connections/index.js";
+
+
+
+import { BroadcastsClient } from "./broadcasts/index.js";
+
+
+
+import { WebhooksClient } from "./webhooks/index.js";
 
 
 
@@ -109,7 +77,39 @@ import { CommunityNotesClient } from "./community_notes/index.js";
 
 
 
-import { WebhooksClient } from "./webhooks/index.js";
+import { ArticlesClient } from "./articles/index.js";
+
+
+
+import { NewsClient } from "./news/index.js";
+
+
+
+import { ActivityClient } from "./activity/index.js";
+
+
+
+import { PostsClient } from "./posts/index.js";
+
+
+
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { SpacesClient } from "./spaces/index.js";
+
+
+
+import { ChatClient } from "./chat/index.js";
+
+
+
+import { CallsClient } from "./calls/index.js";
+
+
+
+import { ListsClient } from "./lists/index.js";
 
 
 
@@ -350,77 +350,77 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** posts client */
-  readonly posts: PostsClient;
-
-  /** general client */
-  readonly general: GeneralClient;
-
-  /** news client */
-  readonly news: NewsClient;
-
-  /** users client */
-  readonly users: UsersClient;
-
-  /** broadcasts client */
-  readonly broadcasts: BroadcastsClient;
-
-  /** usage client */
-  readonly usage: UsageClient;
-
-  /** account client */
-  readonly account: AccountClient;
-
-  /** bots client */
-  readonly bots: BotsClient;
-
-  /** connections client */
-  readonly connections: ConnectionsClient;
-
-  /** activity client */
-  readonly activity: ActivityClient;
-
-  /** lists client */
-  readonly lists: ListsClient;
-
   /** account activity client */
   readonly accountActivity: AccountActivityClient;
-
-  /** articles client */
-  readonly articles: ArticlesClient;
-
-  /** calls client */
-  readonly calls: CallsClient;
 
   /** compliance client */
   readonly compliance: ComplianceClient;
 
-  /** media client */
-  readonly media: MediaClient;
-
-  /** communities client */
-  readonly communities: CommunitiesClient;
+  /** general client */
+  readonly general: GeneralClient;
 
   /** trends client */
   readonly trends: TrendsClient;
 
-  /** chat client */
-  readonly chat: ChatClient;
+  /** communities client */
+  readonly communities: CommunitiesClient;
 
-  /** spaces client */
-  readonly spaces: SpacesClient;
+  /** bots client */
+  readonly bots: BotsClient;
+
+  /** account client */
+  readonly account: AccountClient;
 
   /** stream client */
   readonly stream: StreamClient;
 
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
+  /** media client */
+  readonly media: MediaClient;
+
+  /** usage client */
+  readonly usage: UsageClient;
+
+  /** users client */
+  readonly users: UsersClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
+
+  /** broadcasts client */
+  readonly broadcasts: BroadcastsClient;
+
+  /** webhooks client */
+  readonly webhooks: WebhooksClient;
 
   /** community notes client */
   readonly communityNotes: CommunityNotesClient;
 
-  /** webhooks client */
-  readonly webhooks: WebhooksClient;
+  /** articles client */
+  readonly articles: ArticlesClient;
+
+  /** news client */
+  readonly news: NewsClient;
+
+  /** activity client */
+  readonly activity: ActivityClient;
+
+  /** posts client */
+  readonly posts: PostsClient;
+
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
+  /** spaces client */
+  readonly spaces: SpacesClient;
+
+  /** chat client */
+  readonly chat: ChatClient;
+
+  /** calls client */
+  readonly calls: CallsClient;
+
+  /** lists client */
+  readonly lists: ListsClient;
 
 
   /**
@@ -470,7 +470,7 @@ export class Client {
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.7.1',
+      'User-Agent': 'xdk-typescript/0.7.2',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((config as ClientConfig)?.headers || {}),
@@ -479,53 +479,53 @@ export class Client {
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.posts = new PostsClient(this);
-
-    this.general = new GeneralClient(this);
-
-    this.news = new NewsClient(this);
-
-    this.users = new UsersClient(this);
-
-    this.broadcasts = new BroadcastsClient(this);
-
-    this.usage = new UsageClient(this);
-
-    this.account = new AccountClient(this);
-
-    this.bots = new BotsClient(this);
-
-    this.connections = new ConnectionsClient(this);
-
-    this.activity = new ActivityClient(this);
-
-    this.lists = new ListsClient(this);
-
     this.accountActivity = new AccountActivityClient(this);
-
-    this.articles = new ArticlesClient(this);
-
-    this.calls = new CallsClient(this);
 
     this.compliance = new ComplianceClient(this);
 
-    this.media = new MediaClient(this);
-
-    this.communities = new CommunitiesClient(this);
+    this.general = new GeneralClient(this);
 
     this.trends = new TrendsClient(this);
 
-    this.chat = new ChatClient(this);
+    this.communities = new CommunitiesClient(this);
 
-    this.spaces = new SpacesClient(this);
+    this.bots = new BotsClient(this);
+
+    this.account = new AccountClient(this);
 
     this.stream = new StreamClient(this);
 
-    this.directMessages = new DirectMessagesClient(this);
+    this.media = new MediaClient(this);
+
+    this.usage = new UsageClient(this);
+
+    this.users = new UsersClient(this);
+
+    this.connections = new ConnectionsClient(this);
+
+    this.broadcasts = new BroadcastsClient(this);
+
+    this.webhooks = new WebhooksClient(this);
 
     this.communityNotes = new CommunityNotesClient(this);
 
-    this.webhooks = new WebhooksClient(this);
+    this.articles = new ArticlesClient(this);
+
+    this.news = new NewsClient(this);
+
+    this.activity = new ActivityClient(this);
+
+    this.posts = new PostsClient(this);
+
+    this.directMessages = new DirectMessagesClient(this);
+
+    this.spaces = new SpacesClient(this);
+
+    this.chat = new ChatClient(this);
+
+    this.calls = new CallsClient(this);
+
+    this.lists = new ListsClient(this);
 
   }
 
@@ -562,56 +562,57 @@ export class Client {
     options: RequestOptions = {}
   ): Promise<T> {
     const url = `${this.baseUrl}${path}`;
-    const headers = new Headers(this.headers);
-    
+
     // Select the best authentication method based on endpoint requirements
     const selectedAuth = this.selectAuthMethod(method, options.security);
-    
-    // Add authentication headers based on selected method
-    if (selectedAuth === 'bearer_token' && this.bearerToken) {
-      headers.set('Authorization', `Bearer ${this.bearerToken}`);
-    } else if (selectedAuth === 'oauth2_user_context' && this.getEffectiveAccessToken()) {
-      if (this.oauth2 && this.isTokenExpired()) {
-        await this.refreshToken();
-      }
-      const effectiveToken = this.getEffectiveAccessToken();
-      if (effectiveToken) {
-        headers.set('Authorization', `Bearer ${effectiveToken}`);
-      }
-    } else if (selectedAuth === 'oauth1' && this.oauth1 && this.oauth1.accessToken) {
-      // OAuth1 authentication - build proper OAuth1 header
-      try {
-        const bodyForSigning = typeof options.body === 'string' ? options.body : '';
-        const oauthHeader = await this.oauth1.buildRequestHeader(method, url, bodyForSigning);
-        headers.set('Authorization', oauthHeader);
-        
-        // Keep Content-Type header for JSON requests - X API requires it
-        // Only remove Content-Type for form-encoded OAuth1 requests
-        // JSON bodies are not included in OAuth1 signature (per OAuth1 spec)
-      } catch (error) {
-        throw new Error(`Failed to build OAuth1 header: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
-    } else if (!selectedAuth) {
-      // No suitable auth method found - validate authentication
-      const requiredSchemes = options.security 
+    if (!selectedAuth) {
+      // No suitable auth method found - validate authentication eagerly
+      const requiredSchemes = options.security
         ? options.security.flatMap(req => Object.keys(req))
         : [];
       if (requiredSchemes.length > 0) {
         this.validateAuthentication(requiredSchemes, path);
       }
     }
-    
-    // Add custom headers
-    if (options.headers) {
-      Object.entries(options.headers).forEach(([key, value]) => {
-        headers.set(key, value);
-      });
-    }
+
+    // Build headers per attempt so OAuth 1.0a generates a fresh nonce/timestamp
+    // and expired OAuth 2.0 user tokens refresh on retries.
+    const buildAttemptHeaders = async (): Promise<Headers> => {
+      const headers = new Headers(this.headers);
+      if (selectedAuth === 'bearer_token' && this.bearerToken) {
+        headers.set('Authorization', `Bearer ${this.bearerToken}`);
+      } else if (selectedAuth === 'oauth2_user_context' && this.getEffectiveAccessToken()) {
+        if (this.oauth2 && this.isTokenExpired()) {
+          await this.refreshToken();
+        }
+        const effectiveToken = this.getEffectiveAccessToken();
+        if (effectiveToken) {
+          headers.set('Authorization', `Bearer ${effectiveToken}`);
+        }
+      } else if (selectedAuth === 'oauth1' && this.oauth1 && this.oauth1.accessToken) {
+        try {
+          const bodyForSigning = typeof options.body === 'string' ? options.body : '';
+          const oauthHeader = await this.oauth1.buildRequestHeader(method, url, bodyForSigning);
+          headers.set('Authorization', oauthHeader);
+        } catch (error) {
+          throw new Error(`Failed to build OAuth1 header: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      }
+
+      if (options.headers) {
+        Object.entries(options.headers).forEach(([key, value]) => {
+          headers.set(key, value);
+        });
+      }
+
+      return headers;
+    };
 
     const maxAttempts = this.retry ? Math.max(0, this.maxRetries) + 1 : 1;
     const retryableStatuses = new Set([429, 500, 502, 503, 504]);
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const headers = await buildAttemptHeaders();
       try {
         const response = await this.httpClient.request(url, {
           method,

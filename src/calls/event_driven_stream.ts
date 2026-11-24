@@ -37,7 +37,7 @@ export interface EventDrivenStreamOptions {
   reconnectOnClose?: boolean;
   maxReconnectAttempts?: number;
   reconnectDelayMs?: number;
-  reconnectFactory?: () => Promise<ReadableStream<Uint8Array>>;
+  reconnectFactory?: (signal?: AbortSignal) => Promise<ReadableStream<Uint8Array>>;
 }
 
 /**
@@ -55,6 +55,9 @@ export class EventDrivenStream {
   private isConnected: boolean = false;
   private isClosed: boolean = false;
   private isReconnecting: boolean = false;
+  private hasEnded: boolean = false;
+  private terminalError: Error | null = null;
+  private preListenerDataQueue: StreamDataEvent[] = [];
   private buffer: string = '';
   private eventListeners: Map<string, Function[]> = new Map();
   private autoReconnect: boolean = false;
@@ -62,7 +65,9 @@ export class EventDrivenStream {
   private reconnectAttempts: number = 0;
   private maxReconnectAttempts: number = 5;
   private reconnectDelay: number = 1000;
-  private reconnectFactory?: () => Promise<ReadableStream<Uint8Array>>;
+  private reconnectFactory?: (signal?: AbortSignal) => Promise<ReadableStream<Uint8Array>>;
+  private reconnectAbortController: AbortController | null = null;
+  private cancelReconnectSleep: (() => void) | null = null;
 
   constructor(options: EventDrivenStreamOptions = {}) {
     this.decoder = new TextDecoder();
@@ -103,26 +108,38 @@ export class EventDrivenStream {
     this.webStream = webStream;
     this.isConnected = true;
     this.isClosed = false;
+    this.isReconnecting = false;
+    this.hasEnded = false;
+    this.terminalError = null;
+    this.preListenerDataQueue = [];
     this.reconnectAttempts = 0;
+    this.reconnectAbortController = new AbortController();
 
     this.emit(StreamEvent.Data, { message: 'Stream connected' });
-    this.startReading(); // Don't await this - it runs in the background
+    void this.startReading();
   }
 
   /**
    * Start reading from the stream
    */
   private async startReading(): Promise<void> {
-    if (!this.webStream || !this.isConnected) {
+    if (!this.webStream || !this.isConnected || this.isClosed) {
       return;
     }
 
-    this.reader = this.webStream.getReader();
+    let localReader: ReadableStreamDefaultReader<Uint8Array> | null = null;
 
     try {
-      while (this.isConnected && !this.isClosed) {
-        const { done, value } = await this.reader.read();
-        
+      localReader = this.webStream.getReader();
+      this.reader = localReader;
+
+      while (this.isConnected && !this.isClosed && this.reader === localReader) {
+        const { done, value } = await localReader.read();
+
+        if (this.isClosed || this.reader !== localReader) {
+          break;
+        }
+
         if (done) {
           // Flush any trailing partial line decoded from final UTF-8 bytes
           const tail = this.decoder.decode();
@@ -130,7 +147,9 @@ export class EventDrivenStream {
             this.buffer += tail;
           }
           await this.drainCompleteLines(true);
-          this.handleConnectionClosed();
+          if (!this.isClosed) {
+            this.handleConnectionClosed();
+          }
           break;
         }
 
@@ -139,9 +158,21 @@ export class EventDrivenStream {
         }
       }
     } catch (error) {
-      this.handleConnectionError(error as Error);
+      if (!this.isClosed) {
+        this.handleConnectionError(error as Error);
+      }
     } finally {
-      this.cleanup();
+      if (localReader) {
+        try {
+          localReader.releaseLock();
+        } catch {
+          // Reader lock already released
+        }
+        if (this.reader === localReader) {
+          this.reader = null;
+          this.buffer = '';
+        }
+      }
     }
   }
 
@@ -181,7 +212,13 @@ export class EventDrivenStream {
       }
       // Healthy item received; reset reconnect counter
       this.reconnectAttempts = 0;
-      this.emit(StreamEvent.Data, data);
+      const listeners = this.eventListeners.get(StreamEvent.Data);
+      if (!listeners || listeners.length === 0) {
+        // Buffer items emitted before the caller attaches a listener or async iterator
+        this.preListenerDataQueue.push(data);
+      } else {
+        this.emit(StreamEvent.Data, data);
+      }
     } catch {
       console.warn('Skipping invalid JSON:', line.substring(0, 100));
     }
@@ -199,13 +236,25 @@ export class EventDrivenStream {
   /**
    * Check whether automatic reconnection can still proceed
    */
-  private canReconnect(): boolean {
+  private canReconnect(isCleanClose: boolean = false): boolean {
+    const enabled = isCleanClose ? this.reconnectOnClose : this.autoReconnect;
     return (
       !this.isClosed &&
-      this.autoReconnect &&
+      enabled &&
       typeof this.reconnectFactory === 'function' &&
       (this.maxReconnectAttempts < 0 || this.reconnectAttempts < this.maxReconnectAttempts)
     );
+  }
+
+  private async safeCancelStream(stream: ReadableStream<Uint8Array> | null): Promise<void> {
+    if (!stream) {
+      return;
+    }
+    try {
+      await stream.cancel();
+    } catch {
+      // Ignore cancellation errors on already-locked/closed streams
+    }
   }
 
   /**
@@ -214,18 +263,20 @@ export class EventDrivenStream {
   private handleConnectionError(error: Error): void {
     this.isConnected = false;
 
-    if (this.canReconnect()) {
+    if (this.canReconnect(false)) {
       this.isReconnecting = true;
+      this.hasEnded = false;
       this.emit(StreamEvent.Reconnect, {
         attempt: this.reconnectAttempts + 1,
         maxAttempts: this.maxReconnectAttempts,
         error,
       });
-      void this.attemptReconnect(error);
+      void this.attemptReconnect(error, false);
       return;
     }
 
     this.isReconnecting = false;
+    this.terminalError = error;
     this.emit(StreamEvent.Error, { error });
   }
 
@@ -234,20 +285,26 @@ export class EventDrivenStream {
    */
   private handleConnectionClosed(): void {
     this.isConnected = false;
-    if (this.reconnectOnClose && this.canReconnect()) {
+    if (this.canReconnect(true)) {
       this.isReconnecting = true;
-      void this.attemptReconnect();
+      this.hasEnded = false;
+      this.emit(StreamEvent.Reconnect, {
+        attempt: this.reconnectAttempts + 1,
+        maxAttempts: this.maxReconnectAttempts,
+      });
+      void this.attemptReconnect(undefined, true);
       return;
     }
     this.isReconnecting = false;
+    this.hasEnded = true;
     this.emit(StreamEvent.Close, { message: 'Connection closed' });
   }
 
   /**
    * Attempt to reconnect with exponential backoff
    */
-  private async attemptReconnect(lastError?: Error): Promise<void> {
-    while (!this.isClosed && this.canReconnect()) {
+  private async attemptReconnect(lastError?: Error, isCleanClose: boolean = false): Promise<void> {
+    while (!this.isClosed && this.canReconnect(isCleanClose)) {
       this.reconnectAttempts++;
       const delayMs = Math.min(
         this.reconnectDelay * Math.pow(2, Math.max(0, this.reconnectAttempts - 1)),
@@ -255,10 +312,21 @@ export class EventDrivenStream {
       );
 
       await new Promise<void>(resolve => {
-        const timer = setTimeout(resolve, delayMs);
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          if (this.cancelReconnectSleep === finish) {
+            this.cancelReconnectSleep = null;
+          }
+          clearTimeout(timer);
+          resolve();
+        };
+        const timer = setTimeout(finish, delayMs);
         if (typeof (timer as any)?.unref === 'function') {
           (timer as any).unref();
         }
+        this.cancelReconnectSleep = finish;
       });
 
       if (this.isClosed) {
@@ -267,9 +335,10 @@ export class EventDrivenStream {
       }
 
       try {
-        const nextStream = await this.reconnectFactory!();
+        const nextStream = await this.reconnectFactory!(this.reconnectAbortController?.signal);
         if (this.isClosed) {
           this.isReconnecting = false;
+          await this.safeCancelStream(nextStream);
           return;
         }
         this.decoder = new TextDecoder();
@@ -277,12 +346,19 @@ export class EventDrivenStream {
         this.webStream = nextStream;
         this.isConnected = true;
         this.isReconnecting = false;
-        this.startReading();
+        this.hasEnded = false;
+        this.terminalError = null;
+        void this.startReading();
         return;
       } catch (err) {
-        lastError = err as Error;
-        if (!this.canReconnect()) {
+        if (this.isClosed) {
           this.isReconnecting = false;
+          return;
+        }
+        lastError = err as Error;
+        if (!this.canReconnect(isCleanClose)) {
+          this.isReconnecting = false;
+          this.terminalError = lastError;
           this.emit(StreamEvent.Error, { error: lastError });
           return;
         }
@@ -290,41 +366,58 @@ export class EventDrivenStream {
     }
 
     this.isReconnecting = false;
-    this.emit(StreamEvent.Error, {
-      error: lastError || new Error(`Max reconnect attempts (${this.maxReconnectAttempts}) exceeded`),
-    });
-  }
-
-  /**
-   * Clean up resources
-   */
-  private cleanup(): void {
-    if (this.reader) {
-      try {
-        this.reader.releaseLock();
-      } catch (error) {
-        console.debug('Reader lock already released or error:', error);
-      }
-      this.reader = null;
+    if (this.isClosed) {
+      return;
     }
-    this.buffer = '';
+    const finalError = lastError || new Error(`Max reconnect attempts (${this.maxReconnectAttempts}) exceeded`);
+    this.terminalError = finalError;
+    this.emit(StreamEvent.Error, { error: finalError });
   }
 
   /**
    * Close the stream
    */
   close(): void {
+    if (this.isClosed) {
+      return;
+    }
     this.isClosed = true;
+    this.hasEnded = true;
     this.isConnected = false;
     this.isReconnecting = false;
-    if (this.reader) {
+    this.preListenerDataQueue = [];
+
+    if (this.cancelReconnectSleep) {
+      const wakeSleep = this.cancelReconnectSleep;
+      this.cancelReconnectSleep = null;
+      wakeSleep();
+    }
+    if (this.reconnectAbortController) {
+      this.reconnectAbortController.abort();
+      this.reconnectAbortController = null;
+    }
+
+    const activeReader = this.reader;
+    const activeStream = this.webStream;
+    this.reader = null;
+    this.webStream = null;
+    this.buffer = '';
+
+    if (activeReader) {
       try {
-        void this.reader.cancel();
+        void activeReader.cancel().catch(() => {});
       } catch {
         // Ignore cancellation errors on already-closed streams
       }
+      try {
+        activeReader.releaseLock();
+      } catch {
+        // Lock may still settle with cancel()
+      }
+    } else if (activeStream) {
+      void this.safeCancelStream(activeStream);
     }
-    this.cleanup();
+
     this.emit(StreamEvent.Close, { message: 'Stream closed by user' });
   }
 
@@ -336,6 +429,16 @@ export class EventDrivenStream {
       this.eventListeners.set(event, []);
     }
     this.eventListeners.get(event)!.push(listener);
+    if (event === StreamEvent.Data && this.preListenerDataQueue.length > 0) {
+      const pending = this.preListenerDataQueue.splice(0);
+      for (const item of pending) {
+        try {
+          listener(item);
+        } catch (error) {
+          console.error(`Error in ${event} listener:`, error);
+        }
+      }
+    }
     return this;
   }
 
@@ -405,9 +508,9 @@ export class EventDrivenStream {
    */
   async* [Symbol.asyncIterator](): AsyncGenerator<StreamDataEvent, void, unknown> {
     const dataQueue: StreamDataEvent[] = [];
-    let isComplete = false;
-    let hasError = false;
-    let error: Error | null = null;
+    let isComplete = this.hasEnded || this.isClosed;
+    let hasError = this.terminalError !== null;
+    let error: Error | null = this.terminalError;
     let notifyWaiter: (() => void) | null = null;
 
     const wake = () => {
@@ -423,6 +526,11 @@ export class EventDrivenStream {
       wake();
     };
 
+    const reconnectListener = () => {
+      isComplete = false;
+      wake();
+    };
+
     const errorListener = (eventData: StreamErrorEvent) => {
       hasError = true;
       error = eventData.error;
@@ -435,19 +543,31 @@ export class EventDrivenStream {
     };
 
     this.on(StreamEvent.Data, dataListener);
+    this.on(StreamEvent.Reconnect, reconnectListener);
     this.on(StreamEvent.Error, errorListener);
     this.on(StreamEvent.Close, closeListener);
 
     try {
       // Keep draining until the stream has ended AND the queue is empty, so
-      // events that arrived just before a close/error are not dropped.
-      while (dataQueue.length > 0 || ((!isComplete || this.isReconnecting) && !hasError)) {
+      // events that arrived before or right as close/error fired are never dropped.
+      while (dataQueue.length > 0 || (!this.isClosed && (!isComplete || this.isReconnecting) && !hasError)) {
         if (dataQueue.length > 0) {
           yield dataQueue.shift()!;
         } else {
           await new Promise<void>(resolve => {
-            notifyWaiter = resolve;
-            const timer = setTimeout(resolve, 25);
+            let timer: ReturnType<typeof setTimeout> | null = null;
+            const done = () => {
+              if (timer !== null) {
+                clearTimeout(timer);
+                timer = null;
+              }
+              if (notifyWaiter === done) {
+                notifyWaiter = null;
+              }
+              resolve();
+            };
+            notifyWaiter = done;
+            timer = setTimeout(done, 25);
             if (typeof (timer as any)?.unref === 'function') {
               (timer as any).unref();
             }
@@ -460,6 +580,7 @@ export class EventDrivenStream {
       }
     } finally {
       this.off(StreamEvent.Data, dataListener);
+      this.off(StreamEvent.Reconnect, reconnectListener);
       this.off(StreamEvent.Error, errorListener);
       this.off(StreamEvent.Close, closeListener);
     }

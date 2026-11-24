@@ -12,10 +12,21 @@ import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSn
 import type * as Schemas from '../schemas.js';
 import {
 
-LeaveCallResponse,
+GetCallResponse,
+
+ListScheduledResponse,
+ScheduleCallRequest,
+
+ScheduleCallResponse,
 RespondToScheduledCallRequest,
 
 RespondToScheduledCallResponse,
+CreateCallRequest,
+
+CreateCallResponse,
+JoinCallRequest,
+
+JoinCallResponse,
 
 GetScheduledCallResponse,
 UpdateScheduledCallRequest,
@@ -23,20 +34,101 @@ UpdateScheduledCallRequest,
 UpdateScheduledCallResponse,
 
 CancelScheduledCallResponse,
-CreateCallRequest,
 
-CreateCallResponse,
-
-ListScheduledResponse,
-ScheduleCallRequest,
-
-ScheduleCallResponse,
-
-GetCallResponse,
-JoinCallRequest,
-
-JoinCallResponse,
+LeaveCallResponse,
 } from './models.js';
+
+
+/**
+ * Options for getCall method
+ * 
+ * @public
+ */
+export interface GetCallOptions {
+    
+    
+    /** A comma separated list of Call fields to display. 
+     * Also accepts: call.fields or proper camelCase (e.g., callFields) */
+    callFields?: Array<"conversation_id" | "created_at" | "id" | "join_policy" | "join_url" | "participant_count" | "title" | "viewer_may_join">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"host_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for listScheduled method
+ * 
+ * @public
+ */
+export interface ListScheduledOptions {
+    
+    
+    /** Calls still running at this time or starting after it (RFC 3339). Defaults to now. 
+     * Also accepts: start_time or proper camelCase (e.g., startTime) */
+    startTime?: string;
+    
+    
+    
+    /** Calls starting before this time (RFC 3339). Defaults to 24 hours after start_time. 
+     * Also accepts: end_time or proper camelCase (e.g., endTime) */
+    endTime?: string;
+    
+    
+    
+    /** The most calls to return. Defaults to 20. 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A comma separated list of ScheduledCall fields to display. 
+     * Also accepts: scheduled_call.fields or proper camelCase (e.g., scheduledCallFields) */
+    scheduledCallFields?: Array<"calendar" | "call_id" | "description" | "end_time" | "id" | "join_url" | "occurrence_start_time" | "recurrence" | "start_time" | "status" | "time_zone" | "title">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"call_id" | "invitees" | "organizer_id">;
+    
+    
+    
+    /** A comma separated list of Call fields to display. 
+     * Also accepts: call.fields or proper camelCase (e.g., callFields) */
+    callFields?: Array<"conversation_id" | "created_at" | "id" | "join_policy" | "join_url" | "participant_count" | "title" | "viewer_may_join">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
 
 
 
@@ -115,98 +207,6 @@ export interface CancelScheduledCallOptions {
 
 
 
-/**
- * Options for listScheduled method
- * 
- * @public
- */
-export interface ListScheduledOptions {
-    
-    
-    /** Calls still running at this time or starting after it (RFC 3339). Defaults to now. 
-     * Also accepts: start_time or proper camelCase (e.g., startTime) */
-    startTime?: string;
-    
-    
-    
-    /** Calls starting before this time (RFC 3339). Defaults to 24 hours after start_time. 
-     * Also accepts: end_time or proper camelCase (e.g., endTime) */
-    endTime?: string;
-    
-    
-    
-    /** The most calls to return. Defaults to 20. 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A comma separated list of ScheduledCall fields to display. 
-     * Also accepts: scheduled_call.fields or proper camelCase (e.g., scheduledCallFields) */
-    scheduledCallFields?: Array<"calendar" | "call_id" | "description" | "end_time" | "id" | "join_url" | "occurrence_start_time" | "recurrence" | "start_time" | "status" | "time_zone" | "title">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"call_id" | "invitees" | "organizer_id">;
-    
-    
-    
-    /** A comma separated list of Call fields to display. 
-     * Also accepts: call.fields or proper camelCase (e.g., callFields) */
-    callFields?: Array<"conversation_id" | "created_at" | "id" | "join_policy" | "join_url" | "participant_count" | "title" | "viewer_may_join">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for getCall method
- * 
- * @public
- */
-export interface GetCallOptions {
-    
-    
-    /** A comma separated list of Call fields to display. 
-     * Also accepts: call.fields or proper camelCase (e.g., callFields) */
-    callFields?: Array<"conversation_id" | "created_at" | "id" | "join_policy" | "join_url" | "participant_count" | "title" | "viewer_may_join">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"host_id">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
 
 /**
  * Client for calls operations
@@ -257,8 +257,8 @@ export class CallsClient {
 
 
   /**
-   * Leave a Call
-   * Ends the authenticated user's media session in the call (its WebSocket receives session.ended with reason left) and removes the user from the call.
+   * Get a Call
+   * Returns a call's title, join policy, host and participant count, and whether the authenticated user may join it without asking the host.
 
 
    * @param id id
@@ -266,10 +266,10 @@ export class CallsClient {
 
 
 
-   * @returns {Promise<LeaveCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<GetCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    leaveCall(
+    getCall(
         
         
         id: string,
@@ -278,11 +278,11 @@ export class CallsClient {
         
         
         
-        options: { requestOptions: { raw: true } }
+        options: GetCallOptions & { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    leaveCall(
+    getCall(
         
         
         id: string,
@@ -291,9 +291,11 @@ export class CallsClient {
         
         
         
-    ): Promise<LeaveCallResponse>;
+        options?: GetCallOptions
+        
+    ): Promise<GetCallResponse>;
     // Implementation
-    async leaveCall(
+    async getCall(
         
         
         
@@ -306,14 +308,50 @@ export class CallsClient {
         
         
         
-    ): Promise<LeaveCallResponse | Response> {
+        options: GetCallOptions = {}
+        
+    ): Promise<GetCallResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
-        const requestOptions = {};
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'call.fields': 'callFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            callFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
         
 
         // Build the path with path parameters
-        let path = '/2/calls/{id}/leave';
+        let path = '/2/calls/{id}';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -322,6 +360,45 @@ export class CallsClient {
 
         // Build query parameters
         const params = new URLSearchParams();
+        
+        
+        
+        
+        if (callFields !== undefined && callFields.length > 0) {
+            
+            
+            params.append('call.fields', normalizeFields(callFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
         
 
         // Prepare request options
@@ -333,7 +410,344 @@ export class CallsClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['calls.join'],
+                    'OAuth2UserToken': ['calls.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetCallResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * List Scheduled Calls
+   * Returns the X calls on the authenticated user's calendar, earliest first: events on their X Calls calendar, and events on the Microsoft Outlook calendars they linked to X whose conference is an X call. Calls still running at start_time are included. The window defaults to the next 24 hours and may span at most 7 days. Use scheduled_call.fields to select which fields are returned.
+
+When both are provided, `start_time` must be earlier than `end_time`.
+
+
+
+   * @returns {Promise<ListScheduledResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    listScheduled(
+        
+        
+        
+        
+        options: ListScheduledOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    listScheduled(
+        
+        
+        
+        
+        options?: ListScheduledOptions
+        
+    ): Promise<ListScheduledResponse>;
+    // Implementation
+    async listScheduled(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: ListScheduledOptions = {}
+        
+    ): Promise<ListScheduledResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'start_time': 'startTime',
+            
+            
+            
+            'end_time': 'endTime',
+            
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'scheduled_call.fields': 'scheduledCallFields',
+            
+            
+            
+            
+            
+            'call.fields': 'callFields',
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            startTime = undefined,
+            
+            
+            
+            endTime = undefined,
+            
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            scheduledCallFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            callFields = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/calls/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (startTime !== undefined) {
+            
+            params.append('start_time', String(startTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (endTime !== undefined) {
+            
+            params.append('end_time', String(endTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (scheduledCallFields !== undefined && scheduledCallFields.length > 0) {
+            
+            
+            params.append('scheduled_call.fields', normalizeFields(scheduledCallFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (callFields !== undefined && callFields.length > 0) {
+            
+            
+            params.append('call.fields', normalizeFields(callFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['calls.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<ListScheduledResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Schedule a Call
+   * Puts an X call on the authenticated user's X Calls calendar, with them as its organizer, and invites people to it. The call exists right away: share its join_url, or put an agent in it at start time with POST /2/calls/:id/join. A recurrence (an RFC 5545 RRULE) repeats it. Invitees get an email unless notify_invitees is false.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<ScheduleCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    scheduleCall(
+        
+        
+        
+        body: ScheduleCallRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    scheduleCall(
+        
+        
+        
+        body: ScheduleCallRequest,
+        
+        
+    ): Promise<ScheduleCallResponse>;
+    // Implementation
+    async scheduleCall(
+        
+        
+        
+        
+        
+        
+        body: ScheduleCallRequest,
+        
+        
+        
+    ): Promise<ScheduleCallResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/calls/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['calls.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
                     
                 }
                 
@@ -344,7 +758,7 @@ export class CallsClient {
             
         };
 
-        return this.client.request<LeaveCallResponse>(
+        return this.client.request<ScheduleCallResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -457,6 +871,204 @@ export class CallsClient {
         };
 
         return this.client.request<RespondToScheduledCallResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create a Call
+   * Starts an X call hosted by the authenticated user (typically a bot). Pass an XChat conversation_id to start the call in that conversation, or omit it for a standalone call anyone can join with the returned join_url (subject to join_policy). The call starts empty: put an agent in it with POST /2/calls/:id/join. When the host joins a conversation call, the other members are rung.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createCall(
+        
+        
+        
+        body: CreateCallRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createCall(
+        
+        
+        
+        body: CreateCallRequest,
+        
+        
+    ): Promise<CreateCallResponse>;
+    // Implementation
+    async createCall(
+        
+        
+        
+        
+        
+        
+        body: CreateCallRequest,
+        
+        
+        
+    ): Promise<CreateCallResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/calls';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['calls.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateCallResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Join a Call
+   * Starts a media session that takes part in the call as the authenticated user. The response carries a media_url and a short-lived media_token: open a WebSocket to media_url with the token as a Bearer credential to exchange PCM16 audio and events with the call; the user enters the call when the WebSocket connects. On a closed or trusted call the session asks the host first (admission: requires_approval).
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<JoinCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    joinCall(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: JoinCallRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    joinCall(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: JoinCallRequest,
+        
+        
+    ): Promise<JoinCallResponse>;
+    // Implementation
+    async joinCall(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: JoinCallRequest,
+        
+        
+        
+    ): Promise<JoinCallResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/calls/{id}/join';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['calls.join'],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<JoinCallResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
@@ -950,431 +1562,8 @@ export class CallsClient {
 
 
   /**
-   * Create a Call
-   * Starts an X call hosted by the authenticated user (typically a bot). Pass an XChat conversation_id to start the call in that conversation, or omit it for a standalone call anyone can join with the returned join_url (subject to join_policy). The call starts empty: put an agent in it with POST /2/calls/:id/join. When the host joins a conversation call, the other members are rung.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createCall(
-        
-        
-        
-        body: CreateCallRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createCall(
-        
-        
-        
-        body: CreateCallRequest,
-        
-        
-    ): Promise<CreateCallResponse>;
-    // Implementation
-    async createCall(
-        
-        
-        
-        
-        
-        
-        body: CreateCallRequest,
-        
-        
-        
-    ): Promise<CreateCallResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/calls';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['calls.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateCallResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * List Scheduled Calls
-   * Returns the X calls on the authenticated user's calendar, earliest first: events on their X Calls calendar, and events on the Microsoft Outlook calendars they linked to X whose conference is an X call. Calls still running at start_time are included. The window defaults to the next 24 hours and may span at most 7 days. Use scheduled_call.fields to select which fields are returned.
-
-When both are provided, `start_time` must be earlier than `end_time`.
-
-
-
-   * @returns {Promise<ListScheduledResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    listScheduled(
-        
-        
-        
-        
-        options: ListScheduledOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    listScheduled(
-        
-        
-        
-        
-        options?: ListScheduledOptions
-        
-    ): Promise<ListScheduledResponse>;
-    // Implementation
-    async listScheduled(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: ListScheduledOptions = {}
-        
-    ): Promise<ListScheduledResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'start_time': 'startTime',
-            
-            
-            
-            'end_time': 'endTime',
-            
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'scheduled_call.fields': 'scheduledCallFields',
-            
-            
-            
-            
-            
-            'call.fields': 'callFields',
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            startTime = undefined,
-            
-            
-            
-            endTime = undefined,
-            
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            scheduledCallFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            callFields = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/calls/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (startTime !== undefined) {
-            
-            params.append('start_time', String(startTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (endTime !== undefined) {
-            
-            params.append('end_time', String(endTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (scheduledCallFields !== undefined && scheduledCallFields.length > 0) {
-            
-            
-            params.append('scheduled_call.fields', normalizeFields(scheduledCallFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (callFields !== undefined && callFields.length > 0) {
-            
-            
-            params.append('call.fields', normalizeFields(callFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['calls.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<ListScheduledResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Schedule a Call
-   * Puts an X call on the authenticated user's X Calls calendar, with them as its organizer, and invites people to it. The call exists right away: share its join_url, or put an agent in it at start time with POST /2/calls/:id/join. A recurrence (an RFC 5545 RRULE) repeats it. Invitees get an email unless notify_invitees is false.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<ScheduleCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    scheduleCall(
-        
-        
-        
-        body: ScheduleCallRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    scheduleCall(
-        
-        
-        
-        body: ScheduleCallRequest,
-        
-        
-    ): Promise<ScheduleCallResponse>;
-    // Implementation
-    async scheduleCall(
-        
-        
-        
-        
-        
-        
-        body: ScheduleCallRequest,
-        
-        
-        
-    ): Promise<ScheduleCallResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/calls/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['calls.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ScheduleCallResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get a Call
-   * Returns a call's title, join policy, host and participant count, and whether the authenticated user may join it without asking the host.
+   * Leave a Call
+   * Ends the authenticated user's media session in the call (its WebSocket receives session.ended with reason left) and removes the user from the call.
 
 
    * @param id id
@@ -1382,206 +1571,23 @@ When both are provided, `start_time` must be earlier than `end_time`.
 
 
 
-   * @returns {Promise<GetCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   * @returns {Promise<LeaveCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
    */
     // Overload 1: raw: true returns Response
-    getCall(
+    leaveCall(
         
         
         id: string,
         
         
         
-        
-        
-        options: GetCallOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getCall(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetCallOptions
-        
-    ): Promise<GetCallResponse>;
-    // Implementation
-    async getCall(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetCallOptions = {}
-        
-    ): Promise<GetCallResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'call.fields': 'callFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            callFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/calls/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (callFields !== undefined && callFields.length > 0) {
-            
-            
-            params.append('call.fields', normalizeFields(callFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['calls.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetCallResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Join a Call
-   * Starts a media session that takes part in the call as the authenticated user. The response carries a media_url and a short-lived media_token: open a WebSocket to media_url with the token as a Bearer credential to exchange PCM16 audio and events with the call; the user enters the call when the WebSocket connects. On a closed or trusted call the session asks the host first (admission: requires_approval).
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<JoinCallResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    joinCall(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: JoinCallRequest,
         
         
         options: { requestOptions: { raw: true } }
         
     ): Promise<Response>;
     // Overload 2: Default behavior returns parsed response
-    joinCall(
+    leaveCall(
         
         
         id: string,
@@ -1589,12 +1595,10 @@ When both are provided, `start_time` must be earlier than `end_time`.
         
         
         
-        body: JoinCallRequest,
         
-        
-    ): Promise<JoinCallResponse>;
+    ): Promise<LeaveCallResponse>;
     // Implementation
-    async joinCall(
+    async leaveCall(
         
         
         
@@ -1605,18 +1609,16 @@ When both are provided, `start_time` must be earlier than `end_time`.
         
         
         
-        body: JoinCallRequest,
         
         
-        
-    ): Promise<JoinCallResponse | Response> {
+    ): Promise<LeaveCallResponse | Response> {
         // Normalize options to handle both camelCase and original API parameter names
         
         const requestOptions = {};
         
 
         // Build the path with path parameters
-        let path = '/2/calls/{id}/join';
+        let path = '/2/calls/{id}/leave';
         
         
         path = path.replace('{id}', encodeURIComponent(String(id)));
@@ -1629,8 +1631,6 @@ When both are provided, `start_time` must be earlier than `end_time`.
 
         // Prepare request options
         const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
             
             
             // Pass security requirements for smart auth selection
@@ -1649,7 +1649,7 @@ When both are provided, `start_time` must be earlier than `end_time`.
             
         };
 
-        return this.client.request<JoinCallResponse>(
+        return this.client.request<LeaveCallResponse>(
             'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions

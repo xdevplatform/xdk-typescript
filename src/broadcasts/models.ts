@@ -9,160 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for unmuteChatUser
- *
- * @public
- */
-export type UnmuteChatUserResponse = Schemas.UnmuteChatUserResponse;
-
-
-
-/**
- * Response for deleteBroadcastChatMessage
- *
- * @public
- */
-export type DeleteBroadcastChatMessageResponse = Schemas.DeleteBroadcastChatMessageResponse;
-
-
-
-/**
- * Response for listLiveCategories
- *
- * @public
- */
-export type ListLiveCategoriesResponse = Schemas.ListLiveCategoriesResponse;
-
-
-
-/**
- * Response for removeChatModerator
- *
- * @public
- */
-export type RemoveChatModeratorResponse = Schemas.RemoveChatModeratorResponse;
-
-
-/**
- * Request for muteBroadcastChatUser
- *
- * @public
- */
-export type MuteBroadcastChatUserRequest = Schemas.MuteBroadcastChatUserRequest;
-
-
-/**
- * Response for muteBroadcastChatUser
- *
- * @public
- */
-export type MuteBroadcastChatUserResponse = Schemas.MuteBroadcastChatUserResponse;
-
-
-
-/**
- * Response for getUserBroadcast
- *
- * @public
- */
-export type GetUserBroadcastResponse = Schemas.GetUserBroadcastResponse;
-
-
-
-/**
- * Response for deleteUserBroadcast
- *
- * @public
- */
-export type DeleteUserBroadcastResponse = Schemas.DeleteUserBroadcastResponse;
-
-
-/**
- * Request for updateUserBroadcastState
- *
- * @public
- */
-export type UpdateUserBroadcastStateRequest = Schemas.UpdateUserBroadcastStateRequest;
-
-
-/**
- * Response for updateUserBroadcastState
- *
- * @public
- */
-export type UpdateUserBroadcastStateResponse = Schemas.UpdateUserBroadcastStateResponse;
-
-
-
-/**
- * Response for getChatModerators
- *
- * @public
- */
-export type GetChatModeratorsResponse = Schemas.GetChatModeratorsResponse;
-
-
-/**
- * Request for addChatModerator
- *
- * @public
- */
-export type AddChatModeratorRequest = Schemas.AddChatModeratorRequest;
-
-
-/**
- * Response for addChatModerator
- *
- * @public
- */
-export type AddChatModeratorResponse = Schemas.AddChatModeratorResponse;
-
-
-
-/**
- * Response for getBroadcast
- *
- * @public
- */
-export type GetBroadcastResponse = Schemas.GetBroadcastResponse;
-
-
-/**
- * Request for updateBroadcast
- *
- * @public
- */
-export type UpdateBroadcastRequest = Schemas.UpdateBroadcastRequest;
-
-
-/**
- * Response for updateBroadcast
- *
- * @public
- */
-export type UpdateBroadcastResponse = Schemas.UpdateBroadcastResponse;
-
-
-
-/**
- * Response for deleteBroadcast
- *
- * @public
- */
-export type DeleteBroadcastResponse = Schemas.DeleteBroadcastResponse;
-
-
-
-/**
- * Response for getRegion
- *
- * @public
- */
-export type GetRegionResponse = Schemas.GetRegionResponse;
-
-
-
-/**
  * Response for getUserSource
  *
  * @public
@@ -222,6 +68,40 @@ export type CreateUserBroadcastResponse = Schemas.CreateUserBroadcastResponse;
 
 
 /**
+ * Response for getScheduledBroadcast
+ *
+ * @public
+ */
+export type GetScheduledBroadcastResponse = Schemas.GetScheduledBroadcastResponse;
+
+
+/**
+ * Request for updateScheduledBroadcast
+ *
+ * @public
+ */
+export type UpdateScheduledBroadcastRequest = Schemas.UpdateScheduledBroadcastRequest;
+
+
+/**
+ * Response for updateScheduledBroadcast
+ *
+ * @public
+ */
+export type UpdateScheduledBroadcastResponse = Schemas.UpdateScheduledBroadcastResponse;
+
+
+
+/**
+ * Response for deleteScheduledBroadcast
+ *
+ * @public
+ */
+export type DeleteScheduledBroadcastResponse = Schemas.DeleteScheduledBroadcastResponse;
+
+
+
+/**
  * Response for listScheduled
  *
  * @public
@@ -245,54 +125,45 @@ export type CreateScheduledBroadcastRequest = Schemas.CreateScheduledBroadcastRe
 export type CreateScheduledBroadcastResponse = Schemas.CreateScheduledBroadcastResponse;
 
 
-
 /**
- * Response for getBroadcastChat
+ * Request for updateUserBroadcastState
  *
  * @public
  */
-export type GetBroadcastChatResponse = Schemas.GetBroadcastChatResponse;
+export type UpdateUserBroadcastStateRequest = Schemas.UpdateUserBroadcastStateRequest;
 
 
 /**
- * Request for sendBroadcastChat
+ * Response for updateUserBroadcastState
  *
  * @public
  */
-export type SendBroadcastChatRequest = Schemas.SendBroadcastChatRequest;
+export type UpdateUserBroadcastStateResponse = Schemas.UpdateUserBroadcastStateResponse;
 
 
 /**
- * Response for sendBroadcastChat
+ * Request for updateBroadcastState
  *
  * @public
  */
-export type SendBroadcastChatResponse = Schemas.SendBroadcastChatResponse;
+export type UpdateBroadcastStateRequest = Schemas.UpdateBroadcastStateRequest;
+
+
+/**
+ * Response for updateBroadcastState
+ *
+ * @public
+ */
+export type UpdateBroadcastStateResponse = Schemas.UpdateBroadcastStateResponse;
 
 
 
 /**
- * Response for listUserSources
+ * Response for unmuteBroadcastChatUser
  *
  * @public
  */
-export type ListUserSourcesResponse = Schemas.ListUserSourcesResponse;
-
-
-/**
- * Request for createUserSource
- *
- * @public
- */
-export type CreateUserSourceRequest = Schemas.CreateUserSourceRequest;
-
-
-/**
- * Response for createUserSource
- *
- * @public
- */
-export type CreateUserSourceResponse = Schemas.CreateUserSourceResponse;
+export type UnmuteBroadcastChatUserResponse = Schemas.UnmuteBroadcastChatUserResponse;
 
 
 
@@ -340,6 +211,15 @@ export type DeleteSourceResponse = Schemas.DeleteSourceResponse;
 
 
 /**
+ * Response for listLiveCategories
+ *
+ * @public
+ */
+export type ListLiveCategoriesResponse = Schemas.ListLiveCategoriesResponse;
+
+
+
+/**
  * Response for getChatMutedUsers
  *
  * @public
@@ -365,52 +245,27 @@ export type MuteChatUserResponse = Schemas.MuteChatUserResponse;
 
 
 /**
- * Response for unmuteBroadcastChatUser
+ * Response for listUserSources
  *
  * @public
  */
-export type UnmuteBroadcastChatUserResponse = Schemas.UnmuteBroadcastChatUserResponse;
-
+export type ListUserSourcesResponse = Schemas.ListUserSourcesResponse;
 
 
 /**
- * Response for list
+ * Request for createUserSource
  *
  * @public
  */
-export type ListResponse = Schemas.ListBroadcastsResponse;
+export type CreateUserSourceRequest = Schemas.CreateUserSourceRequest;
 
 
 /**
- * Request for createBroadcast
+ * Response for createUserSource
  *
  * @public
  */
-export type CreateBroadcastRequest = Schemas.CreateBroadcastRequest;
-
-
-/**
- * Response for createBroadcast
- *
- * @public
- */
-export type CreateBroadcastResponse = Schemas.CreateBroadcastResponse;
-
-
-/**
- * Request for updateBroadcastState
- *
- * @public
- */
-export type UpdateBroadcastStateRequest = Schemas.UpdateBroadcastStateRequest;
-
-
-/**
- * Response for updateBroadcastState
- *
- * @public
- */
-export type UpdateBroadcastStateResponse = Schemas.UpdateBroadcastStateResponse;
+export type CreateUserSourceResponse = Schemas.CreateUserSourceResponse;
 
 
 
@@ -438,6 +293,126 @@ export type CreateSourceRequest = Schemas.CreateSourceRequest;
 export type CreateSourceResponse = Schemas.CreateSourceResponse;
 
 
+/**
+ * Request for muteBroadcastChatUser
+ *
+ * @public
+ */
+export type MuteBroadcastChatUserRequest = Schemas.MuteBroadcastChatUserRequest;
+
+
+/**
+ * Response for muteBroadcastChatUser
+ *
+ * @public
+ */
+export type MuteBroadcastChatUserResponse = Schemas.MuteBroadcastChatUserResponse;
+
+
+
+/**
+ * Response for getBroadcastChat
+ *
+ * @public
+ */
+export type GetBroadcastChatResponse = Schemas.GetBroadcastChatResponse;
+
+
+/**
+ * Request for sendBroadcastChat
+ *
+ * @public
+ */
+export type SendBroadcastChatRequest = Schemas.SendBroadcastChatRequest;
+
+
+/**
+ * Response for sendBroadcastChat
+ *
+ * @public
+ */
+export type SendBroadcastChatResponse = Schemas.SendBroadcastChatResponse;
+
+
+
+/**
+ * Response for getUserBroadcast
+ *
+ * @public
+ */
+export type GetUserBroadcastResponse = Schemas.GetUserBroadcastResponse;
+
+
+
+/**
+ * Response for deleteUserBroadcast
+ *
+ * @public
+ */
+export type DeleteUserBroadcastResponse = Schemas.DeleteUserBroadcastResponse;
+
+
+
+/**
+ * Response for getRegion
+ *
+ * @public
+ */
+export type GetRegionResponse = Schemas.GetRegionResponse;
+
+
+
+/**
+ * Response for deleteBroadcastChatMessage
+ *
+ * @public
+ */
+export type DeleteBroadcastChatMessageResponse = Schemas.DeleteBroadcastChatMessageResponse;
+
+
+
+/**
+ * Response for getBroadcast
+ *
+ * @public
+ */
+export type GetBroadcastResponse = Schemas.GetBroadcastResponse;
+
+
+/**
+ * Request for updateBroadcast
+ *
+ * @public
+ */
+export type UpdateBroadcastRequest = Schemas.UpdateBroadcastRequest;
+
+
+/**
+ * Response for updateBroadcast
+ *
+ * @public
+ */
+export type UpdateBroadcastResponse = Schemas.UpdateBroadcastResponse;
+
+
+
+/**
+ * Response for deleteBroadcast
+ *
+ * @public
+ */
+export type DeleteBroadcastResponse = Schemas.DeleteBroadcastResponse;
+
+
+
+/**
+ * Response for removeChatModerator
+ *
+ * @public
+ */
+export type RemoveChatModeratorResponse = Schemas.RemoveChatModeratorResponse;
+
+
 
 /**
  * Response for getSourceStreamKey
@@ -449,34 +424,59 @@ export type GetSourceStreamKeyResponse = Schemas.GetSourceStreamKeyResponse;
 
 
 /**
- * Response for getScheduledBroadcast
+ * Response for unmuteChatUser
  *
  * @public
  */
-export type GetScheduledBroadcastResponse = Schemas.GetScheduledBroadcastResponse;
-
-
-/**
- * Request for updateScheduledBroadcast
- *
- * @public
- */
-export type UpdateScheduledBroadcastRequest = Schemas.UpdateScheduledBroadcastRequest;
-
-
-/**
- * Response for updateScheduledBroadcast
- *
- * @public
- */
-export type UpdateScheduledBroadcastResponse = Schemas.UpdateScheduledBroadcastResponse;
+export type UnmuteChatUserResponse = Schemas.UnmuteChatUserResponse;
 
 
 
 /**
- * Response for deleteScheduledBroadcast
+ * Response for getChatModerators
  *
  * @public
  */
-export type DeleteScheduledBroadcastResponse = Schemas.DeleteScheduledBroadcastResponse;
+export type GetChatModeratorsResponse = Schemas.GetChatModeratorsResponse;
+
+
+/**
+ * Request for addChatModerator
+ *
+ * @public
+ */
+export type AddChatModeratorRequest = Schemas.AddChatModeratorRequest;
+
+
+/**
+ * Response for addChatModerator
+ *
+ * @public
+ */
+export type AddChatModeratorResponse = Schemas.AddChatModeratorResponse;
+
+
+
+/**
+ * Response for list
+ *
+ * @public
+ */
+export type ListResponse = Schemas.ListBroadcastsResponse;
+
+
+/**
+ * Request for createBroadcast
+ *
+ * @public
+ */
+export type CreateBroadcastRequest = Schemas.CreateBroadcastRequest;
+
+
+/**
+ * Response for createBroadcast
+ *
+ * @public
+ */
+export type CreateBroadcastResponse = Schemas.CreateBroadcastResponse;
 

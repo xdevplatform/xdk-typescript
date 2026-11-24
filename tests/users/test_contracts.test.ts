@@ -54,7 +54,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getByUsername', async () => {
+  it('should have correct request structure for getById', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -86,7 +86,7 @@ describe('UsersClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_username',
+      'test_value',
       
       
       ];
@@ -95,7 +95,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getByUsername'];
+      const method = (usersClient as any)['getById'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -107,7 +107,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/by/username/{username}';
+      const expectedPath = '/2/users/{id}';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -120,7 +120,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getByUsername', async () => {
+  it('should handle required parameters correctly for getById', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -139,7 +139,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getByUsername'];
+      const method = (usersClient as any)['getById'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -147,7 +147,7 @@ describe('UsersClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_username',
+      'test_value',
       
       
       ];
@@ -164,7 +164,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getByUsername', async () => {
+  it('should validate response structure for getById', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -195,13 +195,13 @@ describe('UsersClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_username',
+      'test_value',
       
       
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getByUsername'];
+      const method = (usersClient as any)['getById'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -218,7 +218,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getByUsername', async () => {
+  it('should execute real TCP loopback roundtrip for getById', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":{\"active_follower_count\":1,\"affiliation\":{\"badge_url\":\"test_value\",\"description\":\"test_value\",\"url\":\"test_value\",\"user_id\":[\"1234567890\"]},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{\"description\":{},\"url\":{}},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"like_count\":1,\"listed_count\":1,\"media_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{\"country_codes\":[\"test_value\"],\"scope\":\"user\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
     
@@ -231,7 +231,7 @@ describe('UsersClient Contracts', () => {
       
       
       
-      'test_username',
+      'test_id',
       
       
       
@@ -242,7 +242,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getByUsername'];
+    const method = (loopbackUsers as any)['getById'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -257,210 +257,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getByIds', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      ['test_item'],
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getByIds'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getByIds', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getByIds'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      ['test_item'],
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getByIds', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      ['test_item'],
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getByIds'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getByIds', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      ['test_item'],
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getByIds'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for unfollowUser', async () => {
+  it('should have correct request structure for unfollowList', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -505,7 +302,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['unfollowUser'];
+      const method = (usersClient as any)['unfollowList'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -517,7 +314,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{source_user_id}/following/{target_user_id}';
+      const expectedPath = '/2/users/{id}/followed_lists/{list_id}';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -530,7 +327,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for unfollowUser', async () => {
+  it('should handle required parameters correctly for unfollowList', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -549,7 +346,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['unfollowUser'];
+      const method = (usersClient as any)['unfollowList'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -578,7 +375,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for unfollowUser', async () => {
+  it('should validate response structure for unfollowList', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -619,7 +416,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['unfollowUser'];
+      const method = (usersClient as any)['unfollowList'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -636,7 +433,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for unfollowUser', async () => {
+  it('should execute real TCP loopback roundtrip for unfollowList', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":{\"following\":true}}";
     
@@ -649,11 +446,11 @@ describe('UsersClient Contracts', () => {
       
       
       
-      'test_sourceUserId',
+      'test_id',
       
       
       
-      'test_targetUserId',
+      'test_listId',
       
       
       
@@ -664,7 +461,1643 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['unfollowUser'];
+    const method = (loopbackUsers as any)['unfollowList'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for likePost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['likePost'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/likes';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for likePost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['likePost'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for likePost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['likePost'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for likePost', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"liked\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"tweet_id\":\"1234567890\"}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['likePost'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getFollowedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getFollowedLists'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/followed_lists';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getFollowedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getFollowedLists'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getFollowedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getFollowedLists'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getFollowedLists', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getFollowedLists'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for followList', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['followList'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/followed_lists';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for followList', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['followList'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for followList', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['followList'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for followList', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"following\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"list_id\":\"1234567890\"}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['followList'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getListMemberships', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getListMemberships'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/list_memberships';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getListMemberships', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getListMemberships'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getListMemberships', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getListMemberships'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getListMemberships', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getListMemberships'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getMuting', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getMuting'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/muting';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getMuting', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getMuting'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getMuting', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getMuting'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getMuting', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getMuting'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for muteUser', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['muteUser'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/muting';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for muteUser', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['muteUser'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for muteUser', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['muteUser'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for muteUser', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"muting\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"target_user_id\":\"test_value\"}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['muteUser'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getMe', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getMe'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/me';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getMe', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getMe'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getMe', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getMe'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getMe', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"active_follower_count\":1,\"affiliation\":{\"badge_url\":\"test_value\",\"description\":\"test_value\",\"url\":\"test_value\",\"user_id\":[\"1234567890\"]},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{\"description\":{},\"url\":{}},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"like_count\":1,\"listed_count\":1,\"media_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{\"country_codes\":[\"test_value\"],\"scope\":\"user\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getMe'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for unrepostPost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_source_tweet_id',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['unrepostPost'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/retweets/{source_tweet_id}';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for unrepostPost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['unrepostPost'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_source_tweet_id',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for unrepostPost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_source_tweet_id',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['unrepostPost'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for unrepostPost', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"retweeted\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      'test_sourceTweetId',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['unrepostPost'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -882,209 +2315,6 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getAffiliates', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getAffiliates'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/affiliates';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getAffiliates', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getAffiliates'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getAffiliates', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getAffiliates'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getAffiliates', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getAffiliates'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
   it('should have correct request structure for getRepostsOfMe', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
@@ -1272,7 +2502,226 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getPinnedLists', async () => {
+  it('should have correct request structure for deleteBookmark', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['deleteBookmark'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/bookmarks/{tweet_id}';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for deleteBookmark', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['deleteBookmark'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for deleteBookmark', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['deleteBookmark'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for deleteBookmark', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"bookmarked\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      'test_tweetId',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['deleteBookmark'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getMentions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1313,7 +2762,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getPinnedLists'];
+      const method = (usersClient as any)['getMentions'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -1325,7 +2774,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/pinned_lists';
+      const expectedPath = '/2/users/{id}/mentions';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -1338,7 +2787,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getPinnedLists', async () => {
+  it('should handle required parameters correctly for getMentions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1357,7 +2806,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getPinnedLists'];
+      const method = (usersClient as any)['getMentions'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -1382,7 +2831,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getPinnedLists', async () => {
+  it('should validate response structure for getMentions', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1419,7 +2868,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getPinnedLists'];
+      const method = (usersClient as any)['getMentions'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -1436,9 +2885,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getPinnedLists', async () => {
+  it('should execute real TCP loopback roundtrip for getMentions', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"newest_id\":\"test_value\",\"oldest_id\":\"test_value\",\"result_count\":1}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -1460,7 +2909,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getPinnedLists'];
+    const method = (loopbackUsers as any)['getMentions'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -1475,7 +2924,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for pinList', async () => {
+  it('should have correct request structure for repostPost', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1516,7 +2965,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['pinList'];
+      const method = (usersClient as any)['repostPost'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -1528,7 +2977,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/pinned_lists';
+      const expectedPath = '/2/users/{id}/retweets';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -1541,7 +2990,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for pinList', async () => {
+  it('should handle required parameters correctly for repostPost', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1560,7 +3009,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['pinList'];
+      const method = (usersClient as any)['repostPost'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -1585,7 +3034,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for pinList', async () => {
+  it('should validate response structure for repostPost', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1622,7 +3071,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['pinList'];
+      const method = (usersClient as any)['repostPost'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -1639,216 +3088,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for pinList', async () => {
+  it('should execute real TCP loopback roundtrip for repostPost', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"pinned\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      JSON.parse("{\"list_id\":\"1234567890\"}"),
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['pinList'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for likePost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['likePost'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/likes';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for likePost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['likePost'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for likePost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['likePost'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for likePost', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"liked\":true}}";
+    const fullMockJson = "{\"data\":{\"rest_id\":\"test_value\",\"retweeted\":true}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -1874,7 +3116,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['likePost'];
+    const method = (loopbackUsers as any)['repostPost'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -1889,7 +3131,194 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getFollowers', async () => {
+  it('should have correct request structure for getMeFollowing', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getMeFollowing'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/me/following';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getMeFollowing', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getMeFollowing'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getMeFollowing', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getMeFollowing'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getMeFollowing', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getMeFollowing'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getBookmarksByFolderId', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1924,13 +3353,17 @@ describe('UsersClient Contracts', () => {
       'test_value',
       
       
+      
+      'test_folder_id',
+      
+      
       ];
       
       // Build options object (empty for required params test, optional params go here)
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getFollowers'];
+      const method = (usersClient as any)['getBookmarksByFolderId'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -1942,7 +3375,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/followers';
+      const expectedPath = '/2/users/{id}/bookmarks/folders/{folder_id}';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -1955,7 +3388,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getFollowers', async () => {
+  it('should handle required parameters correctly for getBookmarksByFolderId', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -1974,7 +3407,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getFollowers'];
+      const method = (usersClient as any)['getBookmarksByFolderId'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -1983,6 +3416,10 @@ describe('UsersClient Contracts', () => {
       
       
       'test_value',
+      
+      
+      
+      'test_folder_id',
       
       
       ];
@@ -1999,7 +3436,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getFollowers', async () => {
+  it('should validate response structure for getBookmarksByFolderId', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -2033,10 +3470,14 @@ describe('UsersClient Contracts', () => {
       'test_value',
       
       
+      
+      'test_folder_id',
+      
+      
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getFollowers'];
+      const method = (usersClient as any)['getBookmarksByFolderId'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -2053,9 +3494,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getFollowers', async () => {
+  it('should execute real TCP loopback roundtrip for getBookmarksByFolderId', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    const fullMockJson = "{\"data\":[{\"id\":\"1234567890\"}]}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -2070,6 +3511,10 @@ describe('UsersClient Contracts', () => {
       
       
       
+      'test_folderId',
+      
+      
+      
       
       
       
@@ -2077,7 +3522,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getFollowers'];
+    const method = (loopbackUsers as any)['getBookmarksByFolderId'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -2496,6 +3941,631 @@ describe('UsersClient Contracts', () => {
     const recorded = loopbackServer.lastRequest();
     expect(recorded).toBeDefined();
     expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for idUnblock', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['idUnblock'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{source_user_id}/blocking/{target_user_id}';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for idUnblock', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['idUnblock'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for idUnblock', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['idUnblock'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for idUnblock', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"blocking\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_sourceUserId',
+      
+      
+      
+      'test_targetUserId',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['idUnblock'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getTimeline', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getTimeline'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/timelines/reverse_chronological';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getTimeline', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getTimeline'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getTimeline', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getTimeline'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getTimeline', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"newest_id\":\"test_value\",\"oldest_id\":\"test_value\",\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getTimeline'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getOwnedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getOwnedLists'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/owned_lists';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getOwnedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getOwnedLists'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getOwnedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getOwnedLists'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getOwnedLists', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getOwnedLists'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
     
     expect(recorded!.firstHeader('authorization')).toBeTruthy();
     
@@ -3115,7 +5185,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for unlikePost', async () => {
+  it('should have correct request structure for getBookmarks', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3150,17 +5220,13 @@ describe('UsersClient Contracts', () => {
       'test_value',
       
       
-      
-      'test_value',
-      
-      
       ];
       
       // Build options object (empty for required params test, optional params go here)
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['unlikePost'];
+      const method = (usersClient as any)['getBookmarks'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -3172,7 +5238,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/likes/{tweet_id}';
+      const expectedPath = '/2/users/{id}/bookmarks';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -3185,7 +5251,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for unlikePost', async () => {
+  it('should handle required parameters correctly for getBookmarks', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3204,16 +5270,12 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['unlikePost'];
+      const method = (usersClient as any)['getBookmarks'];
       
       
       // Method has required parameters - verify it can be called with proper args
       // Build required parameter arguments (all required params are direct args in TypeScript)
       const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
       
       
       'test_value',
@@ -3233,7 +5295,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for unlikePost', async () => {
+  it('should validate response structure for getBookmarks', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3267,14 +5329,10 @@ describe('UsersClient Contracts', () => {
       'test_value',
       
       
-      
-      'test_value',
-      
-      
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['unlikePost'];
+      const method = (usersClient as any)['getBookmarks'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -3291,9 +5349,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for unlikePost', async () => {
+  it('should execute real TCP loopback roundtrip for getBookmarks', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"liked\":true}}";
+    const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -3308,10 +5366,6 @@ describe('UsersClient Contracts', () => {
       
       
       
-      'test_tweetId',
-      
-      
-      
       
       
       
@@ -3319,7 +5373,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['unlikePost'];
+    const method = (loopbackUsers as any)['getBookmarks'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -3327,14 +5381,14 @@ describe('UsersClient Contracts', () => {
 
     const recorded = loopbackServer.lastRequest();
     expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
+    expect(recorded!.method).toBe('GET');
     
     expect(recorded!.firstHeader('authorization')).toBeTruthy();
     
   });
 
   
-  it('should have correct request structure for getOwnedLists', async () => {
+  it('should have correct request structure for createBookmark', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3375,7 +5429,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getOwnedLists'];
+      const method = (usersClient as any)['createBookmark'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -3387,7 +5441,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/owned_lists';
+      const expectedPath = '/2/users/{id}/bookmarks';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -3400,7 +5454,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getOwnedLists', async () => {
+  it('should handle required parameters correctly for createBookmark', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3419,7 +5473,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getOwnedLists'];
+      const method = (usersClient as any)['createBookmark'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -3444,7 +5498,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getOwnedLists', async () => {
+  it('should validate response structure for createBookmark', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3481,7 +5535,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getOwnedLists'];
+      const method = (usersClient as any)['createBookmark'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -3498,9 +5552,216 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getOwnedLists', async () => {
+  it('should execute real TCP loopback roundtrip for createBookmark', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    const fullMockJson = "{\"data\":{\"bookmarked\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"folder_id\":\"test_value\",\"tweet_id\":\"1234567890\",\"tweet_ids\":[\"test_value\"]}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['createBookmark'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for unblockDms', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['unblockDms'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/dm/unblock';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for unblockDms', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['unblockDms'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for unblockDms', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['unblockDms'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for unblockDms', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"blocked\":true}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -3522,7 +5783,194 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getOwnedLists'];
+    const method = (loopbackUsers as any)['unblockDms'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getMeFollowers', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getMeFollowers'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/me/followers';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getMeFollowers', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getMeFollowers'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getMeFollowers', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getMeFollowers'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getMeFollowers', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getMeFollowers'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -3756,7 +6204,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for idUnblock', async () => {
+  it('should have correct request structure for search', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3788,11 +6236,7 @@ describe('UsersClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_value',
-      
-      
-      
-      'test_value',
+      'test_query',
       
       
       ];
@@ -3801,7 +6245,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['idUnblock'];
+      const method = (usersClient as any)['search'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -3813,7 +6257,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{source_user_id}/blocking/{target_user_id}';
+      const expectedPath = '/2/users/search';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -3826,7 +6270,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for idUnblock', async () => {
+  it('should handle required parameters correctly for search', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3845,7 +6289,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['idUnblock'];
+      const method = (usersClient as any)['search'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -3853,11 +6297,7 @@ describe('UsersClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_value',
-      
-      
-      
-      'test_value',
+      'test_query',
       
       
       ];
@@ -3874,7 +6314,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for idUnblock', async () => {
+  it('should validate response structure for search', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -3905,17 +6345,13 @@ describe('UsersClient Contracts', () => {
       const requiredArgs: any[] = [
       
       
-      'test_value',
-      
-      
-      
-      'test_value',
+      'test_query',
       
       
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['idUnblock'];
+      const method = (usersClient as any)['search'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -3932,9 +6368,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for idUnblock', async () => {
+  it('should execute real TCP loopback roundtrip for search', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"blocking\":true}}";
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -3945,13 +6381,9 @@ describe('UsersClient Contracts', () => {
       
       
       
-      'test_sourceUserId',
       
       
-      
-      'test_targetUserId',
-      
-      
+      'test_query',
       
       
       
@@ -3960,7 +6392,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['idUnblock'];
+    const method = (loopbackUsers as any)['search'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -3968,14 +6400,14 @@ describe('UsersClient Contracts', () => {
 
     const recorded = loopbackServer.lastRequest();
     expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
+    expect(recorded!.method).toBe('GET');
     
     expect(recorded!.firstHeader('authorization')).toBeTruthy();
     
   });
 
   
-  it('should have correct request structure for getFollowedLists', async () => {
+  it('should have correct request structure for getFollowers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4016,7 +6448,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getFollowedLists'];
+      const method = (usersClient as any)['getFollowers'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -4028,7 +6460,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/followed_lists';
+      const expectedPath = '/2/users/{id}/followers';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -4041,7 +6473,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getFollowedLists', async () => {
+  it('should handle required parameters correctly for getFollowers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4060,7 +6492,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getFollowedLists'];
+      const method = (usersClient as any)['getFollowers'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -4085,7 +6517,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getFollowedLists', async () => {
+  it('should validate response structure for getFollowers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4122,7 +6554,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getFollowedLists'];
+      const method = (usersClient as any)['getFollowers'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -4139,7 +6571,210 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getFollowedLists', async () => {
+  it('should execute real TCP loopback roundtrip for getFollowers', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getFollowers'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getPinnedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getPinnedLists'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/pinned_lists';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getPinnedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getPinnedLists'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getPinnedLists', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getPinnedLists'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getPinnedLists', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
     
@@ -4163,7 +6798,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getFollowedLists'];
+    const method = (loopbackUsers as any)['getPinnedLists'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -4178,7 +6813,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for followList', async () => {
+  it('should have correct request structure for pinList', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4219,7 +6854,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['followList'];
+      const method = (usersClient as any)['pinList'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -4231,7 +6866,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/followed_lists';
+      const expectedPath = '/2/users/{id}/pinned_lists';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -4244,7 +6879,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for followList', async () => {
+  it('should handle required parameters correctly for pinList', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4263,7 +6898,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['followList'];
+      const method = (usersClient as any)['pinList'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -4288,7 +6923,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for followList', async () => {
+  it('should validate response structure for pinList', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4325,7 +6960,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['followList'];
+      const method = (usersClient as any)['pinList'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -4342,9 +6977,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for followList', async () => {
+  it('should execute real TCP loopback roundtrip for pinList', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"following\":true}}";
+    const fullMockJson = "{\"data\":{\"pinned\":true}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -4370,7 +7005,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['followList'];
+    const method = (loopbackUsers as any)['pinList'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -4385,7 +7020,7 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getMe', async () => {
+  it('should have correct request structure for getAffiliates', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4416,13 +7051,17 @@ describe('UsersClient Contracts', () => {
       // Build required parameter arguments
       const requiredArgs: any[] = [
       
+      
+      'test_value',
+      
+      
       ];
       
       // Build options object (empty for required params test, optional params go here)
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getMe'];
+      const method = (usersClient as any)['getAffiliates'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -4434,7 +7073,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/me';
+      const expectedPath = '/2/users/{id}/affiliates';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -4447,7 +7086,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getMe', async () => {
+  it('should handle required parameters correctly for getAffiliates', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4466,12 +7105,16 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getMe'];
+      const method = (usersClient as any)['getAffiliates'];
       
       
       // Method has required parameters - verify it can be called with proper args
       // Build required parameter arguments (all required params are direct args in TypeScript)
       const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
       
       ];
       
@@ -4487,7 +7130,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getMe', async () => {
+  it('should validate response structure for getAffiliates', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -4517,10 +7160,14 @@ describe('UsersClient Contracts', () => {
       // Build arguments (all required params are direct args in TypeScript)
       const requiredArgs: any[] = [
       
+      
+      'test_value',
+      
+      
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getMe'];
+      const method = (usersClient as any)['getAffiliates'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -4537,9 +7184,9 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getMe', async () => {
+  it('should execute real TCP loopback roundtrip for getAffiliates', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"active_follower_count\":1,\"affiliation\":{\"badge_url\":\"test_value\",\"description\":\"test_value\",\"url\":\"test_value\",\"user_id\":[\"1234567890\"]},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{\"description\":{},\"url\":{}},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"like_count\":1,\"listed_count\":1,\"media_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{\"country_codes\":[\"test_value\"],\"scope\":\"user\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -4550,6 +7197,10 @@ describe('UsersClient Contracts', () => {
       
       
       
+      'test_id',
+      
+      
+      
       
       
       
@@ -4557,7 +7208,7 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getMe'];
+    const method = (loopbackUsers as any)['getAffiliates'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -4982,7 +7633,851 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getMentions', async () => {
+  it('should have correct request structure for unfollowUser', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['unfollowUser'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{source_user_id}/following/{target_user_id}';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for unfollowUser', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['unfollowUser'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for unfollowUser', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['unfollowUser'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for unfollowUser', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"following\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_sourceUserId',
+      
+      
+      
+      'test_targetUserId',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['unfollowUser'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getByIds', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      ['test_item'],
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getByIds'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getByIds', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getByIds'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      ['test_item'],
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getByIds', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      ['test_item'],
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getByIds'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getByIds', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      ['test_item'],
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getByIds'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getByUsername', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_username',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getByUsername'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/by/username/{username}';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getByUsername', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getByUsername'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_username',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getByUsername', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_username',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getByUsername'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getByUsername', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"active_follower_count\":1,\"affiliation\":{\"badge_url\":\"test_value\",\"description\":\"test_value\",\"url\":\"test_value\",\"user_id\":[\"1234567890\"]},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{\"description\":{},\"url\":{}},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"like_count\":1,\"listed_count\":1,\"media_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{\"country_codes\":[\"test_value\"],\"scope\":\"user\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_username',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getByUsername'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for unlikePost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['unlikePost'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/likes/{tweet_id}';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for unlikePost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['unlikePost'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for unlikePost', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['unlikePost'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for unlikePost', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"liked\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      'test_tweetId',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['unlikePost'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('DELETE');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -5023,7 +8518,7 @@ describe('UsersClient Contracts', () => {
       const options: any = {};
       
       // Call the method
-      const method = (usersClient as any)['getMentions'];
+      const method = (usersClient as any)['getPosts'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -5035,7 +8530,7 @@ describe('UsersClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/mentions';
+      const expectedPath = '/2/users/{id}/tweets';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -5048,7 +8543,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getMentions', async () => {
+  it('should handle required parameters correctly for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -5067,7 +8562,7 @@ describe('UsersClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (usersClient as any)['getMentions'];
+      const method = (usersClient as any)['getPosts'];
       
       
       // Method has required parameters - verify it can be called with proper args
@@ -5092,7 +8587,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getMentions', async () => {
+  it('should validate response structure for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -5129,7 +8624,7 @@ describe('UsersClient Contracts', () => {
       ];
       const options: any = {};
 
-      const method = (usersClient as any)['getMentions'];
+      const method = (usersClient as any)['getPosts'];
       const result = await method.apply(usersClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -5146,7 +8641,7 @@ describe('UsersClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getMentions', async () => {
+  it('should execute real TCP loopback roundtrip for getPosts', async () => {
     loopbackServer.reset();
     const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"newest_id\":\"test_value\",\"oldest_id\":\"test_value\",\"result_count\":1}}";
     
@@ -5170,7 +8665,413 @@ describe('UsersClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackUsers as any)['getMentions'];
+    const method = (loopbackUsers as any)['getPosts'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for blockDms', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['blockDms'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/{id}/dm/block';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for blockDms', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['blockDms'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for blockDms', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['blockDms'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for blockDms', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"blocked\":true}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['blockDms'];
+    const result = await method.apply(loopbackUsers, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for getByUsernames', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      ['test_item'],
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (usersClient as any)['getByUsernames'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/users/by';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getByUsernames', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (usersClient as any)['getByUsernames'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      ['test_item'],
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getByUsernames', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      ['test_item'],
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (usersClient as any)['getByUsernames'];
+      const result = await method.apply(usersClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getByUsernames', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      ['test_item'],
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackUsers as any)['getByUsernames'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 
@@ -5404,1029 +9305,6 @@ describe('UsersClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for repostPost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['repostPost'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/retweets';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for repostPost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['repostPost'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for repostPost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['repostPost'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for repostPost', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"rest_id\":\"test_value\",\"retweeted\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      JSON.parse("{\"tweet_id\":\"1234567890\"}"),
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['repostPost'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for unblockDms', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['unblockDms'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/dm/unblock';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for unblockDms', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['unblockDms'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for unblockDms', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['unblockDms'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for unblockDms', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"blocked\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['unblockDms'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getBookmarks', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getBookmarks'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/bookmarks';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getBookmarks', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getBookmarks'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getBookmarks', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getBookmarks'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getBookmarks', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getBookmarks'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for createBookmark', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['createBookmark'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/bookmarks';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for createBookmark', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['createBookmark'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for createBookmark', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['createBookmark'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for createBookmark', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"bookmarked\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      JSON.parse("{\"folder_id\":\"test_value\",\"tweet_id\":\"1234567890\",\"tweet_ids\":[\"test_value\"]}"),
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['createBookmark'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getListMemberships', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getListMemberships'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/list_memberships';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getListMemberships', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getListMemberships'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getListMemberships', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getListMemberships'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getListMemberships', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"created_at\":\"test_value\",\"description\":\"test_value\",\"follower_count\":1,\"id\":\"1234567890\",\"member_count\":1,\"name\":\"test_value\",\"owner_id\":\"test_value\",\"private\":true}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getListMemberships'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
   it('should have correct request structure for getPublicKey', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
@@ -6616,2884 +9494,6 @@ describe('UsersClient Contracts', () => {
     ];
 
     const method = (loopbackUsers as any)['getPublicKey'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getById', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getById'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getById', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getById'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getById', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getById'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getById', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"active_follower_count\":1,\"affiliation\":{\"badge_url\":\"test_value\",\"description\":\"test_value\",\"url\":\"test_value\",\"user_id\":[\"1234567890\"]},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{\"description\":{},\"url\":{}},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"like_count\":1,\"listed_count\":1,\"media_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{\"country_codes\":[\"test_value\"],\"scope\":\"user\"}},\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getById'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for deleteBookmark', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['deleteBookmark'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/bookmarks/{tweet_id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for deleteBookmark', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['deleteBookmark'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for deleteBookmark', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['deleteBookmark'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for deleteBookmark', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"bookmarked\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      'test_tweetId',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['deleteBookmark'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getByUsernames', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      ['test_item'],
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getByUsernames'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/by';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getByUsernames', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getByUsernames'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      ['test_item'],
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getByUsernames', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      ['test_item'],
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getByUsernames'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getByUsernames', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      ['test_item'],
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getByUsernames'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getBookmarksByFolderId', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_folder_id',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getBookmarksByFolderId'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/bookmarks/folders/{folder_id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getBookmarksByFolderId', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getBookmarksByFolderId'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_folder_id',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getBookmarksByFolderId', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_folder_id',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getBookmarksByFolderId'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getBookmarksByFolderId', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"id\":\"1234567890\"}]}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      'test_folderId',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getBookmarksByFolderId'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for unfollowList', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['unfollowList'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/followed_lists/{list_id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for unfollowList', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['unfollowList'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for unfollowList', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['unfollowList'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for unfollowList', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"following\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      'test_listId',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['unfollowList'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getMeFollowing', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getMeFollowing'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/me/following';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getMeFollowing', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getMeFollowing'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getMeFollowing', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getMeFollowing'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getMeFollowing', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getMeFollowing'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getMuting', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getMuting'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/muting';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getMuting', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getMuting'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getMuting', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getMuting'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getMuting', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getMuting'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for muteUser', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['muteUser'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/muting';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for muteUser', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['muteUser'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for muteUser', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['muteUser'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for muteUser', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"muting\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      JSON.parse("{\"target_user_id\":\"test_value\"}"),
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['muteUser'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for unrepostPost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_source_tweet_id',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['unrepostPost'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/retweets/{source_tweet_id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for unrepostPost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['unrepostPost'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_source_tweet_id',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for unrepostPost', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_source_tweet_id',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['unrepostPost'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for unrepostPost', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"retweeted\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      'test_sourceTweetId',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['unrepostPost'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getMeFollowers', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getMeFollowers'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/me/followers';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getMeFollowers', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getMeFollowers'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getMeFollowers', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getMeFollowers'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getMeFollowers', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getMeFollowers'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for blockDms', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['blockDms'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/dm/block';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for blockDms', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['blockDms'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for blockDms', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['blockDms'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for blockDms', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"blocked\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['blockDms'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getPosts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getPosts'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/tweets';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getPosts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getPosts'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getPosts', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getPosts'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getPosts', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"newest_id\":\"test_value\",\"oldest_id\":\"test_value\",\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getPosts'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for getTimeline', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['getTimeline'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/{id}/timelines/reverse_chronological';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for getTimeline', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['getTimeline'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for getTimeline', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['getTimeline'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for getTimeline', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"article\":{},\"article_title\":{},\"attachments\":{},\"author_id\":\"test_value\",\"card_uri\":\"test_value\",\"community_id\":\"test_value\",\"context_annotations\":[{\"domain\":{\"id\":\"test_value\",\"name\":\"test_value\"},\"entity\":{\"id\":\"test_value\",\"name\":\"test_value\"}}],\"conversation_id\":\"test_value\",\"created_at\":\"2025-01-15T12:00:00.000Z\",\"display_text_range\":[1],\"edit_controls\":{},\"edit_history_post_ids\":[\"test_value\"],\"entities\":{},\"geo\":{},\"id\":\"1234567890\",\"in_reply_to_user_id\":\"test_value\",\"lang\":\"test_value\",\"matched_media_notes\":[{}],\"media_metadata\":[{}],\"non_public_metrics\":{},\"note_post\":{\"text\":\"Hello from XDK!\"},\"note_request_suggestions\":[{}],\"organic_metrics\":{},\"paid_partnership\":true,\"possibly_sensitive\":true,\"promoted_metrics\":{},\"public_metrics\":{\"bookmark_count\":1,\"impression_count\":1,\"like_count\":1,\"quote_count\":1,\"reply_count\":1,\"repost_count\":1},\"referenced_posts\":[{\"id\":\"1234567890\",\"type\":\"retweeted\"}],\"reply_settings\":\"test_value\",\"scopes\":{\"followers\":true},\"source\":\"test_value\",\"suggested_source_links\":[\"test_value\"],\"suggested_source_links_with_counts\":[{}],\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\",\"withheld\":{\"copyright\":true,\"country_codes\":[\"test_value\"]}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"newest_id\":\"test_value\",\"oldest_id\":\"test_value\",\"result_count\":1}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['getTimeline'];
-    const result = await method.apply(loopbackUsers, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for search', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_query',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (usersClient as any)['search'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/users/search';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for search', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (usersClient as any)['search'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_query',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(usersClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for search', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_query',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (usersClient as any)['search'];
-      const result = await method.apply(usersClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for search', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      'test_query',
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackUsers as any)['search'];
     const result = await method.apply(loopbackUsers, callArgs);
     expect(result).toBeDefined();
 

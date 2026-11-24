@@ -12,38 +12,6 @@ import { Client, ApiResponse, RequestOptions, normalizeFields, transformKeysToSn
 import type * as Schemas from '../schemas.js';
 import {
 
-UnmuteChatUserResponse,
-
-DeleteBroadcastChatMessageResponse,
-
-ListLiveCategoriesResponse,
-
-RemoveChatModeratorResponse,
-MuteBroadcastChatUserRequest,
-
-MuteBroadcastChatUserResponse,
-
-GetUserBroadcastResponse,
-
-DeleteUserBroadcastResponse,
-UpdateUserBroadcastStateRequest,
-
-UpdateUserBroadcastStateResponse,
-
-GetChatModeratorsResponse,
-AddChatModeratorRequest,
-
-AddChatModeratorResponse,
-
-GetBroadcastResponse,
-UpdateBroadcastRequest,
-
-UpdateBroadcastResponse,
-
-DeleteBroadcastResponse,
-
-GetRegionResponse,
-
 GetUserSourceResponse,
 UpdateUserSourceRequest,
 
@@ -56,20 +24,25 @@ CreateUserBroadcastRequest,
 
 CreateUserBroadcastResponse,
 
+GetScheduledBroadcastResponse,
+UpdateScheduledBroadcastRequest,
+
+UpdateScheduledBroadcastResponse,
+
+DeleteScheduledBroadcastResponse,
+
 ListScheduledResponse,
 CreateScheduledBroadcastRequest,
 
 CreateScheduledBroadcastResponse,
+UpdateUserBroadcastStateRequest,
 
-GetBroadcastChatResponse,
-SendBroadcastChatRequest,
+UpdateUserBroadcastStateResponse,
+UpdateBroadcastStateRequest,
 
-SendBroadcastChatResponse,
+UpdateBroadcastStateResponse,
 
-ListUserSourcesResponse,
-CreateUserSourceRequest,
-
-CreateUserSourceResponse,
+UnmuteBroadcastChatUserResponse,
 
 GoLiveScheduledBroadcastResponse,
 
@@ -80,121 +53,62 @@ UpdateSourceResponse,
 
 DeleteSourceResponse,
 
+ListLiveCategoriesResponse,
+
 GetChatMutedUsersResponse,
 MuteChatUserRequest,
 
 MuteChatUserResponse,
 
-UnmuteBroadcastChatUserResponse,
+ListUserSourcesResponse,
+CreateUserSourceRequest,
 
-ListResponse,
-CreateBroadcastRequest,
-
-CreateBroadcastResponse,
-UpdateBroadcastStateRequest,
-
-UpdateBroadcastStateResponse,
+CreateUserSourceResponse,
 
 ListSourcesResponse,
 CreateSourceRequest,
 
 CreateSourceResponse,
+MuteBroadcastChatUserRequest,
+
+MuteBroadcastChatUserResponse,
+
+GetBroadcastChatResponse,
+SendBroadcastChatRequest,
+
+SendBroadcastChatResponse,
+
+GetUserBroadcastResponse,
+
+DeleteUserBroadcastResponse,
+
+GetRegionResponse,
+
+DeleteBroadcastChatMessageResponse,
+
+GetBroadcastResponse,
+UpdateBroadcastRequest,
+
+UpdateBroadcastResponse,
+
+DeleteBroadcastResponse,
+
+RemoveChatModeratorResponse,
 
 GetSourceStreamKeyResponse,
 
-GetScheduledBroadcastResponse,
-UpdateScheduledBroadcastRequest,
+UnmuteChatUserResponse,
 
-UpdateScheduledBroadcastResponse,
+GetChatModeratorsResponse,
+AddChatModeratorRequest,
 
-DeleteScheduledBroadcastResponse,
+AddChatModeratorResponse,
+
+ListResponse,
+CreateBroadcastRequest,
+
+CreateBroadcastResponse,
 } from './models.js';
-
-
-/**
- * Options for unmuteChatUser method
- * 
- * @public
- */
-export interface UnmuteChatUserOptions {
-    
-    
-    /** A broadcast whose host's chats the user is unmuted in. 
-     * Also accepts: broadcast_id or proper camelCase (e.g., broadcastId) */
-    broadcastId?: string;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-
-
-
-
-
-
-/**
- * Options for getChatModerators method
- * 
- * @public
- */
-export interface GetChatModeratorsOptions {
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
-    
-    
-    
-    /** A comma separated list of Post fields to display. 
-     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
-    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
-/**
- * Options for getBroadcast method
- * 
- * @public
- */
-export interface GetBroadcastOptions {
-    
-    
-    /** A comma separated list of Broadcast fields to display. 
-     * Also accepts: broadcast.fields or proper camelCase (e.g., broadcastFields) */
-    broadcastFields?: Array<"available_for_replay" | "broadcast_id" | "chat_option" | "created_at_ms" | "end_ms" | "height" | "id" | "image_url" | "image_url_medium" | "image_url_small" | "is_high_latency" | "language" | "live_category_id" | "media_key" | "scheduled_end_ms" | "scheduled_start_ms" | "share_url" | "source_id" | "start_ms" | "state" | "title" | "total_watched" | "total_watching" | "tweet_id" | "twitter_user_id" | "updated_at_ms" | "width">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
-
-
-
 
 
 
@@ -220,6 +134,29 @@ export interface ListUserOptions {
     [key: string]: any;
 }
 
+
+
+
+
+/**
+ * Options for deleteScheduledBroadcast method
+ * 
+ * @public
+ */
+export interface DeleteScheduledBroadcastOptions {
+    
+    
+    /** Deprecated: recurring schedules are being retired and `true` will be rejected. 
+     * Also accepts: roll_forward or proper camelCase (e.g., rollForward) */
+    rollForward?: boolean;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
 
 
 /**
@@ -261,50 +198,6 @@ export interface ListScheduledOptions {
 }
 
 
-
-/**
- * Options for getBroadcastChat method
- * 
- * @public
- */
-export interface GetBroadcastChatOptions {
-    
-    
-    /** max_results 
-     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
-    maxResults?: number;
-    
-    
-    
-    /** A 64-bit signed integer. 
-     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
-    paginationToken?: string;
-    
-    
-    
-    /** A comma separated list of BroadcastChatMessage fields to display. 
-     * Also accepts: broadcast_chat_message.fields or proper camelCase (e.g., broadcastChatMessageFields) */
-    broadcastChatMessageFields?: Array<"author_name" | "author_username" | "broadcast_id" | "created_at_ms" | "id" | "relay_source" | "relay_user" | "reply_to" | "text">;
-    
-    
-    
-    /** A comma separated list of fields to expand. 
-     * Also accepts: expansions or proper camelCase (e.g., expansions) */
-    expansions?: Array<"author_id">;
-    
-    
-    
-    /** A comma separated list of User fields to display. 
-     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
-    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 
@@ -361,6 +254,140 @@ export interface GetChatMutedUsersOptions {
 
 
 
+
+
+
+
+/**
+ * Options for getBroadcastChat method
+ * 
+ * @public
+ */
+export interface GetBroadcastChatOptions {
+    
+    
+    /** max_results 
+     * Also accepts: max_results or proper camelCase (e.g., maxResults) */
+    maxResults?: number;
+    
+    
+    
+    /** A 64-bit signed integer. 
+     * Also accepts: pagination_token or proper camelCase (e.g., paginationToken) */
+    paginationToken?: string;
+    
+    
+    
+    /** A comma separated list of BroadcastChatMessage fields to display. 
+     * Also accepts: broadcast_chat_message.fields or proper camelCase (e.g., broadcastChatMessageFields) */
+    broadcastChatMessageFields?: Array<"author_name" | "author_username" | "broadcast_id" | "created_at_ms" | "id" | "relay_source" | "relay_user" | "reply_to" | "text">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"author_id">;
+    
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+
+
+
+
+/**
+ * Options for getBroadcast method
+ * 
+ * @public
+ */
+export interface GetBroadcastOptions {
+    
+    
+    /** A comma separated list of Broadcast fields to display. 
+     * Also accepts: broadcast.fields or proper camelCase (e.g., broadcastFields) */
+    broadcastFields?: Array<"available_for_replay" | "broadcast_id" | "chat_option" | "created_at_ms" | "end_ms" | "height" | "id" | "image_url" | "image_url_medium" | "image_url_small" | "is_high_latency" | "language" | "live_category_id" | "media_key" | "scheduled_end_ms" | "scheduled_start_ms" | "share_url" | "source_id" | "start_ms" | "state" | "title" | "total_watched" | "total_watching" | "tweet_id" | "twitter_user_id" | "updated_at_ms" | "width">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
+
+
+
+/**
+ * Options for unmuteChatUser method
+ * 
+ * @public
+ */
+export interface UnmuteChatUserOptions {
+    
+    
+    /** A broadcast whose host's chats the user is unmuted in. 
+     * Also accepts: broadcast_id or proper camelCase (e.g., broadcastId) */
+    broadcastId?: string;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+/**
+ * Options for getChatModerators method
+ * 
+ * @public
+ */
+export interface GetChatModeratorsOptions {
+    
+    
+    /** A comma separated list of User fields to display. 
+     * Also accepts: user.fields or proper camelCase (e.g., userFields) */
+    userFields?: Array<"active_follower_count" | "confirmed_email" | "connection_status" | "created_at" | "description" | "entities" | "id" | "is_identity_verified" | "location" | "name" | "org_only" | "parody" | "profile_banner_url" | "profile_image_url" | "protected" | "public_metrics" | "receives_your_chat" | "receives_your_dm" | "subscriber_count" | "subscribes_to_you" | "subscription" | "subscription_type" | "url" | "username" | "verified" | "verified_followers_count" | "verified_type" | "withheld">;
+    
+    
+    
+    /** A comma separated list of fields to expand. 
+     * Also accepts: expansions or proper camelCase (e.g., expansions) */
+    expansions?: Array<"affiliation" | "most_recent_post_id" | "pinned_post_id">;
+    
+    
+    
+    /** A comma separated list of Post fields to display. 
+     * Also accepts: post.fields or proper camelCase (e.g., postFields) */
+    postFields?: Array<"article" | "article_title" | "attachments" | "card_uri" | "community_id" | "context_annotations" | "conversation_id" | "created_at" | "display_text_range" | "edit_controls" | "entities" | "geo" | "id" | "lang" | "matched_media_notes" | "media_metadata" | "non_public_metrics" | "note_post" | "note_request_suggestions" | "organic_metrics" | "paid_partnership" | "possibly_sensitive" | "promoted_metrics" | "public_metrics" | "reply_settings" | "scopes" | "source" | "suggested_source_links" | "suggested_source_links_with_counts" | "text" | "withheld">;
+    
+    
+    
+    /** Additional request options */
+    requestOptions?: RequestOptions;
+    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
+    [key: string]: any;
+}
+
+
+
 /**
  * Options for list method
  * 
@@ -399,33 +426,6 @@ export interface ListOptions {
     [key: string]: any;
 }
 
-
-
-
-
-
-
-
-
-/**
- * Options for deleteScheduledBroadcast method
- * 
- * @public
- */
-export interface DeleteScheduledBroadcastOptions {
-    
-    
-    /** Deprecated: recurring schedules are being retired and `true` will be rejected. 
-     * Also accepts: roll_forward or proper camelCase (e.g., rollForward) */
-    rollForward?: boolean;
-    
-    
-    
-    /** Additional request options */
-    requestOptions?: RequestOptions;
-    /** Allow original API parameter names (e.g., 'tweet.fields', 'user.fields') and proper camelCase (e.g., 'tweetFields', 'userFields') */
-    [key: string]: any;
-}
 
 
 
@@ -474,1629 +474,6 @@ export class BroadcastsClient {
         }
         
         return normalized as T;
-    }
-
-
-  /**
-   * Unmute a User in Chat
-   * Allows a muted user to post messages in a broadcaster's chats again. Without `broadcast_id`, the user is unmuted in the authenticated user's own chats. Moderators pass `broadcast_id` to unmute the user in that broadcast host's chats.
-
-
-   * @param userId A 64-bit signed integer.
-
-
-
-
-   * @returns {Promise<UnmuteChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    unmuteChatUser(
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        options: UnmuteChatUserOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    unmuteChatUser(
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        options?: UnmuteChatUserOptions
-        
-    ): Promise<UnmuteChatUserResponse>;
-    // Implementation
-    async unmuteChatUser(
-        
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: UnmuteChatUserOptions = {}
-        
-    ): Promise<UnmuteChatUserResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'broadcast_id': 'broadcastId',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            broadcastId = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/chat/mutes/{user_id}';
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (broadcastId !== undefined) {
-            
-            params.append('broadcast_id', String(broadcastId));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<UnmuteChatUserResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Remove a Chat Message from a Live Broadcast
-   * Removes a specific chat message from a running broadcast where the authenticated user is the host or a moderator.
-
-
-   * @param id id
-
-
-
-   * @param messageId message_id
-
-
-
-
-   * @returns {Promise<DeleteBroadcastChatMessageResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteBroadcastChatMessage(
-        
-        
-        id: string,
-        
-        
-        
-        messageId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteBroadcastChatMessage(
-        
-        
-        id: string,
-        
-        
-        
-        messageId: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteBroadcastChatMessageResponse>;
-    // Implementation
-    async deleteBroadcastChatMessage(
-        
-        
-        
-        id: string,
-        
-        
-        
-        messageId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteBroadcastChatMessageResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat/{message_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{message_id}', encodeURIComponent(String(messageId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteBroadcastChatMessageResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * List Live Categories
-   * Returns the live categories a host can pick when going live, in display order. Pass a category's `id` as `live_category_id` on POST /2/broadcasts. Ids are permanent; names can change, so store the id and show the current name. The whole list is returned in one response, without paging.
-
-
-
-   * @returns {Promise<ListLiveCategoriesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    listLiveCategories(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    listLiveCategories(
-        
-        
-        
-        
-    ): Promise<ListLiveCategoriesResponse>;
-    // Implementation
-    async listLiveCategories(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<ListLiveCategoriesResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/categories';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                },
-                
-                {
-                    
-                    'BearerToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ListLiveCategoriesResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Remove a Chat Moderator
-   * Removes a moderator from the authenticated broadcaster's persistent list and returns the updated moderator user IDs.
-
-
-   * @param userId A 64-bit signed integer.
-
-
-
-
-   * @returns {Promise<RemoveChatModeratorResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    removeChatModerator(
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    removeChatModerator(
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-    ): Promise<RemoveChatModeratorResponse>;
-    // Implementation
-    async removeChatModerator(
-        
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<RemoveChatModeratorResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/chat/moderators/{user_id}';
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<RemoveChatModeratorResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Mute or Time Out a User in a Broadcast Chat
-   * Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must be the broadcast host or a moderator.
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<MuteBroadcastChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    muteBroadcastChatUser(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: MuteBroadcastChatUserRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    muteBroadcastChatUser(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: MuteBroadcastChatUserRequest,
-        
-        
-    ): Promise<MuteBroadcastChatUserResponse>;
-    // Implementation
-    async muteBroadcastChatUser(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: MuteBroadcastChatUserRequest,
-        
-        
-        
-    ): Promise<MuteBroadcastChatUserResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat/mutes';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<MuteBroadcastChatUserResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get a User's Broadcast
-   * Returns one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts/:id.
-
-
-   * @param id id
-
-
-
-   * @param broadcastId broadcast_id
-
-
-
-
-   * @returns {Promise<GetUserBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getUserBroadcast(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getUserBroadcast(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-    ): Promise<GetUserBroadcastResponse>;
-    // Implementation
-    async getUserBroadcast(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetUserBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/broadcasts/{broadcast_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetUserBroadcastResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Delete a User's Broadcast
-   * Deletes one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use DELETE /2/broadcasts/:id.
-
-
-   * @param id id
-
-
-
-   * @param broadcastId broadcast_id
-
-
-
-
-   * @returns {Promise<DeleteUserBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteUserBroadcast(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteUserBroadcast(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteUserBroadcastResponse>;
-    // Implementation
-    async deleteUserBroadcast(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteUserBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/broadcasts/{broadcast_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteUserBroadcastResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Publish or End a User's Broadcast
-   * Publishes or ends one of the authenticated user's broadcasts. `id` must be the authenticated user. `PUBLISH` takes a broadcast created with POST /2/users/:id/broadcasts live once its source is receiving video, and posts it unless `should_not_tweet` is true. `END` ends the broadcast. Deprecated: use PUT /2/broadcasts/:id/state to end a broadcast.
-
-
-   * @param id id
-
-
-
-   * @param broadcastId broadcast_id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<UpdateUserBroadcastStateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    updateUserBroadcastState(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        body: UpdateUserBroadcastStateRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    updateUserBroadcastState(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        body: UpdateUserBroadcastStateRequest,
-        
-        
-    ): Promise<UpdateUserBroadcastStateResponse>;
-    // Implementation
-    async updateUserBroadcastState(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        broadcastId: string,
-        
-        
-        
-        
-        
-        
-        body: UpdateUserBroadcastStateRequest,
-        
-        
-        
-    ): Promise<UpdateUserBroadcastStateResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/broadcasts/{broadcast_id}/state';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UpdateUserBroadcastStateResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Chat Moderators
-   * Returns the authenticated broadcaster's persistent moderators as User resources. The list applies to all of their current and future broadcast chats.
-
-
-
-   * @returns {Promise<GetChatModeratorsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getChatModerators(
-        
-        
-        
-        
-        options: GetChatModeratorsOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getChatModerators(
-        
-        
-        
-        
-        options?: GetChatModeratorsOptions
-        
-    ): Promise<GetChatModeratorsResponse>;
-    // Implementation
-    async getChatModerators(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetChatModeratorsOptions = {}
-        
-    ): Promise<GetChatModeratorsResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'user.fields': 'userFields',
-            
-            
-            
-            
-            
-            'post.fields': 'postFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            userFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            postFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/chat/moderators';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (postFields !== undefined && postFields.length > 0) {
-            
-            
-            params.append('post.fields', normalizeFields(postFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'users.read', 'tweet.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetChatModeratorsResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Add a Chat Moderator
-   * Adds a moderator to the authenticated broadcaster's persistent list and returns the updated moderator user IDs. The list applies to all current and future broadcast chats.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<AddChatModeratorResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    addChatModerator(
-        
-        
-        
-        body: AddChatModeratorRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    addChatModerator(
-        
-        
-        
-        body: AddChatModeratorRequest,
-        
-        
-    ): Promise<AddChatModeratorResponse>;
-    // Implementation
-    async addChatModerator(
-        
-        
-        
-        
-        
-        
-        body: AddChatModeratorRequest,
-        
-        
-        
-    ): Promise<AddChatModeratorResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/chat/moderators';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<AddChatModeratorResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get a Broadcast
-   * Returns a broadcast owned by the authenticated user.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<GetBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: GetBroadcastOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetBroadcastOptions
-        
-    ): Promise<GetBroadcastResponse>;
-    // Implementation
-    async getBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetBroadcastOptions = {}
-        
-    ): Promise<GetBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'broadcast.fields': 'broadcastFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            broadcastFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (broadcastFields !== undefined && broadcastFields.length > 0) {
-            
-            
-            params.append('broadcast.fields', normalizeFields(broadcastFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetBroadcastResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Update a Broadcast
-   * Changes the title, chat option or live category of one of the authenticated user's broadcasts and returns the broadcast. Send at least one of `title`, `chat_option` and `live_category_id`; fields left out keep their values. A broadcast can be updated before it starts, while it is live and after it has ended. A 409 `conflict` means the broadcast can't be edited, for example because it was deleted or moderated.
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<UpdateBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    updateBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: UpdateBroadcastRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    updateBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: UpdateBroadcastRequest,
-        
-        
-    ): Promise<UpdateBroadcastResponse>;
-    // Implementation
-    async updateBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: UpdateBroadcastRequest,
-        
-        
-        
-    ): Promise<UpdateBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UpdateBroadcastResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Delete a Broadcast
-   * Deletes one of the authenticated user's broadcasts, scheduled or ended, including its replay. A running broadcast must be ended first.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<DeleteBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteBroadcastResponse>;
-    // Implementation
-    async deleteBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteBroadcastResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get the Ingest Region
-   * Returns the ingest region nearest the server handling the request. Pass it as `region` when creating a stream source to ingest there.
-
-
-
-   * @returns {Promise<GetRegionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getRegion(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getRegion(
-        
-        
-        
-        
-    ): Promise<GetRegionResponse>;
-    // Implementation
-    async getRegion(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetRegionResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/region';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetRegionResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
     }
 
 
@@ -2726,2302 +1103,6 @@ export class BroadcastsClient {
 
 
   /**
-   * List Scheduled Broadcasts
-   * Returns scheduled broadcasts owned by the authenticated user.
-
-
-
-   * @returns {Promise<ListScheduledResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    listScheduled(
-        
-        
-        
-        
-        options: ListScheduledOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    listScheduled(
-        
-        
-        
-        
-        options?: ListScheduledOptions
-        
-    ): Promise<ListScheduledResponse>;
-    // Implementation
-    async listScheduled(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: ListScheduledOptions = {}
-        
-    ): Promise<ListScheduledResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'oldest_start_time': 'oldestStartTime',
-            
-            
-            
-            'newest_start_time': 'newestStartTime',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            oldestStartTime = undefined,
-            
-            
-            
-            newestStartTime = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (oldestStartTime !== undefined) {
-            
-            params.append('oldest_start_time', String(oldestStartTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (newestStartTime !== undefined) {
-            
-            params.append('newest_start_time', String(newestStartTime));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<ListScheduledResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Create a Scheduled Broadcast
-   * Schedules a broadcast for the authenticated user on one of their sources: `source_id` is required. Passing a stream key as `source_id` is deprecated and stops working when the /2/users/:id/sources and /2/users/:id/broadcasts routes reach end of life on January 1, 2027; pass the source's `id` from GET /2/sources instead.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateScheduledBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createScheduledBroadcast(
-        
-        
-        
-        body: CreateScheduledBroadcastRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createScheduledBroadcast(
-        
-        
-        
-        body: CreateScheduledBroadcastRequest,
-        
-        
-    ): Promise<CreateScheduledBroadcastResponse>;
-    // Implementation
-    async createScheduledBroadcast(
-        
-        
-        
-        
-        
-        
-        body: CreateScheduledBroadcastRequest,
-        
-        
-        
-    ): Promise<CreateScheduledBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateScheduledBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Broadcast Chat History
-   * Returns newest-first chat messages for a broadcast owned by the authenticated user.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<GetBroadcastChatResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getBroadcastChat(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: GetBroadcastChatOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getBroadcastChat(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options?: GetBroadcastChatOptions
-        
-    ): Promise<GetBroadcastChatResponse>;
-    // Implementation
-    async getBroadcastChat(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetBroadcastChatOptions = {}
-        
-    ): Promise<GetBroadcastChatResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'broadcast_chat_message.fields': 'broadcastChatMessageFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            broadcastChatMessageFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (broadcastChatMessageFields !== undefined && broadcastChatMessageFields.length > 0) {
-            
-            
-            params.append('broadcast_chat_message.fields', normalizeFields(broadcastChatMessageFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetBroadcastChatResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Send a Chat Message to a Live Broadcast
-   * Posts a chat message to a running broadcast, attributed to the authenticated user.
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<SendBroadcastChatResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    sendBroadcastChat(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: SendBroadcastChatRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    sendBroadcastChat(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: SendBroadcastChatRequest,
-        
-        
-    ): Promise<SendBroadcastChatResponse>;
-    // Implementation
-    async sendBroadcastChat(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: SendBroadcastChatRequest,
-        
-        
-        
-    ): Promise<SendBroadcastChatResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<SendBroadcastChatResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * List a User's Stream Sources
-   * Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). `id` must be the authenticated user.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<ListUserSourcesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    listUserSources(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    listUserSources(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-    ): Promise<ListUserSourcesResponse>;
-    // Implementation
-    async listUserSources(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<ListUserSourcesResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/sources';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ListUserSourcesResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Create a Stream Source for a User
-   * Creates a persistent RTMP/RTMPS ingest point for the authenticated user. `id` must be the authenticated user.
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateUserSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createUserSource(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        body: CreateUserSourceRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createUserSource(
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        body: CreateUserSourceRequest,
-        
-        
-    ): Promise<CreateUserSourceResponse>;
-    // Implementation
-    async createUserSource(
-        
-        
-        
-        id: Schemas.UserId,
-        
-        
-        
-        
-        
-        
-        body: CreateUserSourceRequest,
-        
-        
-        
-    ): Promise<CreateUserSourceResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/users/{id}/sources';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateUserSourceResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Go Live on a Scheduled Broadcast
-   * Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.
-
-
-   * @param id id
-
-
-
-
-   * @returns {Promise<GoLiveScheduledBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    goLiveScheduledBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    goLiveScheduledBroadcast(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-    ): Promise<GoLiveScheduledBroadcastResponse>;
-    // Implementation
-    async goLiveScheduledBroadcast(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GoLiveScheduledBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/scheduled/{id}/live';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GoLiveScheduledBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get a Stream Source
-   * Returns one of the authenticated user's stream sources. Poll it after starting an encoder and wait for `is_stream_active` before going live. The stream key is not included; read it with GET /2/sources/:id/stream_key.
-
-
-   * @param id Source id (19 digits), from GET /2/sources.
-
-
-
-
-   * @returns {Promise<GetSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getSource(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getSource(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-    ): Promise<GetSourceResponse>;
-    // Implementation
-    async getSource(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetSourceResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/sources/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetSourceResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Rename a Stream Source
-   * Renames one of the authenticated user's stream sources.
-
-
-   * @param id Source id (19 digits), from GET /2/sources.
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<UpdateSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    updateSource(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: UpdateSourceRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    updateSource(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: UpdateSourceRequest,
-        
-        
-    ): Promise<UpdateSourceResponse>;
-    // Implementation
-    async updateSource(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: UpdateSourceRequest,
-        
-        
-        
-    ): Promise<UpdateSourceResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/sources/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UpdateSourceResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Delete a Stream Source
-   * Deletes one of the authenticated user's stream sources.
-
-
-   * @param id Source id (19 digits), from GET /2/sources.
-
-
-
-
-   * @returns {Promise<DeleteSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    deleteSource(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    deleteSource(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-    ): Promise<DeleteSourceResponse>;
-    // Implementation
-    async deleteSource(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<DeleteSourceResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/sources/{id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<DeleteSourceResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get Muted Chat Users
-   * Returns the users muted in the authenticated broadcaster's chat, with the expiry time of timed mutes. Mutes apply to all of their broadcasts. Expired timed mutes are omitted. Use `expansions=user_id` to include the muted users.
-
-
-
-   * @returns {Promise<GetChatMutedUsersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getChatMutedUsers(
-        
-        
-        
-        
-        options: GetChatMutedUsersOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getChatMutedUsers(
-        
-        
-        
-        
-        options?: GetChatMutedUsersOptions
-        
-    ): Promise<GetChatMutedUsersResponse>;
-    // Implementation
-    async getChatMutedUsers(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: GetChatMutedUsersOptions = {}
-        
-    ): Promise<GetChatMutedUsersResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'broadcast_chat_mute.fields': 'broadcastChatMuteFields',
-            
-            
-            
-            
-            
-            'user.fields': 'userFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            broadcastChatMuteFields = [],
-            
-            
-            
-            expansions = [],
-            
-            
-            
-            userFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/chat/mutes';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (broadcastChatMuteFields !== undefined && broadcastChatMuteFields.length > 0) {
-            
-            
-            params.append('broadcast_chat_mute.fields', normalizeFields(broadcastChatMuteFields).join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (expansions !== undefined && expansions.length > 0) {
-            
-            
-            params.append('expansions', expansions.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (userFields !== undefined && userFields.length > 0) {
-            
-            
-            params.append('user.fields', normalizeFields(userFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<GetChatMutedUsersResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Mute or Time Out a User in Chat
-   * Prevents a user from posting messages in all of a broadcaster's chats. Without `broadcast_id`, the user is muted in the authenticated user's own chats. Moderators pass `broadcast_id` to mute the user in that broadcast host's chats. When `end_at_ms` is provided, the mute expires at that time.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<MuteChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    muteChatUser(
-        
-        
-        
-        body: MuteChatUserRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    muteChatUser(
-        
-        
-        
-        body: MuteChatUserRequest,
-        
-        
-    ): Promise<MuteChatUserResponse>;
-    // Implementation
-    async muteChatUser(
-        
-        
-        
-        
-        
-        
-        body: MuteChatUserRequest,
-        
-        
-        
-    ): Promise<MuteChatUserResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/chat/mutes';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<MuteChatUserResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Unmute a User in a Broadcast Chat
-   * Allows a muted user to post messages in a running broadcast chat again. The authenticated user must be the broadcast host or a moderator.
-
-
-   * @param id id
-
-
-
-   * @param userId A 64-bit signed integer.
-
-
-
-
-   * @returns {Promise<UnmuteBroadcastChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    unmuteBroadcastChatUser(
-        
-        
-        id: string,
-        
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    unmuteBroadcastChatUser(
-        
-        
-        id: string,
-        
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-    ): Promise<UnmuteBroadcastChatUserResponse>;
-    // Implementation
-    async unmuteBroadcastChatUser(
-        
-        
-        
-        id: string,
-        
-        
-        
-        userId: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<UnmuteBroadcastChatUserResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/chat/mutes/{user_id}';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-        
-        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UnmuteBroadcastChatUserResponse>(
-            'DELETE',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * List Broadcasts
-   * Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.
-
-At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.
-
-
-
-   * @returns {Promise<ListResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    list(
-        
-        
-        
-        
-        options: ListOptions & { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    list(
-        
-        
-        
-        
-        options?: ListOptions
-        
-    ): Promise<ListResponse>;
-    // Implementation
-    async list(
-        
-        
-        
-        
-        
-        
-        
-        
-        options: ListOptions = {}
-        
-    ): Promise<ListResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        
-        const paramMappings: Record<string, string> = {
-            
-            
-            
-            
-            'max_results': 'maxResults',
-            
-            
-            
-            'pagination_token': 'paginationToken',
-            
-            
-            
-            'broadcast.fields': 'broadcastFields',
-            
-            
-        };
-        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
-        
-        
-        // Destructure options (exclude path parameters, they're already function params)
-        const {
-            
-            
-            ids = [],
-            
-            
-            
-            maxResults = undefined,
-            
-            
-            
-            paginationToken = undefined,
-            
-            
-            
-            broadcastFields = [],
-            
-            
-            
-            requestOptions: requestOptions = {}
-        } = normalizedOptions;
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-        
-        
-        
-        if (ids !== undefined && ids.length > 0) {
-            
-            
-            params.append('ids', ids.join(','));
-            
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (maxResults !== undefined) {
-            
-            params.append('max_results', String(maxResults));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (paginationToken !== undefined) {
-            
-            params.append('pagination_token', String(paginationToken));
-            
-        }
-        
-        
-        
-        
-        
-        
-        if (broadcastFields !== undefined && broadcastFields.length > 0) {
-            
-            
-            params.append('broadcast.fields', normalizeFields(broadcastFields).join(','));
-            
-            
-        }
-        
-        
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            ...requestOptions
-            
-        };
-
-        return this.client.request<ListResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Go Live on a Source
-   * Takes one or more of the authenticated user's sources live and returns 201 with the new broadcast. Several sources (`source_id` plus `additional_source_ids`, one per video format) go live together as one broadcast; they must all be RTMP sources in one region, and when one of them is already live its broadcast is returned only if it holds every listed source. The broadcast goes live immediately (state `RUNNING`), even before the encoder sends video, and is ended (`TIMED_OUT`) if no video arrives within 5 minutes. It is announced in a Post unless `should_not_tweet` is true. When the source already has a live broadcast, returns 200 with that broadcast unchanged and ignores the request's `title`, `locale`, `chat_option` and `should_not_tweet`. A missing `tweet_id` means the Post hasn't been created yet, was suppressed with `should_not_tweet`, or could not be created; read it later with GET /2/broadcasts/:id. A 409 `conflict` means the source can't go live right now: either it can't take video before the encoder connects (external HLS sources, or regions where this isn't available), so retry once video is flowing, or another broadcast is live on it, so END that broadcast first. The `detail` says which, and names the live broadcast when known.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createBroadcast(
-        
-        
-        
-        body: CreateBroadcastRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createBroadcast(
-        
-        
-        
-        body: CreateBroadcastRequest,
-        
-        
-    ): Promise<CreateBroadcastResponse>;
-    // Implementation
-    async createBroadcast(
-        
-        
-        
-        
-        
-        
-        body: CreateBroadcastRequest,
-        
-        
-        
-    ): Promise<CreateBroadcastResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateBroadcastResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * End a Broadcast
-   * Ends one of the authenticated user's broadcasts. Only `state: END` is supported.
-
-
-   * @param id id
-
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<UpdateBroadcastStateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    updateBroadcastState(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: UpdateBroadcastStateRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    updateBroadcastState(
-        
-        
-        id: string,
-        
-        
-        
-        
-        body: UpdateBroadcastStateRequest,
-        
-        
-    ): Promise<UpdateBroadcastStateResponse>;
-    // Implementation
-    async updateBroadcastState(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        body: UpdateBroadcastStateRequest,
-        
-        
-        
-    ): Promise<UpdateBroadcastStateResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/broadcasts/{id}/state';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<UpdateBroadcastStateResponse>(
-            'PUT',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * List Stream Sources
-   * Returns the authenticated user's RTMP/RTMPS stream sources. A source's `id` is the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Stream keys are not included; read one with GET /2/sources/:id/stream_key.
-
-
-
-   * @returns {Promise<ListSourcesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    listSources(
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    listSources(
-        
-        
-        
-        
-    ): Promise<ListSourcesResponse>;
-    // Implementation
-    async listSources(
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<ListSourcesResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/sources';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<ListSourcesResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Create a Stream Source
-   * Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the returned `stream_key`. This is the only response that includes the stream key; read it later with GET /2/sources/:id/stream_key.
-
-
-
-   * @param body Request body
-
-   * @returns {Promise<CreateSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    createSource(
-        
-        
-        
-        body: CreateSourceRequest,
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    createSource(
-        
-        
-        
-        body: CreateSourceRequest,
-        
-        
-    ): Promise<CreateSourceResponse>;
-    // Implementation
-    async createSource(
-        
-        
-        
-        
-        
-        
-        body: CreateSourceRequest,
-        
-        
-        
-    ): Promise<CreateSourceResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/sources';
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            body: JSON.stringify(transformKeysToSnake(body || {})),
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<CreateSourceResponse>(
-            'POST',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
-   * Get a Stream Source's Stream Key
-   * Returns the stream key of one of the authenticated user's stream sources. The stream key is a credential: anyone with it can stream to the source, so keep it out of logs, URLs and client-side code.
-
-
-   * @param id Source id (19 digits), from GET /2/sources.
-
-
-
-
-   * @returns {Promise<GetSourceStreamKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
-   */
-    // Overload 1: raw: true returns Response
-    getSourceStreamKey(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        options: { requestOptions: { raw: true } }
-        
-    ): Promise<Response>;
-    // Overload 2: Default behavior returns parsed response
-    getSourceStreamKey(
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-    ): Promise<GetSourceStreamKeyResponse>;
-    // Implementation
-    async getSourceStreamKey(
-        
-        
-        
-        id: string,
-        
-        
-        
-        
-        
-        
-        
-        
-    ): Promise<GetSourceStreamKeyResponse | Response> {
-        // Normalize options to handle both camelCase and original API parameter names
-        
-        const requestOptions = {};
-        
-
-        // Build the path with path parameters
-        let path = '/2/sources/{id}/stream_key';
-        
-        
-        path = path.replace('{id}', encodeURIComponent(String(id)));
-        
-        
-
-        // Build query parameters
-        const params = new URLSearchParams();
-        
-
-        // Prepare request options
-        const finalRequestOptions: RequestOptions = {
-            
-            
-            // Pass security requirements for smart auth selection
-            security: [
-                
-                {
-                    
-                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
-                    
-                },
-                
-                {
-                    
-                    'UserToken': [],
-                    
-                }
-                
-            ],
-            
-            
-            // No optional parameters, using empty request options
-            
-        };
-
-        return this.client.request<GetSourceStreamKeyResponse>(
-            'GET',
-            path + (params.toString() ? `?${params.toString()}` : ''),
-            finalRequestOptions
-        );
-    }
-
-
-  /**
    * Get a Scheduled Broadcast
    * Returns a single scheduled broadcast by its alphanumeric broadcast id.
 
@@ -5347,7 +1428,7 @@ At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagi
                 
                 {
                     
-                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
                     
                 },
                 
@@ -5366,6 +1447,3925 @@ At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagi
 
         return this.client.request<DeleteScheduledBroadcastResponse>(
             'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * List Scheduled Broadcasts
+   * Returns scheduled broadcasts owned by the authenticated user.
+
+
+
+   * @returns {Promise<ListScheduledResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    listScheduled(
+        
+        
+        
+        
+        options: ListScheduledOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    listScheduled(
+        
+        
+        
+        
+        options?: ListScheduledOptions
+        
+    ): Promise<ListScheduledResponse>;
+    // Implementation
+    async listScheduled(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: ListScheduledOptions = {}
+        
+    ): Promise<ListScheduledResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'oldest_start_time': 'oldestStartTime',
+            
+            
+            
+            'newest_start_time': 'newestStartTime',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            oldestStartTime = undefined,
+            
+            
+            
+            newestStartTime = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (oldestStartTime !== undefined) {
+            
+            params.append('oldest_start_time', String(oldestStartTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (newestStartTime !== undefined) {
+            
+            params.append('newest_start_time', String(newestStartTime));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<ListScheduledResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create a Scheduled Broadcast
+   * Schedules a broadcast for the authenticated user on one of their sources: `source_id` is required. Passing a stream key as `source_id` is deprecated and stops working when the /2/users/:id/sources and /2/users/:id/broadcasts routes reach end of life on January 1, 2027; pass the source's `id` from GET /2/sources instead.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateScheduledBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createScheduledBroadcast(
+        
+        
+        
+        body: CreateScheduledBroadcastRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createScheduledBroadcast(
+        
+        
+        
+        body: CreateScheduledBroadcastRequest,
+        
+        
+    ): Promise<CreateScheduledBroadcastResponse>;
+    // Implementation
+    async createScheduledBroadcast(
+        
+        
+        
+        
+        
+        
+        body: CreateScheduledBroadcastRequest,
+        
+        
+        
+    ): Promise<CreateScheduledBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateScheduledBroadcastResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Publish or End a User's Broadcast
+   * Publishes or ends one of the authenticated user's broadcasts. `id` must be the authenticated user. `PUBLISH` takes a broadcast created with POST /2/users/:id/broadcasts live once its source is receiving video, and posts it unless `should_not_tweet` is true. `END` ends the broadcast. Deprecated: use PUT /2/broadcasts/:id/state to end a broadcast.
+
+
+   * @param id id
+
+
+
+   * @param broadcastId broadcast_id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UpdateUserBroadcastStateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    updateUserBroadcastState(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        body: UpdateUserBroadcastStateRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    updateUserBroadcastState(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        body: UpdateUserBroadcastStateRequest,
+        
+        
+    ): Promise<UpdateUserBroadcastStateResponse>;
+    // Implementation
+    async updateUserBroadcastState(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        
+        body: UpdateUserBroadcastStateRequest,
+        
+        
+        
+    ): Promise<UpdateUserBroadcastStateResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts/{broadcast_id}/state';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UpdateUserBroadcastStateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * End a Broadcast
+   * Ends one of the authenticated user's broadcasts. Only `state: END` is supported.
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UpdateBroadcastStateResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    updateBroadcastState(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: UpdateBroadcastStateRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    updateBroadcastState(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: UpdateBroadcastStateRequest,
+        
+        
+    ): Promise<UpdateBroadcastStateResponse>;
+    // Implementation
+    async updateBroadcastState(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: UpdateBroadcastStateRequest,
+        
+        
+        
+    ): Promise<UpdateBroadcastStateResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/state';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UpdateBroadcastStateResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Unmute a User in a Broadcast Chat
+   * Allows a muted user to post messages in a running broadcast chat again. The authenticated user must be the broadcast host or a moderator.
+
+
+   * @param id id
+
+
+
+   * @param userId A 64-bit signed integer.
+
+
+
+
+   * @returns {Promise<UnmuteBroadcastChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    unmuteBroadcastChatUser(
+        
+        
+        id: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    unmuteBroadcastChatUser(
+        
+        
+        id: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+    ): Promise<UnmuteBroadcastChatUserResponse>;
+    // Implementation
+    async unmuteBroadcastChatUser(
+        
+        
+        
+        id: string,
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<UnmuteBroadcastChatUserResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat/mutes/{user_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UnmuteBroadcastChatUserResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Go Live on a Scheduled Broadcast
+   * Publishes a schedule that was created or updated with `manual_publish: true`. Without that flag the coordinator auto-publishes at start and this call is rejected.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GoLiveScheduledBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    goLiveScheduledBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    goLiveScheduledBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+    ): Promise<GoLiveScheduledBroadcastResponse>;
+    // Implementation
+    async goLiveScheduledBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GoLiveScheduledBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/scheduled/{id}/live';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GoLiveScheduledBroadcastResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get a Stream Source
+   * Returns one of the authenticated user's stream sources. Poll it after starting an encoder and wait for `is_stream_active` before going live. The stream key is not included; read it with GET /2/sources/:id/stream_key.
+
+
+   * @param id Source id (19 digits), from GET /2/sources.
+
+
+
+
+   * @returns {Promise<GetSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getSource(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSource(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+    ): Promise<GetSourceResponse>;
+    // Implementation
+    async getSource(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSourceResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetSourceResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Rename a Stream Source
+   * Renames one of the authenticated user's stream sources.
+
+
+   * @param id Source id (19 digits), from GET /2/sources.
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UpdateSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    updateSource(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: UpdateSourceRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    updateSource(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: UpdateSourceRequest,
+        
+        
+    ): Promise<UpdateSourceResponse>;
+    // Implementation
+    async updateSource(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: UpdateSourceRequest,
+        
+        
+        
+    ): Promise<UpdateSourceResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UpdateSourceResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Delete a Stream Source
+   * Deletes one of the authenticated user's stream sources.
+
+
+   * @param id Source id (19 digits), from GET /2/sources.
+
+
+
+
+   * @returns {Promise<DeleteSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteSource(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteSource(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteSourceResponse>;
+    // Implementation
+    async deleteSource(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteSourceResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteSourceResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * List Live Categories
+   * Returns the live categories a host can pick when going live, in display order. Pass a category's `id` as `live_category_id` on POST /2/broadcasts. Ids are permanent; names can change, so store the id and show the current name. The whole list is returned in one response, without paging.
+
+
+
+   * @returns {Promise<ListLiveCategoriesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    listLiveCategories(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    listLiveCategories(
+        
+        
+        
+        
+    ): Promise<ListLiveCategoriesResponse>;
+    // Implementation
+    async listLiveCategories(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<ListLiveCategoriesResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/categories';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                },
+                
+                {
+                    
+                    'BearerToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ListLiveCategoriesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Muted Chat Users
+   * Returns the users muted in the authenticated broadcaster's chat, with the expiry time of timed mutes. Mutes apply to all of their broadcasts. Expired timed mutes are omitted. Use `expansions=user_id` to include the muted users.
+
+
+
+   * @returns {Promise<GetChatMutedUsersResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getChatMutedUsers(
+        
+        
+        
+        
+        options: GetChatMutedUsersOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getChatMutedUsers(
+        
+        
+        
+        
+        options?: GetChatMutedUsersOptions
+        
+    ): Promise<GetChatMutedUsersResponse>;
+    // Implementation
+    async getChatMutedUsers(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetChatMutedUsersOptions = {}
+        
+    ): Promise<GetChatMutedUsersResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'broadcast_chat_mute.fields': 'broadcastChatMuteFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            broadcastChatMuteFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/mutes';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (broadcastChatMuteFields !== undefined && broadcastChatMuteFields.length > 0) {
+            
+            
+            params.append('broadcast_chat_mute.fields', normalizeFields(broadcastChatMuteFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetChatMutedUsersResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Mute or Time Out a User in Chat
+   * Prevents a user from posting messages in all of a broadcaster's chats. Without `broadcast_id`, the user is muted in the authenticated user's own chats. Moderators pass `broadcast_id` to mute the user in that broadcast host's chats. When `end_at_ms` is provided, the mute expires at that time.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<MuteChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    muteChatUser(
+        
+        
+        
+        body: MuteChatUserRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    muteChatUser(
+        
+        
+        
+        body: MuteChatUserRequest,
+        
+        
+    ): Promise<MuteChatUserResponse>;
+    // Implementation
+    async muteChatUser(
+        
+        
+        
+        
+        
+        
+        body: MuteChatUserRequest,
+        
+        
+        
+    ): Promise<MuteChatUserResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/mutes';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<MuteChatUserResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * List a User's Stream Sources
+   * Returns the authenticated user's RTMP/RTMPS stream sources (empty array if none). `id` must be the authenticated user.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<ListUserSourcesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    listUserSources(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    listUserSources(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+    ): Promise<ListUserSourcesResponse>;
+    // Implementation
+    async listUserSources(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<ListUserSourcesResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ListUserSourcesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create a Stream Source for a User
+   * Creates a persistent RTMP/RTMPS ingest point for the authenticated user. `id` must be the authenticated user.
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateUserSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createUserSource(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        body: CreateUserSourceRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createUserSource(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        body: CreateUserSourceRequest,
+        
+        
+    ): Promise<CreateUserSourceResponse>;
+    // Implementation
+    async createUserSource(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        
+        
+        
+        body: CreateUserSourceRequest,
+        
+        
+        
+    ): Promise<CreateUserSourceResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/sources';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateUserSourceResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * List Stream Sources
+   * Returns the authenticated user's RTMP/RTMPS stream sources. A source's `id` is the `source_id` that POST /2/broadcasts and scheduled broadcasts take. Stream keys are not included; read one with GET /2/sources/:id/stream_key.
+
+
+
+   * @returns {Promise<ListSourcesResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    listSources(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    listSources(
+        
+        
+        
+        
+    ): Promise<ListSourcesResponse>;
+    // Implementation
+    async listSources(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<ListSourcesResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<ListSourcesResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Create a Stream Source
+   * Creates a persistent RTMP/RTMPS ingest point for the authenticated user. Push an encoder to `rtmps_url` with the returned `stream_key`. This is the only response that includes the stream key; read it later with GET /2/sources/:id/stream_key.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateSourceResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createSource(
+        
+        
+        
+        body: CreateSourceRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createSource(
+        
+        
+        
+        body: CreateSourceRequest,
+        
+        
+    ): Promise<CreateSourceResponse>;
+    // Implementation
+    async createSource(
+        
+        
+        
+        
+        
+        
+        body: CreateSourceRequest,
+        
+        
+        
+    ): Promise<CreateSourceResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateSourceResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Mute or Time Out a User in a Broadcast Chat
+   * Prevents a user from posting further messages in a running broadcast chat. When `end_at_ms` is provided, the mute expires at that time. The authenticated user must be the broadcast host or a moderator.
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<MuteBroadcastChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    muteBroadcastChatUser(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: MuteBroadcastChatUserRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    muteBroadcastChatUser(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: MuteBroadcastChatUserRequest,
+        
+        
+    ): Promise<MuteBroadcastChatUserResponse>;
+    // Implementation
+    async muteBroadcastChatUser(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: MuteBroadcastChatUserRequest,
+        
+        
+        
+    ): Promise<MuteBroadcastChatUserResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat/mutes';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<MuteBroadcastChatUserResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Broadcast Chat History
+   * Returns newest-first chat messages for a broadcast owned by the authenticated user.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetBroadcastChatResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getBroadcastChat(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetBroadcastChatOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getBroadcastChat(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetBroadcastChatOptions
+        
+    ): Promise<GetBroadcastChatResponse>;
+    // Implementation
+    async getBroadcastChat(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetBroadcastChatOptions = {}
+        
+    ): Promise<GetBroadcastChatResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'broadcast_chat_message.fields': 'broadcastChatMessageFields',
+            
+            
+            
+            
+            
+            'user.fields': 'userFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            broadcastChatMessageFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            userFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (broadcastChatMessageFields !== undefined && broadcastChatMessageFields.length > 0) {
+            
+            
+            params.append('broadcast_chat_message.fields', normalizeFields(broadcastChatMessageFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetBroadcastChatResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Send a Chat Message to a Live Broadcast
+   * Posts a chat message to a running broadcast, attributed to the authenticated user.
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<SendBroadcastChatResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    sendBroadcastChat(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: SendBroadcastChatRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    sendBroadcastChat(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: SendBroadcastChatRequest,
+        
+        
+    ): Promise<SendBroadcastChatResponse>;
+    // Implementation
+    async sendBroadcastChat(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: SendBroadcastChatRequest,
+        
+        
+        
+    ): Promise<SendBroadcastChatResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<SendBroadcastChatResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get a User's Broadcast
+   * Returns one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use GET /2/broadcasts/:id.
+
+
+   * @param id id
+
+
+
+   * @param broadcastId broadcast_id
+
+
+
+
+   * @returns {Promise<GetUserBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getUserBroadcast(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getUserBroadcast(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+    ): Promise<GetUserBroadcastResponse>;
+    // Implementation
+    async getUserBroadcast(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetUserBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts/{broadcast_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetUserBroadcastResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Delete a User's Broadcast
+   * Deletes one of the authenticated user's broadcasts. `id` must be the authenticated user. Deprecated: use DELETE /2/broadcasts/:id.
+
+
+   * @param id id
+
+
+
+   * @param broadcastId broadcast_id
+
+
+
+
+   * @returns {Promise<DeleteUserBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteUserBroadcast(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteUserBroadcast(
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteUserBroadcastResponse>;
+    // Implementation
+    async deleteUserBroadcast(
+        
+        
+        
+        id: Schemas.UserId,
+        
+        
+        
+        broadcastId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteUserBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/users/{id}/broadcasts/{broadcast_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{broadcast_id}', encodeURIComponent(String(broadcastId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteUserBroadcastResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get the Ingest Region
+   * Returns the ingest region nearest the server handling the request. Pass it as `region` when creating a stream source to ingest there.
+
+
+
+   * @returns {Promise<GetRegionResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getRegion(
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getRegion(
+        
+        
+        
+        
+    ): Promise<GetRegionResponse>;
+    // Implementation
+    async getRegion(
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetRegionResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/region';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetRegionResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Remove a Chat Message from a Live Broadcast
+   * Removes a specific chat message from a running broadcast where the authenticated user is the host or a moderator.
+
+
+   * @param id id
+
+
+
+   * @param messageId message_id
+
+
+
+
+   * @returns {Promise<DeleteBroadcastChatMessageResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteBroadcastChatMessage(
+        
+        
+        id: string,
+        
+        
+        
+        messageId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteBroadcastChatMessage(
+        
+        
+        id: string,
+        
+        
+        
+        messageId: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteBroadcastChatMessageResponse>;
+    // Implementation
+    async deleteBroadcastChatMessage(
+        
+        
+        
+        id: string,
+        
+        
+        
+        messageId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteBroadcastChatMessageResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}/chat/{message_id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+        
+        path = path.replace('{message_id}', encodeURIComponent(String(messageId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteBroadcastChatMessageResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get a Broadcast
+   * Returns a broadcast owned by the authenticated user.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<GetBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: GetBroadcastOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options?: GetBroadcastOptions
+        
+    ): Promise<GetBroadcastResponse>;
+    // Implementation
+    async getBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetBroadcastOptions = {}
+        
+    ): Promise<GetBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'broadcast.fields': 'broadcastFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            broadcastFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (broadcastFields !== undefined && broadcastFields.length > 0) {
+            
+            
+            params.append('broadcast.fields', normalizeFields(broadcastFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetBroadcastResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Update a Broadcast
+   * Changes the title, chat option or live category of one of the authenticated user's broadcasts and returns the broadcast. Send at least one of `title`, `chat_option` and `live_category_id`; fields left out keep their values. A broadcast can be updated before it starts, while it is live and after it has ended. A 409 `conflict` means the broadcast can't be edited, for example because it was deleted or moderated.
+
+
+   * @param id id
+
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<UpdateBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    updateBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: UpdateBroadcastRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    updateBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        body: UpdateBroadcastRequest,
+        
+        
+    ): Promise<UpdateBroadcastResponse>;
+    // Implementation
+    async updateBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        body: UpdateBroadcastRequest,
+        
+        
+        
+    ): Promise<UpdateBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<UpdateBroadcastResponse>(
+            'PUT',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Delete a Broadcast
+   * Deletes one of the authenticated user's broadcasts, scheduled or ended, including its replay. A running broadcast must be ended first.
+
+
+   * @param id id
+
+
+
+
+   * @returns {Promise<DeleteBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    deleteBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    deleteBroadcast(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+    ): Promise<DeleteBroadcastResponse>;
+    // Implementation
+    async deleteBroadcast(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<DeleteBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/{id}';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<DeleteBroadcastResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Remove a Chat Moderator
+   * Removes a moderator from the authenticated broadcaster's persistent list and returns the updated moderator user IDs.
+
+
+   * @param userId A 64-bit signed integer.
+
+
+
+
+   * @returns {Promise<RemoveChatModeratorResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    removeChatModerator(
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    removeChatModerator(
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+    ): Promise<RemoveChatModeratorResponse>;
+    // Implementation
+    async removeChatModerator(
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<RemoveChatModeratorResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/moderators/{user_id}';
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<RemoveChatModeratorResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get a Stream Source's Stream Key
+   * Returns the stream key of one of the authenticated user's stream sources. The stream key is a credential: anyone with it can stream to the source, so keep it out of logs, URLs and client-side code.
+
+
+   * @param id Source id (19 digits), from GET /2/sources.
+
+
+
+
+   * @returns {Promise<GetSourceStreamKeyResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getSourceStreamKey(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getSourceStreamKey(
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+    ): Promise<GetSourceStreamKeyResponse>;
+    // Implementation
+    async getSourceStreamKey(
+        
+        
+        
+        id: string,
+        
+        
+        
+        
+        
+        
+        
+        
+    ): Promise<GetSourceStreamKeyResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/sources/{id}/stream_key';
+        
+        
+        path = path.replace('{id}', encodeURIComponent(String(id)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'broadcast.write'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<GetSourceStreamKeyResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Unmute a User in Chat
+   * Allows a muted user to post messages in a broadcaster's chats again. Without `broadcast_id`, the user is unmuted in the authenticated user's own chats. Moderators pass `broadcast_id` to unmute the user in that broadcast host's chats.
+
+
+   * @param userId A 64-bit signed integer.
+
+
+
+
+   * @returns {Promise<UnmuteChatUserResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    unmuteChatUser(
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        options: UnmuteChatUserOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    unmuteChatUser(
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        options?: UnmuteChatUserOptions
+        
+    ): Promise<UnmuteChatUserResponse>;
+    // Implementation
+    async unmuteChatUser(
+        
+        
+        
+        userId: string,
+        
+        
+        
+        
+        
+        
+        
+        
+        options: UnmuteChatUserOptions = {}
+        
+    ): Promise<UnmuteChatUserResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'broadcast_id': 'broadcastId',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            broadcastId = undefined,
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/mutes/{user_id}';
+        
+        
+        path = path.replace('{user_id}', encodeURIComponent(String(userId)));
+        
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (broadcastId !== undefined) {
+            
+            params.append('broadcast_id', String(broadcastId));
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<UnmuteChatUserResponse>(
+            'DELETE',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Get Chat Moderators
+   * Returns the authenticated broadcaster's persistent moderators as User resources. The list applies to all of their current and future broadcast chats.
+
+
+
+   * @returns {Promise<GetChatModeratorsResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    getChatModerators(
+        
+        
+        
+        
+        options: GetChatModeratorsOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    getChatModerators(
+        
+        
+        
+        
+        options?: GetChatModeratorsOptions
+        
+    ): Promise<GetChatModeratorsResponse>;
+    // Implementation
+    async getChatModerators(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: GetChatModeratorsOptions = {}
+        
+    ): Promise<GetChatModeratorsResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            'user.fields': 'userFields',
+            
+            
+            
+            
+            
+            'post.fields': 'postFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            userFields = [],
+            
+            
+            
+            expansions = [],
+            
+            
+            
+            postFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/moderators';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (userFields !== undefined && userFields.length > 0) {
+            
+            
+            params.append('user.fields', normalizeFields(userFields).join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (expansions !== undefined && expansions.length > 0) {
+            
+            
+            params.append('expansions', expansions.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (postFields !== undefined && postFields.length > 0) {
+            
+            
+            params.append('post.fields', normalizeFields(postFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read', 'users.read', 'tweet.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<GetChatModeratorsResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Add a Chat Moderator
+   * Adds a moderator to the authenticated broadcaster's persistent list and returns the updated moderator user IDs. The list applies to all current and future broadcast chats.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<AddChatModeratorResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    addChatModerator(
+        
+        
+        
+        body: AddChatModeratorRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    addChatModerator(
+        
+        
+        
+        body: AddChatModeratorRequest,
+        
+        
+    ): Promise<AddChatModeratorResponse>;
+    // Implementation
+    async addChatModerator(
+        
+        
+        
+        
+        
+        
+        body: AddChatModeratorRequest,
+        
+        
+        
+    ): Promise<AddChatModeratorResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts/chat/moderators';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<AddChatModeratorResponse>(
+            'POST',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * List Broadcasts
+   * Returns the authenticated user's live-video broadcasts, or selected owned broadcasts when ids are provided.
+
+At most one of `ids`, `max_results` may be provided. At most one of `ids`, `pagination_token` may be provided.
+
+
+
+   * @returns {Promise<ListResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    list(
+        
+        
+        
+        
+        options: ListOptions & { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    list(
+        
+        
+        
+        
+        options?: ListOptions
+        
+    ): Promise<ListResponse>;
+    // Implementation
+    async list(
+        
+        
+        
+        
+        
+        
+        
+        
+        options: ListOptions = {}
+        
+    ): Promise<ListResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        
+        const paramMappings: Record<string, string> = {
+            
+            
+            
+            
+            'max_results': 'maxResults',
+            
+            
+            
+            'pagination_token': 'paginationToken',
+            
+            
+            
+            'broadcast.fields': 'broadcastFields',
+            
+            
+        };
+        const normalizedOptions = this._normalizeOptions(options || {}, paramMappings);
+        
+        
+        // Destructure options (exclude path parameters, they're already function params)
+        const {
+            
+            
+            ids = [],
+            
+            
+            
+            maxResults = undefined,
+            
+            
+            
+            paginationToken = undefined,
+            
+            
+            
+            broadcastFields = [],
+            
+            
+            
+            requestOptions: requestOptions = {}
+        } = normalizedOptions;
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+        
+        
+        
+        if (ids !== undefined && ids.length > 0) {
+            
+            
+            params.append('ids', ids.join(','));
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (maxResults !== undefined) {
+            
+            params.append('max_results', String(maxResults));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (paginationToken !== undefined) {
+            
+            params.append('pagination_token', String(paginationToken));
+            
+        }
+        
+        
+        
+        
+        
+        
+        if (broadcastFields !== undefined && broadcastFields.length > 0) {
+            
+            
+            params.append('broadcast.fields', normalizeFields(broadcastFields).join(','));
+            
+            
+        }
+        
+        
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            ...requestOptions
+            
+        };
+
+        return this.client.request<ListResponse>(
+            'GET',
+            path + (params.toString() ? `?${params.toString()}` : ''),
+            finalRequestOptions
+        );
+    }
+
+
+  /**
+   * Go Live on a Source
+   * Takes one or more of the authenticated user's sources live and returns 201 with the new broadcast. Several sources (`source_id` plus `additional_source_ids`, one per video format) go live together as one broadcast; they must all be RTMP sources in one region, and when one of them is already live its broadcast is returned only if it holds every listed source. The broadcast goes live immediately (state `RUNNING`), even before the encoder sends video, and is ended (`TIMED_OUT`) if no video arrives within 5 minutes. It is announced in a Post unless `should_not_tweet` is true. When the source already has a live broadcast, returns 200 with that broadcast unchanged and ignores the request's `title`, `locale`, `chat_option` and `should_not_tweet`. A missing `tweet_id` means the Post hasn't been created yet, was suppressed with `should_not_tweet`, or could not be created; read it later with GET /2/broadcasts/:id. A 409 `conflict` means the source can't go live right now: either it can't take video before the encoder connects (external HLS sources, or regions where this isn't available), so retry once video is flowing, or another broadcast is live on it, so END that broadcast first. The `detail` says which, and names the live broadcast when known.
+
+
+
+   * @param body Request body
+
+   * @returns {Promise<CreateBroadcastResponse>} Promise resolving to the API response, or raw Response if requestOptions.raw is true
+   */
+    // Overload 1: raw: true returns Response
+    createBroadcast(
+        
+        
+        
+        body: CreateBroadcastRequest,
+        
+        
+        options: { requestOptions: { raw: true } }
+        
+    ): Promise<Response>;
+    // Overload 2: Default behavior returns parsed response
+    createBroadcast(
+        
+        
+        
+        body: CreateBroadcastRequest,
+        
+        
+    ): Promise<CreateBroadcastResponse>;
+    // Implementation
+    async createBroadcast(
+        
+        
+        
+        
+        
+        
+        body: CreateBroadcastRequest,
+        
+        
+        
+    ): Promise<CreateBroadcastResponse | Response> {
+        // Normalize options to handle both camelCase and original API parameter names
+        
+        const requestOptions = {};
+        
+
+        // Build the path with path parameters
+        let path = '/2/broadcasts';
+        
+
+        // Build query parameters
+        const params = new URLSearchParams();
+        
+
+        // Prepare request options
+        const finalRequestOptions: RequestOptions = {
+            
+            body: JSON.stringify(transformKeysToSnake(body || {})),
+            
+            
+            // Pass security requirements for smart auth selection
+            security: [
+                
+                {
+                    
+                    'OAuth2UserToken': ['broadcast.write', 'broadcast.read'],
+                    
+                },
+                
+                {
+                    
+                    'UserToken': [],
+                    
+                }
+                
+            ],
+            
+            
+            // No optional parameters, using empty request options
+            
+        };
+
+        return this.client.request<CreateBroadcastResponse>(
+            'POST',
             path + (params.toString() ? `?${params.toString()}` : ''),
             finalRequestOptions
         );

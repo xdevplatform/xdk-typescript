@@ -54,6 +54,400 @@ describe('ListsClient Contracts', () => {
   });
 
   
+  it('should have correct request structure for getFollowers', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (listsClient as any)['getFollowers'];
+      const result = await method.apply(listsClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/lists/{id}/followers';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for getFollowers', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (listsClient as any)['getFollowers'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(listsClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for getFollowers', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
+      
+      ];
+      const options: any = {};
+
+      const method = (listsClient as any)['getFollowers'];
+      const result = await method.apply(listsClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for getFollowers', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(200, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      'test_id',
+      
+      
+      
+      
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackLists as any)['getFollowers'];
+    const result = await method.apply(loopbackLists, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('GET');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
+  it('should have correct request structure for create', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request to capture request details (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 201,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({
+        
+        
+        data: null,
+        
+        
+      }),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Prepare test parameters
+      // In TypeScript, ALL required parameters (path and query) are direct function arguments
+      // Only optional parameters go in the options object
+      // Build required parameter arguments
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params test, optional params go here)
+      const options: any = {};
+      
+      // Call the method
+      const method = (listsClient as any)['create'];
+      const result = await method.apply(listsClient, [...requiredArgs, options]);
+      
+      // Verify the request was made
+      expect(client.httpClient.request).toHaveBeenCalled();
+      
+      // Verify request structure
+      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
+      const url = callArgs[0] as string;
+      const requestOptions = callArgs[1] as RequestInit;
+      
+      // Check URL structure - path parameters are replaced in the URL
+      const expectedPath = '/2/lists';
+      // Path parameters are replaced with actual values, so check for the base path structure
+      const basePath = expectedPath.split('{')[0];
+      expect(url).toContain(basePath);
+      
+      // Verify response structure
+      expect(result).toBeDefined();
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should handle required parameters correctly for create', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => ({}),
+      text: async () => '{}',
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      const method = (listsClient as any)['create'];
+      
+      
+      // Method has required parameters - verify it can be called with proper args
+      // Build required parameter arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      
+      // Build options object (empty for required params, optional params go here)
+      const options: any = {};
+      
+      // Method should be callable with required parameters
+      await expect(method.apply(listsClient, [...requiredArgs, options])).resolves.toBeDefined();
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should validate response structure for create', async () => {
+    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
+    const originalValidateAuth = client.validateAuthentication;
+    client.validateAuthentication = jest.fn();
+    
+    const mockResponseData = {
+      
+      
+      data: null,
+      
+      
+    };
+
+    // Mock httpClient.request (like Python mocks session)
+    const originalRequest = client.httpClient.request;
+    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'content-type': 'application/json' }),
+      
+      json: async () => mockResponseData,
+      text: async () => JSON.stringify(mockResponseData),
+      arrayBuffer: async () => new ArrayBuffer(0)
+    } as Response);
+
+    try {
+      // Build arguments (all required params are direct args in TypeScript)
+      const requiredArgs: any[] = [
+      
+      ];
+      const options: any = {};
+
+      const method = (listsClient as any)['create'];
+      const result = await method.apply(listsClient, [...requiredArgs, options]);
+
+      // Verify response object has expected structure
+      expect(result).toBeDefined();
+      
+      // Regular JSON response - check for expected fields
+      
+      expect(result).toHaveProperty('data');
+      
+      
+    } finally {
+      client.httpClient.request = originalRequest;
+      client.validateAuthentication = originalValidateAuth;
+    }
+  });
+
+  it('should execute real TCP loopback roundtrip for create', async () => {
+    loopbackServer.reset();
+    const fullMockJson = "{\"data\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}";
+    
+    loopbackServer.setResponder(() =>
+      MockResponse.json(201, fullMockJson)
+    );
+    
+
+    const callArgs: any[] = [
+      
+      
+      
+      
+      
+      
+      
+      JSON.parse("{\"description\":\"test_value\",\"name\":\"test_value\",\"private\":true}"),
+      
+      
+      
+      {},
+    ];
+
+    const method = (loopbackLists as any)['create'];
+    const result = await method.apply(loopbackLists, callArgs);
+    expect(result).toBeDefined();
+
+    
+
+    const recorded = loopbackServer.lastRequest();
+    expect(recorded).toBeDefined();
+    expect(recorded!.method).toBe('POST');
+    
+    expect(recorded!.firstHeader('authorization')).toBeTruthy();
+    
+  });
+
+  
   it('should have correct request structure for getById', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
@@ -667,7 +1061,7 @@ describe('ListsClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for getFollowers', async () => {
+  it('should have correct request structure for removeMemberByUserId', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -702,13 +1096,17 @@ describe('ListsClient Contracts', () => {
       'test_value',
       
       
+      
+      'test_value',
+      
+      
       ];
       
       // Build options object (empty for required params test, optional params go here)
       const options: any = {};
       
       // Call the method
-      const method = (listsClient as any)['getFollowers'];
+      const method = (listsClient as any)['removeMemberByUserId'];
       const result = await method.apply(listsClient, [...requiredArgs, options]);
       
       // Verify the request was made
@@ -720,7 +1118,7 @@ describe('ListsClient Contracts', () => {
       const requestOptions = callArgs[1] as RequestInit;
       
       // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/lists/{id}/followers';
+      const expectedPath = '/2/lists/{id}/members/{user_id}';
       // Path parameters are replaced with actual values, so check for the base path structure
       const basePath = expectedPath.split('{')[0];
       expect(url).toContain(basePath);
@@ -733,7 +1131,7 @@ describe('ListsClient Contracts', () => {
     }
   });
 
-  it('should handle required parameters correctly for getFollowers', async () => {
+  it('should handle required parameters correctly for removeMemberByUserId', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -752,12 +1150,16 @@ describe('ListsClient Contracts', () => {
     } as Response);
 
     try {
-      const method = (listsClient as any)['getFollowers'];
+      const method = (listsClient as any)['removeMemberByUserId'];
       
       
       // Method has required parameters - verify it can be called with proper args
       // Build required parameter arguments (all required params are direct args in TypeScript)
       const requiredArgs: any[] = [
+      
+      
+      'test_value',
+      
       
       
       'test_value',
@@ -777,7 +1179,7 @@ describe('ListsClient Contracts', () => {
     }
   });
 
-  it('should validate response structure for getFollowers', async () => {
+  it('should validate response structure for removeMemberByUserId', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -811,10 +1213,14 @@ describe('ListsClient Contracts', () => {
       'test_value',
       
       
+      
+      'test_value',
+      
+      
       ];
       const options: any = {};
 
-      const method = (listsClient as any)['getFollowers'];
+      const method = (listsClient as any)['removeMemberByUserId'];
       const result = await method.apply(listsClient, [...requiredArgs, options]);
 
       // Verify response object has expected structure
@@ -831,9 +1237,9 @@ describe('ListsClient Contracts', () => {
     }
   });
 
-  it('should execute real TCP loopback roundtrip for getFollowers', async () => {
+  it('should execute real TCP loopback roundtrip for removeMemberByUserId', async () => {
     loopbackServer.reset();
-    const fullMockJson = "{\"data\":[{\"active_follower_count\":1,\"affiliation\":{},\"confirmed_email\":\"test_value\",\"connection_status\":[\"blocking\"],\"created_at\":\"2025-01-15T12:00:00.000Z\",\"description\":\"test_value\",\"entities\":{},\"id\":\"1234567890\",\"is_identity_verified\":true,\"location\":\"test_value\",\"most_recent_post_id\":\"test_value\",\"name\":\"test_value\",\"org_only\":true,\"parody\":true,\"pinned_post_id\":\"test_value\",\"profile_banner_url\":\"test_value\",\"profile_image_url\":\"test_value\",\"protected\":true,\"public_metrics\":{\"followers_count\":1,\"following_count\":1,\"listed_count\":1,\"post_count\":1},\"receives_your_chat\":\"test_value\",\"receives_your_dm\":true,\"subscriber_count\":1,\"subscribes_to_you\":true,\"subscription\":{\"subscribes_to_you\":true},\"subscription_type\":\"test_value\",\"url\":\"test_value\",\"username\":\"XDevelopers\",\"verified\":true,\"verified_followers_count\":1,\"verified_type\":\"test_value\",\"withheld\":{}}],\"includes\":{\"calls\":[{\"id\":\"1234567890\"}],\"media\":[{}],\"places\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"polls\":[{\"id\":\"1234567890\"}],\"posts\":[{\"id\":\"1234567890\",\"text\":\"Hello from XDK!\",\"username\":\"XDevelopers\"}],\"topics\":[{\"id\":\"1234567890\",\"name\":\"test_value\"}],\"users\":[{\"id\":\"1234567890\",\"name\":\"test_value\",\"username\":\"XDevelopers\"}]},\"meta\":{\"result_count\":1}}";
+    const fullMockJson = "{\"data\":{\"is_member\":true}}";
     
     loopbackServer.setResponder(() =>
       MockResponse.json(200, fullMockJson)
@@ -848,6 +1254,10 @@ describe('ListsClient Contracts', () => {
       
       
       
+      'test_userId',
+      
+      
+      
       
       
       
@@ -855,7 +1265,7 @@ describe('ListsClient Contracts', () => {
       {},
     ];
 
-    const method = (loopbackLists as any)['getFollowers'];
+    const method = (loopbackLists as any)['removeMemberByUserId'];
     const result = await method.apply(loopbackLists, callArgs);
     expect(result).toBeDefined();
 
@@ -863,7 +1273,7 @@ describe('ListsClient Contracts', () => {
 
     const recorded = loopbackServer.lastRequest();
     expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('GET');
+    expect(recorded!.method).toBe('DELETE');
     
     expect(recorded!.firstHeader('authorization')).toBeTruthy();
     
@@ -1280,197 +1690,6 @@ describe('ListsClient Contracts', () => {
   });
 
   
-  it('should have correct request structure for create', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 201,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (listsClient as any)['create'];
-      const result = await method.apply(listsClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/lists';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for create', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (listsClient as any)['create'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(listsClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for create', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      ];
-      const options: any = {};
-
-      const method = (listsClient as any)['create'];
-      const result = await method.apply(listsClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for create', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"id\":\"1234567890\",\"name\":\"test_value\"}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(201, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      
-      
-      
-      
-      JSON.parse("{\"description\":\"test_value\",\"name\":\"test_value\",\"private\":true}"),
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackLists as any)['create'];
-    const result = await method.apply(loopbackLists, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('POST');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
   it('should have correct request structure for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
@@ -1668,225 +1887,6 @@ describe('ListsClient Contracts', () => {
     const recorded = loopbackServer.lastRequest();
     expect(recorded).toBeDefined();
     expect(recorded!.method).toBe('GET');
-    
-    expect(recorded!.firstHeader('authorization')).toBeTruthy();
-    
-  });
-
-  
-  it('should have correct request structure for removeMemberByUserId', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request to capture request details (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({
-        
-        
-        data: null,
-        
-        
-      }),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Prepare test parameters
-      // In TypeScript, ALL required parameters (path and query) are direct function arguments
-      // Only optional parameters go in the options object
-      // Build required parameter arguments
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params test, optional params go here)
-      const options: any = {};
-      
-      // Call the method
-      const method = (listsClient as any)['removeMemberByUserId'];
-      const result = await method.apply(listsClient, [...requiredArgs, options]);
-      
-      // Verify the request was made
-      expect(client.httpClient.request).toHaveBeenCalled();
-      
-      // Verify request structure
-      const callArgs = (client.httpClient.request as jest.Mock).mock.calls[0];
-      const url = callArgs[0] as string;
-      const requestOptions = callArgs[1] as RequestInit;
-      
-      // Check URL structure - path parameters are replaced in the URL
-      const expectedPath = '/2/lists/{id}/members/{user_id}';
-      // Path parameters are replaced with actual values, so check for the base path structure
-      const basePath = expectedPath.split('{')[0];
-      expect(url).toContain(basePath);
-      
-      // Verify response structure
-      expect(result).toBeDefined();
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should handle required parameters correctly for removeMemberByUserId', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => ({}),
-      text: async () => '{}',
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      const method = (listsClient as any)['removeMemberByUserId'];
-      
-      
-      // Method has required parameters - verify it can be called with proper args
-      // Build required parameter arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      
-      // Build options object (empty for required params, optional params go here)
-      const options: any = {};
-      
-      // Method should be callable with required parameters
-      await expect(method.apply(listsClient, [...requiredArgs, options])).resolves.toBeDefined();
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should validate response structure for removeMemberByUserId', async () => {
-    // Mock validateAuthentication to bypass auth checks (like Python mocks session)
-    const originalValidateAuth = client.validateAuthentication;
-    client.validateAuthentication = jest.fn();
-    
-    const mockResponseData = {
-      
-      
-      data: null,
-      
-      
-    };
-
-    // Mock httpClient.request (like Python mocks session)
-    const originalRequest = client.httpClient.request;
-    (client.httpClient.request as any) = jest.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: new Headers({ 'content-type': 'application/json' }),
-      
-      json: async () => mockResponseData,
-      text: async () => JSON.stringify(mockResponseData),
-      arrayBuffer: async () => new ArrayBuffer(0)
-    } as Response);
-
-    try {
-      // Build arguments (all required params are direct args in TypeScript)
-      const requiredArgs: any[] = [
-      
-      
-      'test_value',
-      
-      
-      
-      'test_value',
-      
-      
-      ];
-      const options: any = {};
-
-      const method = (listsClient as any)['removeMemberByUserId'];
-      const result = await method.apply(listsClient, [...requiredArgs, options]);
-
-      // Verify response object has expected structure
-      expect(result).toBeDefined();
-      
-      // Regular JSON response - check for expected fields
-      
-      expect(result).toHaveProperty('data');
-      
-      
-    } finally {
-      client.httpClient.request = originalRequest;
-      client.validateAuthentication = originalValidateAuth;
-    }
-  });
-
-  it('should execute real TCP loopback roundtrip for removeMemberByUserId', async () => {
-    loopbackServer.reset();
-    const fullMockJson = "{\"data\":{\"is_member\":true}}";
-    
-    loopbackServer.setResponder(() =>
-      MockResponse.json(200, fullMockJson)
-    );
-    
-
-    const callArgs: any[] = [
-      
-      
-      
-      'test_id',
-      
-      
-      
-      'test_userId',
-      
-      
-      
-      
-      
-      
-      
-      {},
-    ];
-
-    const method = (loopbackLists as any)['removeMemberByUserId'];
-    const result = await method.apply(loopbackLists, callArgs);
-    expect(result).toBeDefined();
-
-    
-
-    const recorded = loopbackServer.lastRequest();
-    expect(recorded).toBeDefined();
-    expect(recorded!.method).toBe('DELETE');
     
     expect(recorded!.firstHeader('authorization')).toBeTruthy();
     
