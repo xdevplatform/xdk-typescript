@@ -1,6 +1,6 @@
 {
   "name": "@xdevplatform/xdk",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "A modern TypeScript/JavaScript SDK for the X API",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -114,8 +114,7 @@
     "docs:build": "typedoc && echo \"Documentation generated in docs/\"",
     "docs:build-simple": "node scripts/generate-docs-simple.js",
     "docs:serve": "npx http-server docs -p 8080 -o",
-    "docs:watch": "node scripts/watch-docs.js",
-    "docs:mintlify": "node scripts/process-for-mintlify.js"
+    "docs:watch": "node scripts/watch-docs.js"
   },
   "prettier": {
     "semi": true,

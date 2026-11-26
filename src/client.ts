@@ -17,23 +17,7 @@ import {
 
 
 
-import { AccountActivityClient } from "./account_activity/index.js";
-
-
-
 import { ComplianceClient } from "./compliance/index.js";
-
-
-
-import { GeneralClient } from "./general/index.js";
-
-
-
-import { TrendsClient } from "./trends/index.js";
-
-
-
-import { CommunitiesClient } from "./communities/index.js";
 
 
 
@@ -41,31 +25,7 @@ import { BotsClient } from "./bots/index.js";
 
 
 
-import { AccountClient } from "./account/index.js";
-
-
-
-import { StreamClient } from "./stream/client.js";
-
-
-
-import { MediaClient } from "./media/index.js";
-
-
-
-import { UsageClient } from "./usage/index.js";
-
-
-
-import { UsersClient } from "./users/index.js";
-
-
-
-import { ConnectionsClient } from "./connections/index.js";
-
-
-
-import { BroadcastsClient } from "./broadcasts/index.js";
+import { GeneralClient } from "./general/index.js";
 
 
 
@@ -77,6 +37,14 @@ import { CommunityNotesClient } from "./community_notes/index.js";
 
 
 
+import { DirectMessagesClient } from "./direct_messages/index.js";
+
+
+
+import { MediaClient } from "./media/index.js";
+
+
+
 import { ArticlesClient } from "./articles/index.js";
 
 
@@ -85,19 +53,11 @@ import { NewsClient } from "./news/index.js";
 
 
 
-import { ActivityClient } from "./activity/index.js";
+import { UsageClient } from "./usage/index.js";
 
 
 
-import { PostsClient } from "./posts/index.js";
-
-
-
-import { DirectMessagesClient } from "./direct_messages/index.js";
-
-
-
-import { SpacesClient } from "./spaces/index.js";
+import { ListsClient } from "./lists/index.js";
 
 
 
@@ -105,11 +65,51 @@ import { ChatClient } from "./chat/index.js";
 
 
 
+import { TrendsClient } from "./trends/index.js";
+
+
+
+import { PostsClient } from "./posts/index.js";
+
+
+
+import { UsersClient } from "./users/index.js";
+
+
+
 import { CallsClient } from "./calls/index.js";
 
 
 
-import { ListsClient } from "./lists/index.js";
+import { AccountActivityClient } from "./account_activity/index.js";
+
+
+
+import { CommunitiesClient } from "./communities/index.js";
+
+
+
+import { AccountClient } from "./account/index.js";
+
+
+
+import { StreamClient } from "./stream/client.js";
+
+
+
+import { ActivityClient } from "./activity/index.js";
+
+
+
+import { ConnectionsClient } from "./connections/index.js";
+
+
+
+import { BroadcastsClient } from "./broadcasts/index.js";
+
+
+
+import { SpacesClient } from "./spaces/index.js";
 
 
 
@@ -350,44 +350,14 @@ export class Client {
   readonly httpClient = httpClient;
 
 
-  /** account activity client */
-  readonly accountActivity: AccountActivityClient;
-
   /** compliance client */
   readonly compliance: ComplianceClient;
-
-  /** general client */
-  readonly general: GeneralClient;
-
-  /** trends client */
-  readonly trends: TrendsClient;
-
-  /** communities client */
-  readonly communities: CommunitiesClient;
 
   /** bots client */
   readonly bots: BotsClient;
 
-  /** account client */
-  readonly account: AccountClient;
-
-  /** stream client */
-  readonly stream: StreamClient;
-
-  /** media client */
-  readonly media: MediaClient;
-
-  /** usage client */
-  readonly usage: UsageClient;
-
-  /** users client */
-  readonly users: UsersClient;
-
-  /** connections client */
-  readonly connections: ConnectionsClient;
-
-  /** broadcasts client */
-  readonly broadcasts: BroadcastsClient;
+  /** general client */
+  readonly general: GeneralClient;
 
   /** webhooks client */
   readonly webhooks: WebhooksClient;
@@ -395,32 +365,62 @@ export class Client {
   /** community notes client */
   readonly communityNotes: CommunityNotesClient;
 
+  /** direct messages client */
+  readonly directMessages: DirectMessagesClient;
+
+  /** media client */
+  readonly media: MediaClient;
+
   /** articles client */
   readonly articles: ArticlesClient;
 
   /** news client */
   readonly news: NewsClient;
 
-  /** activity client */
-  readonly activity: ActivityClient;
+  /** usage client */
+  readonly usage: UsageClient;
 
-  /** posts client */
-  readonly posts: PostsClient;
-
-  /** direct messages client */
-  readonly directMessages: DirectMessagesClient;
-
-  /** spaces client */
-  readonly spaces: SpacesClient;
+  /** lists client */
+  readonly lists: ListsClient;
 
   /** chat client */
   readonly chat: ChatClient;
 
+  /** trends client */
+  readonly trends: TrendsClient;
+
+  /** posts client */
+  readonly posts: PostsClient;
+
+  /** users client */
+  readonly users: UsersClient;
+
   /** calls client */
   readonly calls: CallsClient;
 
-  /** lists client */
-  readonly lists: ListsClient;
+  /** account activity client */
+  readonly accountActivity: AccountActivityClient;
+
+  /** communities client */
+  readonly communities: CommunitiesClient;
+
+  /** account client */
+  readonly account: AccountClient;
+
+  /** stream client */
+  readonly stream: StreamClient;
+
+  /** activity client */
+  readonly activity: ActivityClient;
+
+  /** connections client */
+  readonly connections: ConnectionsClient;
+
+  /** broadcasts client */
+  readonly broadcasts: BroadcastsClient;
+
+  /** spaces client */
+  readonly spaces: SpacesClient;
 
 
   /**
@@ -470,7 +470,7 @@ export class Client {
     
     // Initialize headers
     const defaultHeaders: Record<string, string> = {
-      'User-Agent': 'xdk-typescript/0.7.2',
+      'User-Agent': 'xdk-typescript/0.8.0',
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       ...((config as ClientConfig)?.headers || {}),
@@ -479,53 +479,53 @@ export class Client {
     this.headers = httpClient.createHeaders(defaultHeaders);
 
 
-    this.accountActivity = new AccountActivityClient(this);
-
     this.compliance = new ComplianceClient(this);
-
-    this.general = new GeneralClient(this);
-
-    this.trends = new TrendsClient(this);
-
-    this.communities = new CommunitiesClient(this);
 
     this.bots = new BotsClient(this);
 
-    this.account = new AccountClient(this);
-
-    this.stream = new StreamClient(this);
-
-    this.media = new MediaClient(this);
-
-    this.usage = new UsageClient(this);
-
-    this.users = new UsersClient(this);
-
-    this.connections = new ConnectionsClient(this);
-
-    this.broadcasts = new BroadcastsClient(this);
+    this.general = new GeneralClient(this);
 
     this.webhooks = new WebhooksClient(this);
 
     this.communityNotes = new CommunityNotesClient(this);
 
+    this.directMessages = new DirectMessagesClient(this);
+
+    this.media = new MediaClient(this);
+
     this.articles = new ArticlesClient(this);
 
     this.news = new NewsClient(this);
 
-    this.activity = new ActivityClient(this);
+    this.usage = new UsageClient(this);
 
-    this.posts = new PostsClient(this);
-
-    this.directMessages = new DirectMessagesClient(this);
-
-    this.spaces = new SpacesClient(this);
+    this.lists = new ListsClient(this);
 
     this.chat = new ChatClient(this);
 
+    this.trends = new TrendsClient(this);
+
+    this.posts = new PostsClient(this);
+
+    this.users = new UsersClient(this);
+
     this.calls = new CallsClient(this);
 
-    this.lists = new ListsClient(this);
+    this.accountActivity = new AccountActivityClient(this);
+
+    this.communities = new CommunitiesClient(this);
+
+    this.account = new AccountClient(this);
+
+    this.stream = new StreamClient(this);
+
+    this.activity = new ActivityClient(this);
+
+    this.connections = new ConnectionsClient(this);
+
+    this.broadcasts = new BroadcastsClient(this);
+
+    this.spaces = new SpacesClient(this);
 
   }
 

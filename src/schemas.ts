@@ -3915,6 +3915,89 @@ export interface DeleteChatConversationActionSignaturesMessageEventSignatureMess
 
 
 /**
+ * Schema type for DeleteChatConversationLegacyActionSignatures
+ *
+ * @public
+ */
+export interface DeleteChatConversationLegacyActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: DeleteChatConversationLegacyActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationLegacyActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface DeleteChatConversationLegacyActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<DeleteChatConversationLegacyActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationLegacyActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface DeleteChatConversationLegacyActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationLegacyRequest
+ *
+ * @public
+ */
+export interface DeleteChatConversationLegacyRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<DeleteChatConversationLegacyActionSignatures>;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationLegacyResponse
+ *
+ * @public
+ */
+export interface DeleteChatConversationLegacyResponse {
+  data?: DeleteChatConversationLegacyResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for DeleteChatConversationLegacyResponseData
+ *
+ * @public
+ */
+export interface DeleteChatConversationLegacyResponseData {
+  /** Whether the conversation was deleted. */
+  deleted: boolean;
+}
+
+
+/**
  * Schema type for DeleteChatConversationMessageTtlActionSignatures
  *
  * @public
@@ -10990,6 +11073,89 @@ export interface UnarchiveChatConversationActionSignaturesMessageEventSignatureM
   publicKeyVersion?: string;
   /** The signing public key. */
   signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationLegacyActionSignatures
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationLegacyActionSignatures {
+  /** Base64-encoded Thrift MessageEventDetail for the signed action. */
+  encodedMessageEventDetail: string;
+  messageEventSignature: UnarchiveChatConversationLegacyActionSignaturesMessageEventSignature;
+  /** Client-generated ID of the message being signed. */
+  messageId: string;
+  /** Payload string the client signed; used only in server-side failure logs. */
+  signaturePayload?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationLegacyActionSignaturesMessageEventSignature
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationLegacyActionSignaturesMessageEventSignature {
+  /** List of signing key information for message verification. */
+  messageSigningKeyInfoList?: Array<UnarchiveChatConversationLegacyActionSignaturesMessageEventSignatureMessageSigningKeyInfoList>;
+  /** The version of the public key used for signing. */
+  publicKeyVersion: string;
+  /** The signature of the message event. */
+  signature: string;
+  /** The version of the signature algorithm. */
+  signatureVersion: string;
+  /** The public key used for signing. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationLegacyActionSignaturesMessageEventSignatureMessageSigningKeyInfoList
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationLegacyActionSignaturesMessageEventSignatureMessageSigningKeyInfoList {
+  /** The member ID associated with this signing key. */
+  memberId?: string;
+  /** The version of the public key. */
+  publicKeyVersion?: string;
+  /** The signing public key. */
+  signingPublicKey?: string;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationLegacyRequest
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationLegacyRequest {
+  /** Signatures for this action, forwarded in the order they are sent. */
+  actionSignatures?: Array<UnarchiveChatConversationLegacyActionSignatures>;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationLegacyResponse
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationLegacyResponse {
+  data?: UnarchiveChatConversationLegacyResponseData;
+  errors?: Array<Problem>;
+}
+
+
+/**
+ * Schema type for UnarchiveChatConversationLegacyResponseData
+ *
+ * @public
+ */
+export interface UnarchiveChatConversationLegacyResponseData {
+  /** Whether the conversation is archived for the authenticated user. */
+  archived: boolean;
 }
 
 

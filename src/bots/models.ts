@@ -8,31 +8,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Request for updateBot
- *
- * @public
- */
-export type UpdateBotRequest = Schemas.UpdateBotRequest;
-
-
-/**
- * Response for updateBot
- *
- * @public
- */
-export type UpdateBotResponse = Schemas.UpdateBotResponse;
-
-
-
-/**
- * Response for deleteBot
- *
- * @public
- */
-export type DeleteBotResponse = Schemas.DeleteBotResponse;
-
-
-/**
  * Request for rotateBotToken
  *
  * @public
@@ -55,6 +30,31 @@ export type RotateBotTokenResponse = Schemas.RotateBotTokenResponse;
  * @public
  */
 export type RevokeBotTokenResponse = Schemas.RevokeBotTokenResponse;
+
+
+/**
+ * Request for updateBot
+ *
+ * @public
+ */
+export type UpdateBotRequest = Schemas.UpdateBotRequest;
+
+
+/**
+ * Response for updateBot
+ *
+ * @public
+ */
+export type UpdateBotResponse = Schemas.UpdateBotResponse;
+
+
+
+/**
+ * Response for deleteBot
+ *
+ * @public
+ */
+export type DeleteBotResponse = Schemas.DeleteBotResponse;
 
 
 

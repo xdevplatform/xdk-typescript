@@ -7,47 +7,6 @@
 import type * as Schemas from '../schemas.js';
 
 
-
-/**
- * Response for getUploadStatus
- *
- * @public
- */
-export type GetUploadStatusResponse = Schemas.GetMediaUploadStatusResponse;
-
-
-/**
- * Request for upload
- *
- * @public
- */
-export type UploadRequest = Schemas.MediaUploadRequest;
-
-
-/**
- * Response for upload
- *
- * @public
- */
-export type UploadResponse = Schemas.MediaUploadResponse;
-
-
-/**
- * Request for initializeUpload
- *
- * @public
- */
-export type InitializeUploadRequest = Schemas.InitializeMediaUploadRequest;
-
-
-/**
- * Response for initializeUpload
- *
- * @public
- */
-export type InitializeUploadResponse = Schemas.InitializeMediaUploadResponse;
-
-
 /**
  * Request for updateInLibrary
  *
@@ -80,6 +39,38 @@ export type RemoveFromLibraryRequest = Schemas.RemoveMediaFromLibraryRequest;
 export type RemoveFromLibraryResponse = Schemas.RemoveMediaFromLibraryResponse;
 
 
+/**
+ * Request for addToLibrary
+ *
+ * @public
+ */
+export type AddToLibraryRequest = Schemas.AddMediaToLibraryRequest;
+
+
+/**
+ * Response for addToLibrary
+ *
+ * @public
+ */
+export type AddToLibraryResponse = Schemas.AddMediaToLibraryResponse;
+
+
+/**
+ * Request for initializeUpload
+ *
+ * @public
+ */
+export type InitializeUploadRequest = Schemas.InitializeMediaUploadRequest;
+
+
+/**
+ * Response for initializeUpload
+ *
+ * @public
+ */
+export type InitializeUploadResponse = Schemas.InitializeMediaUploadResponse;
+
+
 
 /**
  * Response for getAmplifyProgram
@@ -91,20 +82,11 @@ export type GetAmplifyProgramResponse = Schemas.GetAmplifyProgramResponse;
 
 
 /**
- * Response for getAmplifyProgramPosts
+ * Response for getAnalytics
  *
  * @public
  */
-export type GetAmplifyProgramPostsResponse = Schemas.GetAmplifyProgramPostsResponse;
-
-
-
-/**
- * Response for getByKey
- *
- * @public
- */
-export type GetByKeyResponse = Schemas.GetMediaByMediaKeyResponse;
+export type GetAnalyticsResponse = Schemas.GetMediaAnalyticsResponse;
 
 
 
@@ -114,6 +96,124 @@ export type GetByKeyResponse = Schemas.GetMediaByMediaKeyResponse;
  * @public
  */
 export type FinalizeUploadResponse = Schemas.FinalizeMediaUploadResponse;
+
+
+
+/**
+ * Response for getAmplifyProgramPosts
+ *
+ * @public
+ */
+export type GetAmplifyProgramPostsResponse = Schemas.GetAmplifyProgramPostsResponse;
+
+
+/**
+ * Request for appendUpload
+ *
+ * @public
+ */
+export type AppendUploadRequest = Schemas.AppendMediaUploadRequest;
+
+
+/**
+ * Response for appendUpload
+ *
+ * @public
+ */
+export type AppendUploadResponse = Schemas.AppendMediaUploadResponse;
+
+
+
+/**
+ * Response for getByKeys
+ *
+ * @public
+ */
+export type GetByKeysResponse = Schemas.GetMediaByMediaKeysResponse;
+
+
+
+/**
+ * Response for getLibraryCategories
+ *
+ * @public
+ */
+export type GetLibraryCategoriesResponse = Schemas.GetMediaLibraryCategoriesResponse;
+
+
+
+/**
+ * Response for getAmplifyPrograms
+ *
+ * @public
+ */
+export type GetAmplifyProgramsResponse = Schemas.GetAmplifyProgramsResponse;
+
+
+
+/**
+ * Response for getUploadStatus
+ *
+ * @public
+ */
+export type GetUploadStatusResponse = Schemas.GetMediaUploadStatusResponse;
+
+
+/**
+ * Request for upload
+ *
+ * @public
+ */
+export type UploadRequest = Schemas.MediaUploadRequest;
+
+
+/**
+ * Response for upload
+ *
+ * @public
+ */
+export type UploadResponse = Schemas.MediaUploadResponse;
+
+
+/**
+ * Request for createMetadata
+ *
+ * @public
+ */
+export type CreateMetadataRequest = Schemas.CreateMediaMetadataRequest;
+
+
+/**
+ * Response for createMetadata
+ *
+ * @public
+ */
+export type CreateMetadataResponse = Schemas.CreateMediaMetadataResponse;
+
+
+/**
+ * Request for addPostToAmplifyPrograms
+ *
+ * @public
+ */
+export type AddPostToAmplifyProgramsRequest = Schemas.AddPostToAmplifyProgramsRequest;
+
+
+/**
+ * Response for addPostToAmplifyPrograms
+ *
+ * @public
+ */
+export type AddPostToAmplifyProgramsResponse = Schemas.AddPostToAmplifyProgramsResponse;
+
+
+
+/**
+ * Response for getByKey
+ *
+ * @public
+ */
+export type GetByKeyResponse = Schemas.GetMediaByMediaKeyResponse;
 
 
 /**
@@ -146,104 +246,4 @@ export type DeleteSubtitlesRequest = Schemas.DeleteMediaSubtitlesRequest;
  * @public
  */
 export type DeleteSubtitlesResponse = Schemas.DeleteMediaSubtitlesResponse;
-
-
-
-/**
- * Response for getAnalytics
- *
- * @public
- */
-export type GetAnalyticsResponse = Schemas.GetMediaAnalyticsResponse;
-
-
-/**
- * Request for createMetadata
- *
- * @public
- */
-export type CreateMetadataRequest = Schemas.CreateMediaMetadataRequest;
-
-
-/**
- * Response for createMetadata
- *
- * @public
- */
-export type CreateMetadataResponse = Schemas.CreateMediaMetadataResponse;
-
-
-
-/**
- * Response for getLibraryCategories
- *
- * @public
- */
-export type GetLibraryCategoriesResponse = Schemas.GetMediaLibraryCategoriesResponse;
-
-
-
-/**
- * Response for getAmplifyPrograms
- *
- * @public
- */
-export type GetAmplifyProgramsResponse = Schemas.GetAmplifyProgramsResponse;
-
-
-
-/**
- * Response for getByKeys
- *
- * @public
- */
-export type GetByKeysResponse = Schemas.GetMediaByMediaKeysResponse;
-
-
-/**
- * Request for appendUpload
- *
- * @public
- */
-export type AppendUploadRequest = Schemas.AppendMediaUploadRequest;
-
-
-/**
- * Response for appendUpload
- *
- * @public
- */
-export type AppendUploadResponse = Schemas.AppendMediaUploadResponse;
-
-
-/**
- * Request for addToLibrary
- *
- * @public
- */
-export type AddToLibraryRequest = Schemas.AddMediaToLibraryRequest;
-
-
-/**
- * Response for addToLibrary
- *
- * @public
- */
-export type AddToLibraryResponse = Schemas.AddMediaToLibraryResponse;
-
-
-/**
- * Request for addPostToAmplifyPrograms
- *
- * @public
- */
-export type AddPostToAmplifyProgramsRequest = Schemas.AddPostToAmplifyProgramsRequest;
-
-
-/**
- * Response for addPostToAmplifyPrograms
- *
- * @public
- */
-export type AddPostToAmplifyProgramsResponse = Schemas.AddPostToAmplifyProgramsResponse;
 

@@ -468,7 +468,7 @@ export class ActivityClient {
                 
                 {
                     
-                    'OAuth2UserToken': ['tweet.read', 'like.read'],
+                    'OAuth2UserToken': ['like.read', 'tweet.read'],
                     
                 },
                 

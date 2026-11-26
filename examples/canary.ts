@@ -49,7 +49,7 @@ export interface CanarySnapshot {
 
 export class XdkTypeScriptCanaryApp {
   public static readonly SDK_NAME = 'typescript';
-  public static readonly SDK_VERSION = '0.7.2';
+  public static readonly SDK_VERSION = '0.8.0';
 
   private totalCycles = 0;
   private totalProbeFailures = 0;

@@ -9,15 +9,6 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Response for getPersonalized
- *
- * @public
- */
-export type GetPersonalizedResponse = Schemas.GetTrendsPersonalizedTrendsResponse;
-
-
-
-/**
  * Response for getByWoeid
  *
  * @public
@@ -32,4 +23,13 @@ export type GetByWoeidResponse = Schemas.GetTrendsByWoeidResponse;
  * @public
  */
 export type GetLocationsResponse = Schemas.GetTrendsLocationsResponse;
+
+
+
+/**
+ * Response for getPersonalized
+ *
+ * @public
+ */
+export type GetPersonalizedResponse = Schemas.GetTrendsPersonalizedTrendsResponse;
 

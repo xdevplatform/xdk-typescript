@@ -30,8 +30,8 @@ describe('ListsClient Pagination', () => {
   });
 
   
-  it('should create paginator for getFollowers', () => {
-    const method = (listsClient as any)['getFollowers'];
+  it('should create paginator for getPosts', () => {
+    const method = (listsClient as any)['getPosts'];
     
     // Should be able to create paginator without error
     const params: any = {
@@ -48,7 +48,7 @@ describe('ListsClient Pagination', () => {
     expect(typeof method).toBe('function');
   });
 
-  it('should paginate through pages for getFollowers', async () => {
+  it('should paginate through pages for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -100,7 +100,7 @@ describe('ListsClient Pagination', () => {
     });
 
     try {
-      const method = (listsClient as any)['getFollowers'];
+      const method = (listsClient as any)['getPosts'];
       
       // Build required parameters as direct arguments (both path and required query params)
       const requiredArgs: any[] = [
@@ -142,7 +142,7 @@ describe('ListsClient Pagination', () => {
     }
   });
 
-  it('should handle pagination parameters correctly for getFollowers', async () => {
+  it('should handle pagination parameters correctly for getPosts', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -162,7 +162,7 @@ describe('ListsClient Pagination', () => {
     } as Response);
 
     try {
-      const method = (listsClient as any)['getFollowers'];
+      const method = (listsClient as any)['getPosts'];
       
       // Build required parameters as direct arguments (both path and required query params)
       const requiredArgs: any[] = [
@@ -356,8 +356,8 @@ describe('ListsClient Pagination', () => {
   });
 
   
-  it('should create paginator for getPosts', () => {
-    const method = (listsClient as any)['getPosts'];
+  it('should create paginator for getFollowers', () => {
+    const method = (listsClient as any)['getFollowers'];
     
     // Should be able to create paginator without error
     const params: any = {
@@ -374,7 +374,7 @@ describe('ListsClient Pagination', () => {
     expect(typeof method).toBe('function');
   });
 
-  it('should paginate through pages for getPosts', async () => {
+  it('should paginate through pages for getFollowers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -426,7 +426,7 @@ describe('ListsClient Pagination', () => {
     });
 
     try {
-      const method = (listsClient as any)['getPosts'];
+      const method = (listsClient as any)['getFollowers'];
       
       // Build required parameters as direct arguments (both path and required query params)
       const requiredArgs: any[] = [
@@ -468,7 +468,7 @@ describe('ListsClient Pagination', () => {
     }
   });
 
-  it('should handle pagination parameters correctly for getPosts', async () => {
+  it('should handle pagination parameters correctly for getFollowers', async () => {
     // Mock validateAuthentication to bypass auth checks (like Python mocks session)
     const originalValidateAuth = client.validateAuthentication;
     client.validateAuthentication = jest.fn();
@@ -488,7 +488,7 @@ describe('ListsClient Pagination', () => {
     } as Response);
 
     try {
-      const method = (listsClient as any)['getPosts'];
+      const method = (listsClient as any)['getFollowers'];
       
       // Build required parameters as direct arguments (both path and required query params)
       const requiredArgs: any[] = [

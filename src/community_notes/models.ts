@@ -7,6 +7,15 @@
 import type * as Schemas from '../schemas.js';
 
 
+
+/**
+ * Response for delete
+ *
+ * @public
+ */
+export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
+
+
 /**
  * Request for evaluate
  *
@@ -41,11 +50,11 @@ export type CreateResponse = Schemas.CreateCommunityNotesResponse;
 
 
 /**
- * Response for delete
+ * Response for searchWritten
  *
  * @public
  */
-export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
+export type SearchWrittenResponse = Schemas.SearchCommunityNotesWrittenResponse;
 
 
 
@@ -55,13 +64,4 @@ export type DeleteResponse = Schemas.DeleteCommunityNotesResponse;
  * @public
  */
 export type SearchEligiblePostsResponse = Schemas.SearchEligiblePostsResponse;
-
-
-
-/**
- * Response for searchWritten
- *
- * @public
- */
-export type SearchWrittenResponse = Schemas.SearchCommunityNotesWrittenResponse;
 

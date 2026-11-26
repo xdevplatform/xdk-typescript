@@ -9,6 +9,40 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
+ * Response for getPosts
+ *
+ * @public
+ */
+export type GetPostsResponse = Schemas.GetListsPostsResponse;
+
+
+
+/**
+ * Response for getMembers
+ *
+ * @public
+ */
+export type GetMembersResponse = Schemas.GetListsMembersResponse;
+
+
+/**
+ * Request for addMember
+ *
+ * @public
+ */
+export type AddMemberRequest = Schemas.AddListsMemberRequest;
+
+
+/**
+ * Response for addMember
+ *
+ * @public
+ */
+export type AddMemberResponse = Schemas.AddListsMemberResponse;
+
+
+
+/**
  * Response for getFollowers
  *
  * @public
@@ -16,20 +50,13 @@ import type * as Schemas from '../schemas.js';
 export type GetFollowersResponse = Schemas.GetListsFollowersResponse;
 
 
+
 /**
- * Request for create
+ * Response for removeMemberByUserId
  *
  * @public
  */
-export type CreateRequest = Schemas.CreateListsRequest;
-
-
-/**
- * Response for create
- *
- * @public
- */
-export type CreateResponse = Schemas.CreateListsResponse;
+export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
 
 
 
@@ -66,45 +93,18 @@ export type UpdateResponse = Schemas.UpdateListsResponse;
 export type DeleteResponse = Schemas.DeleteListsResponse;
 
 
-
 /**
- * Response for removeMemberByUserId
+ * Request for create
  *
  * @public
  */
-export type RemoveMemberByUserIdResponse = Schemas.RemoveListsMemberByUserIdResponse;
-
-
-
-/**
- * Response for getMembers
- *
- * @public
- */
-export type GetMembersResponse = Schemas.GetListsMembersResponse;
+export type CreateRequest = Schemas.CreateListsRequest;
 
 
 /**
- * Request for addMember
+ * Response for create
  *
  * @public
  */
-export type AddMemberRequest = Schemas.AddListsMemberRequest;
-
-
-/**
- * Response for addMember
- *
- * @public
- */
-export type AddMemberResponse = Schemas.AddListsMemberResponse;
-
-
-
-/**
- * Response for getPosts
- *
- * @public
- */
-export type GetPostsResponse = Schemas.GetListsPostsResponse;
+export type CreateResponse = Schemas.CreateListsResponse;
 

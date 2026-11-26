@@ -8,30 +8,19 @@ import type * as Schemas from '../schemas.js';
 
 
 /**
- * Request for createByConversationId
+ * Request for createByParticipantId
  *
  * @public
  */
-export type CreateByConversationIdRequest = Schemas.CreateDirectMessagesByConversationIdRequest;
+export type CreateByParticipantIdRequest = Schemas.CreateDirectMessagesByParticipantIdRequest;
 
 
 /**
- * Response for createByConversationId
+ * Response for createByParticipantId
  *
  * @public
  */
-export type CreateByConversationIdResponse = Schemas.CreateDirectMessagesByConversationIdResponse;
-
-
-
-/**
- * Response for getEventsByParticipantId
- *
- * @public
- */
-export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsByParticipantIdResponse;
-
-
+export type CreateByParticipantIdResponse = Schemas.CreateDirectMessagesByParticipantIdResponse;
 
 
 
@@ -41,6 +30,24 @@ export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsBy
  * @public
  */
 export type GetEventsResponse = Schemas.GetDirectMessagesEventsResponse;
+
+
+
+/**
+ * Response for getEventsById
+ *
+ * @public
+ */
+export type GetEventsByIdResponse = Schemas.GetDirectMessagesEventsByIdResponse;
+
+
+
+/**
+ * Response for deleteEvents
+ *
+ * @public
+ */
+export type DeleteEventsResponse = Schemas.DeleteDirectMessagesEventsResponse;
 
 
 /**
@@ -69,35 +76,28 @@ export type GetEventsByConversationIdResponse = Schemas.GetDirectMessagesEventsB
 
 
 /**
- * Request for createByParticipantId
+ * Request for createByConversationId
  *
  * @public
  */
-export type CreateByParticipantIdRequest = Schemas.CreateDirectMessagesByParticipantIdRequest;
+export type CreateByConversationIdRequest = Schemas.CreateDirectMessagesByConversationIdRequest;
 
 
 /**
- * Response for createByParticipantId
+ * Response for createByConversationId
  *
  * @public
  */
-export type CreateByParticipantIdResponse = Schemas.CreateDirectMessagesByParticipantIdResponse;
-
-
-
-/**
- * Response for getEventsById
- *
- * @public
- */
-export type GetEventsByIdResponse = Schemas.GetDirectMessagesEventsByIdResponse;
+export type CreateByConversationIdResponse = Schemas.CreateDirectMessagesByConversationIdResponse;
 
 
 
 /**
- * Response for deleteEvents
+ * Response for getEventsByParticipantId
  *
  * @public
  */
-export type DeleteEventsResponse = Schemas.DeleteDirectMessagesEventsResponse;
+export type GetEventsByParticipantIdResponse = Schemas.GetDirectMessagesEventsByParticipantIdResponse;
+
+
 

@@ -7,6 +7,31 @@
 import type * as Schemas from '../schemas.js';
 
 
+
+/**
+ * Response for get
+ *
+ * @public
+ */
+export type GetResponse = Schemas.GetWebhooksResponse;
+
+
+/**
+ * Request for create
+ *
+ * @public
+ */
+export type CreateRequest = Schemas.CreateWebhooksRequest;
+
+
+/**
+ * Response for create
+ *
+ * @public
+ */
+export type CreateResponse = Schemas.CreateWebhooksResponse;
+
+
 /**
  * Request for createWebhookReplayJob
  *
@@ -34,49 +59,6 @@ export type GetStreamLinksResponse = Schemas.GetWebhooksStreamLinksResponse;
 
 
 /**
- * Response for validate
- *
- * @public
- */
-export type ValidateResponse = Schemas.ValidateWebhooksResponse;
-
-
-
-/**
- * Response for delete
- *
- * @public
- */
-export type DeleteResponse = Schemas.DeleteWebhooksResponse;
-
-
-
-/**
- * Response for get
- *
- * @public
- */
-export type GetResponse = Schemas.GetWebhooksResponse;
-
-
-/**
- * Request for create
- *
- * @public
- */
-export type CreateRequest = Schemas.CreateWebhooksRequest;
-
-
-/**
- * Response for create
- *
- * @public
- */
-export type CreateResponse = Schemas.CreateWebhooksResponse;
-
-
-
-/**
  * Response for createStreamLink
  *
  * @public
@@ -91,4 +73,22 @@ export type CreateStreamLinkResponse = Schemas.CreateWebhooksStreamLinkResponse;
  * @public
  */
 export type DeleteStreamLinkResponse = Schemas.DeleteWebhooksStreamLinkResponse;
+
+
+
+/**
+ * Response for validate
+ *
+ * @public
+ */
+export type ValidateResponse = Schemas.ValidateWebhooksResponse;
+
+
+
+/**
+ * Response for delete
+ *
+ * @public
+ */
+export type DeleteResponse = Schemas.DeleteWebhooksResponse;
 

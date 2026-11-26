@@ -30,12 +30,12 @@ describe('CallsClient Structure', () => {
 
   
   
-  it('should have getCall method with correct signature', () => {
+  it('should have leaveCall method with correct signature', () => {
     // Check method exists
-    expect(CallsClient.prototype).toHaveProperty('getCall');
+    expect(CallsClient.prototype).toHaveProperty('leaveCall');
     
     // Check method is callable
-    const method = callsClient.getCall;
+    const method = callsClient.leaveCall;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -61,8 +61,49 @@ describe('CallsClient Structure', () => {
     }
   });
 
-  it('should have getCall method with return type annotation', () => {
-    const method = callsClient.getCall;
+  it('should have leaveCall method with return type annotation', () => {
+    const method = callsClient.leaveCall;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have joinCall method with correct signature', () => {
+    // Check method exists
+    expect(CallsClient.prototype).toHaveProperty('joinCall');
+    
+    // Check method is callable
+    const method = callsClient.joinCall;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+      'id',
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have joinCall method with return type annotation', () => {
+    const method = callsClient.joinCall;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -182,86 +223,6 @@ describe('CallsClient Structure', () => {
 
   it('should have respondToScheduledCall method with return type annotation', () => {
     const method = callsClient.respondToScheduledCall;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have createCall method with correct signature', () => {
-    // Check method exists
-    expect(CallsClient.prototype).toHaveProperty('createCall');
-    
-    // Check method is callable
-    const method = callsClient.createCall;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have createCall method with return type annotation', () => {
-    const method = callsClient.createCall;
-    expect(typeof method).toBe('function');
-    // TypeScript will enforce return types at compile time
-    // This test ensures the method exists and is callable
-  });
-
-  
-
-  
-  it('should have joinCall method with correct signature', () => {
-    // Check method exists
-    expect(CallsClient.prototype).toHaveProperty('joinCall');
-    
-    // Check method is callable
-    const method = callsClient.joinCall;
-    expect(typeof method).toBe('function');
-    
-    // Check method signature by examining parameter count
-    const methodString = method.toString();
-    const paramsMatch = methodString.match(/\(([^)]*)\)/);
-    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
-    
-    // Check required parameters exist (convert to camelCase for TypeScript)
-    const requiredParams = [
-      
-      'id',
-      
-    ];
-    
-    for (const requiredParam of requiredParams) {
-      // Check if parameter exists (may be in camelCase or snake_case)
-      const paramExists = params.some(p => 
-        p === requiredParam || 
-        p.toLowerCase() === requiredParam.toLowerCase() ||
-        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
-      );
-      expect(paramExists).toBe(true);
-    }
-  });
-
-  it('should have joinCall method with return type annotation', () => {
-    const method = callsClient.joinCall;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -393,12 +354,12 @@ describe('CallsClient Structure', () => {
   
 
   
-  it('should have leaveCall method with correct signature', () => {
+  it('should have getCall method with correct signature', () => {
     // Check method exists
-    expect(CallsClient.prototype).toHaveProperty('leaveCall');
+    expect(CallsClient.prototype).toHaveProperty('getCall');
     
     // Check method is callable
-    const method = callsClient.leaveCall;
+    const method = callsClient.getCall;
     expect(typeof method).toBe('function');
     
     // Check method signature by examining parameter count
@@ -424,8 +385,47 @@ describe('CallsClient Structure', () => {
     }
   });
 
-  it('should have leaveCall method with return type annotation', () => {
-    const method = callsClient.leaveCall;
+  it('should have getCall method with return type annotation', () => {
+    const method = callsClient.getCall;
+    expect(typeof method).toBe('function');
+    // TypeScript will enforce return types at compile time
+    // This test ensures the method exists and is callable
+  });
+
+  
+
+  
+  it('should have createCall method with correct signature', () => {
+    // Check method exists
+    expect(CallsClient.prototype).toHaveProperty('createCall');
+    
+    // Check method is callable
+    const method = callsClient.createCall;
+    expect(typeof method).toBe('function');
+    
+    // Check method signature by examining parameter count
+    const methodString = method.toString();
+    const paramsMatch = methodString.match(/\(([^)]*)\)/);
+    const params = paramsMatch ? paramsMatch[1].split(',').map(p => p.trim().split(':')[0].trim()).filter(p => p) : [];
+    
+    // Check required parameters exist (convert to camelCase for TypeScript)
+    const requiredParams = [
+      
+    ];
+    
+    for (const requiredParam of requiredParams) {
+      // Check if parameter exists (may be in camelCase or snake_case)
+      const paramExists = params.some(p => 
+        p === requiredParam || 
+        p.toLowerCase() === requiredParam.toLowerCase() ||
+        p.replace(/_/g, '') === requiredParam.replace(/_/g, '')
+      );
+      expect(paramExists).toBe(true);
+    }
+  });
+
+  it('should have createCall method with return type annotation', () => {
+    const method = callsClient.createCall;
     expect(typeof method).toBe('function');
     // TypeScript will enforce return types at compile time
     // This test ensures the method exists and is callable
@@ -438,7 +438,9 @@ describe('CallsClient Structure', () => {
   it('should have all expected methods', () => {
     const expectedMethods = [
       
-      'getCall',
+      'leaveCall',
+      
+      'joinCall',
       
       'listScheduled',
       
@@ -446,17 +448,15 @@ describe('CallsClient Structure', () => {
       
       'respondToScheduledCall',
       
-      'createCall',
-      
-      'joinCall',
-      
       'getScheduledCall',
       
       'updateScheduledCall',
       
       'cancelScheduledCall',
       
-      'leaveCall',
+      'getCall',
+      
+      'createCall',
       
     ];
 
